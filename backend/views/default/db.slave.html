@@ -1,0 +1,40 @@
+<div class="content1">
+    <div id="warning"></div>
+    <div class="notice-word">
+        <p class="yellow ml10 mr10 mt10 mb10 layui-font-12 block">目前仅支持mysql引擎</p>
+    </div>
+    <form method="post" action="{url route='db/slave' key=$smarty.get.key}" target="iframe">
+        <table class="infoTable">
+            <tr>
+                <th class="paddingT15"><label>数据库主机地址:</label></th>
+                <td class="paddingT15 wordSpacing5"><input id="host" type="text" name="host" value="{$slave.host}" class="infoTableInput" />
+                </td>
+            </tr>
+            <tr>
+                <th class="paddingT15"><label>数据库端口:</label></th>
+                <td class="paddingT15 wordSpacing5"><input id="port" type="text" name="port" value="{$slave.port|default:'3306'}" class="infoTableInput" />
+                </td>
+            </tr>
+            <tr>
+                <th class="paddingT15"><label>数据库名:</label></th>
+                <td class="paddingT15 wordSpacing5"><input id="dbname" type="text" name="dbname" value="{$slave.dbname|default:'shopwind'}" class="infoTableInput" />
+                    <label class="field_notice">{$lang.cache_path_desc}</label>
+                </td>
+            </tr>
+            <tr>
+                <th class="paddingT15"><label>数据库用户名:</label></th>
+                <td class="paddingT15 wordSpacing5"><input id="username" type="text" name="username" value="{$slave.username|default:'root'}" class="infoTableInput" />
+                </td>
+            </tr>
+            <tr>
+                <th class="paddingT15"><label>数据库密码:</label></th>
+                <td class="paddingT15 wordSpacing5"><input id="password" type="text" name="password" value="{$slave.password}" class="infoTableInput" />
+                </td>
+            </tr>
+            <tr>
+                <th></th>
+                <td class="ptb20"><input class="layui-btn layui-bg-blue" type="submit" value="{$lang.submit}" /></td>
+            </tr>
+        </table>
+    </form>
+</div>

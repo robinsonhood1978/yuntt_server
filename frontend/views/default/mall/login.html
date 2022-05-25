@@ -1,0 +1,131 @@
+{include file="top.html"} 
+<style type="text/css">
+#footer{ background:#fff;}
+#footer, #footer a, #footer .foot-group .footnav .copy, #footer .foot-group .footnav .copy a{ color:#bbb;}
+#footer .foot-group .footnav{ margin-left:0;margin-top:0;}
+#footer .foot-group .footnav ul{ width:454px; margin:0 auto;}
+#footer a:hover{ color:#f60; text-decoration:none;}
+.w{ width:1000px;}
+#site-nav{ display:none}
+.page-auth .auth-body{ background: #FFF3B5 } 
+</style>
+<div id="main" class="w-full">
+  <div id="page-login" class="w-full page-auth mt20 mb20">
+    <div class="w-full auth-header pb10 mb10">
+      <div class="w logo mb10 clearfix"> <a class="float-left" href="{$siteUrl}" title="{$app->params['site_title']}"><img height="60" alt="{$app->params['site_title']}" src="{$app->params['site_logo']|url_format}" /></a> <span>欢迎登陆</span></div>
+    </div>
+    <div class="w-full auth-body">
+    <div class="w clearfix">
+      <div class="col-main">
+        <div class="login-edit-field" area="login_left" widget_type="area"> 
+          {widgets page='login' area='login_left'}
+        </div>
+      </div>
+      <div class="col-sub">
+        <div class="form">
+          <div class="title">{$lang.user_login} <a class="register" href="{url route='user/register' redirect=$redirect}">立即注册</a></div>
+          <div class="content">
+            <form method="post" id="login_form">
+              <dl class="clearfix">
+                <!--<dt>{$lang.username}</dt>-->
+                <dd>
+                  <input class="input" type="text" name="username"  id="username" placeholder="{$lang.username}" value="buyer" />
+                  <i class="i-name"></i> </dd>
+              </dl>
+              <dl class="clearfix">
+                <!--<dt>{$lang.password}</dt>-->
+                <dd>
+                  <input class="input" type="password" name="password"  id="password" placeholder="{$lang.password}" value="123456" />
+                  <i class="i-psw"></i> </dd>
+              </dl>
+              <!--{if $app->params['captcha_status']['login']}-->
+              <dl class="clearfix">
+                <!--<dt>{$lang.captcha}</dt>-->
+                <dd class="captcha clearfix">
+                  <input type="text" class="input float-left" name="captcha" id="captcha1" placeholder="{$lang.captcha}" />
+                  <a href="javascript:;" class="float-left"><img onclick="change_captcha($(this))" id="captcha" src="{url route='default/captcha' v=uniqid('', true)}" class="float-left" height="38" /></a>
+                  </dd>
+              </dl>
+              <!--{/if}-->
+
+              <dl class="clearfix">
+              	<dd class="clearfix" style="width:334px;">
+              		<h3 class="float-left gray mt5">记住密码</h3>
+              		<p class="float-right">
+                    	<label class="switch-checkbox-radio inline-block box-align-center J_SwtcherInput" for="switcher"><span class="switcher-style block"></span></label>
+          				<input name="rememberMe" class="autoLogin hidden" id="switcher" value="1" type="checkbox">
+					</p>
+				</dd>
+              </dl>              
+              <dl class="clearfix">
+                <!--<dt>&nbsp;</dt>-->
+                <dd class="clearfix">
+                  <input type="hidden" name="redirect" value="{$redirect}" />
+                  <input type="submit" class="login-submit" value="{$lang.login}" title="{$lang.login}" />
+                </dd>
+              </dl>
+              <div class="partner-login">
+                <h3>{$lang.use_partner_account_login} <a href="{url route='find_password/index'}" class="find-password">{$lang.forget_password}</a></h3>
+                <p> <a href="{url route='connect/qq' redirect=$redirect}" target="_blank"><img src="{res file='images/qq_n.png'}" /> QQ</a> &nbsp;&nbsp; <a href="{url route='connect/alipay' redirect=$redirect}" target="_blank"><img src="{res file='images/alipay_n.png'}" /> 支付宝</a> &nbsp;&nbsp; <a href="{url route='connect/xwb' redirect=$redirect}" target="_blank"><img  src="{res file='images/xwb_n.png'}" /> 新浪微博</a> &nbsp;&nbsp; <a href="{url route='connect/weixin' redirect=$redirect}" target="_blank"><img src="{res file='images/wx_n.png'}" /> 微信登录</a> &nbsp;&nbsp; </p>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+    $('#login_form').validate({
+        errorPlacement: function(error, element){
+           var error_td = element.parent('dd');
+            error_td.find('label').hide();
+			error_td.find('i').hide();
+            error_td.append(error);
+        },
+        success       : function(label){
+            label.siblings('i').show().addClass('ok');
+            label.remove();
+        },
+        onkeyup : false,
+        rules : {
+            username : {
+                required : true
+            },
+            password : {
+                required : true
+            },
+            captcha : {
+                required : true,
+                remote   : {
+                    url : "{url route='default/checkCaptcha'}",
+                    type: 'get',
+                    data:{
+                        captcha : function(){
+                            return $('#captcha1').val();
+                        }
+                    }
+                }
+            }
+        },
+        messages : {
+            username : {
+                required : '{$lang.username_required}'
+            },
+            password  : {
+                required : '{$lang.password_required}'
+            },
+            captcha : {
+                required : '{$lang.captcha_required}',
+                remote   : '{$lang.captcha_error}'
+            }
+        }
+    });
+	$('input[name="username"], input[name="password"], input[name="captcha"]').click(function(){
+		$(this).parent().find('label').hide();
+	});
+});
+</script>
+{include file="user.footer.html"}

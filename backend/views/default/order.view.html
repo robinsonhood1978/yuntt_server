@@ -1,0 +1,84 @@
+{use class="common\library\Def"}
+{include file="header.html"}
+<div id="main">
+  {include file="menus.html"}
+  <div id="rightCon" class="clearfix layui-body">
+    <div class="scroller">
+      <div class="flexigrid clearfix">
+        <div class="order_form">
+          <dl>
+            <dt><span class="bold layui-font-16 blue">{Def::getOrderStatus($order.status)}</span></dt>
+            <dd>
+              <ul class="clearfix">
+                <li>{$lang.order_sn}{$lang.colon}{$order.order_sn}</li>
+                <li>{$lang.order_amount}{$lang.colon}<span class="red">{$order.order_amount|price_format}</span>
+                  ({$lang.preference}{$lang.colon}{$order.discount|price_format})</li>
+                <li>{$lang.buyer_name}{$lang.colon}{$order.buyer_name|escape}</li>
+                <li>{$lang.store_name}{$lang.colon}{$order.seller_name|escape}</li>
+                <!--{if $order.payment_code}-->
+                <li>{$lang.payment_name}{$lang.colon}{$order.payment_name|escape}</li>
+                <!--{/if}-->
+                <!--{if $order.pay_message}-->
+                <li>{$lang.pay_message}{$lang.colon}{$order.pay_message|escape}</li>
+                <!--{/if}-->
+                <li>{$lang.add_time}{$lang.colon}{$order.add_time|date_format:"%Y-%m-%d %H:%M:%S"}</li>
+                <!--{if $order.pay_time}-->
+                <li>{$lang.pay_time}{$lang.colon}{$order.pay_time|date_format:"%Y-%m-%d %H:%M:%S"}</li>
+                <!--{/if}-->
+                <!--{if $order.ship_time}-->
+                <li>{$lang.ship_time}{$lang.colon}{$order.ship_time|date_format:"%Y-%m-%d %H:%M:%S"}</li>
+                <!--{/if}-->
+                <!--{if $order.finished_time}-->
+                <li>{$lang.finished_time}{$lang.colon}{$order.finished_time|date_format:"%Y-%m-%d %H:%M:%S"}</li>
+                <!--{/if}-->
+                <!--{if $order.postscript}-->
+                <li>{$lang.postscript}{$lang.colon}{$order.postscript|escape}</li>
+                <!--{/if}-->
+              </ul>
+            </dd>
+          </dl>
+        </div>
+        <div class="order_form mt20">
+          <dl>
+            <dt><span class="bold">{$lang.consignee_info}</span></dt>
+            <dd>
+              <ul class="clearfix">
+                <li>{$lang.consignee}{$lang.colon}{$order.consignee|escape}</li>
+                <li>{$lang.region}{$lang.colon}{$order.region_name|escape} {$order.address|escape}</li>
+                <li>{$lang.phone_tel}{$lang.colon}{$order.phone_tel|escape}</li>
+                <li>{$lang.phone_mob}{$lang.colon}{$order.phone_mob|escape}</li>
+                <li>{$lang.shipping_name}{$lang.colon}{$order.shipping_name|escape}</li>
+                <li>{$lang.express_no}{$lang.colon}{$order.express_no|default:'-'}</li>
+              </ul>
+            </dd>
+          </dl>
+        </div>
+      </div>
+      <div class="flexigrid clearfix">
+        <div class="order_form">
+          <dl>
+            <dt><span class="bold">{$lang.goods_info}</span></dt>
+            <dd class="clearfix">
+              <!--{foreach from=$order.orderGoods item=goods}-->
+              <div class="goods_info mb10 clearfix">
+                <div class="float-left pic"><a href="{url route='goods/index' id=$goods.goods_id baseUrl=$homeUrl}"
+                    target="_blank"><img width="90" height="90" alt="{$lang.goods_pic}"
+                      src="{$goods.goods_image|url_format}" /></a></div>
+                <div class="float-left ml10 desc"> <a
+                    href="{url route='goods/index' id=$goods.goods_id baseUrl=$homeUrl}"
+                    target="_blank" class="block mb10">{$goods.goods_name|escape}</a>
+                  {$goods.specification|escape}
+                  <p>{$lang.price}{$lang.colon}<span class="red">{$goods.price|price_format}</span></p>
+                  <p>{$lang.quantity}{$lang.colon}{$goods.quantity}</p>
+                </div>
+              </div>
+              <!--{/foreach}-->
+            </dd>
+          </dl>
+        </div>
+      </div>
+      {include file="version.html"}
+    </div>
+  </div>
+</div>
+{include file="footer.html"}

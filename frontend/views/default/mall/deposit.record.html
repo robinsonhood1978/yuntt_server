@@ -1,0 +1,132 @@
+{include file="user.header.html"}
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful">{include file="user.submenu.html"}
+      <div class="wrap">
+        <div class="public table deposit">
+          <div class="record"> 
+            <!--{if !$tradeInfo}-->
+            <div class="notice-word">
+              <p class="yellow">没有该条交易信息</p>
+            </div>
+            <!--{else}-->
+            <div class="content">
+              <div class="status-info clearfix">
+                <h3 class="float-left">{$tradeInfo.status_label}</h3>
+                <div class="extra float-left ml10" style="line-height:20px;">
+                  <!--{if $tradeInfo.refundInfo}--> 
+                  <!--{if in_array($tradeInfo.refundInfo.status, array('SUCCESS'))}--> 
+                  <span class="ml10 mr10">{$lang.refund_success_note}</span> 
+                  <!--{elseif !in_array($tradeInfo.refundInfo.status, array('CLOSED'))}--> 
+                  <span class="ml10 mr10">{$tradeInfo.refundInfo.status_label}</span> 
+                  <!--{/if}--> 
+                  <a class="bglink ml10 mr10" href="{url route='refund/view' id=$tradeInfo.refundInfo.refund_id}">查看退款详情</a> 
+                  <!--{elseif $tradeInfo.status eq 'PENDING'}--> 
+                  <!--{if in_array($tradeInfo.tradeCat, array('RECHARGE','SHOPPING')) && ($tradeInfo.buyer_id eq $visitor.userid)}--> 
+                  <span class="ml10 mr10">{$lang.pending_order_note}</span> 
+                  <!--目前只有购物订单和充值订单有此按钮--> 
+                  <a class="bglink ml10 mr10" href="{url route='cashier/pay' orderId=$tradeInfo.tradeNo}">立即付款</a> 
+                  <!--{/if}--> 
+                  <!--{/if}--> 
+                </div>
+              </div>
+              <div class="trade-list clearfix">
+                <ul class="ul-head clearfix">
+                  <li class="paytype">支付类型</li>
+                  <li class="name">消费名称</li>
+                  <li class="amount">金额</li>
+                  <!--{if $tradeInfo.refundInfo}-->
+                  <li class="amount">退款</li>
+                  <li class="amount">应付总额</li>
+                  <!--{/if}-->
+                </ul>
+                <ul class="clearfix">
+                  <li class="paytype">{$lang.{$tradeInfo.payType}}</li>
+                  <li class="name"> {$tradeInfo.title|truncate:60:"...":true} 
+                    <!--{if $tradeInfo.remark}-->
+                    <p class="gray">{$tradeInfo.remark|truncate:100}</p>
+                    <!--{/if}--> 
+                  </li>
+                  <li class="amount"><strong class="price f60">{$tradeInfo.amount}</strong></li>
+                  <!--{if $tradeInfo.refundInfo}-->
+                  <li class="amount">-{$tradeInfo.refundInfo.refund_total_fee|default:0.00}</li>
+                  <li class="amount">{$tradeInfo.tradeAmount}</li>
+                  <!--{/if}-->
+                </ul>
+              </div>
+              
+              <!--{if $tradeInfo.orderInfo}-->
+              <div class="trade-goods mt20">
+                <ul class="ul-head clearfix">
+                  <li class="info">宝贝</li>
+                  <li class="props">宝贝属性</li>
+                  <li class="price">单价(元)</li>
+                  <li class="quantity">数量(件)</li>
+                  <li class="status">运费(元)</li>
+                  <li class="amount">商品总价(元)</li>
+                </ul>
+                <!--{foreach from=$tradeInfo.orderInfo.orderGoods item=goods name=fe_goods}-->
+                <ul class="ul-list clearfix">
+                  <li class="info clearfix">
+                    <div class="pic float-left"><a href="{url route='goods/index' id=$goods.goods_id}" target="_blank"><img src="{$goods.goods_image|url_format}" width="40" height="40" /></a></div>
+                    <div class="desc float-left"><a href="{url route='goods/index' id=$goods.goods_id}" target="_blank" title="{$goods.goods_name|escape}">{$goods.goods_name|escape|truncate:40:"...":true}</a></div>
+                  </li>
+                  <li class="props">{$goods.specification}&nbsp;</li>
+                  <li class="price">{$goods.price}</li>
+                  <li class="quantity">{$goods.quantity}</li>
+                  <li class="status" {if !$smarty.foreach.fe_goods.last} style="border-bottom:1px #fff solid;"{/if}>{if $smarty.foreach.fe_goods.first}
+                    <p>{$tradeInfo.orderInfo.shipping_name}{$lang.colon}{$tradeInfo.orderInfo.shipping_fee}</p>
+                    {/if}</li>
+                  <li class="amount" {if !$smarty.foreach.fe_goods.last} style="border-bottom:1px #fff solid;"{/if}> {if $smarty.foreach.fe_goods.first}
+                    <p>{$tradeInfo.orderInfo.order_amount}</p>
+                    {/if} </li>
+                </ul>
+                <!--{/foreach}--> 
+              </div>
+              <div class="trade-slips">
+                <dl class="clearfix">
+                  <dt>订单编号：</dt>
+                  <dd> {$tradeInfo.bizOrderId} </dd>
+                </dl>
+                <dl class="clearfix">
+                  <dt>订单详情：</dt>
+                  <dd> 
+                    <!--{if $tradeInfo.buyer_id eq $visitor.userid}--> 
+                    <a href="{url route='buyer_order/view' order_id=$tradeInfo.orderInfo.order_id}" target="_blank">{$lang.view_order}</a> 
+                    <!--{else}--> 
+                    <a href="{url route='seller_order/view' order_id=$tradeInfo.orderInfo.order_id}" target="_blank">{$lang.view_order}</a> 
+                    <!--{/if}--> 
+                  </dd>
+                </dl>
+              </div>
+              <!--{/if}-->
+              
+              <div class="trade-slips">
+                <dl class="clearfix">
+                  <dt>对方信息：</dt>
+                  <dd> {$tradeInfo.partyInfo.name}
+                    {if $tradeInfo.partyInfo.account}&nbsp;&nbsp;{$tradeInfo.partyInfo.account}{/if} </dd>
+                </dl>
+                <dl class="clearfix time">
+                  <dt>时间报告：</dt>
+                  <dd class="clearfix time-head">
+                    <div class="add-time">创建时间</div>
+                    <div class="pay-time">付款时间</div>
+                    <div class="end-time">结束时间</div>
+                  </dd>
+                  <dd class="clearfix">
+                    <div class="add-time">{$tradeInfo.add_time|date_format:"%Y.%m.%d %H:%M:%S"}</div>
+                    <div class="pay-time">{$tradeInfo.pay_time|date_format:"%Y.%m.%d %H:%M:%S"}</div>
+                    <div class="end-time">{$tradeInfo.end_time|date_format:"%Y.%m.%d %H:%M:%S"}</div>
+                  </dd>
+                </dl>
+              </div>
+            </div>
+            <!--{/if}--> 
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{include file="user.footer.html"} 

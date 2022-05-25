@@ -1,0 +1,52 @@
+{include file="user.header.html"}
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful">{include file="user.submenu.html"}
+      <div class="wrap">
+        <div class="public table deposit">
+          <div class="monthbill"> 
+            <!--{if $monthbill}-->
+            <div class="notice-word">
+              <p>保留最近两年的月账单下载</p>
+            </div>
+            <!--{/if}-->
+            <div class="title clearfix"> </div>
+            <ul class="subtit">
+              <li class="clearfix">
+                <div class="month">月份</div>
+                <div class="income-count">收入笔数</div>
+                <div class="income-money">收入金额（元）</div>
+                <div class="outlay-count">支出笔数</div>
+                <div class="outlay-money">支出金额（元）</div>
+                <div class="charge-count">服务费笔数</div>
+                <div class="charge-money">服务费金额（元）</div>
+                <div class="download">下载</div>
+              </li>
+            </ul>
+            <div class="content"> 
+              <!--{foreach from=$monthbill item=bill key=key}-->
+              <ul>
+                <li class="clearfix">
+                  <div class="month">{$key}</div>
+                  <div class="income-count">{$bill.income_count|default:0}</div>
+                  <div class="income-money">{$bill.income_money|default:0}</div>
+                  <div class="outlay-count">{$bill.outlay_count|default:0}</div>
+                  <div class="outlay-money">{$bill.outlay_money|default:0}</div>
+                  <div class="charge-count">{$bill.SERVICE_count|default:0}</div>
+                  <div class="charge-money">{$bill.SERVICE_money|default:0}</div>
+                  <div class="download"> <a target="_blank" href="{url route='deposit/downloadbill' month=$key}">下载</a> </div>
+                </li>
+              </ul>
+              <!--{foreachelse}-->
+              <div class="notice-word mt10">
+                <p>没有任何月账单可共下载</p>
+              </div>
+              <!--{/foreach}--> 
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{include file="user.footer.html"} 

@@ -1,0 +1,50 @@
+{include file="user.header.html"}
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful">{include file="user.submenu.html"}
+      <div class="wrap">
+        <div class="eject_btn" title="{$lang.friend_add}"><b class="ico3" ectype="dialog" dialog_id="friend_add" dialog_title="{$lang.friend_add}" uri="{url route='friend/add'}" dialog_width="400">{$lang.friend_add}</b></div>
+        <div class="public table">
+          <div class="my_friend"> 
+            <!--{if $friends}-->
+            <div class="all_btn all_bg_up">
+              <label for="all">
+                <input type="checkbox" id="all" class="checkall"/>
+                {$lang.checkall}</label>
+              <a href="javascript:void(0);" class="note" uri="{url route='my_message/send'}" name="to_id" ectype="batchbutton">{$lang.send_message}</a> <a href="javascript:void(0);" class="delete" uri="{url route='friend/delete'}" name="userid" presubmit="confirm('{$lang.drop_confirm}')" ectype="batchbutton" style="border:0;">{$lang.drop}</a> </div>
+            <!--{/if}-->
+            <ul class="{if $friends}list{/if} clearfix">
+              <!--{foreach from=$friends item=friend}-->
+              <li>
+                <p><img src="{$friend.portrait|url_format}" width="50" height="50" alt="{$friend.username|escape}" /></p>
+                <h3> <b>
+                  <label>
+                    <input type="checkbox" class="checkitem" value="{$friend.userid}"/>
+                    {$friend.username|escape}</label>
+                  </b> <span> <a href="{url route='my_message/send' to_id=$friend.userid}" class="note">{$lang.send_message}</a> <a href="javascript:drop_confirm('{$lang.drop_confirm}', '{url route='friend/delete' userid={$friend.friend_id}}');" class="delete">{$lang.drop}</a> </span> </h3>
+              </li>
+              <!--{foreachelse}-->
+              <li>
+                <div class="notice-word">
+                  <p>{$lang.{$app->controller->action->id}}{$lang.no_records}</p>
+                </div>
+              </li>
+              <!--{/foreach}-->
+            </ul>
+            <!--{if $friends}-->
+            <div class="all_btn all_bg_down clearfix">
+              <label for="all2">
+                <input type="checkbox" id="all2" class="checkall"/>
+                {$lang.checkall}</label>
+              <a href="javascript:void(0);" class="note" uri="{url route='my_message/send'}" name="to_id" ectype="batchbutton">{$lang.send_message}</a> <a href="javascript:void(0);" class="delete"  uri="{url route='friend/delete'}" name="userid" presubmit="confirm('{$lang.drop_confirm}')" ectype="batchbutton" style="border:0;">{$lang.drop}</a>
+              <div class="mt10 clearfix center">{include file="page.bottom.html"}</div>
+            </div>
+            <!--{/if}--> 
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<iframe id="iframe" name="iframe" src="about:blank" frameborder="0" width="0" height="0" style="display:none"></iframe>
+{include file="user.footer.html"} 

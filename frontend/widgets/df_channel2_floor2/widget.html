@@ -1,0 +1,105 @@
+<div class="channel2-floor2 floor{$widget_data.model_id} clearfix">
+  <div class="title">
+    <h2>{$widget_data.model_name}</h2>
+    <div class="keyword"> 
+      <!--{foreach from=$widget_data.keywords item=keyword name=fe_keyword}--> 
+      <a href="{url route='search/index' keyword=$keyword}" target="_blank" {if $smarty.foreach.fe_keyword.last} style="border-right:0;"{/if}>{$keyword}</a> 
+      <!--{/foreach}--> 
+    </div>
+  </div>
+  <div class="content clearfix">
+    <div class="left-part">
+      <ul class="goods-tag clearfix">
+        <!--{foreach from=$widget_data.cates item=cate name=fe_cate}--> 
+        <!--{if $smarty.foreach.fe_cate.iteration le 10}-->
+        <li><a target="_blank" href="{url route='search/index' cate_id=$cate.cate_id}">{$cate.cate_name|escape}</a></li>
+        <!--{/if}--> 
+        <!--{/foreach}-->
+      </ul>
+      <a class="l-banner" href="{$widget_data.ad1_link_url}" target="_blank"> <img src="{$widget_data.ad1_image_url|url_format}" width="200" height="285"> </a> </div>
+    <div class="middle-part">
+      <div class="switch-menu">
+        <ul class="J_Sub clearfix">
+          <!--{foreach from=$widget_data.cate_name item=name name=fe_name}-->
+          <li class="{if $smarty.foreach.fe_name.first}current first{/if} cate-name"><span>{$name|escape}</span></li>
+          <!--{/foreach}-->
+        </ul>
+      </div>
+      <div class="switch-content J_Content"> 
+       
+        <div class="switch-panel floor-main clearfix">
+          <div class="slide-b J_S{$widget_data.model_id}">
+            <div class="ks-switchable-content bd"> 
+              <!-- {foreach from=$widget_data.slide_images item=images name=fe_images} -->
+              <div class="them"> <a href="{$images.link}" target="_blank"><img src="{$images.url|url_format}" width="599" height="215"/></a> </div>
+              <!-- {/foreach} --> 
+            </div>
+            <div class="ks-switchable-nav hd"> 
+              <!-- {foreach from=$widget_data.slide_images item=images name=fe_images} -->
+              <li {if $smarty.foreach.fe_images.first} class="ks-active"{/if}></li>
+              <!-- {/foreach} --> 
+            </div>
+          </div>
+          <ul class="img-b clearfix">
+            <!-- {foreach from=$widget_data.floor_images item=fimages name=fe_images} -->
+            <li class="info"><a class="image-b{$smarty.foreach.fe_images.iteration}" target="_blank" href="{$fimages.link}"><img src="{$fimages.url|url_format}" width="199" height="215"></a></li>
+            <!-- {/foreach} -->
+          </ul>
+        </div>
+       	
+        <!--{foreach from=$widget_data.floor_goods item=tab name=fe_tab} -->
+        <div class="switch-panel floor-main hidden">
+          <ul class="p-list">
+          	 <!--{foreach from=$tab.goods_list item=goods name=fe_goods} -->
+            <li class="item fore1"> <a href="{url route='goods/index' id=$goods.goods_id}" target="_blank"> <img class="pic" width="120" height="120" src="{$goods.default_image|url_format}"> <span class="name">{$goods.goods_name|escape|truncate:46}</span> <span class="price">{$goods.price|price_format}</span> </a> </li>
+            <!--{/foreach}-->
+          </ul>
+        </div>
+        <!--{/foreach}-->
+      </div>
+    </div>
+    <div class="right-part">
+      <div class="switch-menu">
+        <ul class="J_Sub">
+         <!--{foreach from=$widget_data.tab_goods item=tab name=fe_tab} -->
+          <li class="{if $smarty.foreach.fe_tab.first}current{/if}"><span>{$tab.cate_name}</span></li>
+          <!--{/foreach}-->
+        </ul>
+      </div>
+      <div class="switch-content J_Content">
+        <!--{foreach from=$widget_data.tab_goods item=tab name=fe_tab} -->
+        <div class="list-panel floor-main" {if !$smarty.foreach.fe_tab.first} style="display:none"{/if}>
+          <ul class="clearfix">
+          	<!--{foreach from=$tab.goods_list item=goods name=fe_goods} -->
+            <li class="item fore{$smarty.foreach.fe_goods.iteration} {if $smarty.foreach.fe_goods.first}current{/if}" {if $smarty.foreach.fe_goods.first}style="border-top:0;padding-top:2.4px;"{/if}>
+              <div class="goods-pic"> <a href="{url route='goods/index' id=$goods.goods_id}" target="_blank"> <img  width="72" height="58" src="{$goods.default_image|url_format}"> </a> </div>
+              <div class="goods-name"> <a href="{url route='goods/index' id=$goods.goods_id}" target="_blank" title="{$goods.goods_name|escape}">{$goods.goods_name|escape|truncate:46}</a> </div>
+            </li>
+            <!--{/foreach}-->
+           </ul>
+        </div>
+        <!--{/foreach}-->
+        
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+$(function(){
+	$('.floor{$widget_data.model_id} .middle-part .J_Sub li').hover(function(){
+		$(this).parent().find('li').removeClass('current');
+		$(this).addClass('current');
+		$('.floor{$widget_data.model_id} .middle-part .J_Content .floor-main').hide();
+		$('.floor{$widget_data.model_id} .middle-part .J_Content .floor-main:eq('+$(this).index()+')').show();
+	});
+
+	$('.floor{$widget_data.model_id} .right-part .J_Sub li').hover(function(){
+		$(this).parent().find('li').removeClass('current');
+		$(this).addClass('current');
+		$('.floor{$widget_data.model_id} .right-part .J_Content .floor-main').hide();
+		$('.floor{$widget_data.model_id} .right-part .J_Content .floor-main:eq('+$(this).index()+')').show();
+	});
+	
+	$(".J_S{$widget_data.model_id}").slide({ titCell:".hd li", mainCell:".bd", effect:"leftLoop",autoPlay:true, titOnClassName:"ks-active", delayTime:1000, interTime: 5000});
+})
+</script>

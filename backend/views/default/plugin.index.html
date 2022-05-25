@@ -1,0 +1,63 @@
+{include file="header.html"}
+<style>
+  .distinction tbody td {
+    padding: 10px 0;
+    line-height: 20px;
+  }
+</style>
+<div id="main">
+  {include file="menus.html"}
+  <div id="rightCon" class="clearfix layui-body">
+    <div class="scroller">
+      <div class="flexigrid">
+        <table class="distinction">
+          <!--{if $plugins}-->
+          <thead>
+            <tr>
+              <th width="15%" align="left" style="padding-left:15px;">{$lang.plugin_name}</th>
+              <th align="left">{$lang.plugin_description}</th>
+              <th width="15%">{$lang.author}</th>
+              <th width="10%">{$lang.version}</th>
+              <th width="10%">{$lang.if_enabled}</th>
+              <th class="handler">{$lang.handler}</th>
+            </tr>
+          </thead>
+          <!--{/if}-->
+          <tbody>
+            <!--{foreach from=$plugins item=plugin key=key}-->
+            <tr>
+              <td style="padding-left:15px;">{$plugin.name|escape}</td>
+              <td align="left">{$plugin.desc|escape}</td>
+              <td align="center"><a href="{$plugin.website}" target="_blank"
+                  title="{$lang.author_website}">{$plugin.author|escape}</a></td>
+              <td align="center">{$plugin.version|escape}</td>
+              <td align="center">{if $plugin.enabled}{$lang.yes}{else}{$lang.no}{/if}</td>
+              <td class="handler">
+                <!--{if !$plugin.isInstall}-->
+                <a href="{url route='plugin/install' instance=$instance code=$key}">{$lang.install}</a>
+                <!--{else}-->
+                <a href="javascript:;" class="J_AjaxRequest" confirm="{$lang.disable_confirm}"
+                  uri="{url route='plugin/uninstall' instance=$instance code=$key}">{$lang.uninstall}</a>
+
+                | <a href="{url route='plugin/config' instance=$instance code=$key}">{$lang.config}</a>
+
+                <!--{foreach from=$plugin.buttons item=button}-->
+                | <a href="{$button.url}">{$button.label}</a>
+                <!--{/foreach}-->
+
+                <!--{/if}-->
+              </td>
+            </tr>
+            <!--{foreachelse}-->
+            <tr class="no_data">
+              <td class="no-data" colspan="6">{$lang.no_installed_plugin}</td>
+            </tr>
+            <!--{/foreach}-->
+          </tbody>
+        </table>
+      </div>
+      {include file="version.html"}
+    </div>
+  </div>
+</div>
+{include file="footer.html"}

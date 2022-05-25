@@ -1,0 +1,66 @@
+<div class="qa-info-page"> 
+  <!--{foreach from=$gqas.list item=item name=fe_item}-->
+  <div  class="qa-list">
+    <div class="leave-word">
+      <dl class="t clearfix">
+        <dt>{$lang.qa_friend}{$lang.colon}</dt>
+        <dd> <span><!-- {if $item.username} -->{$item.username}<!--{else}-->{$lang.guest}<!-- {/if} --></span> <i class="ml20">{$item.time_post|date_format:"%Y.%m.%d %H:%M:%S"}</i> </dd>
+      </dl>
+      <dl class="leave-con clearfix">
+        <dt>{$lang.question_content}： </dt>
+        <dd>
+          <p>{$item.question_content|escape|nl2br}</p>
+        </dd>
+      </dl>
+      <!-- {if $item.reply_content} -->
+      <dl class="reply-con clearfix">
+        <dt>{$lang.store_reply}：</dt>
+        <dd>
+          <p>{$item.reply_content|escape|nl2br}</p>
+          <i>{$item.time_reply|date_format:"%Y.%m.%d %H:%M:%S"}</i> </dd>
+      </dl>
+      <!-- {/if} --> 
+    </div>
+  </div>
+  <!-- {foreachelse} -->
+  <div style="border:0px;" class="no-record no-access">{$lang.no_records}</div>
+  <!--{/foreach}--> 
+  <!--{if $gqas.list}-->
+  <div class="clearfix mt10 mb10 pr10">{include file="page.bottom.html"}</div>
+  <!--{/if}--> 
+  <!--{if in_array($app->controller->id, array('goods'))}-->
+  <div class="fill-con"> 
+    <!--{if !$visitor.userid}-->
+    <div class="no-access">{sprintf($lang.login_to_ask, \yii\helpers\Url::toRoute('user/login'))}</div>
+    <!--{else}-->
+    <form method="post" >
+      <div class="qar-info">
+        <label for="qar-email"> <strong>{$lang.qa_email}:</strong>
+          <input type="text" id="qar-email" class="txt" name="email" value="{$visitor.email}" />
+        </label>
+      </div>
+      <div class="qa-content"> <strong class="ml5">{$lang.wanner_qa}:</strong>
+        <textarea name="content" class="qa-textarea"></textarea>
+        <span class="field_message"><span class="field_notice"></span></span> </div>
+      
+      <!--{if $app->params['captcha_status']['goodsqa']}-->
+      <div class="qa-content"> <strong class="ml5" style="display:inline-block; width:55px;">{$lang.captcha}:</strong>
+        <input type="text" class="text" name="captcha" id="captcha1" placeholder="{$lang.captcha}" style="padding:2px 4px; border:solid 1px #CCC; height:24px;" />
+        <a href="javascript:;" ><img onclick="change_captcha($(this))" id="captcha" src="{url route='default/captcha' v=uniqid('', true)}"  height="38" /></a> </div>
+      <!--{/if}--> 
+      
+      <!--{if $visitor.userid}-->
+      <div class="bottom" >
+        <label>
+          <input type="checkbox" name="hide_name" value="hide" />
+          {$lang.hide_name}</label>
+      </div>
+      <!--{/if}-->
+      <div class="bottom" style="padding-bottom:40px;">
+        <input type="submit" value="{$lang.submit_message}" class="submit J_AjaxSubmit"/>
+      </div>
+    </form>
+    <!--{/if}--> 
+  </div>
+  <!--{/if}--> 
+</div>

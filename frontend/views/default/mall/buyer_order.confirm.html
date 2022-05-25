@@ -1,0 +1,19 @@
+<div class="content1">
+  <div id="warning"></div>
+  <form action="{url route='buyer_order/confirm' order_id=$order.order_id}" method="post" target="iframe">
+    <h1>{$lang.confirm_order_confirm}</h1>
+    <p>{$lang.order_sn}:<span>{$order.order_sn}</span></p>
+    <div class="clue_on"> {$lang.notice}&nbsp;:&nbsp;{$lang.confirm_order_notice} </div>
+    <div class="btn">
+      <input type="button" id="confirm_cancel" class="btn2" value="{$lang.cancel}" />
+      <input type="submit" id="confirm_yes" class="btn1" value="{$lang.confirm}" />
+    </div>
+  </form>
+</div>
+<script type="text/javascript">
+$(function(){
+    $('#confirm_cancel').click(function(){
+        DialogManager.close('buyer_order_confirm');
+    });
+});
+</script> 

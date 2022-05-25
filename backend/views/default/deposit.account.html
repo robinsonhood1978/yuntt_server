@@ -1,0 +1,57 @@
+{include file="header.html"}
+<div id="main">
+  {include file="menus.html"}
+  <div id="rightCon" class="clearfix layui-body">
+    <div class="scroller">
+      <div class="explanation" id="explanation">
+        <div class="title" id="checkZoom"> <i class="fa fa-lightbulb-o"></i>
+          <h4>{$lang.operation_tip}</h4>
+        </div>
+        <ul>
+          <li><i class="fa fa-angle-double-right"></i> 如关闭余额支付功能，将无法使用余额付款，但在线支付（如支付宝）不受限制</li>
+        </ul>
+      </div>
+      <div class="flexigrid">
+        <form method="post">
+          <table class="infoTable">
+            <tr>
+              <th class="paddingT15"><label>{$lang.account_name}</label></th>
+              <td class="paddingT15 wordSpacing5"><input type="text" name="account" value="{$account.account|escape}" />
+                <label class="field_notice">{$lang.account_invalid}</label>
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.pay_password}</label></th>
+              <td class="paddingT15 wordSpacing5"><input name="password" type="text" id="password" />
+                <label class="field_notice">{$lang.note_password}</label>
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.real_name}</label></th>
+              <td class="paddingT15 wordSpacing5"><input name="real_name" type="text" id="real_name"
+                  value="{$account.real_name|escape}" />
+                <label class="field_notice">{$lang.real_name_not_empty}</label>
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.pay_status}</label></th>
+              <td class="paddingT15 layui-form">
+                <input type="radio" name="pay_status" value="ON" title="{$lang.yes}" {if $account.pay_status eq 'ON'
+                  || !$account}checked{/if} />
+                <input type="radio" name="pay_status" value="OFF" title="{$lang.no}" {if $account.pay_status eq 'OFF'
+                  }checked{/if} />
+              </td>
+            </tr>
+            <tr>
+              <th></th>
+              <td class="ptb20"><input class="layui-btn layui-bg-blue J_AjaxSubmit" type="submit"
+                  value="{$lang.submit}" /></td>
+            </tr>
+          </table>
+        </form>
+      </div>
+      {include file="version.html"}
+    </div>
+  </div>
+</div>
+{include file="footer.html"}

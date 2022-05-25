@@ -1,0 +1,34 @@
+{include file="header.html"}
+<div id="main" class="w-full">
+  <div class="voucher_center w">
+    <div class="ads mb20"> <img src="{res file='images/coupon_banner.jpg'}"/> </div>
+    <div class="list w">
+      <ul class="clearfix">
+        <!--{foreach from=$coupons item=coupon}-->
+        <li class="clearfix float-left">
+          <div class="lp float-left"> <a href="{if $coupon.store_id}{url route='store/index' id=$coupon.store_id}{else}javascript:;{/if}" target="_blank"><img src="{$coupon.store_logo|url_format}" /></a> </div>
+          <div class="mp float-left">
+            <div class="value"><i>&yen;</i><span>{$coupon.coupon_value}</span></div>
+            {if $coupon.min_amount}
+            <div class="can"><em class="red">满{$coupon.min_amount}元可用</em></div>
+            {/if}
+            <div class="type mt10">{if $coupon.store_id gt 0}{$coupon.store_name} 店内可用{else}全场通用券{/if}</div>
+            <div class="count">{if $coupon.total gt 0}<em class="f66 mr5">仅剩{$coupon.surplus}件</em> <span><i title="{$coupon.surratio}%" style="width:{$coupon.surratio}%;"></i></span>{/if}</div>
+          </div>
+          <div class="rp float-right">
+            <div class="wp"><a href="javascript:;" onclick="couponReceive({$coupon.coupon_id}, $(this));"> <span class="line"></span> <em class="text">立即领取</em> </a> </div>
+          </div>
+          <div class="ins float-right"> <i class="i1"></i> <i class="i2"></i> </div>
+        </li>
+        <!--{/foreach}-->
+      </ul>
+      <!--{if !$coupons}-->
+      <div class="notice-word">
+        <p class="yellow-big">还没有优惠券数据</p>
+      </div>
+      <!--{/if}-->
+      <div class="clearfix pb10 center">{include file="page.bottom.html"}</div>
+    </div>
+  </div>
+</div> 
+{include file="footer.html"}

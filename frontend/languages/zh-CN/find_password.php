@@ -1,0 +1,22 @@
+<?php
+return array(
+    'your_username' 				=> '登录账号',
+    'your_email' 					=> '电子邮箱',
+    'request_error' 				=> '错误的请求',
+    'new_password'  				=> '新的密码',
+    'confirm_password' 				=> '重复密码',
+    'password_limit' 				=> '密码长度应在6-20个字符之间',
+    'password_not_equal' 			=> '两次输入的密码不一致',
+    'password_required' 			=> '密码不能为空',
+	'unsettled_required' 			=> '用户名/验证码等必填项未填写',
+    'edit_success' 					=> '修改密码成功,赶快登录',
+    'password_reset'				=> '设置新密码',
+    'username_required' 			=> '用户名不能为空',
+    'email_error' 					=> '电子邮箱填写错误',
+    'password_length_error' 		=> '密码长度错误，应在6到20位之间',
+    'find_password' 				=> '找回密码',
+	'password_reset_ok' 			=> '新密码设置成功！',
+	'login_immediately' 			=> '马上登录',
+	'session_expire' 				=> '该链接已失效，请重写发起找回密码',
+	'password_reset_redirect'		=> '验证成功，前往设置新密码',
+);

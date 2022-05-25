@@ -1,0 +1,33 @@
+{include file="user.header.html"}
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful">{include file="user.submenu.html"} 
+      <div class="wrap">
+        <div class="eject_con bgwhite">
+          <div class="add">
+            <form method="post">
+              <ul>
+                <li>
+                  <h3>{$lang.orig_password}:</h3>
+                  <p>
+                    <input class="text width_normal" type="password" name="password" />
+                  </p>
+                </li>
+                <li>
+                  <h3>{$lang.phone_mob}:</h3>
+                  <p>
+                    <input class="text width_normal" type="text" name="phone_mob" value="{$visitor.phone_mob}" id="phone_mob"/>
+                  </p>
+                </li>
+              </ul>
+              <div class="submit">
+                <input class="btn-alipay J_AjaxSubmit" type="submit" value="{$lang.submit}" />
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{include file="user.footer.html"} 

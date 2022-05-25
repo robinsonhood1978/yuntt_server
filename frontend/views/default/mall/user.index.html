@@ -1,0 +1,170 @@
+{use class='yii\helpers\Url'}
+{use class='common\library\Def'}
+{include file="user.header.html"}
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful">{include file="user.submenu.html"}
+      <div class="profile clearfix">
+        <div class="photo">
+          <p><img src="{$visitor.portrait|url_format}" width="70" height="70" /></p>
+        </div>
+        <div class="info clearfix">
+          <dl class="col-1 float-left">
+            <dt><strong>{$visitor.username|escape}</strong> <a href="{url route='user/profile'}">{$lang.edit_profile}</a> <a class="ml10" href="{url route='user/logout'}">退出登录</a></dt>
+            <dd class="gray"> <span>{$lang.last_login}{$lang.colon}{$visitor.last_login|date_format:"%Y.%m.%d %H:%M:%S"}</span> <span>{$lang.last_ip}{$lang.colon}{$visitor.last_ip}</span> </dd>
+          </dl>
+        </div>
+      </div>
+      <div class="platform clearfix"> 
+        
+        <!--{if $store && in_array($smarty.session.userRole, array('seller'))}-->
+        <div class="clearfix w-full deal">
+          <div class="welitem clearfix"> <a class="wrap" href="{url route='store/credit' id=$store.store_id}">
+            <p>{$lang.credit_value}</p>
+            <h3><img src="{$store.credit_image|url_format}" align="absmiddle" /></h3>
+            </a> </div>
+          <div class="welitem clearfix"> <a class="wrap" href="{url route='store/credit' id=$store.store_id}">
+            <p>{$lang.praise_rate}</p>
+            <h3>{$store.praise_rate|default:0}%</h3>
+            </a> </div>
+          <div class="welitem clearfix"> <a class="wrap" href="{url route='store/index' id=$store.store_id}">
+            <p>卖家等级</p>
+            <h3 style="font-size:15px">{$sgrade.grade_name}</h3>
+            </a> </div>
+        </div>
+        <!--{else}-->
+        <div class="clearfix w-full">
+          <div class="welitem clearfix"> <a class="wrap" href="{url route='my_message/index'}">
+            <p>未读短信息</p>
+            <h3>{$new_message|default:0}</h3>
+            </a> </div>
+          <div class="welitem clearfix"> <a class="wrap" href="{url route='deposit/index'}">
+            <p>我的余额</p>
+            <h3>{$visitor.money|default:0}</h3>
+            </a> </div>
+          <div class="welitem clearfix"> <a class="wrap" href="{url route='my_integral/index'}">
+            <p>我的积分</p>
+            <h3>{$visitor.integral|default:0}</h3>
+            </a> </div>
+        </div>
+ 
+        <div class="buyer-notice">
+          <div class="box-notice box">
+            <div class="hd">
+              <h2>订单提醒</h2>
+            </div>
+            <div class="bd dealt">
+              <div class="list clearfix">
+                <dl>
+                  <dd> <span>{sprintf($lang.order_for_pay_remind, Url::toRoute(['buyer_order/index', 'type' => 'pending']), $buyer_stat.pending|default:0)}</span> </dd>
+                </dl>
+                <dl>
+                  <dd> <span>{sprintf($lang.order_for_confirm_remind, Url::toRoute(['buyer_order/index', 'type' => 'shipped']), $buyer_stat.shipped|default:0)}</span> </dd>
+                </dl>
+                <dl>
+                  <dd><span>{sprintf($lang.order_for_evaluate_remind, Url::toRoute(['buyer_order/index', 'type' => 'finished']), $buyer_stat.finished|default:0)}</span> </dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="buyer-notice">
+          <div class="box-notice box">
+            <div class="hd">
+              <h2>本月消费统计图</h2>
+            </div>
+            <div class="bd dealt J_BuyerTrend">
+        		<script language="javascript">
+				$(function(){
+					$('.J_BuyerTrend').load(url(['buyer_order/trend']));
+				});
+				</script>
+            </div>
+          </div>
+        </div>
+        <!--{/if}-->
+        
+        <!--{if $store && in_array($smarty.session.userRole, array('seller'))}-->
+        <div class="seller-notice">
+          <div class="box-notice box">
+            <div class="hd">
+              <h2>{$lang.seller_remind}</h2>
+            </div>
+            <div class="bd dealt">
+              <div class="list clearfix">
+                <dl>
+                  <dd> <span>{sprintf($lang.order_for_settle_remind, Url::toRoute(['seller_order/index', 'type' => 'submitted']), $seller_stat.submitted|default:0)}</span></dd>
+                </dl>
+                <dl>
+                  <dd> <span>{sprintf($lang.order_for_ship_remind, Url::toRoute(['seller_order/index', 'type' => 'accepted']), $seller_stat.accepted|default:0)}</span> </dd>
+                </dl>
+                <dl>
+                  <dd> <span>{sprintf($lang.question_to_reply_remind, Url::toRoute(['my_qa/index', 'type' =>'to_reply_qa']), $seller_stat.replied|default:0)}</span> </dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+          <div class="box-notice box">
+            <div class="hd">
+              <h2>{$lang.store_remind}</h2>
+            </div>
+            <div class="bd dealt">
+              <div class="list clearfix">
+                <dl>
+                  <dd> <span>{$lang.expire_time}<em class="block" style="font-size:14px"><!--{if $sgrade.add_time}-->{sprintf ($lang.leaving_day, $sgrade.add_time)}<!--{else}-->{$lang.no_limit}<!--{/if}--></em></span> </dd>
+                </dl>
+                <dl>
+                  <dd><span>{$lang.goods_put}<em class="block" style="font-size:14px">{$sgrade.goods.used}/<!--{if $sgrade.goods.total}-->{$sgrade.goods.total}<!--{else}-->{$lang.no_limit}<!--{/if}--></em></span></dd>
+                </dl>
+                <dl>
+                  <dd><span>{$lang.space_use}<em class="block" style="font-size:14px">{$sgrade.space.used}M/<!--{if $sgrade.space.total}-->{$sgrade.space.total}M<!--{else}-->{$lang.no_limit}<!--{/if}--></em></span></dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--{/if}--> 
+        <!--{if $_usermenu.menus.overview}-->
+        <div class="apply-notice box-notice box">
+          <div class="hd">
+            <h2>{$lang.apply_remind}</h2>
+          </div>
+          <div class="bd">
+            <div class="extra"> 
+              <div class="notice-word">
+                <p class="yellow">
+                  <!--{if $apply}-->
+                  <!--{if $apply.state eq Def::STORE_APPLYING}-->
+                  {$lang.store_applying}
+                  <!--{elseif $apply.state eq Def::STORE_NOPASS}-->
+                  {sprintf($lang.store_applying_reject, $apply.remark, Url::toRoute('apply/fill'))}
+                  <!--{/if}-->
+                  <!--{else}-->
+                  {$lang.not_seller}{$lang.colon}<a href="{$_usermenu.menus.overview.url}" title="{$_usermenu.menus.overview.text}">{$_usermenu.menus.overview.text}</a>
+                  <!--{/if}-->
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--{/if}--> 
+        
+        <!--{if $store && in_array($smarty.session.userRole, array('seller'))}-->
+        <div class="rate-info box">
+        	<div class="hd">
+            <h2>店铺评分</h2>
+          </div>
+          <ul>
+            <li> {$lang.goods_evaluation} <span class="credit">{$store.dynamicEvaluation.goods.value|default:0}</span> <span class="compare">{$lang.compare_insdusty}</span> <span class="{$store.dynamicEvaluation.goods.compare.name}"> <i></i> {$lang.{$store.dynamicEvaluation.goods.compare.name}} <em><!--{if $store.dynamicEvaluation.goods.compare.value eq 0}-->----<!--{else}-->{$store.dynamicEvaluation.goods.compare.value}<!--{/if}--></em></span> </li>
+            <li> {$lang.service_evaluation} <span class="credit">{$store.dynamicEvaluation.service.value|default:0}</span> <span class="compare">{$lang.compare_insdusty}</span> <span class="{$store.dynamicEvaluation.service.compare.name}"> <i></i> {$lang.{$store.dynamicEvaluation.service.compare.name}} <em><!--{if $store.dynamicEvaluation.service.compare.value eq 0}-->----<!--{else}-->{$store.dynamicEvaluation.service.compare.value}<!--{/if}--></em></span> </li>
+            <li> {$lang.shipped_evaluation} <span class="credit">{$store.dynamicEvaluation.shipped.value|default:0}</span> <span class="compare">{$lang.compare_insdusty}</span> <span class="{$store.dynamicEvaluation.shipped.compare.name}"> <i></i> {$lang.{$store.dynamicEvaluation.shipped.compare.name}} <em><!--{if $store.dynamicEvaluation.shipped.compare.value eq 0}-->----<!--{else}-->{$store.dynamicEvaluation.shipped.compare.value}<!--{/if}--></em></span> </li>
+            <li> {$lang.all_evaluation} <span class="credit" style="color:#f50;">{$store.dynamicEvaluation.comprehensive.value|default:0}</span></li>
+          </ul>
+        </div>
+        <!--{/if}-->
+      </div>
+    </div>
+  </div>
+</div>
+{include file="user.footer.html"} 

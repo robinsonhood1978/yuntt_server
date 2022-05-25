@@ -1,0 +1,54 @@
+{include file="header.html"}
+<div id="main">
+  {include file="menus.html"}
+  <div id="rightCon" class="clearfix layui-body">
+    <div class="scroller">
+      <div class="explanation" id="explanation">
+        <div class="title" id="checkZoom"> <i class="fa fa-lightbulb-o"></i>
+          <h4>{$lang.operation_tip}</h4>
+        </div>
+        <ul>
+          <li>1. 该功能仅作为测试发送短信用</li>
+          <li>2. 短信发送成功会扣除系统在第三方平台购买的短信数量，请控制测试数量</li>
+        </ul>
+      </div>
+      <div class="layui-tab">
+        <ul class="layui-tab-title">
+          <li><a href="{url route='msg/index'}">{$lang.sendlog}</a></li>
+          <li><a href="{url route='msg/recharge'}">{$lang.msgrecharge}</a></li>
+          <li><a href="{url route='msg/user'}">{$lang.msguser}</a></li>
+          <li><a href="{url route='msg/add'}">{$lang.msgadd}</a></li>
+          <li><a href="{url route='msg/template'}">{$lang.msgtemplate}</a></li>
+          <li class="layui-this">{$lang.sendtest}</li>
+        </ul>
+      </div>
+      <div class="flexigrid mt10">
+        <form method="post">
+          <table class="infoTable">
+            <tr>
+              <th class="paddingT15"><label>{$lang.receiver}</label></th>
+              <td class="paddingT15 wordSpacing5"><input type="text" class="text width_normal" name="receiver"
+                  value="" />
+                <label class="field_notice">{$lang.receiver_text}</label>
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.content}</label></th>
+              <td class="paddingT15 wordSpacing5"><textarea class="text width_long" name="content"></textarea>
+                <label class="field_notice">{$lang.title_desc}</label>
+              </td>
+            </tr>
+            <tr>
+              <th></th>
+              <td class="ptb20"><input class="layui-btn layui-bg-blue J_AjaxSubmit" type="submit"
+                  value="{$lang.confirm_send}" />
+              </td>
+            </tr>
+          </table>
+        </form>
+      </div>
+      {include file="version.html"}
+    </div>
+  </div>
+</div>
+{include file="footer.html"}

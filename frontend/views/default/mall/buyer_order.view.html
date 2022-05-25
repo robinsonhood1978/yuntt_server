@@ -1,0 +1,73 @@
+{use class="common\library\Def"}
+{include file="user.header.html"}
+<div id="main" class="clearfix">
+  <div class="particular">
+    <div class="particular_wrap">
+      <h2>{$lang.order_detail}</h2>
+      <div class="mb20 mt10 ml10 clearfix">
+        <div class="state float-left pl10">{$lang.order_status}&nbsp;:&nbsp;<strong>{Def::getOrderStatus($order.status)}</strong></div>
+        <div class="num float-left">{$lang.order_sn}&nbsp;:&nbsp;{$order.order_sn}</div>
+        <div class="time float-left">{$lang.add_time}&nbsp;:&nbsp;{$order.order_add_time|date_format:"%Y.%m.%d %H:%M:%S"}</div>
+      </div>
+      <h3>{$lang.order_info}</h3>
+      <dl class="info">
+        <dt>{$lang.seller_info}</dt>
+        <dd>{$lang.store_name}&nbsp;:&nbsp;{$order.store_name|escape}</dd>
+        <dd>{$lang.phone_tel}&nbsp;:&nbsp;{$order.tel|escape|default:'-'}</dd>
+        <dd>{$lang.phone_mob}&nbsp;:&nbsp;{$order.seller_info.phone_mob|escape|default:'-'}</dd>
+        <dd>{$lang.qq}&nbsp;:&nbsp;{$order.im_qq|escape|default:'-'}</dd>
+        <dd>{$lang.region}&nbsp;:&nbsp;{$order.region_name|escape|default:'-'}</dd>
+        <dd>{$lang.address}&nbsp;:&nbsp;{$order.address|escape|default:'-'}</dd>
+      </dl>
+      <div class="ware_line">
+        <div class="ware"> 
+          <!--{foreach from=$order.orderGoods item=goods}-->
+          <div class="ware_list">
+            <div class="ware_pic"><img src="{$goods.goods_image|url_format}" width="50" height="50"  /></div>
+            <div class="ware_text">
+              <div class="ware_text1"> <a href="{url route='goods/index' id=$goods.goods_id}">{$goods.goods_name|escape}</a> <br />
+                <span>{$goods.specification|escape}</span> </div>
+              <div class="ware_text2"> <span>{$lang.quantity}&nbsp;:&nbsp;<strong>{$goods.quantity}</strong></span> <span>{$lang.price}&nbsp;:&nbsp;<strong>{$goods.price|price_format}</strong></span> </div>
+            </div>
+          </div>
+          <!--{/foreach}--> 
+
+          <div class="transportation">{$lang.carriage}&nbsp;:&nbsp;<span>{$order.orderExtm.shipping_fee|price_format}<strong>({$order.orderExtm.shipping_name|escape})</strong></span>{$lang.preference}&nbsp;:&nbsp;<span>{$order.discount|price_format}</span>{$lang.total_price}&nbsp;:&nbsp;<b>{$order.order_amount|price_format}</b></div>
+          <ul class="order_detail_list">
+            <!--{if $order.payment_code}-->
+            <li>{$lang.payment_name}&nbsp;:&nbsp;{$order.payment_name|escape}<!--{if $order.status eq Def::ORDER_PENDING}-->&nbsp;&nbsp;(&nbsp;<a href="{url route='cashier/index' order_id=$order.order_id}">{$lang.pay}</a>&nbsp;)<!--{/if}--></li>
+            <!--{/if}--> 
+            <!--{if $order.pay_message}-->
+            <li>{$lang.pay_message}&nbsp;:&nbsp;{$order.pay_message|escape}</li>
+            <!--{/if}-->
+            <li>{$lang.add_time}&nbsp;:&nbsp;{$order.order_add_time|date_format:"%Y.%m.%d %H:%M:%S"}</li>
+            <!--{if $order.pay_time}-->
+            <li>{$lang.pay_time}&nbsp;:&nbsp;{$order.pay_time|date_format:"%Y.%m.%d %H:%M:%S"}</li>
+            <!--{/if}--> 
+            <!--{if $order.ship_time}-->
+            <li>{$lang.ship_time}&nbsp;:&nbsp;{$order.ship_time|date_format:"%Y.%m.%d %H:%M:%S"}</li>
+            <!--{/if}--> 
+            <!--{if $order.finished_time}-->
+            <li>{$lang.finished_time}&nbsp;:&nbsp;{$order.finished_time|date_format:"%Y.%m.%d %H:%M:%S"}</li>
+            <!--{/if}-->
+          </ul>
+        </div>
+      </div>
+      <h3>{$lang.consigness}</h3>
+      <div class="goods"> {$lang.consignee_address}&nbsp;:&nbsp;{$order.orderExtm.consignee|escape}<!--{if $order.orderExtm.phone_mob}-->, &nbsp;{$order.orderExtm.phone_mob}<!--{/if}--><!--{if $order.orderExtm.phone_tel}-->,&nbsp;{$order.orderExtm.phone_tel}<!--{/if}--> 
+        ,&nbsp;{$order.orderExtm.region_name|escape}&nbsp;{$order.orderExtm.address|escape} 
+        <!--{if $order.orderExtm.zipcode}-->,&nbsp;{$order.orderExtm.zipcode|escape}<!--{/if}--><br />
+        {$lang.shipping_way}&nbsp;:&nbsp;{$order.orderExtm.shipping_name|escape} 
+        <!--{if $order.express_no}--> 
+        <br />
+        {$lang.express_no}&nbsp;:&nbsp;{$order.express_no|escape} 
+        <!--{/if}--> 
+        <!--{if $order.postscript}--> 
+        <br />
+        {$lang.postscript}&nbsp;:&nbsp;{$order.postscript|escape}<br />
+        <!--{/if}--> 
+      </div>
+    </div>
+  </div>
+</div>
+{include file="user.footer.html"}

@@ -1,0 +1,21 @@
+<?php
+return array(
+	'distribute_goods'				=> '分销商品',
+	'distribute'					=> '三级分销',
+	'ratio1'						=> '一级比率',
+	'ratio2'						=> '二级比率',
+	'ratio3'						=> '三级比率',
+	'disable'						=> '关闭',
+	'enable'						=> '开启',
+	'disable_confirm'				=> '关闭后，该商品将不参与分销。您确定要关闭吗？',
+	'batch_edit'					=> '批量编辑',
+	'note_for_create'				=> '温馨提示: 可开启商品的单品分销，设置某个商品的三级分销比率。',
+	'set_ratio'						=> '设置单品分销',
+	'no_such_goods'					=> '没有该商品信息',
+	'edit_successed'				=> '设置分销成功',
+	'edit_fail'						=> '设置失败',
+	'ratio_desc' 					=> '佣金比率,例如：0.1,三个比率之和须小于1',
+	'ratio_invalid'					=> '无效的分销比率',
+	'disable_fail'					=> '关闭失败',
+	'disable_ok'					=> '关闭成功',
+);

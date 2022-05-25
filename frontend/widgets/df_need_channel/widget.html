@@ -1,0 +1,14 @@
+<div class="need-channel clearfix mb20">
+ <!--{foreach from=$widget_data.model item=item name=fe_item}-->
+  <div class="channel-column style-default style-{$item.style}"{if $smarty.foreach.fe_item.iteration % 5 eq 0} style="margin-right:0"{/if}>
+    <div class="column-title">
+      <h3>{$item.title.0}</h3>
+      <p>{$item.title.1}</p>
+    </div>
+    <div class="column-img"> 
+      <img class="transform" src="{$item.url|url_format}" /> 
+    </div>
+    <a class="column-btn" target="_blank" href="{$item.link}">去看看</a> 
+  </div>
+  <!-- {/foreach} -->
+</div>

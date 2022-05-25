@@ -1,0 +1,44 @@
+{include file="user.header.html"}
+<div id="main" class="w-full">
+  <div class="page-apply">
+    <div class="w content clearfix">
+      <div class="left">
+        <div class="steps">
+          <dl class="setpbox">
+            <dt>申请步骤</dt>
+            <dd>
+              <ul>
+                <li class="succeed">入驻指南</li>
+                <li class="succeed">签订入驻协议</li>
+                <li class="succeed">填写店铺信息</li>
+                <li class="current">平台审核</li>
+                <li>店铺开通</li>
+              </ul>
+            </dd>
+          </dl>
+          <dl class="setpbox contact-mall mt10">
+            <dt>平台联系方式</dt>
+            <dd>
+              <p class="tel"><span>电话：</span>18176895410</p>
+              <p class="email mt10"><span>邮箱：</span>shopwind@qq.com</p>
+            </dd>
+          </dl>
+        </div>
+      </div>
+      <div class="right">
+      	<div class="title">店铺审核状态</div>
+        <div class="apply-status">
+          <p class="clearfix"><i class="block auto mb20"></i> <h3 class="mt10 auto center" style="width:500px;"> 
+            <!--{if $store.state eq 3}-->
+            审核结果：{$store.apply_remark}
+            <a href="{url route='apply/fill' id=$store.store_id}" class="f60">立即修改</a>
+            <!--{else}--> 
+            {$lang.apply_remark}
+            <!--{/if}--> 
+          </h3> </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{include file="user.footer.html"}

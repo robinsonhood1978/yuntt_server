@@ -1,0 +1,10 @@
+<div class="fl-brand mb20 clearfix">
+  <!-- {foreach from=$widget_data.brandList item=brand name=fe_brand}  -->
+  <div class="item"> 
+    <a href="{url route='brand/view' id=$brand.brand_id}" target="_blank">
+      <div class="img"><img src="{$brand.brand_logo|url_format}" width="100" height="50" /></div>
+      <b{if $smarty.foreach.fe_brand.iteration eq 10} style="display:none"{/if}></b> 
+    </a> 
+  </div>
+  <!-- {/foreach} -->
+</div>

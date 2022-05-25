@@ -1,0 +1,49 @@
+{include file="user.header.html"}
+<style type="text/css">
+.w{ width:1200px;}
+body{ background:#ffff;}
+#header,#site-nav{ display:none;}
+#footer.member-footer{ background:#999}
+</style>
+<div classs="page-report">
+  <div class="report w-full">
+    <div class="header">
+      <div class="title w"> <i class="wind-icon-font"></i> <span class="head-text">全网举报</span> </div>
+    </div>
+    <div class="content mb20 mt10 w">
+      <h3 class="suom">请您根据实际情况提交相应的举报材料，完毕后请点击页面底部的“提交举报”按钮</h3>
+      <form method="post" id="reportForm">
+        <h3 class="title">商品信息{$lang.colon}</h3>
+        <div class="goods-info mt20 mb20 clearfix">
+          <div class="info-img float-left"> <a href="{url route='goods/index' id=$goods.goods_id}" target="_blank"> <img src="{$goods.default_image|url_format}" width="80" height="80"> </a> </div>
+          <ul class="info-label float-left">
+            <li>
+              <label>商品名称{$lang.colon}</label>
+              <a href="{url route='goods/index' id=$goods.goods_id}" target="_blank">{$goods.goods_name|escape}</a> </li>
+            <li>
+              <label>商品类目{$lang.colon}</label>
+              <span>{$goods.cate_name|escape}</span> </li>
+            <li>
+              <label>被举报人{$lang.colon}</label>
+              <a href="{url route='store/index' id=$goods.store_id}" target="_blank">{$goods.store_name|escape}</a> </li>
+          </ul>
+        </div>
+        <h3 class="title">举报说明{$lang.colon}</h3>
+        <div class="desc">
+          <textarea name="content" cols="30" rows="10" class="fe-area" placeholder="请描叙该商品,或者该店铺存在的问题"></textarea>
+          <div class="msg-care">注意：被举报人能且只能看到此框中的内容，请您注意不要在此框填写会员名、订单号、运单号等任何可能泄露身份的信息</div>
+        </div>
+        <dl class="clearfix mt20">
+          <dt class="float-left fs14">{$lang.captcha}{$lang.colon}</dt>
+          <dd class="captcha clearfix">
+            <input type="text" class="input float-left" name="captcha" id="captcha1" />
+            <a href="javascript:;" class="float-left"><img onclick="change_captcha($(this))" id="captcha" src="{url route='default/captcha' v=uniqid('', true)}" class="float-left" height="38" /></a> </dd>
+        </dl>
+        <div class="issuance mb20 pb20">
+          <input type="submit" class="btn-alipay J_AjaxSubmit" value="{$lang.submit_report}" style="width:300px;" />
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{include file="user.footer.html"} 

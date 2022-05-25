@@ -1,0 +1,170 @@
+{include file="header.html"}
+{$build_editor}
+{$build_upload}
+<div id="main">
+  {include file="menus.html"}
+  <div id="rightCon" class="clearfix layui-body">
+    <div class="scroller">
+      <div class="explanation" id="explanation">
+        <div class="title" id="checkZoom"> <i class="fa fa-lightbulb-o"></i>
+          <h4>{$lang.operation_tip}</h4>
+        </div>
+        <ul>
+          <li>1. 工具/应用发布到市场后，将以订购的模式给商家提供服务</li>
+          <li>2. 商家只有购买了服务，且服务在使用期限内，才可以使用对应的功能模块</li>
+          <li class="red">3. !!!通过收费的形势提供服务，平台将获得相应的收入</li>
+        </ul>
+      </div>
+      <div class="flexigrid">
+        <form method="post" enctype="multipart/form-data">
+          <table class="infoTable">
+            <tr>
+              <th class="paddingT15"><label>{$lang.appid}</label></th>
+              <td class="paddingT15 wordSpacing5">
+                <!--{if $appmarket.appid}-->
+                {$lang.{$appmarket.appid}}
+                <!--{else}-->
+
+                <select name="appid">
+                  <option value="">{$lang.select_pls}</option>
+                  <!--{foreach from=$applist item=item key=key}-->
+                  <option value="{$key}" {if $key eq $appmarket.appid} selected="selected" {/if}>{$item}</option>
+                  <!--{/foreach}-->
+                </select>
+
+                <!--{/if}-->
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.title}</label></th>
+              <td class="paddingT15 wordSpacing5"><input style="width:400px;" id="title" type="text" name="title"
+                  value="{$appmarket.title}" /></td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.summary}</label></th>
+              <td class="paddingT15 wordSpacing5"><textarea class="infoTableInput" style="width:400px;height:34px;"
+                  id="summary" name="summary">{$appmarket.summary|escape}</textarea></td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.logo}</label></th>
+              <td class="paddingT15 wordSpacing5 webkit-box">
+                <div class="input-file-show">
+                    <input class="type-file-file" onchange="getTempPathcallback(this)" name="logo" type="file" size="30" hidefocus="true">
+                    <input type="hidden" name="fileVal" value="logo" />
+                    <!-- <label class="field_notice">{$lang.logo_notice}</label> -->
+                    <div class="type-file-image">
+                      <!--{if $appmarket.portrait}-->
+                      <img class="block" src="{$appmarket.logo|url_format}" width="100" height="100" />
+                      <span>修改图片</span>
+                      <!--{else}-->
+                      <i class="iconfont icon-icon_pic"></i>
+                      <!--{/if}-->
+                    </div>
+                </div>
+                <label class="field_notice f-13 inline-block box-align-center ml20" style="width: 120px;">{$lang.logo_notice}</label>
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.charge}</label></th>
+              <td class="paddingT15 wordSpacing5"><input type="text" class="width_short" id="price" type="text"
+                  name="price" value="{$appmarket.price|default:0}">
+                {$lang.yuan}/{$lang.month} 
+              
+                <div class="notice-word"><p class="mt5 layui-font-12">如果免费，请填写资费0</p></div>
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.description}</label></th>
+              <td class="paddingT15 wordSpacing5">
+                <div class="editor">
+                  <div>
+                    <textarea name="description" id="description"
+                      style="width:765px; height:400px;">{$appmarket.description|escape}</textarea>
+                  </div>
+                  <div class="multimage-wrapper descimage-wrapper">
+                    <ul class="multimage-tabs clearfix">
+                      <li class="selected f-13">插入描述图片</li>
+                    </ul>
+                    <div class="multimage-panels clearfix">
+                      <div class="upload_btn">
+                        <div class="btn-upload-image"><b class="hide EDITOR_SWFU_filePicker"></b></div>
+                      </div>
+                      <div class="text layui-font-12">{$lang.note_for_upload}</div>
+                    </div>
+                    <div class="multimage-piclist clearfix">
+                      <ul id="desc_images" class="preview J_descriptioneditor">
+                        <!--{foreach from=$appmarket.desc_images item=image}-->
+                        <li ectype="handle_pic" file_type="{$image.file_type}" file_name="{$image.file_name|escape}"
+                          file_path="{$image.file_path|url_format}" file_id="{$image.file_id}">
+                          <input type="hidden" name="desc_file_id[]" value="{$image.file_id}">
+                          <div class="pic"> <img src="{$image.file_path|url_format}" width="80" height="80"
+                              alt="{$image.file_name|escape}" title="{$image.file_name|escape}" /> </div>
+                          <div ectype="handler" class="bg">
+                            <p class="operation layui-font-12"> <a class="cut_in" ectype="insert_editor" href="javascript:void(0);"
+                                ecm_title="{$lang.insert_editor}"></a> <span class="delete" ectype="drop_image"
+                                ecm_title="{$lang.drop}"></span> </p>
+                          </div>
+                        </li>
+                        <!--{/foreach}-->
+                      </ul>
+                    </div>
+                    <!--{if $appmarket.desc_images}-->
+                    <div class="notice-word ml10 mb10">
+                      <p class="yellow layui-font-12">插入方法：将鼠标移至需要插入的图片上面，然后点击插入按钮，即可将图片插入到编辑器中。</p>
+                    </div>
+                    <!--{/if}-->
+                  </div>
+                  <div class="clear"></div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.status}</label></th>
+              <td class="paddingT15 layui-form">
+                <input type="radio" name="status" value="1" title="{$lang.enable}" {if $appmarket.status}checked{/if} />
+                <input type="radio" name="status" value="0" title="{$lang.disable}" {if !$appmarket.status}checked{/if} />
+              </td>
+            </tr>
+            <tr>
+              <th></th>
+              <td class="ptb20"><input class="layui-btn layui-bg-blue J_AjaxSubmit" type="submit"
+                  value="{$lang.submit}" /></td>
+            </tr>
+          </table>
+        </form>
+      </div>
+      {include file="version.html"}
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  function add_uploadedfile(file_data) {
+    $('#desc_images').append('<li style="z-index:4" file_type="'+file_data.file_type+'" file_name="' + file_data.file_name + '" file_path="' + url_format(file_data.file_path) + '" ectype="handle_pic" file_id="' + file_data.file_id + '"><input type="hidden" name="desc_file_id[]" value="' + file_data.file_id + '"><div class="pic" style="z-index: 2;"><img src="' + url_format(file_data.file_path) + '" width="80" height="80" alt="' + file_data.file_name + '" /></div><div ectype="handler" class="bg" style="z-index: 3;display:none"><p class="operation layui-font-12"><a href="javascript:void(0);" class="cut_in" ectype="insert_editor" ecm_title="{$lang.insert_editor}"></a><span class="delete" ectype="drop_image" ecm_title="{$lang.drop}"></span></p></div></li>');
+    trigger_uploader();
+    if (EDITOR_SWFU.getStats().progressNum == 0) {
+      window.setTimeout(function () {
+        $('#editor_uploader').css('opacity', 0);
+        $('*[ectype="handle_pic"]').css('z-index', 999);
+      }, 5000);
+    }
+  }
+  function drop_image(file_id) {
+    layer.open({
+      content: lang.uploadedfile_drop_confirm, btn: [lang.confirm, lang.cancel],
+      yes: function (index) {
+        $.getJSON("{url route='appmarket/deleteimage'}", { id: file_id }, function (data) {
+          if (data.done) {
+            $('*[file_id="' + file_id + '"]').remove();
+          } else {
+            layer.msg(data.msg);
+          }
+          layer.close(index);
+        });
+      },
+      no: function (index) {
+        layer.close(index);
+      }
+    });
+  }
+</script>
+{include file="footer.html"}

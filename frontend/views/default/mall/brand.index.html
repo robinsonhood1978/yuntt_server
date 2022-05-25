@@ -1,0 +1,63 @@
+{include file="header.html"}
+<div id="main" class="w-full">
+	<div class="brand-banner-wp">
+    	<a href="">
+        	<i></i>
+        </a>
+    </div>
+	<div id="page-brand" class="w mb20 mt10">
+		<div class="brand-list">
+			<div class="title"><span>品牌专区</span></div>
+			<div class="brand-cate">
+				<a {if !$smarty.get.cate_id} class="curr" {/if} href="{url route='brand/index'}">全部品牌</a>
+				<i class="point">·</i>
+				<!--{foreach from=$categories item=category name=fe_category}-->
+				<a {if $smarty.get.cate_id eq $category.cate_id} class="curr" {/if} href="{url route='brand/index' cate_id=$category.cate_id}">{$category.cate_name}</a>
+				<i class="point" {if $smarty.foreach.fe_category.last} style="display:none;"{/if}>·</i>
+				<!--{/foreach}-->
+			</div>
+			<div class="brand-info J_InfiniteList">
+				<ul class="infinite-result clearfix hidden">
+				</ul>
+				<ul class="clearfix infinite-template">
+					<li class="items">
+						<a class="img" href="[1]" target="_blank">
+							<img src="[2]" />
+							<div class="brand-desc brand-desc-notic">
+								<p>品牌描述</p>
+								<div class="info"><h3>[3]</h3></div>
+							</div>
+							<div class="mask"></div>
+						</a>
+						<div class="b-logo">
+							<a href="[1]" target="_blank" class="block">
+								<img src="[4]" />
+							</a>
+						</div>
+						<div class="slogan">[5]</div>
+					</li>
+				</ul>
+				<div class="infinite-more fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadmore}<ins class="vline vright"></ins></div>
+                <div class="infinite-loading hidden"><ins class="vline vleft"></ins><span class="loading clearfix"><i></i><em>{$lang.loading}</em></span><ins class="vline vright"></ins></div>
+                <div class="infinite-bottom f99 fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadend}<ins class="vline vright"></ins></div>
+                <div class="infinite-empty notice-empty hidden"><i>&#xe715;</i>
+				  <p>{$lang.no_records}</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+$(function(){
+	$('.J_InfiniteList').infinite({ pageper: 8, params: {$infiniteParams}, callback: function(data, page, target, TEMP){
+			var html = '';
+			var template = TEMP.clone(true);
+			$.each(data, function(k, brand) {
+				html += sprintf(template.html(), url(['brand/view', { id:brand.brand_id}]), brand.brand_image ? url_format(brand.brand_image) : "{res file='images/brand_defalut.jpg'}", brand.description ? brand.description : "暂无描述", url_format(brand.brand_logo), brand.brand_name);
+			});
+			target.find('.infinite-result').append(html).show();
+		}
+	});
+})
+</script>
+{include file="footer.html"} 

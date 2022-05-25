@@ -1,0 +1,39 @@
+<div class="table_salelog">
+  <table class="w-full">
+    <tr class="theader">
+      <th> {$lang.buyer} </th>
+      <th> {$lang.buy_price} </th>
+      <th> {$lang.quantity} </th>
+      <th> {$lang.deal_time} </th>
+      <th> {$lang.evaluation} </th>
+    </tr>
+    <!--{foreach from=$gsales.list item=item name=fe_item}-->
+    <tr>
+      <td> {if $item.anonymous}***{else}{$item.buyer_name|escape}{/if} </td>
+      <td> {$item.price|price_format} </td>
+      <td> {$item.quantity} <span class="fontColor5"> {if $item.specification}{$lang.left_bracket}{$item.specification|escape}{$lang.right_bracket}{/if} </span></td>
+      <td> {$item.add_time|date_format:"%Y.%m.%d %H:%M:%S"} </td>
+      <td class="J_Evaluation" score="{$item.evaluation|default:0}"></td>
+    </tr>
+    <!--{foreachelse}-->
+    <tr>
+      <td colspan="5"><span class="light"> {$lang.no_records} </span></td>
+    </tr>
+    <!--{/foreach}-->
+  </table>
+</div>
+<!--{if $gsales.list}-->
+<div class="clearfix mt10">{include file="page.bottom.html"}</div>
+<script type="text/javascript">
+$(function() {
+	$('.J_Evaluation').each(function(index, element) {
+		var score = parseFloat($(this).attr('score'));
+        $(this).raty({
+			readOnly: true,
+			score: score,
+			path: "{$siteUrl}/static/images"
+		});
+    });
+});
+</script> 
+<!--{/if}--> 

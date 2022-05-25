@@ -1,0 +1,30 @@
+{include file="header.html"}
+<div id="page-goods-index"> {include file="curlocal.html"} 
+  {include file="goodsinfo.html"}
+  <div class="w-shop clearfix">
+    <div class="col-sub"> {include file="left.html"} </div>
+    <div class="col-main float-right"> {include file="goods.meal.html"}
+      <div class="attr-tabs">
+        <ul class="user-menu clearfix">
+          <li class="active ml10 mr10 float-left"> <a href="{url route='goods/index' id=$goods.goods_id}"> <span> {$lang.goods_detail} </span> </a> </li>
+          <li class="ml10 mr10 float-left"> <a href="{url route='goods/comment' id=$goods.goods_id}#menu"> <span> {$lang.goods_comment}({$goods.comments|default:0}) </span> </a> </li>
+          <li class="ml10 mr10 float-left"> <a href="{url route='goods/salelog' id=$goods.goods_id}#menu"> <span> {$lang.sales_log}({$goods.sales|default:0}) </span> </a> </li>
+          <li class="ml10 mr10 float-left"> <a href="{url route='goods/qa' id=$goods.goods_id}#menu"> <span> {$lang.qa} </span> </a> </li>
+        </ul>
+      </div>
+      <!--{if $goods.props}-->
+      <div class="attr-list mb10 mt20 clearfix"> 
+        <!--{foreach from=$goods.props item=prop}-->
+        <dl class="clearfix">
+          <dt>{$prop.name}</dt><dd class="line-clamp-1" title="{$prop.value}">{$prop.value|escape|truncate:30}</dd>
+        </dl>
+        <!--{/foreach}--> 
+      </div>
+      <!--{/if}-->
+      <div class="option_box">
+        <div class="detail-info clearfix"> {$goods.description|escape:editor} </div>
+      </div>
+      {include file="comments.html"} </div>
+  </div>
+</div>
+{include file="footer.html"}

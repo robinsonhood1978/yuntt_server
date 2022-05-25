@@ -1,0 +1,151 @@
+<div class="widget-box">
+    <h3 class="title mt20 mb20 pb20"><strong class="fs18">公告</strong></h3>
+    <div class="content">
+        <div class="item webkit-box">
+            <label class="gray">展示风格</label>
+            <p class="flex1"></p>
+            <input type="hidden" name="style" value="{$options.style|default:1}" />
+            <div class="pointer dropdown">
+                <span>{if $options.style eq 2}风格二{else}风格一{/if}</span>
+                <i class="layui-icon layui-icon-right layui-font-14"></i>
+            </div>
+        </div>
+        <div class="item webkit-box">
+            <label class="gray">数据来源</label>
+            <p class="flex1 ml10 value">{if $options.source eq 'category'}文章分类{else if $options.source eq
+                'choice'}手动选择{else}默认{/if}</p>
+            <input type="hidden" name="source" value="{$options.source|default:'default'}" />
+            <span class="switch first {if !in_array($options.source, ['category', 'choice'])} selected {/if} J_Switch"
+                title="默认" data-value="default"><i class="iconfont icon-cache"></i></span>
+            <span class="switch {if $options.source eq 'category'} selected {/if} J_Switch" title="文章分类"
+                data-value="category"><i class="iconfont icon-leimupinleifenleileibie"></i></span>
+            <span class="switch {if $options.source eq 'choice'} selected {/if} J_Switch" title="手动选择"
+                data-value="choice"><i class="iconfont icon-select"></i></span>
+        </div>
+        <div class="item webkit-box" {if $options.source neq 'category'} style="display:none" {/if}>
+            <label class="gray">文章分类</label>
+            <p class="flex1"></p>
+            <input type="hidden" name="cate_id" value="{$options.cate_id|default:0}" />
+            <input type="hidden" name="cate_name" value="{$options.cate_name|default:''}" />
+            <div class="pointer" ectype="dialog" dialog_id="acategory" dialog_width="1000" dialog_title="选择分类"
+                uri="{url route='gselector/acategory' callback='gscallback'}">
+                <span>{$options.cate_name|default:'请选择'}</span>
+                <i class="layui-icon layui-icon-right layui-font-14"></i>
+            </div>
+        </div>
+        <div class="item webkit-box" {if $options.source neq 'choice' }style="display:none" {/if}>
+            <label class="gray">手动选择</label>
+            <p class="flex1"></p>
+            <input type="hidden" name="items" value="{$options.items|default:''}" />
+            <div class="pointer" ectype="dialog" dialog_id="article" dialog_width="700" dialog_title="选择文章"
+                uri="{url route='gselector/article' callback='gscallback'}">
+                <!--{if $options.items}-->
+                <span>已选择({count(explode(',', $options.items))})</span>
+                <!--{else}-->
+                <span>请选择</span>
+                <!--{/if}-->
+                <i class="layui-icon layui-icon-right layui-font-14"></i>
+            </div>
+        </div>
+        <div class="item webkit-box" {if $options.source eq 'choice' }style="display:none" {/if}>
+            <label class="gray">文章数量</label>
+            <input type="hidden" name="quantity" value="{$options.quantity|default:0}" />
+            <div class="flex1 ml20 slider1" style="margin-top:15px"></div>
+        </div>
+        <h4 class="mt10 pb10 mt20 pt20">其他设置</h4>
+        <div class="item webkit-box">
+            <label class="gray">背景颜色</label>
+            <p class="flex1 ml10 color">{$options.bgcolor|default:'#ffffff'}</p>
+            <input type="hidden" name="bgcolor" value="{$options.bgcolor|default:'#ffffff'}" />
+            <span class="f60 pointer J_Reset" data-id="picker" data-value="#ffffff">重置</span>
+            <p class="picker ml10"></p>
+        </div>
+        <div class="item webkit-box">
+            <label class="gray">圆角展示</label>
+            <p class="flex1 ml10 value">{if $options.radius eq 'square'}直角{else}圆角{/if}</p>
+            <input type="hidden" name="radius" value="{$options.radius|default:'round'}" />
+            <span class="switch first {if $options.radius neq 'square'} selected {/if} J_Edge" title="圆角" data-value="round"><i
+                    class="iconfont icon-radius-upright"></i></span>
+            <span class="switch {if $options.radius eq 'square'} selected {/if} J_Edge" title="直角"
+                data-value="square"><i class="iconfont icon-fangkuang"></i></span>
+        </div>
+        <div class="item webkit-box">
+            <label class="gray">模块间距</label>
+            <input type="hidden" name="space" value="{$options.space|default:10}" />
+            <div class="flex1 ml20 slider2" style="margin-top:15px"></div>
+        </div>
+    </div>
+</div>
+<style>
+
+
+</style>
+<script>
+    $(function () {
+        layui.use('dropdown', function () {
+            var dropdown = layui.dropdown
+            dropdown.render({
+                elem: '.dropdown',
+                data: [{
+                    title: '风格一',
+                    id: 1
+                }, {
+                    title: '风格二',
+                    id: 2
+                }],
+                click: function (data, othis) {
+                    this.elem.parents('.item').find('input').val(data.id);
+                    this.elem.find('span').text(data.title);
+                    save_widget(false);
+                }
+            });
+        });
+
+        $('.J_Reset').click(function () {
+            var value = $(this).attr('data-value');
+            $(this).parent('.item').find('input[type="hidden"]').val(value);
+            save_widget();
+        });
+
+        colorRender('.picker', function(dom, value) {
+            save_widget();
+        });
+
+        $('.J_Edge').click(function () {
+            var value = $(this).attr('data-value');
+            $(this).parent('.item').find('input').val(value);
+
+            save_widget();
+        });
+
+        slideRender('.slider1', function (dom, value) {
+            save_widget(false);
+        });
+        slideRender('.slider2', function (dom, value) {
+            save_widget(false);
+        });
+
+        $('.J_Switch').click(function () {
+            var value = $(this).attr('data-value');
+            $(this).parent('.item').find('input').val(value);
+            save_widget();
+        });
+
+    });
+
+    function gscallback(dom, value) {
+        var dialog = $('*[dialog_id="' + dom + '"]');
+        if (dom == 'acategory') {
+            dialog.parent('.item').find('input[name="cate_id"]').val(value.id);
+            dialog.parent('.item').find('input[name="cate_name"]').val(value.name);
+            dialog.find('span').text(value.name);
+        }
+        else if (dom == 'article') {
+            var values = unique(value);
+            dialog.parent('.item').find('input[name="items"]').val(values.join(','));
+            dialog.find('span').text(value == '' ? '请选择' : '已选择(' + values.length + ')');
+        }
+
+        save_widget(false);
+    }
+</script>

@@ -1,0 +1,19 @@
+<div class="integral-article mb10">
+	<dl class="user-integral clearfix">
+    	<dt><a target="_blank" href="{url route='user/index'}"><img width="68" height="68" class="lazyload" initial-url="{$widget_data.user_info.portrait|url_format}" /></a></dt>
+        <dd>
+        	<!--{if $widget_data.user_info.username}-->
+        	<h3 class="mt10"><a target="_blank" href="{url route='user/index'}">{$widget_data.user_info.username}</a></h3>
+            <p class="mt10"><b>{$widget_data.user_info.amount|default:0}</b>个积分</p>
+            <!--{else}-->
+            <p class="mt10">登录显示积分情况</p>
+            <p class="mt10"><a href="{url route='user/login'}" class="login-btn">会员登录</a></p>
+            <!--{/if}-->
+        </dd>
+    </dl>
+	<ul>
+    	<!--{foreach from=$widget_data.article item=article}-->
+        <li><a href="{url route='article/view' id=$article.article_id}" title="{$article.title|escape}">.{$article.title|escape}</a></li>
+        <!--{/foreach}-->
+    </ul>
+</div>

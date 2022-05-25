@@ -1,0 +1,110 @@
+<div class="goodslist" id="goodslist-{$widget_data.uniqueid}">
+  <div class="content {$widget_data.theme|default:'square'}">
+    <ul class="clearfix {if !$widget_data.list.0.goods_id}empty{/if}">
+      <!--{foreach from=$widget_data.list item=item name=fe_item}-->
+      <li class="item clearfix ml5 mr5 mt10">
+        <p class="image center">
+          <!--{if !$widget_data.list.0.goods_id}-->
+          <i class="iconfont icon-icon_pic"></i>
+          <!--{else}-->
+          <img src="{$item.default_image|url_format}">
+          <!--{/if}-->
+        </p>
+        <div class="extra mt10 ml10 mr10 pb10">
+          <p class="desc fs14 mb20">{$item.goods_name|default:'商品名称'}</p>
+          <p class="webkit-box">
+            <span class="price fs14 flex1">{$item.price|price_format}</span>
+            <span class="gray fs13">{$item.sales|default:0}人已买</span>
+          </p>
+        </div>
+      </li>
+      <!--{/foreach}-->
+    </ul>
+    <!--{if $widget_data.paging eq 1}-->
+    <div class="center gray fs14 padding10">加载更多</div>
+    <!--{/if}-->
+  </div>
+</div>
+
+<style>
+  .goodslist .content {
+    padding: 0 5px;
+  }
+
+  .goodslist .item {
+    width: calc(50% - 10px);
+    float: left;
+    border-radius: 10px;
+    background-color: #fff;
+  }
+
+  .goodslist .item img {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px 10px 0 0;
+  }
+
+  .goodslist .item .desc {
+    height: 36px;
+    line-height: 18px;
+    overflow: hidden;
+    word-break: break-all;
+  }
+
+  .goodslist .empty .item .image {
+    padding: 25% 0;
+    background-color: rgb(238, 248, 248);
+    border-radius: 10px 10px 0 0;
+  }
+
+  .goodslist .empty .iconfont {
+    color: rgb(156, 190, 190);
+    font-size: 80px;
+  }
+
+  .goodslist .list {
+    border-radius: 10px;
+  }
+
+  .goodslist .list .item {
+    padding: 10px;
+    width: calc(100% - 30px);
+  }
+
+  .goodslist .list .item .image,
+  .goodslist .list .item .extra {
+    float: left;
+  }
+
+  .goodslist .list .item .image {
+    width: 35%;
+    height: 35%;
+  }
+
+  .goodslist .list .empty .item .image {
+    padding: 5% 0;
+    border-radius: 4px;
+  }
+
+  .goodslist .list .item .extra {
+    margin-right: 0;
+    margin-top: 0;
+    width: calc(65% - 10px);
+  }
+
+  .goodslist .list .item img {
+    border-radius: 4px;
+  }
+
+  .goodslist .banner .item {
+    width: calc(100% - 10px);
+  }
+</style>
+<script>
+  $(function () {
+    $('#goodslist-{$widget_data.uniqueid} .item:nth-child(1)').css('margin-top', '0');
+    $('#goodslist-{$widget_data.uniqueid} .square .item:nth-child(2)').css('margin-top', '0');
+    $('#goodslist-{$widget_data.uniqueid}').css('background-color', '{$widget_data.bgcolor|default:""}');
+    $('#goodslist-{$widget_data.uniqueid}').css('padding', '{$widget_data.space|default:5}px 0');
+  });
+</script>

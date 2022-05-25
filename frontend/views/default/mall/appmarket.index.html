@@ -1,0 +1,56 @@
+{include file="user.header.html"}
+<div id="main" class="clearfix">
+  <div id="page-promotool" class="page-promotool"> {include file="user.menu.html"}
+    <div id="right"> {include file="user.curlocal.html"}
+      <div class="wrapful">{include file="user.submenu.html"}
+        <div class="wrap">
+          <div class="public_select">
+            <div class="appmarket">
+              <div class="bundle bundle-list">
+                <div class="applist">
+                  <!--{if $appmarket}-->
+                  <div class="list-sort clearfix">
+                    <ul class="float-left clearfix">
+                      <li><a href="{url route='appmarket/index'}" {if !$smarty.get.orderby}class="active"
+                          {/if}>{$lang.default}</a></li>
+                      <li><a href="{url route='appmarket/index' orderby='sales|desc'}" {if $smarty.get.orderby
+                          eq 'sales|desc' }class="active" {/if}>{$lang.num_users}</a></li>
+                      <li><a href="{url route='appmarket/index' orderby='add_time|desc'}" {if $smarty.get.orderby
+                          eq 'add_time|desc' }class="active" {/if}>{$lang.shelf_time}</a></li>
+                      <li><a href="{url route='appmarket/index' orderby='views|desc'}" {if $smarty.get.orderby
+                          eq 'views|desc' }class="active" {/if}>{$lang.view_hot}</a></li>
+                    </ul>
+                  </div>
+                  <ul class="list-each clearfix">
+                    <!--{foreach from=$appmarket item=item name=fe_item}-->
+                    <li {if $smarty.foreach.fe_item.iteration % 3 eq 0} style="margin-right:0" {/if}>
+                      <div class="pic"><a href="{url route='appmarket/view' id=$item.aid}" target="_blank"><img
+                            width="260" height="181" src="{$item.logo|url_format}" /></a></div>
+                      <div class="info">
+                        <p class="title">{$item.title}</p>
+                        <p class="summary">{$item.summary}</p>
+                        <p class="price clearfix"> <em class="float-left"><strong>{$item.price|price_format}</strong>
+                            {$lang.yuan}/{$lang.month}</em> <em class="float-right"><b>{$item.sales|default:0}</b>
+                            {$lang.renshiyong}</em> </p>
+                        <p class="mt10 clearfix"><a class="btn-buy" href="{url route='appmarket/view' id=$item.aid}"
+                            target="_blank">{if !$item.checkIsRenewal}{$lang.buy}{else}{$lang.renewal}{/if}</a></p>
+                      </div>
+                    </li>
+                    <!--{/foreach}-->
+                  </ul>
+                  <div class="mt20 clearfix center">{include file="page.bottom.html"}</div>
+                  <!--{else}-->
+                  <div class="notice-word">
+                    <p>{$lang.no_records}</p>
+                  </div>
+                  <!--{/if}-->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{include file="user.footer.html"}

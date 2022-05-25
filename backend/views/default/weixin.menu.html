@@ -1,0 +1,81 @@
+{include file="header.html"}
+<div id="main">
+  {include file="menus.html"}
+  <div id="rightCon" class="clearfix layui-body">
+    <div class="scroller">
+      <div class="explanation" id="explanation">
+        <div class="title" id="checkZoom"> <i class="fa fa-lightbulb-o"></i>
+          <h4 title="{$lang.operation_tip}">{$lang.operation_tip}</h4>
+        </div>
+        <ul>
+          <li><i class="fa fa-angle-double-right"></i> {$lang.wxmenu_desc_1}</li>
+          <li><i class="fa fa-angle-double-right"></i> {$lang.wxmenu_desc_2}</li>
+        </ul>
+      </div>
+      <div class="flexigrid">
+        <div class="layui-btn-container">
+          <a href="{url route='weixin/add'}" class="layui-btn layui-bg-blue"><i
+              class="layui-icon layui-icon-addition"></i>添加菜单</a>
+
+          <a class="layui-btn layui-btn-primary J_BatchDel" confirm="{$lang.drop_confirm}"
+            uri="{url route='weixin/delete'}" name="id"><i class="fa fa-trash"></i>批量删除</a>
+            <a class="layui-btn layui-btn-primary J_AjaxRequest" uri="{url route='weixin/createmenu'}"><i class="fa fa-list-ul"></i>生成菜单</a>
+        </div>
+        <table class="distinction">
+          <!--{if $menus}-->
+          <thead>
+            <tr class="tatr1">
+              <th class="w30"><input id="checkall" type="checkbox" class="checkall" /></th>
+              <th width="300" align="left"><label for="checkall">{$lang.menu_name}</label></th>
+              <th width="100">{$lang.menu_type}</th>
+              <th>{$lang.menu_value}</th>
+              <th>{$lang.sort_order}</th>
+              <th class="handler">{$lang.handler}</th>
+            </tr>
+          </thead>
+          <!--{/if}-->
+          <!-- {if $menus} -->
+          <tbody id="treet1">
+            <!-- {/if} -->
+            <!--{foreach from=$menus item=menu}-->
+            <tr>
+              <td class="align_center w30"><input type="checkbox" class="checkitem" value="{$menu.id}" /></td>
+              <td class="node">
+                <!--{if $menu.switchs}--><i class="layui-icon layui-icon-addition" ectype="flex" controller="weixin"
+                  status="open" fieldid="{$menu.id}"></i>
+                <!--{else}--><i class="tv-item"></i>
+                <!--{/if}--><span ectype="inline_edit" fieldname="name" fieldid="{$menu.id}" required="1"
+                  title="{$lang.editable}" controller="weixin">{$menu.name|escape}<i class="layui-icon layui-icon-edit layui-font-14 layui-font-blue"></i></span>
+              </td>
+              <td class="align_center"><span>{if $menu.type eq 'view'}{$lang.to_url}{else}{$lang.send_msg}{/if}</span>
+              </td>
+              <td class="align_center">{if $menu.type eq 'view'}{$menu.link|default:'-'}{else}-{/if}</td>
+              <td class="align_center"><span ectype="inline_edit" fieldname="sort_order" fieldid="{$menu.id}"
+                  datatype="number" title="{$lang.editable}" controller="weixin">{$menu.sort_order}<i class="layui-icon layui-icon-edit layui-font-14 layui-font-blue"></i></span></td>
+              <td class="handler bDiv" style=" background:none; width:210px; text-align:left;"><a
+                  href="{url route='weixin/edit' id=$menu.id}" class="btn blue"><i
+                    class="layui-icon layui-icon-edit layui-font-12"></i>{$lang.edit}</a> <a
+                  uri="{url route='weixin/delete' id=$menu.id}" confirm="{$lang.drop_confirm}"
+                  class="btn red J_AjaxRequest"><i
+                    class="layui-icon layui-icon-close layui-font-12"></i>{$lang.drop}</a>
+                <!--{if $menu.parent_id eq 0}-->
+                <a href="{url route='weixin/add' pid=$menu.id}" class="btn green"><i
+                    class="layui-icon layui-icon-add-1 layui-font-12"></i>{$lang.add_child}</a>
+                <!--{/if}-->
+              </td>
+            </tr>
+            <!--{foreachelse}-->
+            <tr class="no_data">
+              <td colspan="6">{$lang.no_data}</td>
+            </tr>
+            <!--{/foreach}-->
+            <!-- {if $menus} -->
+          </tbody>
+          <!-- {/if} -->
+        </table>
+      </div>
+      {include file="version.html"}
+    </div>
+  </div>
+</div>
+{include file="footer.html"}

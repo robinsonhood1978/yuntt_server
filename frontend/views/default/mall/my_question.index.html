@@ -1,0 +1,58 @@
+{include file="user.header.html"}
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful"> {include file="user.submenu.html"}
+      <div class="wrap">
+        <div class="public_index table1">
+          <table>
+            <!--{foreach from=$questions item=question name=fe_question}-->
+            <tr class="bgcolor line_normal">
+              <td class="align2 width1"></td>
+              <td><a href="{url route='goods/qa' id=$question.item_id}" target="_blank" class="link3">{$question.item_name|escape}</a></td>
+              <td class="width8"><span class="table_user">{$question.username|default:$lang.anonymous}</span></td>
+            </tr>
+            <tr style="height: 40px;">
+              <td></td>
+              <td><h3 style="padding:0;">{$lang.question_content}{$lang.colon}</h3>
+                <p>{$question.question_content|escape|nl2br}</p></td>
+              <td><span class="time">{$question.time_post|date_format:"%Y.%m.%d %H:%M:%S"}</span></td>
+            </tr>
+            <!--{if $question.reply_content neq ''}-->
+            
+            <tr {if $smarty.foreach.fe_question.last}class="line_bold"{/if}>
+              <td></td>
+              <td><h3 style="padding:0;"><span class="color8">{$lang.store_reply}{$lang.colon}</span></h3>
+                <p><span class="color3">{$question.reply_content|escape}</span></p></td>
+              <td><span class="time">{$question.time_reply|date_format:"%Y.%m.%d %H:%M:%S"}</span></td>
+            </tr>
+            <!-- {else} -->
+            
+            <tr {if $smarty.foreach.fe_question.last}class="line_bold"{/if}>
+              <td colspan="3">&nbsp;</td>
+            </tr>
+            <!--{/if}--> 
+             <tr>
+              <td colspan="3" height="20"></td>
+            </tr>
+            
+            <!--{foreachelse}-->
+            <tr char="bgcolor">
+              <td colspan="3"><div class="notice-word">
+                  <p>{$lang.{$app->controller->action->id}}{$lang.no_records}</p>
+                </div></td>
+            </tr>
+            
+            <!--{/foreach}--> 
+            <!--{if $questions}-->
+            <tr>
+              <th colspan="3"> <div class="position2 clearfix center"> {include file="page.bottom.html"} </div>
+              </th>
+            </tr>
+            <!--{/if}-->
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{include file="user.footer.html"} 

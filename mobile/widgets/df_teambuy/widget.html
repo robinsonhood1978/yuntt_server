@@ -1,0 +1,131 @@
+<div class="teambuybox" id="teambuybox-{$widget_data.uniqueid}">
+  <div class="content ml10 mr10 pl5 pr5 pt5 pb5 bgf list">
+    <div class="hd center padding10 clearfix mt5 mb5">
+      <h3 class="red fs18">—— <strong>拼团专区</strong> ——</h3>
+      <p class="gray fs12 center mt5">拼着买，更划算</p>
+    </div>
+    <ul class="clearfix {if !$widget_data.list.0.goods_id}empty{/if}">
+      <!--{foreach from=$widget_data.list item=item}-->
+      <li class="item mt5 mb5 ml10 mr10 float-left clearfix">
+        <p class="image center">
+          <!--{if !$widget_data.list.0.goods_id}-->
+          <i class="iconfont icon-icon_pic"></i>
+          <!--{else}-->
+          <img src="{$item.default_image|url_format}">
+          <!--{/if}-->
+        </p>
+        <div class="extra pb10">
+          <p class="desc fs14 mb20">{$item.goods_name|default:'商品名称'}</p>
+          <p class="people mb20">
+            <span class="fs12 inline-block">2人团</span>
+            <label class="fs12 ml10 gray">已拼100件</label>
+          </p>
+          <p class="webkit-box">
+            <span class="price fs14 flex1 pt5 pb5">{$item.teamPrice|price_format} <del
+                class="gray ml5">{$item.price|price_format}</del></span>
+            <span class="gray fs12 buy pl10 pr10 pt5 pb5">立即开团</span>
+          </p>
+        </div>
+      </li>
+      <!--{/foreach}-->
+    </ul>
+  </div>
+</div>
+
+<style>
+  .teambuybox .content {
+    border-radius: 10px;
+  }
+
+  .teambuybox .hd h3 {
+    background-position: center center;
+    background-size: cover;
+  }
+
+  .teambuybox .hd .countdown span {
+    background-color: #000;
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 3px;
+  }
+
+  .teambuybox .item {
+    margin: 5px;
+    width: calc(50% - 10px);
+    float: left;
+    border-radius: 10px;
+    background-color: #fff;
+  }
+
+  .teambuybox .item .people span{
+    border-radius: 3px;
+    background-color: #FCECD7;
+    padding: 2px 5px;
+  }
+
+  .teambuybox .item img {
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+  }
+
+  .teambuybox .item .desc {
+    height: 36px;
+    line-height: 18px;
+    overflow: hidden;
+    word-break: break-all;
+  }
+
+  .teambuybox .item .buy {
+    border-radius: 4px;
+    background-color: #E4393C;
+    color: #fff;
+    line-height: 19px;
+  }
+
+  .teambuybox .empty .item .image {
+    padding: 25% 0;
+    background-color: rgb(238, 248, 248);
+    border-radius: 4px;
+  }
+
+  .teambuybox .empty .iconfont {
+    color: rgb(156, 190, 190);
+    font-size: 80px;
+  }
+
+  .teambuybox .list .item,
+  .teambuybox .banner .item {
+    width: calc(100% - 10px);
+  }
+
+  .teambuybox .list .item .image,
+  .teambuybox .list .item .extra {
+    float: left;
+  }
+
+  .teambuybox .list .item .image {
+    width: 35%;
+    height: 35%;
+  }
+
+  .teambuybox .list .empty .item .image {
+    padding: 5% 0;
+    border-radius: 4px;
+  }
+
+  .teambuybox .list .item .extra {
+    margin-left: 10px;
+    width: calc(65% - 10px);
+  }
+
+  .teambuybox .list .item img {
+    border-radius: 4px;
+  }
+</style>
+<script>
+  $(function () {
+    $('#teambuybox-{$widget_data.uniqueid}').css('background-color', '{$widget_data.bgcolor|default:""}');
+    $('#teambuybox-{$widget_data.uniqueid}').css('padding', '{$widget_data.space|default:5}px 0');
+  });
+</script>

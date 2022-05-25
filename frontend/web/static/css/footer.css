@@ -1,0 +1,76 @@
+#footer{background:#262626; color: #fff;}
+#footer a {color: #fff;}
+
+#footer .foot-baozhang{ width:100%; height:86px; background:#eee; color:#666;}
+#footer .foot-baozhang .flow{ height:86px; margin:auto; position:relative;}
+#footer .foot-baozhang .item{ float:left; font-family: "microsoft yahei"; font-size:18px; padding:20px 0; width:19%;}
+#footer .foot-baozhang .item.first{padding-left:50px;}
+#footer .foot-baozhang .item a{ display:block; height:46px; color:#000;}
+#footer .foot-baozhang .item i{ display:block; width:45px; height:45px; background:url(../images/ecsc_icon.png) no-repeat; float:left;}
+#footer .foot-baozhang .item span{ display:block; float:left; padding:10px 0 0 15px; font-weight: bold;}
+#footer .foot-baozhang .item .zp{ background-position:-7px -152px;}
+#footer .foot-baozhang .item .qt{ background-position:-7px -202px;}
+#footer .foot-baozhang .item .hp{ background-position:-7px -253px;}
+#footer .foot-baozhang .item .sd{ background-position:-6px -304px;}
+#footer .foot-baozhang .item .ry{ background-position:-6px -354px;}
+
+#footer .foot-service { padding-bottom:20px; }
+#footer .foot-service .w {border-bottom: 1px solid #464646;padding-bottom: 10px;}
+#footer .foot-service a {color: #cccccc;}
+#footer .foot-service a:hover {color: #f33100;}
+#footer .foot-service dl{float:left;width:23%;padding-bottom:10px;margin-top:30px; text-align:left;}
+#footer .foot-service dt{width:198px; height:34px; overflow:hidden; font-weight:normal; font-size:18px; float:left;font-weight: bold;}
+#footer .foot-service dd{line-height:22px; clear:both;}
+#footer .foot-service dl.dl-first {margin-left: 90px;}
+
+#footer .foot-group{ padding:20px 0 20px;}
+#footer .foot-group .tel h3{font-family: arial;font-size: 30px;color: #9ecc17;width: 200px;}
+#footer .foot-group .tel p{color:#888;width: 200px; font-size:14px;margin-top:12px;margin-left:5px;}
+#footer .foot-group .footnav{margin-left:2%; line-height:22px;}
+#footer .foot-group .footnav li span{margin:0 10px;}
+#footer .foot-group .footnav li.last{margin-right:0;}
+#footer .foot-group .footnav ul a{font-size:14px;}
+#footer .foot-group .footnav ul a:hover {color: #f33100;}
+#footer .foot-group .footnav .copy{color:#666;margin-top:10px; line-height:25px;}
+#footer .foot-group .footnav .copy a{color:#666;}
+#footer .foot-group .ewm li{float:left; width:100px;margin-left:20px;  text-align:center}
+#footer .foot-group .ewm li p{font-size:13px;margin-top:5px; color:#666; text-align:center}
+
+
+.foot-fixed { position: fixed; z-index: 990; right: 10px; bottom: 110px; width: 80px; height: 204px; }
+.foot-fixed .foot-fixed-box { position: relative; float: right; }
+.foot-fixed .foot-fixed-box .j-icon {opacity: 0.8; filter: alpha(opacity=80); display: block; width: 50px; height: 50px; background-color: #222; margin-bottom:1px; cursor:default; }
+.foot-fixed .foot-fixed-box .j-icon i{display: block; float: left; width: 25px; height:25px; margin-left: 15px; margin-top: 15px; background: url(../images/suspension-bg.png) no-repeat center center; text-indent: -9999px;}
+.foot-fixed .foot-fixed-box .j-icon.backtop { background-color: #000; cursor:pointer; border-bottom:0;}
+	
+.foot-fixed .foot-fixed-box .j-icon.myim i { background:url(../images/myim.png) -2px center; background-size:100%; }
+.foot-fixed .foot-fixed-box .j-icon.qq i { background-position: 0 0; }
+.foot-fixed .foot-fixed-box .j-icon.tel i { background-position: -25px 0; }
+.foot-fixed .foot-fixed-box .j-icon.code i { background-position: 0 -25px; }
+.foot-fixed .foot-fixed-box .j-icon.backtop i { background-position: -28px -25px; }
+
+.foot-fixed .foot-fixed-box .j-icon.cart{position:relative; cursor:pointer;}
+.foot-fixed .foot-fixed-box .j-icon.cart i { background:url(../images/add_cart.png) -2px center no-repeat; background-size:100%; }
+.foot-fixed .foot-fixed-box .j-icon.cart em{position:absolute; top:2px; right:2px; border-radius:10px; background:red; text-align:center;color:#fff; padding:0px 5px;}
+
+.foot-fixed .foot-fixed-box .j-icon:hover{ opacity: 0.5; filter: alpha(opacity=50);}
+.foot-fixed .foot-fixed-box .j-icon.backtop:hover { background-color: #E4393C; }
+	
+.foot-fixed-box div.code { position: absolute; left: -187px; top: 52px; display: none; width: 178px; height: 194px; text-align:center; padding-top: 10px; background-color: #fff; border: 1px solid #D9D9D9; }
+.foot-fixed-box div.code p {font-size:14px; width: 155px;  text-align: center; margin:0 auto; color:#333;}
+.foot-fixed-box div.code i { width: 8px; height: 15px; position: absolute; top: 118px; right: -8px; background-image: url(../images/trangle-right-suspension.png); background-repeat: no-repeat; }
+	
+.foot-fixed-box div.tencent { position: absolute; left: -187px; top: 60px; width: 177px; height: 85px; display:none; background-color: #fff; border: 1px solid #D7D7D7; }
+.foot-fixed-box div.tencent p.tencent-p { width: 75px; float: right; margin-right: 18px; margin-top: 18px; font-size: 16px; color: #333; }.foot-fixed-box div.tencent i.tencent-i { width: 8px; height: 15px; position: absolute; top: 10px; right: -8px; text-indent: -9999px; background-image: url(../images/trangle-right-suspension.png); background-repeat: no-repeat; }
+.foot-fixed-box div.tencent span.tencent-span { position: absolute; left: 8px; top: 7px; border-radius: 22px; width: 45px; height: 48px; text-align: center; z-index: 99; overflow: hidden;  margin: 10px 0 0 10px}
+.foot-fixed-box div.tencent .tencent-qq {position: absolute; left: 3px;top:0px; height: 45px; width: 39px;}
+.foot-fixed-box div.tel { position: absolute; left: -187px; top: 100px; display: none; width: 177px; height: 85px; background-color: #fff; border: 1px solid #D7D7D7; }
+.foot-fixed-box div.tel i { width: 8px; height: 15px; position: absolute; top: 20px; right: -8px; background-image: url(../images/trangle-right-suspension.png); background-repeat: no-repeat; }
+	
+.foot-fixed-box div.tel strong { display: block; margin-left: 17px; margin-top: 16px; font-size: 16px; font-weight: normal;  color: #333;}
+.foot-fixed-box div.tel p { margin-left: 17px; font-size: 23px; font-family: arial; color: #FD696D;margin-top:10px; width:148px; overflow:hidden }
+
+
+
+
+

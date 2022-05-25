@@ -1,0 +1,24 @@
+<div class="content1 pb10">
+  <div class="ml20 mr20 mb20 mt10" id="warning"></div>
+  <form method="post" action="{$smarty.server.REQUEST_URI}" target="iframe">
+    <table class="infoTable">
+      <tr>
+        <th class="paddingT15"><label>{$lang.recommend_to}</label></th>
+        <td class="paddingT15 wordSpacing5">
+          <ul class="recommend_to clearfix mb20">
+            <select name="recom_id">
+              <option value="0">{$lang.select_pls}</option>
+              {html_options options=$recommends selected=$recommend.recom_id}
+            </select>
+          </ul>
+        </td>
+      </tr>
+      <tr>
+        <th></th>
+        <td class="ptb20"><input type="hidden" name="id" value="{$smarty.get.id}" />
+          <input class="layui-btn layui-bg-blue" type="submit" value="{$lang.submit}" />
+        </td>
+      </tr>
+    </table>
+  </form>
+</div>

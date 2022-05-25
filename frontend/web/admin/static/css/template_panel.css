@@ -1,0 +1,143 @@
+::-webkit-scrollbar {display: none; /* Chrome Safari */}
+.editTmplateMode { max-width: 100%;  overflow: hidden; }
+.editTmplateMode #template_page {position: fixed; z-index: 1;overflow-x: hidden; overflow-y: scroll;  scrollbar-width: none;-ms-overflow-style:none; width: 100%; height: calc(100%  - 60px);}
+.editTmplateMode #template_page .ewraper {background-color: #ededed; max-width: 375px;margin: 30px auto; /*box-shadow:0 0 20px 0 rgba(0,0,0,.05)*/}
+
+#template_config { display: none; position: fixed; z-index: 2; right: 0; top:57px;  width: 400px; overflow: hidden;  height: 100%;}
+#template_config .wraper {overflow-x: hidden;overflow-y: scroll;scrollbar-width: none;-ms-overflow-style:none; width: 100%;height: 100%;background-color: #fff;}
+
+.editTmplateMode #header .content {height: 68px;}
+.editTmplateMode #header .content p {padding: 33px 90px 0 90px; font-size: 14px;}
+
+/* 挂件区域 */
+.empty_widget_area { padding:20px; background:#eee; text-align:center; }
+.placeholder { background:#eee;}
+
+/* 挂件样式 */
+.widget .widget_icons { position:absolute; border-radius: 3px; width: 42px; height: 136px; top:0px; right: -51px; display: none; background-color: #0d6fb8;}
+.widget .widget_icons .layui-btn {margin-left: 0; background:none;}
+.widget .widget_icons .layui-btn.disabled {color: rgb(124, 157, 196)}
+.widget .widget_mask{
+    position: absolute;
+    width: calc(100% - 3px);
+    height: calc(100% - 3px);
+    left: 0;
+    top: 0;
+    border: 2px solid #0d6fb8;
+    opacity: 0;
+    box-shadow: 0 0 20px 0 rgba(98,60,235,.2);
+}
+.widget .widget_mask.show {
+    opacity: 1;
+}
+
+/* 配置对话框样式 */
+.widget_config_form {background-color: #fff; padding: 20px; padding-bottom: 100px;}
+.widget_list .iconfont {font-size: 28px;color: #9da3a7; display: block; margin-bottom: 10px;}
+.widget_list ul { list-style:none; margin:0px 5px; overflow: hidden;}
+.widget_list ul li { float: left;
+    color: #303133;
+    padding: 20px 0;
+    font-size: 13px;
+    width: 100px;
+    text-align: center;
+    position: relative;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    border-radius: 4px;
+    margin: 5px;
+    cursor:default;
+}
+.widget_list ul li:hover {
+    color: #0d6fb8;
+    box-shadow: 0 0 10px 0 rgba(98,60,235,.1);
+}
+.widget_list ul li:hover .iconfont {
+    color: #0d6fb8;
+}
+.widget_list ul li s{
+    position: absolute;
+    top: 0;
+    right: 0;
+    border-radius: 3px;
+    background-color: #fdf3f1;
+    color: #fc2b34;
+    font-size: 10px;
+    padding: 2px 5px;
+}
+
+.widget_list ul li .add_widget_note { color:#aaa; font-size:12px; position:absolute; top:0px; right:0px; line-height:12px; }
+
+.mainnav { position: relative; z-index: 999; height: 58px; overflow: hidden; }
+.mainnav .wraper{position: fixed;left: 0;top:0;z-index: 999; /*border-bottom: 1px solid #f2f2f2; */line-height: 36px;background-color: #6F6F6F;}
+.mainnav .layui-btn {min-width: 90px;font-size:14px; background-color: #fff;}
+
+/* 面板的样式 */
+.handle {background: #ffffff; position: fixed; z-index: 2; height: calc(100% - 57px); left: 0;top:57px;}
+.handle .content {height: calc(100% + 300px);}
+.handle_top ul li {float: left; }
+.handle_hover {display: block; font-size: 14px; border-left: 3px #333 solid;}
+.handle .scroller {
+    width:344px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    scrollbar-width: none;
+    height: 100%;
+    box-shadow: rgb(0 0 0 / 20%) 0px 0px 5px -2px;
+}
+.handle .fold {
+    right: -20px;
+    top: calc(50% - 78px);
+    background-color: #fff;
+    height: 78px;
+    line-height: 78px;
+    border-radius: 0 10px 10px 0;
+    width: 20px;
+    text-align: center;
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.2) 3px 0px 3px -5px;
+    font-weight: bold;
+}
+
+/*  挂件配置 */
+.widget-box {font-size: 14px;}
+.widget-box h3,.widget-box h4 {
+    border-bottom:  1px solid #f2f4f6;
+}
+.widget-box h3 strong{border-left: 4px #0d6fb8 solid;padding-left:10px; color: #333;}
+.widget-box .item { line-height: 34px; margin-top: 15px;margin-bottom: 15px;}
+.widget-box .item .input {
+    border:1px #ddd solid;
+    padding: 8px 10px;
+    border-radius: 2px;
+}
+.widget-box .item .input:hover {
+    border: 1px #0d6fb8 solid;
+    box-shadow: 0 0 2px 0 rgba(98,60,235,.2);
+}
+.widget-box .item .switch {
+    background-color: #fff;
+    border:1px #eee solid;
+    color: #333;
+    padding: 2px;
+    width: 36px;
+    height: 24px;
+    margin-top:1px;
+    line-height: 24px;
+    text-align: center;
+    overflow: hidden;
+    cursor: pointer;
+    border-left-color: transparent;
+}
+.widget-box .item .switch.first{border-left-color: #eee;}
+.widget-box .item .switch.selected {border-color:#0d6fb8; color: #0d6fb8;}
+
+.layui-form-onswitch { background-color: #0d6fb8 !important; border-color: #0d6fb8 !important;}
+.layui-btn-normal {background-color: #0d6fb8 !important}
+.layui-bg-blue {background-color: #0d6fb8 !important;}
+.layui-border-blue { border-color: #0d6fb8 !important; color: #0d6fb8 !important;}
+.layui-layer-title {border-bottom: 0;}
+.layui-slider-input.layui-input {padding-left: 4px;}
+.layui-form-checked[lay-skin="primary"] i {border-color: #0d6fb8 !important; background-color: #0d6fb8 ;}
+.layui-form-checkbox[lay-skin="primary"]:hover i {border-color: #0d6fb8;}

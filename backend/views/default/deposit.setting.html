@@ -1,0 +1,34 @@
+{include file="header.html"}
+<div id="main">
+  {include file="menus.html"}
+  <div id="rightCon" class="clearfix layui-body">
+    <div class="scroller">
+  <div class="flexigrid">
+    <form method="post">
+      <table class="infoTable">
+        <tr>
+          <th class="paddingT15"><label>{$lang.trade_rate}</label></th>
+          <td class="paddingT15 wordSpacing5"><input class="infoTableInput2" name="trade_rate" type="text" id="trade_rate"  value="{$setting.trade_rate}"/>
+            <label class="field_notice">{$lang.note_trade_rate}</label></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"><label>{$lang.transfer_rate}</label></th>
+          <td class="paddingT15 wordSpacing5"><input class="infoTableInput2" name="transfer_rate" type="text" id="transfer_rate"  value="{$setting.transfer_rate}"/>
+            <label class="field_notice">{$lang.note_transfer_rate}</label></td>
+        </tr>
+        <tr>
+          <th class="paddingT15"><label>{$lang.regive_rate}</label></th>
+          <td class="paddingT15 wordSpacing5"><input class="infoTableInput2" name="regive_rate" type="text" id="regive_rate"  value="{$setting.regive_rate}"/>
+            <label class="field_notice">{$lang.note_regive_rate}</label></td>
+        </tr>
+        <tr>
+          <th></th>
+          <td class="ptb20"><input class="layui-btn layui-bg-blue J_AjaxSubmit" type="submit" value="{$lang.submit}" /></td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>
+</div>
+</div>
+{include file="footer.html"}

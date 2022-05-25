@@ -1,0 +1,137 @@
+{include file="header.html"}
+<div id="main">
+	{include file="menus.html"}
+	<div id="rightCon" class="clearfix database layui-body">
+		<div class="scroller">
+			<div class="flexigrid">
+				<form method="post" enctype="multipart/form-data">
+					<table class="infoTable">
+						<tr ectype="tables">
+							<th class="paddingT15"><label>{$lang.tables}</label></th>
+							<td class="paddingT15 wordSpacing5">
+								<div class="back">
+									<ul class="head clearfix">
+										<li class="all">
+											<input id="checkall" type="checkbox" class="checkall" checked="checked" />
+										</li>
+										<li class="name">{$lang.db_name}</li>
+										<li>{$lang.rows}</li>
+										<li class="size">{$lang.db_size}</li>
+										<li>{$lang.collation}</li>
+										<li>{$lang.engine}</li>
+										<li class="time">{$lang.db_add_time}</li>
+										<li>{$lang.status}</li>
+									</ul>
+									<!--{foreach from=$tables item=table name=fe_table}-->
+									<ul class="item clearfix {if $smarty.foreach.fe_table.iteration % 2 eq 0}bgf9{/if}">
+										<li class="all">
+											<input name="tables[]" class="checkitem" type="checkbox"
+												value="{$table.name}" checked="checked" />
+										</li>
+										<li class="name">{$table.name}</li>
+										<li>{$table.rows}</li>
+										<li class="size">{round($table.data_length/1024,2)}kb</li>
+										<li>{$table.collation}</li>
+										<li>{$table.engine}</li>
+										<li class="time">{$table.create_time}</li>
+										<li class="status green"><i class="ml10 fa fa-check-circle"></i></li>
+									</ul>
+									<!--{/foreach}-->
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<th class="paddingT15"><label>{$lang.vol_size}(kb)</label></th>
+							<td class="paddingT15 wordSpacing5"><input name="vol_size" value="{$vol_size|default:100}"
+									type="text" />
+								<label class="field_notice">{$lang.vol_size_note}</label>
+							</td>
+						</tr>
+						<tr>
+							<th class="paddingT15"><label>{$lang.backup_name}</label></th>
+							<td class="paddingT15 wordSpacing5"><input name="backup_name" value="{$backup_name}"
+									type="text" />
+								<label class="field_notice">{$lang.backup_name_note}</label>
+							</td>
+						</tr>
+						<tr>
+							<th></th>
+							<td class="ptb20"><input class="layui-btn layui-bg-blue" type="submit" id="export"
+									value="{$lang.backup}" />
+								<div class="message" style="display: none"></div>
+							</td>
+						</tr>
+					</table>
+				</form>
+			</div>
+			{include file="version.html"}
+		</div>
+	</div>
+</div>
+<script language="javascript">
+	$(function () {
+		var $form = $('form'), $export = $("#export"), tables;
+		$export.click(function () {
+			if ($('input[name="tables[]"]').is(':checked') == false) {
+				layer.msg(lang.no_table_selected);
+				return false;
+			}
+			$export.addClass('disabled').prop("disabled", true);
+			$('.message').html('正在发送备份请求...').css('display', 'inline-block');
+
+			var that = this;
+			$.post(url(['db/backup']), $form.serialize(), function (data) {
+				if (data.status) {
+					tables = data.tables;
+					$form.find("input[value=" + tables[0] + "]").parents('.item').addClass('doing');
+					showmsg(0, "开始备份...(0%)");
+					$('.message').html(data.info + "开始备份，请不要关闭本页面！").css('display', 'inline-block');
+					backup.call(that, data.tab);
+					window.onbeforeunload = function () { return "正在备份数据库，请不要关闭！" }
+				} else {
+					layer.msg(data.info);
+					$('.message').html(data.info).css('display', 'inline-block');
+					setTimeout(function () {
+						$(that).removeClass('disabled').prop('disabled', false);
+						$('.message').hide('slow');
+					}, 1500);
+				}
+			}, "json");
+			return false;
+		});
+
+		function backup(tab, status) {
+			if (status) {
+				$form.find("input[value=" + tables[tab.id] + "]").parents('.item').addClass('doing');
+				showmsg(tab.id, "开始备份...(0%)");
+			}
+			$.post(url(['db/export']), tab, function (data) {
+				if (data.status) {
+					showmsg(tab.id, data.info, data.isnew);
+					if (!$.isPlainObject(data.tab)) {
+						$('.message').html("数据库备份完成!");
+						setTimeout(function () {
+							$export.removeClass('disabled').prop('disabled', false);
+							$('.message').hide('slow');
+						}, 2000);
+						window.onbeforeunload = function () { return null }
+						return;
+					}
+					backup(data.tab, tab.id != data.tab.id, data.isnew);
+				} else {
+					$('.message').html(tables[tab.id] + data.info);
+					setTimeout(function () {
+						$(this).removeClass('disabled').prop('disabled', false);
+						$('.message').hide('slow');
+					}, 1500);
+				}
+			}, "json");
+		}
+
+		function showmsg(id, msg, isnew) {
+			$form.find("input[value=" + tables[id] + "]").parents('.item').prevAll('.doing').find('.status').html('备份完成！');
+			$form.find("input[value=" + tables[id] + "]").parents('.item').find('.status').html(msg);
+		}
+	});
+</script>
+{include file="footer.html"}

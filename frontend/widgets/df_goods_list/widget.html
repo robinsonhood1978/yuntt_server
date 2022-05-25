@@ -1,0 +1,39 @@
+<!--{if $widget_data.goods_list}-->
+<div class="like-list w mb20 J_S{$widget_data.model_id}">
+  <div class="ftit">
+    <h3>{$widget_data.model_name}</h3>
+  </div>
+  <ul class="bd clearfix">
+    <!-- {foreach from=$widget_data.goods_list item=goods name=fe_goods} -->
+    <li class="goods" {if $smarty.foreach.fe_goods.iteration % 5 eq 0} style="margin-right:0"{/if}> 
+      <div class="flip-wrap">
+        <div class="pro-pic">
+          <a href="{url route='goods/index' id=$goods.goods_id}" target="_blank" title="{$goods.goods_name|escape}">
+            <img class="lazyload main_img" initial-url="{$goods.default_image|url_format}" src="{res file='images/empty.gif'}" width="216" height="220" />
+          </a> 
+        </div>
+        <div class="pro-name">{$goods.goods_name}</div>
+        <p class="pro-price">{$goods.price|price_format}</p>
+      </div>
+      <div class="operate-area clearfix">
+        <p class="pro-price2">{$goods.price|price_format}</p>
+        <a class="not-interest" href="{url route='goods/index' id=$goods.goods_id}" target="_blank">查看详情</a>
+        <a onClick="add_to_cart({$goods.spec_id}, 1, false, true, $(this))" class="view-detail">加入购物车<i style="display:block;height:0px;width:0px;right:0px;top:-30px;position:absolute;"></i></a> 
+      </div>
+    </li>
+    <!--{/foreach}-->
+  </ul>
+</div>
+
+<script type="text/javascript">
+$(function(){
+	$('.J_S{$widget_data.model_id} .bd li').hover(function(){
+		$(this).addClass('current');
+	}, function(){
+		$(this).removeClass('current');
+	});
+});
+</script>
+<!--{else}-->
+<center style="padding:10px;">请配置</center>
+<!--{/if}-->

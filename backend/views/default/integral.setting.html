@@ -1,0 +1,73 @@
+{include file="header.html"}
+<div id="main">
+  {include file="menus.html"}
+  <div id="rightCon" class="clearfix layui-body">
+    <div class="scroller">
+      <div class="flexigrid">
+        <form method="post">
+          <table class="infoTable">
+            <tr>
+              <th class="paddingT15"><label>积分功能</label></th>
+              <td class="paddingT15 layui-form">
+                <input type="radio" name="enabled" value="1" title="{$lang.open}" {if
+                  $setting.enabled}checked{/if} />
+                <input type="radio" name="enabled" value="0" title="{$lang.close}" {if
+                  !$setting.enabled}checked{/if} />
+              </td>
+            <tr>
+              <th class="paddingT15"><label>兑换比率</label></th>
+              <td class="paddingT15 wordSpacing5"><input class="infoTableInput" type="text" name="rate"
+                  value="{$setting.rate}" />
+                <div class="notice-word"><p class="layui-font-12 mt5">如果100个积分可以兑换1元，则填写0.01</p></div>
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.register_integral}</label></th>
+              <td class="paddingT15 wordSpacing5"><input class="infoTableInput" type="text" name="register"
+                  value="{$setting.register}" />
+                <span class="field_notice">{$lang.register_integral_note}</span>
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.signin_integral}</label></th>
+              <td class="paddingT15 wordSpacing5"><input class="infoTableInput" type="text" name="signin"
+                  value="{$setting.signin}" />
+                <span class="field_notice">{$lang.signin_integral_note}</span>
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.open_integral}</label></th>
+              <td class="paddingT15 wordSpacing5"><input class="infoTableInput" type="text" name="openshop"
+                  value="{$setting.openshop}" />
+                <span class="field_notice">{$lang.open_integral_note}</span>
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.buying_integral}</label></th>
+              <td class="paddingT15 wordSpacing5"><span class="gray"
+                  style="width:70px;margin-right:10px;display:inline-block;">{$lang.store_sgrade}</span> <span
+                  class="gray">{$lang.give_integral}</span></td>
+            </tr>
+            <!--{foreach from=$sgrades item=item}-->
+            <tr>
+              <th class="paddingT15"> </th>
+              <td class="paddingT15 wordSpacing5"><span
+                  style="width:70px;margin-right:10px;display:inline-block;">{$item.grade_name}</span>
+                <input style="width:55px;" type="text" name="buygoods[{$item.grade_id}]"
+                  value="{$item.buygoods|default:0}" />
+              </td>
+            </tr>
+            <!--{/foreach}-->
+            <tr>
+              <th></th>
+              <td class="ptb20"><input class="layui-btn layui-bg-blue J_AjaxSubmit" type="submit"
+                  value="{$lang.submit}" /></td>
+            </tr>
+          </table>
+        </form>
+      </div>
+      {include file="version.html"}
+    </div>
+  </div>
+</div>
+{include file="footer.html"}

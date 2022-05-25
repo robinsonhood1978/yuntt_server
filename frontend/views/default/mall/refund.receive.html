@@ -1,0 +1,55 @@
+{include file="user.header.html"}
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful">{include file="user.submenu.html"}
+      <div class="wrap">
+        <div class="public"> 
+          <!--{if $refundlist}-->
+          <table id="refund-list" border="0" cellpadding="0" cellspacing="0">
+            <tr class="thead">
+              <td width="80">退款编号</td>
+              <td width="160">订单号/宝贝信息</td>
+              <td width="110">买家</td>
+              <td width="80">交易总额</td>
+              <td width="80">退款总额</td>
+              <td width="100">申请时间</td>
+              <td width="100">退款状态</td>
+              <td width="75">操作</td>
+            </tr>
+            <!--{foreach from=$refundlist item=refund}-->
+            <tr class="tbody">
+              <td>{$refund.refund_sn}</td>
+              <td>{$refund.order_sn}<br />
+                <!--{if $refund.order_id}-->
+                <a href="{url route='seller_order/view' order_id=$refund.order_id}" target="_blank">{$refund.title}</a>
+                <!--{else}-->
+                {$refund.title}
+                <!--{/if}-->
+              </td>
+              <td>{$refund.buyer_name}</td>
+              <td>{$refund.total_fee}</td>
+              <td>{$refund.refund_total_fee}</td>
+              <td>{$refund.created|date_format:"%Y.%m.%d %H:%M:%S"}</td>
+              <td> <span style="color:{if $refund.status eq 'CLOSED'}gray{elseif $refund.status eq 'SUCCESS'}#000{else}#FF4F01{/if}">{$refund.status_label}</span>
+                <!--{if !in_array($refund.status,['CLOSED','SUCCESS']) && $refund.intervene}-->
+                <div style="color:#62B44B">{$lang.intervene}</div>
+                <!--{/if} -->
+              </td>
+              <td><a href="{url route='refund/view' id=$refund.refund_id}">查看</a></td>
+            </tr>
+            <!--{/foreach}-->
+          </table>
+          <div class="order_form_page mt10">
+            <div class="page center"> {include file="page.bottom.html"} </div>
+          </div>
+          <!--{else}-->
+          <div class="notice-word">
+            <p>{$lang.no_records}</p>
+          </div>
+          <!--{/if}--> 
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{include file="user.footer.html"} 

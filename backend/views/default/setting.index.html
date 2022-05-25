@@ -1,0 +1,224 @@
+{include file="header.html"}
+<div id="main">
+  {include file="menus.html"}
+  <div id="rightCon" class="clearfix layui-body">
+    <div class="scroller">
+      <div class="flexigrid">
+        <h2 class="bold layui-font-16">基本设置</h2>
+        <form method="post" enctype="multipart/form-data">
+          <table class="infoTable infoTable2">
+            <tr>
+              <th class="paddingT15"><label>{$lang.site_name}</label></th>
+              <td class="paddingT15 wordSpacing5"><input id="site_name" type="text" name="site_name"
+                  value="{$setting.site_name}" class="infoTableInput" /></td>
+            </tr>
+            <tr>
+              <th class="paddingT15"> <label for="site_title">{$lang.site_title}</label></th>
+              <td class="paddingT15 wordSpacing5"><input id="site_title" type="text" name="site_title"
+                  value="{$setting.site_title}" class="infoTableInput" style="width: 500px;" /></td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label> <label>{$lang.site_description}</label></th>
+              <td class="paddingT15 wordSpacing5"><textarea name="site_description" id="site_description"
+                  style="width: 500px;">{$setting.site_description}</textarea></td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.site_keywords}</label></th>
+              <td class="paddingT15 wordSpacing5"><input id="site_keywords" type="text" name="site_keywords"
+                  value="{$setting.site_keywords}" class="infoTableInput" style="width: 500px;" /></td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.hot_keywords}</label></th>
+              <td class="paddingT15 wordSpacing5"><input id="hot_keywords" type="text" name="hot_keywords"
+                  value="{$setting.hot_keywords}" class="infoTableInput" style="width: 500px;" />
+                <div class="notice-word"><p class="layui-font-12 mt5">{$lang.hot_keywords_note}</p></div>
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.icp_number}</label></th>
+              <td class="paddingT15 wordSpacing5"><input id="icp_number" type="text" name="icp_number"
+                  value="{$setting.icp_number}" class="infoTableInput" /></td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.site_phone_tel}</label></th>
+              <td class="paddingT15 wordSpacing5"><input id="site_phone_tel" type="text" name="site_phone_tel"
+                  value="{$setting.site_phone_tel}" class="infoTableInput" /></td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.site_email}</label></th>
+              <td class="paddingT15 wordSpacing5"><input id="site_email" type="text" name="site_email"
+                  value="{$setting.site_email}" class="infoTableInput" /></td>
+            </tr>
+            <tr>
+              <th></th>
+              <td class="ptb20"><input class="layui-btn layui-bg-blue J_AjaxSubmit" type="submit"
+                  value="{$lang.submit}" /></td>
+            </tr>
+          </table>
+        </form>
+      </div>
+      <div class="flexigrid">
+        <h2 class="bold layui-font-16">默认图片</h2>
+        <form method="post" enctype="multipart/form-data">
+          <table class="infoTable infoTable2">
+            <tr>
+              <th class="paddingT15"><label>{$lang.site_logo}</label></th>
+              <td class="paddingT15 wordSpacing5 webkit-box">
+                <div class="input-file-show">
+                  <input class="type-file-file" onchange="getTempPathcallback(this)" name="site_logo" type="file" size="30" hidefocus="true">
+                  <input type="hidden" name="fileVal_site_logo" value="site_logo" />
+                  <div class="type-file-image">
+                    <!--{if !$setting.site_logo}-->
+                    <img class="block" src="{$setting.site_logo|url_format}" width="100" height="100" />
+                    <span>修改图片</span>
+                    <!--{else}-->
+                    <i class="iconfont icon-icon_pic"></i>
+                    <!--{/if}-->
+                  </div>
+                </div>
+                <label class="field_notice f-13 inline-block box-align-center ml20" style="width: 120px;">{$lang.site_logo_desc}</label>
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.default_goods_image}</label></th>
+              <td class="paddingT15 wordSpacing5 webkit-box">
+                <div class="input-file-show">
+                    <input class="type-file-file" onchange="getTempPathcallback(this)" name="default_goods_image" type="file" size="30" hidefocus="true">
+                    <input type="hidden" name="fileVal_default_goods_image" value="default_goods_image" />
+                    <div class="type-file-image">
+                      <!--{if $setting.default_goods_image}-->
+                      <img class="block" src="{$setting.default_goods_image|url_format}" width="100" height="100" />
+                      <span>修改图片</span>
+                      <!--{else}-->
+                      <i class="iconfont icon-icon_pic"></i>
+                      <!--{/if}-->
+                    </div>
+                </div>
+                <label class="field_notice f-13 inline-block box-align-center ml20" style="width: 120px;">{$lang.default_goods_image_desc}</label>
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.default_store_logo}</label></th>
+              <td class="paddingT15 wordSpacing5 webkit-box">
+                <div class="input-file-show">
+                    <input class="type-file-file" onchange="getTempPathcallback(this)" name="default_store_logo" type="file" size="30" hidefocus="true">
+                    <input type="hidden" name="fileVal_default_store_logo" value="default_store_logo" />
+                    <div class="type-file-image">
+                      <!--{if $setting.default_store_logo}-->
+                      <img class="block" src="{$setting.default_store_logo|url_format}" width="100" height="100" />
+                      <span>修改图片</span>
+                      <!--{else}-->
+                      <i class="iconfont icon-icon_pic"></i>
+                      <!--{/if}-->
+                    </div>
+                </div>
+                <label class="field_notice f-13 inline-block box-align-center ml20" style="width: 120px;">{$lang.default_store_logo_desc}</label>
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.default_user_portrait}</label></th>
+              <td class="paddingT15 wordSpacing5 webkit-box">
+                <div class="input-file-show">
+                    <input class="type-file-file" onchange="getTempPathcallback(this)" name="default_user_portrait" type="file" size="30" hidefocus="true">
+                    <input type="hidden" name="fileVal_default_user_portrait" value="default_user_portrait" />
+                    <div class="type-file-image">
+                      <!--{if $setting.default_user_portrait}-->
+                      <img class="block" src="{$setting.default_user_portrait|url_format}" width="100" height="100" />
+                      <span>修改图片</span>
+                      <!--{else}-->
+                      <i class="iconfont icon-icon_pic"></i>
+                      <!--{/if}-->
+                    </div>
+                </div>
+                <label class="field_notice f-13 inline-block box-align-center ml20" style="width: 120px;">{$lang.default_user_portrait_desc}</label>
+              </td>
+            </tr>
+            <tr>
+              <th></th>
+              <td class="ptb20"><input class="layui-btn layui-bg-blue J_AjaxSubmit" type="submit"
+                  value="{$lang.submit}" /></td>
+            </tr>
+          </table>
+        </form>
+      </div>
+      <div class="flexigrid">
+        <h2 class="bold layui-font-16">其他设置</h2>
+        <form method="post" enctype="multipart/form-data">
+          <table class="infoTable infoTable2">
+            <tr>
+              <th class="paddingT15"><label> {$lang.time_zone}</label></th>
+              <td class="paddingT15 wordSpacing5"><select id="time_zone" name="time_zone">
+                  {html_options options=$time_zone selected=$setting.time_zone}
+                </select>
+                <p class="field_notice mt10">{$lang.note_for_time_zone}</p>
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label> {$lang.price_currency}</label></th>
+              <td class="paddingT15 wordSpacing5"><input class="infoTableInput" id="price_currency" type="text"
+                  name="price_currency" value="{$setting.price_currency}" />
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label> {$lang.price_format}</label></th>
+              <td class="paddingT15 wordSpacing5"><input class="infoTableInput" id="price_format" type="text"
+                  name="price_format" value="{$setting.price_format}" />
+                <p class="field_notice mt10">其中 %s会替换具体金额，如：￥50.00</p>
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.statistics_code}</label></th>
+              <td class="paddingT15 wordSpacing5"><textarea name="statistics_code"
+                  id="statistics_code" style="height: 40px;">{$setting.statistics_code|escape}</textarea></td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.site_mode}</label></th>
+              <td class="paddingT15 layui-form">
+                <input type="radio" name="site_mode" value="normal" title="{$lang.site_normal}" {if $setting.site_mode
+                  neq 'debug' }checked{/if} />
+                <input type="radio" name="site_mode" value="debug" title="{$lang.site_debug}" {if $setting.site_mode
+                  eq 'debug' }checked{/if} />
+                <div class="notice-word"><p class="layui-font-12 mt5">{$lang.note_for_site_mode}</p></div>
+              </td>
+            </tr>
+
+            <tr>
+              <th class="paddingT15"><label>{$lang.site_status}</label></th>
+              <td class="paddingT15 layui-form">
+                <input type="radio" name="site_status" value="1" title="{$lang.open}" {if
+                  $setting.site_status}checked{/if} />
+                <input type="radio" name="site_status" value="0" title="{$lang.close}" {if
+                  !$setting.site_status}checked{/if} />
+              </td>
+            </tr>
+
+            <tr>
+              <th class="paddingT15"><label>收货地址</label></th>
+              <td class="paddingT15 layui-form">
+                <input type="radio" name="address_type" value="0" title="国内地址" {if
+                  !$setting.address_type}checked{/if} />
+                <input type="radio" name="address_type" value="1" title="新西兰地址" {if
+                  $setting.address_type}checked{/if} />
+              </td>
+            </tr>
+
+            <tr>
+              <th class="paddingT15"><label> <label>{$lang.closed_reason}</label></th>
+              <td class="paddingT15 wordSpacing5"><textarea name="closed_reason"
+                  id="closed_reason" style="height: 40px;">{$setting.closed_reason}</textarea></td>
+            </tr>
+
+            <tr>
+              <th></th>
+              <td class="ptb20"><input class="layui-btn layui-bg-blue J_AjaxSubmit" type="submit"
+                  value="{$lang.submit}" /></td>
+            </tr>
+          </table>
+        </form>
+      </div>
+
+      {include file="version.html"}
+    </div>
+  </div>
+</div>
+{include file="footer.html"}

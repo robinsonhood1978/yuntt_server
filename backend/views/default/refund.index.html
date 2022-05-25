@@ -1,0 +1,125 @@
+{include file="header.html"}
+<div id="main">
+  {include file="menus.html"}
+  <div id="rightCon" class="clearfix layui-body">
+    <div class="scroller">
+      <div class="search-form clearfix">
+        <form method="get" id="formSearch">
+          <div class="webkit-box box-align-center">
+            <input type="hidden" name="r" value="refund/index" />
+            {$lang.refund_sn}
+            <input class="infoTableInput mr10 ml10" type="text" name="refund_sn"
+              value="{$smarty.get.refund_sn|escape}" />
+            {$lang.buyer_name}
+            <input class="queryInput" type="text" name="buyer_name" value="{$smarty.get.buyer_name|escape}" />
+            {$lang.store_name}
+            <input class="infoTableInput mr10 ml10" type="text" name="store_name" value="{$smarty.get.store_name|escape}" />
+            <label class="mr5">{$lang.search_status}</label>
+            <select class="querySelect" name="status">
+              <option value="">{$lang.no_limit}</option>
+              {html_options options=$status_list selected=$smarty.get.status}
+            </select>
+          </div>
+          <div class="webkit-box box-align-center mt20">
+            {$lang.add_time_from}
+            <input class="queryInput" type="text" value="{$smarty.get.add_time_from}" id="add_time_from"
+              name="add_time_from" class="pick_date" />
+            {$lang.add_time_to}
+            <input class="queryInput" type="text" value="{$smarty.get.add_time_to}" id="add_time_to" name="add_time_to"
+              class="pick_date" />
+            <input type="submit" class="layui-btn layui-bg-blue layui-btn-sm block width7"
+              value="{$lang.query}" />
+            <!--{if $filtered}-->
+            <a class="layui-btn layui-btn-primary layui-btn-sm box-align-center"
+              href="{url route='refund/index'}">{$lang.cancel_query}</a>
+            <!--{/if}-->
+          </div>
+        </form>
+      </div>
+      <div class="tablegrid">
+        <table class="layui-hide" id="tablegrid" lay-filter="tablegrid"></table>
+      </div>
+      {include file="version.html"}
+    </div>
+  </div>
+</div>
+<script type="text/html" id="toolbar">
+	<div class="layui-btn-container">
+	  <button class="layui-btn layui-btn-primary layui-border-black" lay-event="export"><i class="layui-icon layui-icon-export"></i>导出数据</button>
+	</div>
+</script>
+
+<script type="text/html" id="colBar">
+	<a class="ml5 mr5 blue pointer" lay-event="view">查看</a>
+</script>
+<script>
+  layui.use('table', function () {
+    var table = layui.table;
+
+    table.render({
+      elem: '#tablegrid'
+      //,skin: 'line'
+      , url: url(['refund/index', $("#formSearch").serializeJson()])
+      , toolbar: '#toolbar'
+      , defaultToolbar: ['filter', /*'exports',*/ 'print']
+      , title: '退款列表'
+      //, size: 'lg'
+      , cols: [[
+        { type: 'checkbox', fixed: 'left' }
+        , { field: 'refund_id', title: 'ID', width: 70, fixed: 'left', unresize: true, sort: true }
+        , { field: 'refund_sn', title: '退款编号', width: 200 }
+        , { field: 'buyer_name', title: '买家', width: 120 }
+        , { field: 'store_name', title: '店铺名', width: 150 }
+        , { field: 'total_fee', title: '交易金额', width: 125, sort: true, align: 'center' }
+        , { field: 'refund_total_fee', title: '退款金额', width: 125, sort: true }
+        , { field: 'created', title: '申请时间', width: 170, sort: true, align: 'center' }
+        , { field: 'status', title: '退款状态', width: 250, sort: true, align: 'center' }
+        , { field: 'refund_reason', title: '退款原因', width: 250, sort: true, align: 'center' }
+        , {
+          field: 'shipped', title: '收货情况', width: 250, sort: true, align: 'center', templet: function (res) {
+            return res.shipped == 1 ? '已收到货，不退货只退款' : (res.shipped == 2 ? '已收到货，需退货退款' : '未收到货，需要退款');
+          }
+        }
+        , {
+          field: 'intervene', title: '平台介入', width: 130, sort: true, align: 'center', templet: function (res) {
+            return res.intervene == 1 ? '<em class="green"><i class="fa fa-check-circle"></i>' + lang.yes + '</em>' : '<em class="gray"><i class="fa fa-ban"></i>' + lang.no + '</em>';
+          }
+        }
+        , { fixed: 'right', title: '操作', toolbar: '#colBar', width: 110, align: 'center' }
+      ]]
+      , page: {
+        theme: 'blue'
+      }
+    });
+
+    //监听头工具栏事件
+    table.on('toolbar(tablegrid)', function (obj) {
+      var checkStatus = table.checkStatus(obj.config.id);
+      if (checkStatus.data.length <= 0) {
+        return false;
+      }
+      var items = new Array();
+      $.each(checkStatus.data, function (i, item) {
+        items.push(item.refund_id);
+      });
+
+      if (obj.event === 'export') {
+        window.location.href = url(['refund/export', $.extend($("#formSearch").serializeJson(), { id: items.join(',') })]);
+      }
+    });
+
+    //监听行工具事件
+    table.on('tool(tablegrid)', function (obj) {
+      var data = obj.data;
+      if (obj.event === 'view') {
+        window.location.href = url(['refund/view', { id: data.refund_id }]);
+      }
+    });
+  });
+
+  $(function () {
+    $('#add_time_from').datepicker({ dateFormat: 'yy-mm-dd' });
+    $('#add_time_to').datepicker({ dateFormat: 'yy-mm-dd' });
+  });
+</script>
+{include file="footer.html"}

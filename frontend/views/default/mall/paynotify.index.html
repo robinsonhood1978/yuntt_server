@@ -1,0 +1,27 @@
+{include file="header.html"}
+<style type="text/css">
+.mall-nav{ display:none}
+</style>
+<div id="mycart" class="w auto">
+   <div class="step step3 mt10 clearfix">
+      <span class="fs14 f60">{$lang.ckgwc}</span>
+      <span class="fs14 f60">{$lang.qrddxx}</span>
+      <span class="fs14 fff">{$lang.fk}</span>
+      <span class="fs14">{$lang.qrsh}</span>
+      <span class="fs14">{$lang.pj}</span>
+   </div>
+   <div class="order-form cashier succeed clearfix mt20 mb20">
+		<div class="order_info">
+   			<div class="ico {if $payInfo.payment_code neq 'cod' && in_array($payInfo.status, array('PENDING', 'CLOSED'))}defeated{/if}"></div>
+            <div class="text">
+				<h4>{$payInfo.status_label}</h4>
+				<div class="btn">
+                	<!--{foreach from=$payInfo.Links item=item name=fe_item}-->
+                	<a href="{$item.link}">{$item.text}</a> <!--{if !$smarty.foreach.fe_item.last}-->|<!--{/if}-->
+                    <!--{/foreach}-->
+                </div>
+            </div>
+        </div>
+   </div>
+</div>
+{include file="footer.html"}

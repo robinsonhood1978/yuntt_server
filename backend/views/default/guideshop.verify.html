@@ -1,0 +1,70 @@
+{include file="header.html"}
+<div id="main">
+	{include file="menus.html"}
+	<div id="rightCon" class="clearfix layui-body">
+		<div class="scroller">
+			<div class="tablegrid">
+				<table class="layui-hide" id="tablegrid" lay-filter="tablegrid"></table>
+			</div>
+			{include file="version.html"}
+		</div>
+	</div>
+</div>
+<script type="text/html" id="toolbar">
+	<div class="layui-btn-container">
+		<a class="layui-btn layui-bg-blue" href="{url route='guideshop/index'}"><i class="layui-icon layui-icon-return"></i>返回门店列表</a>
+	</div>
+</script>
+
+<script type="text/html" id="colBar">
+	<a class="ml5 mr5 blue pointer" lay-event="agree">通过</a>
+	<a class="ml5 mr5 blue pointer" lay-event="view">拒绝</a>
+	<a class="ml5 mr5 blue pointer" lay-event="view">查看</a>
+</script>
+
+<script>
+	layui.use('table', function () {
+		var table = layui.table;
+
+		table.render({
+			elem: '#tablegrid'
+			//,skin: 'line'
+			, url: url(['guideshop/verify', $("#formSearch").serializeJson()])
+			, toolbar: '#toolbar'
+			, defaultToolbar: ['filter', /*'exports',*/ 'print']
+			, title: '门店审核'
+			//, size: 'lg'
+			, cols: [[
+				{ type: 'checkbox', fixed: 'left' }
+				, { field: 'id', title: 'ID', width: 70, fixed: 'left', unresize: true }
+				, { field: 'owner', title: '团长姓名', width: 200 }
+				, { field: 'phone_mob', title: '团长电话', width: 200 }
+				, { field: 'name', title: '门店名称', width: 160 }
+				, { field: 'address', title: '门店地址', width: 300 }
+				, { field: 'guider_rate', title: '团长返佣比率', width: 160 }
+				, { fixed: 'right', title: '操作', toolbar: '#colBar', width: 200, align: 'center' }
+			]]
+			, page: {
+				theme: 'blue'
+			}
+		});
+
+		//监听行工具事件
+		table.on('tool(tablegrid)', function (obj) {
+			var data = obj.data;
+			if (obj.event == 'agree') {
+				layer.confirm('点击“确认”按钮后，该门店将正式开通', { title: lang.guideshop_verify }, function (index) {
+					var formObj = $('<form><input name="action" value="agree"><form>');
+					ajaxSubmit('post', url(['guideshop/view', { id: data.id }]), formObj);
+					layer.close(index);
+				}, function (index) {
+					layer.close(index);
+				});
+			}
+			else if (obj.event === 'view') {
+				window.location.href = url(['guideshop/view', { id: data.id }]);
+			}
+		});
+	});
+</script>
+{include file="footer.html"}

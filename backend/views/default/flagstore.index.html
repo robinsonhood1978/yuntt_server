@@ -1,0 +1,101 @@
+{include file="header.html"}
+<div id="main">
+	{include file="menus.html"}
+	<div id="rightCon" class="clearfix layui-body">
+		<div class="scroller">
+			<div class="tablegrid">
+				<table class="layui-hide" id="tablegrid" lay-filter="tablegrid"></table>
+			</div>
+			{include file="version.html"}
+		</div>
+	</div>
+</div>
+<script type="text/html" id="toolbar">
+	<div class="layui-btn-container">
+		<a class="layui-btn layui-bg-blue" href="{url route='flagstore/add'}"><i class="layui-icon layui-icon-addition"></i>新增旗舰店</a>
+	  <button class="layui-btn layui-btn-primary layui-border-blue" lay-event="batdel"><i class="layui-icon layui-icon-close"></i>批量删除</button>
+	  <button class="layui-btn layui-btn-primary layui-border-black" lay-event="export"><i class="layui-icon layui-icon-export"></i>导出数据</button>
+	</div>
+</script>
+
+<script type="text/html" id="colBar">
+	<a class="ml5 mr5 blue pointer" lay-event="edit">编辑</a>
+  	<a class="ml5 mr5 blue pointer" lay-event="del" confirm="删除后将不能恢复，确认删除该项吗？">删除</a>
+</script>
+
+<script>
+	layui.use('table', function () {
+		var table = layui.table;
+
+		table.render({
+			elem: '#tablegrid'
+			//,skin: 'line'
+			, url: url(['flagstore/index'])
+			, toolbar: '#toolbar'
+			, defaultToolbar: ['filter', /*'exports',*/ 'print']
+			, title: '旗舰店列表'
+			//, size: 'lg'
+			, cols: [[
+				{ type: 'checkbox', fixed: 'left' }
+				, { field: 'fid', title: 'ID', width: 70, fixed: 'left', unresize: true, sort: true }
+				, { field: 'store_name', title: '店铺名', width: 200, sort: true }
+				, { field: 'brand_name', title: '关联的品牌', width: 190, sort: true, align: 'center' }
+				, { field: 'cate_name', title: '关联的商品分类', width: 190, sort: true }
+				, { field: 'keyword', title: '关键字', width: 180, sort: true }
+				, { field: 'sort_order', title: '排序', width: 90, edit: 'text', sort: true, align: 'center' }
+				, {
+					field: 'status', title: '开启', width: 90, sort: true, align: 'center', templet: function (res) {
+						return res.status == 1 ? '<em class="yes" ectype="inline_edit" controller="flagstore" fieldname="status" fieldid="' + res.fid + '" fieldvalue="1" title="'+lang.editable+'"><i class="fa fa-check-circle"></i>'+lang.yes+'</em>' : '<em class="no" ectype="inline_edit" controller="flagstore" fieldname="status" fieldid="' + res.fid + '" fieldvalue="0" title="'+lang.editable+'"><i class="fa fa-ban"></i>'+lang.no+'</em>';
+					}
+				}
+				, { fixed: 'right', title: '操作', toolbar: '#colBar', width: 200, align: 'center' }
+			]]
+			, page: {
+				theme: 'blue'
+			}
+		});
+
+		//监听头工具栏事件
+		table.on('toolbar(tablegrid)', function (obj) {
+			var checkStatus = table.checkStatus(obj.config.id);
+			if (checkStatus.data.length <= 0) {
+				return false;
+			}
+			var items = new Array();
+			$.each(checkStatus.data, function (i, item) {
+				items.push(item.fid);
+			});
+			if (obj.event === 'batdel') {
+				var btnObj = $('[lay-event="' + obj.event + '"]');
+				btnObj.attr('confirm', '删除后将不能恢复，确认删除这 ' + items.length + ' 项吗？');
+				ajaxRequest(btnObj, url(['flagstore/delete', { id: items.join(',') }]), function () {
+					table.reload('tablegrid');
+				});
+			}
+			else if (obj.event === 'export') {
+				window.location.href = url(['flagstore/export', { id: items.join(',') }]);
+			}
+		});
+
+		//监听行工具事件
+		table.on('tool(tablegrid)', function (obj) {
+			var data = obj.data;
+			if (obj.event === 'del') {
+				var btnObj = $(obj.tr).find('[lay-event="' + obj.event + '"]');
+				ajaxRequest(btnObj, url(['flagstore/delete', { id: data.fid }]), function () {
+					obj.del();
+				});
+			} else if (obj.event === 'edit') {
+				window.location.href = url(['flagstore/edit', { id: data.fid }]);
+			}
+		});
+		//监听行单元格编辑事件
+		table.on('edit(tablegrid)', function (obj) {
+			var fieldObj = $(obj.tr).find('[data-field="' + obj.field + '"]');
+			ajaxRequest(fieldObj, url(['flagstore/editcol', { id: obj.data.fid, column: obj.field, value: obj.value }]), function () {
+				obj.update();
+			});
+		});
+	});
+</script>
+{include file="footer.html"}

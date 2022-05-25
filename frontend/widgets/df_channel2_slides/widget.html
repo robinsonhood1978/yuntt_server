@@ -1,0 +1,27 @@
+<!--{if $widget_data.ads}-->
+<div class="channel2-slides J_S{$widget_data.model_id}">
+    <div class="scroller">
+        <ul class="ks-content ks-switchable-content clearfix bd">
+            <!--{foreach from=$widget_data.ads item=ad}-->
+            <li>
+                <a href="{$ad.ad_link_url}" target="_blank"><img src="{$ad.ad_image_url|url_format}" width="970" height="350" /></a>
+            </li>
+            <!--{/foreach}-->
+        </ul>
+    </div>
+    <div class="number-bg">
+        <div class="ks-switchable-nav hd">
+           <!-- {foreach from=$widget_data.ads item=ad name=fe_ad} -->
+           <span {if $smarty.foreach.fe_ad.first}class="ks-active"{/if}></span>
+           <!-- {/foreach} -->
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$(".J_S{$widget_data.model_id}").slide({ titCell:".hd span", mainCell:".bd", effect:"leftLoop",autoPlay:true, titOnClassName:"ks-active", delayTime:1000, interTime: 5000});
+});
+</script> 
+<!--{else}-->
+<center style="padding:10px;">请配置</center>
+<!--{/if}-->

@@ -1,0 +1,129 @@
+{include file="header.html"}
+<div id="main">
+  {include file="menus.html"}
+  <div id="rightCon" class="clearfix layui-body">
+    <div class="scroller">
+      <div class="layui-tab">
+        <ul class="layui-tab-title">
+          <li><a href="{url route='msg/index'}">{$lang.sendlog}</a></li>
+          <li><a href="{url route='msg/recharge'}">{$lang.msgrecharge}</a></li>
+          <li class="layui-this">{$lang.msguser}</li>
+          <li><a href="{url route='msg/add'}">{$lang.msgadd}</a></li>
+          <li><a href="{url route='msg/template'}">{$lang.msgtemplate}</a></li>
+          <li><a href="{url route='msg/send'}">{$lang.sendtest}</a></li>
+        </ul>
+      </div>
+      <div class="search-form clearfix">
+        <form method="get" id="formSearch">
+          <div class="webkit-box box-align-center">
+            <input type="hidden" name="r" value="msg/user" />
+            {$lang.username}
+            <input class="queryInput" type="text" name="username" value="{$smarty.get.username|escape}" />
+            {$lang.phone_mob}
+            <input class="queryInput" type="text" name="phone_mob" value="{$smarty.get.phone_mob|escape}" />
+            {$lang.state}
+            <select class="querySelect" name="state">
+              <option value="">{$lang.select_pls}</option>
+              {html_options options=$status_list selected=$smarty.get.state}
+            </select>
+            <input type="submit" class="layui-btn layui-bg-blue layui-btn-sm block width7"
+              value="{$lang.query}" />
+            <!--{if $filtered}-->
+            <a class="layui-btn layui-btn-primary layui-btn-sm box-align-center"
+              href="{url route='msg/user'}">{$lang.cancel_query}</a>
+            <!--{/if}-->
+          </div>
+        </form>
+      </div>
+      <div class="tablegrid">
+        <table class="layui-hide" id="tablegrid" lay-filter="tablegrid"></table>
+      </div>
+      {include file="version.html"}
+    </div>
+  </div>
+</div>
+<script type="text/html" id="toolbar">
+	<div class="layui-btn-container">
+    <button class="layui-btn layui-bg-blue" lay-event="recharge"><i class="layui-icon layui-icon-addition"></i>短信充值</button>
+	</div>
+</script>
+
+<script>
+  layui.use('table', function () {
+    var table = layui.table;
+
+    table.render({
+      elem: '#tablegrid'
+      //,skin: 'line'
+      , url: url(['msg/user', $("#formSearch").serializeJson()])
+      , toolbar: '#toolbar'
+      , defaultToolbar: ['filter', /*'exports',*/ 'print']
+      , title: '短信用户列表'
+      //, size: 'lg'
+      , cols: [[
+        { type: 'checkbox', fixed: 'left' }
+        , { field: 'id', title: 'ID', width: 70, fixed: 'left', unresize: true, sort: true }
+        , { field: 'username', title: '用户名', width: 100, sort: true }
+        , { field: 'phone_mob', title: '手机号码', width: 200, sort: true }
+        , { field: 'num', title: '短信可用数量', width: 170, sort: true }
+        , {
+          field: 'toseller_new_order_notify', title: '买家下单通知卖家', width: 170, align: 'center', templet: function (res) {
+            return res.toseller_new_order_notify ? '<i class="layui-icon layui-icon-ok layui-font-red bold"></i>' : '<i class="layui-icon layui-icon-close layui-font-gray bold"></i>';
+          }
+        }
+        , {
+          field: 'toseller_online_pay_success_notify', title: '买家付款通知卖家', width: 170, align: 'center', templet: function (res) {
+            return res.toseller_online_pay_success_notify ? '<i class="layui-icon layui-icon-ok layui-font-red bold"></i>' : '<i class="layui-icon layui-icon-close layui-font-gray bold"></i>';
+          }
+        }
+        , {
+          field: 'tobuyer_shipped_notify', title: '卖家发货通知买家', width: 170, align: 'center', templet: function (res) {
+            return res.tobuyer_shipped_notify ? '<i class="layui-icon layui-icon-ok layui-font-red bold"></i>' : '<i class="layui-icon layui-icon-close layui-font-gray bold"></i>';
+          }
+        }
+        , {
+          field: 'toseller_finish_notify', title: '买家收货通知卖家', width: 170, align: 'center', templet: function (res) {
+            return res.toseller_finish_notify ? '<i class="layui-icon layui-icon-ok layui-font-red bold"></i>' : '<i class="layui-icon layui-icon-close layui-font-gray bold"></i>';
+          }
+        }
+        , {
+          field: 'toseller_refund_apply_notify', title: '买家退款通知卖家', width: 170, align: 'center', templet: function (res) {
+            return res.toseller_refund_apply_notify ? '<i class="layui-icon layui-icon-ok layui-font-red bold"></i>' : '<i class="layui-icon layui-icon-close layui-font-gray bold"></i>';
+          }
+        }
+        , {
+          field: 'tobuyer_refund_agree_notify', title: '退款成功通知买家', width: 170, align: 'center', templet: function (res) {
+            return res.tobuyer_refund_agree_notify ? '<i class="layui-icon layui-icon-ok layui-font-red bold"></i>' : '<i class="layui-icon layui-icon-close layui-font-gray bold"></i>';
+          }
+        }
+        , {
+          fixed: 'right', field: 'state', title: '状态', width: 110, templet: function (res) {
+            return res.state == 1 ? '<em class="green"><i class="fa fa-check-circle"></i>' + lang.enable + '</em>' : '<em class="gray"><i class="fa fa-ban"></i>' + lang.closed + '</em>';
+          }
+        }
+      ]]
+      , page: {
+        theme: 'blue'
+      }
+    });
+
+    //监听头工具栏事件
+    table.on('toolbar(tablegrid)', function (obj) {
+      var checkStatus = table.checkStatus(obj.config.id);
+      if (checkStatus.data.length <= 0) {
+        return false;
+      }
+      var items = new Array();
+      $.each(checkStatus.data, function (i, item) {
+        items.push(item.userid);
+      });
+      if (obj.event === 'recharge') {
+        if (items.length > 1) {
+          return layer.msg("只能请选择一项");
+        }
+        window.location.href = url(['msg/add', { userid: items[0] }]);
+      }
+    });
+  });
+</script>
+{include file="footer.html"}

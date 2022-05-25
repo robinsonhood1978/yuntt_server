@@ -1,0 +1,175 @@
+{use class='\common\library\Def'}
+{include file="user.header.html"}
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful">{include file="user.submenu.html"}
+      <div class="wrap">
+        <div class="public_index table">
+          <table>
+            <tr class="line_bold">
+              <th colspan="8"> <div class="search_div clearfix align1">
+                  <form method="get" class="float-left clearfix">
+                    <div class="float-left"> <span class="title">{$lang.order_sn}:</span>
+                      <input class="text_normal" type="text" name="order_sn" value="{$smarty.get.order_sn|escape}" />
+                      <span class="title">{$lang.add_time}:</span>
+                      <input class="text_normal width2" type="text" name="add_time_from" id="add_time_from" value="{$smarty.get.add_time_from}" />
+                      &#8211;
+                      <input class="text_normal width2" id="add_time_to" type="text" name="add_time_to" value="{$smarty.get.add_time_to}" />
+                      <span class="title">{$lang.buyer_name}:</span>
+                      <input class="text_normal" type="text" name="buyer_name" value="{$smarty.get.buyer_name|escape}" />
+                      <input type="hidden" name="type" value="{$smarty.get.type}" />
+                      <input type="submit" class="btn" value="{$lang.search}" />
+                    </div>
+                    <!--{if $filtered}-->
+                    <a class="detlink" href="{url route='seller_order/index' type=$query.type}">{$lang.cancel_query}</a> 
+                    <!--{/if}-->
+                  </form>
+                </div>
+              </th>
+            </tr>
+            <tr class="sep-row" height="20">
+              <td colspan="8"></td>
+            </tr>
+            <tr class="line gray">
+              <th class="align1">
+              	<label class="mr20"><input type="checkbox" id="all" class="checkall mr5" />{$lang.checkall}</label>
+                <span class="ml10">{$lang.goods_name}</span>
+              </th>
+              <th>{$lang.price}</th>
+              <th>{$lang.quantity}</th>
+              <th>{$lang.payment_name}</th>
+              <th>{$lang.buyer_name}</th>
+              <th>{$lang.order_amount}</th>
+              <th>{$lang.order_status}</th>
+              <th>{$lang.evaluation}</th>
+            </tr>
+            <!--{if $orders}-->
+           
+            <!-- 循环开始 --> 
+            <!--{foreach from=$orders item=order name=fe_order}-->
+            <tr class="sep-row" height="10">
+              <td colspan="8"></td>
+            </tr>
+            <tr class="line-hd">
+              <th colspan="8" class="clearfix"> <p class="float-left">
+                  <input type="checkbox" value="{$order.order_id}" class="checkitem J_CheckItem" />
+                  <label>订单号：</label>
+                  {$order.order_sn}
+                  <label>成交时间：</label>
+                  {$order.add_time|date_format:"%Y.%m.%d %H:%M:%S"} </p>
+                <div class="memo float-right J_Memo"> <a uri="{url route='seller_order/memo' order_id=$order.order_id}" dialog_width="450" dialog_title="{$lang.memo}" ectype="dialog"  dialog_id="seller_order_memo" id="order{$order.order_id}_action_memo" class="flag flag{$order.flag}" /></a>
+                  <p class="pop">{$order.memo}</p>
+                </div>
+              </th>
+            </tr>
+            
+            <!--{foreach from=$order.orderGoods item=goods name=fe_goods}-->
+            <tr class="line line-blue {if $smarty.foreach.fe_goods.last}last_line{/if}">
+              <td valign="top" class="first clearfix"><div class="pic-info float-left"> <a href="{url route='goods/index' id=$goods.goods_id}" target="_blank"><img src="{$goods.goods_image|url_format}" width="50" height="50" /></a> </div>
+                <div class="txt-info float-left">
+                  <div class="txt"> <a href="{url route='goods/index' id=$goods.goods_id}" target="_blank">{$goods.goods_name}</a> </div>
+                  <!--{if $goods.specification}-->
+                  <p class="gray-color mt5">{$goods.specification}</p>
+                  <!--{/if}--> 
+                </div></td>
+              <td valign="top" class="align2">{$goods.price}</td>
+              <td valign="top" class="align2"><strong>{$goods.quantity}</strong></td>
+              <!--{if $smarty.foreach.fe_goods.first}-->
+              <td valign="top" class="align2 bottom-blue" rowspan="{$order.goods_quantities}"> {$order.payment_name|escape} </td>
+              <td valign="top" class="align2 bottom-blue" rowspan="{$order.goods_quantities}"><a title="{$order.buyer_name}" href="{url route='my_message/send' to_id=$order.buyer_id}" target="_blank">{$order.buyer_name|truncate:12}</a> <br />
+              <td valign="top" class="align2 bottom-blue" rowspan="{$order.goods_quantities}"><strong>{$order.order_amount}</strong><br />
+                <span class="gray-color">(含运费:{$order.shipping_fee})</span>
+                <div class="btn-order-status"> 
+                  <!--调整费用--> 
+                  <a href="javascript:;" uri="{url route='seller_order/adjustfee' order_id=$order.order_id}" dialog_width="450" dialog_title="{$lang.adjust_fee}" ectype="dialog"  dialog_id="seller_order_adjust_fee" id="order{$order.order_id}_action_adjust_fee"{if $order.status neq Def::ORDER_PENDING and $order.status neq Def::ORDER_SUBMITTED} style="display:none"{/if} >{$lang.adjust_fee}</a> 
+                  
+                  <!--{if $order.refund_status eq 'SUCCESS'}-->  
+                  <a href="{url route='refund/view' id=$order.refund_id}" style="color:#096">退款成功</a> 
+                  <!--{elseif $order.refund_status eq 'CLOSED'}--> 
+                  <a href="{url route='refund/view' id=$order.refund_id}" class="gray">退款关闭</a> 
+                  <!--{elseif $order.refund_status}--> 
+                  <a href="{url route='refund/view' id=$order.refund_id}" style="color:#ff6600">退款中</a>  
+                  <!--{/if}--> 
+                </div></td>
+              <td valign="top"class="align2 bottom-blue" rowspan="{$order.goods_quantities}"><div class="btn-order-status">
+                  <p><span class="{if $order.status==0}gray-color{else}color4{/if}">{Def::getOrderStatus($order.status)}</span></p>
+                  <!--查看订单--> 
+                  <a href="{url route='seller_order/view' order_id=$order.order_id}" target="_blank">{$lang.view_order}</a> 
+                  <!--发货--> 
+                  <a href="javascript:;" class="btn-order-status-shipped" ectype="dialog" dialog_title="{$lang.shipped_order}" dialog_id="seller_order_shipped" uri="{url route='seller_order/shipped' order_id=$order.order_id}" dialog_width="400" id="order{$order.order_id}_action_shipped"{if $order.status neq Def::ORDER_ACCEPTED && ($order.status neq Def::ORDER_SUBMITTED || $order.payment_code neq 'cod')} style="display:none"{/if} />{$lang.shipped_order}</a>
+                  <!--取消订单 只有已提交和待付款的订单可以取消-->
+                  <a href="javascript:;" ectype="dialog" uri="{url route='seller_order/cancel' order_id=$order.order_id}" dialog_title="{$lang.cancel_order}" dialog_id="seller_order_cancel" dialog_width="400" id="order{$order.order_id}_action_cancel"{if $order.status neq Def::ORDER_SUBMITTED && $order.status neq Def::ORDER_PENDING} style="display:none"{/if} />{$lang.cancel_order}</a> 
+                  <!--修改单号--> 
+                  <a href="javascript:;" ectype="dialog" dialog_title="{$lang.edit_express_no}" uri="{url route='seller_order/shipped' order_id=$order.order_id}" dialog_id="seller_order_shipped" dialog_width="400" id="order{$order.order_id}_action_edit_express_no"{if $order.status neq Def::ORDER_SHIPPED} style="display:none" {/if} />{$lang.edit_express_no}</a>
+                  <!-- 查看物流 --> 
+                  <!--{if $enable_express}--> 
+                  <a target="_blank" class="btn1" href="{url route='express/index' order_id=$order.order_id}" {if $order.status neq Def::ORDER_SHIPPED && $order.status neq Def::ORDER_FINISHED} style="display:none"{/if}>{$lang.view_delivery_track}</a> 
+                  <!--{/if}--> 
+                </div></td>
+              <td valign="top" width="54" class="align2 bottom-blue last" rowspan="{$order.goods_quantities}"><!--{if $order.evaluation_status}-->
+                
+                <p class="gray-color">{$lang.already_evaluate}</p>
+                
+                <!--{/if}--></td>
+              <!--{/if}--> 
+            </tr>
+            <!--{/foreach}--> 
+            <!--{/foreach}-->
+            
+            <tr class="sep-row">
+              <td colspan="8"></td>
+            </tr>
+            <tr class="operations btion">
+              
+              <th colspan="8"> <p class="position1 clearfix">
+                  <input type="checkbox" id="all2" class="checkall float-left mt5" />
+                  <label for="all2" class="float-left mr20 ml5" style="margin-top:2px;">{$lang.checkall}</label>
+                  <a href="javascript:;" class="delete" ectype="batchopt" uri="{url route='seller_order/cancel'}" name="order_id">{$lang.cancel_order}</a> <a href="javascript:;" class="printed" dialog_title="{$lang.print_order}" ectype="batchopt" uri="{url route='seller_order/printed'}" dialog_id="seller_order_printed" name="order_id">{$lang.print_order}</a></p>
+                <div class="position2 clearfix center">{include file="page.bottom.html"}</div>
+              </th>
+            </tr>
+            
+            <!--{else}-->
+            <tr class="sep-row">
+              <td colspan="8"><div class="notice-word">
+                  <p>{$lang.no_records}</p>
+                </div></td>
+            </tr>
+            <!--{/if}-->
+            
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+    $('#add_time_from').datepicker({ dateFormat: 'yy-mm-dd'});
+    $('#add_time_to').datepicker({ dateFormat: 'yy-mm-dd'});
+
+    $('*[ectype="batchopt"]').click(function(){
+        var items = getCheckItemIds();
+		if(items)
+		{
+        	var uri = $(this).attr('uri');
+			var depr = ($(this).attr('uri').indexOf('?') > -1) ? '&' : '?';
+        	var id = $(this).attr('dialog_id') ? $(this).attr('dialog_id') : 'seller_order_cancel';
+        	var title = $(this).attr('dialog_title') ? $(this).attr('dialog_title') : '{$lang.cancel_order}';
+        	ajax_form(id, title, uri + depr + $(this).attr('name') + '=' + items, 500);
+		}
+		else {
+			layer.msg(lang.no_records)
+		}
+		return false;
+    });
+	
+	$('.J_Memo').hover(function(){
+		$(this).children('.pop').show('fast');
+	},function(){
+		$(this).children('.pop').hide('fast');
+	});
+});
+</script>
+<iframe id="iframe" name="iframe" src="about:blank" frameborder="0" width="0" height="0" style="display:none"></iframe>
+{include file="user.footer.html"}

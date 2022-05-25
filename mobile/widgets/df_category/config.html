@@ -1,0 +1,92 @@
+<div class="widget-box">
+    <h3 class="title mt20 mb20 pb20"><strong class="fs18">分类导航</strong></h3>
+    <div class="content">
+        <div class="item webkit-box">
+            <label class="gray">背景颜色</label>
+            <p class="flex1 ml10 color">{$options.bgcolor|default:'#fc2b34'}</p>
+            <input type="hidden" name="bgcolor" value="{$options.bgcolor|default:'#fc2b34'}" />
+            <span class="f60 pointer J_Reset" data-id="picker1" data-value="#fc2b34">重置</span>
+            <p class="picker1 ml10"></p>
+        </div>
+        <div class="item webkit-box">
+            <label class="gray">文字颜色</label>
+            <p class="flex1 ml10 color">{$options.txtcolor|default:'#ffffff'}</p>
+            <input type="hidden" name="txtcolor" value="{$options.txtcolor|default:'#ffffff'}" />
+            <span class="f60 pointer J_Reset" data-id="picker2" data-value="#ffffff">重置</span>
+            <p class="picker2 ml10"></p>
+        </div>
+        <div class="item webkit-box">
+            <label class="gray">选中颜色</label>
+            <p class="flex1 ml10 color">{$options.selColor|default:'#ffffff'}</p>
+            <input type="hidden" name="selColor" value="{$options.selColor|default:'#ffffff'}" />
+            <span class="f60 pointer J_Reset" data-id="picker3" data-value="#ffffff">重置</span>
+            <p class="picker3 ml10"></p>
+        </div>
+        <div class="item webkit-box">
+            <label class="gray">选中加粗</label>
+            <p class="flex1"></p>
+            <input type="hidden" name="txtbold" value="{$options.txtbold|default:1}" />
+            <span class="layui-form">
+                <input lay-filter="filter" type="checkbox" {if $options.txtbold}checked{/if} lay-skin="switch">
+            </span>
+        </div>
+        <h4 class="mt10 pb10 mt20 pt20">其他设置</h4>
+        <div class="item webkit-box">
+            <label class="gray">隐藏首页</label>
+            <p class="flex1"></p>
+            <input type="hidden" name="homehide" value="{$options.homehide|default:0}" />
+            <span class="layui-form">
+                <input lay-filter="filter" type="checkbox" {if $options.homehide}checked{/if} lay-skin="switch">
+            </span>
+        </div>
+        <div class="item webkit-box">
+            <label class="gray">隐藏更多</label>
+            <p class="flex1"></p>
+            <input type="hidden" name="morehide" value="{$options.morehide|default:0}" />
+            <span class="layui-form">
+                <input lay-filter="filter" type="checkbox" {if $options.morehide}checked{/if} lay-skin="switch">
+            </span>
+        </div>
+        <div class="item webkit-box">
+            <label class="gray">模块间距</label>
+            <input type="hidden" name="space" value="{$options.space|default:0}" />
+            <div class="flex1 ml20 slider" style="margin-top:15px"></div>
+        </div>
+    </div>
+</div>
+
+<style>
+    
+</style>
+<script>
+    $(function () {
+        $('.J_Reset').click(function () {
+            var value = $(this).attr('data-value');
+            $(this).parent('.item').find('input[type="hidden"]').val(value);
+            save_widget();
+        });
+
+        layui.use('form', function () {
+            var form = layui.form;
+            form.on('switch(filter)', function (data) {
+                $(this).parents('.item').find('input').val(data.elem.checked ? 1 : 0);
+                save_widget();
+            });
+
+            form.render();
+        });
+
+        slideRender('.slider', function(dom, value) {
+            save_widget(false);
+        });
+        colorRender('.picker1', function(dom, value) {
+            save_widget();
+        });
+        colorRender('.picker2', function(dom, value) {
+            save_widget();
+        });
+        colorRender('.picker3', function(dom, value) {
+            save_widget();
+        });
+    });
+</script>

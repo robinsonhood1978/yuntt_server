@@ -1,0 +1,48 @@
+<div class="eject_con">
+  <div class="add">
+    <div id="warning"></div>
+    <form method="post" id="distribute_form" target="iframe" action="{$action}">
+     	<h1>正在为以下商品设置分销</h1>
+		<!--{foreach from=$goodsList item=goods name=fe_goods}-->
+		<p style="margin: 5px 0;">商品 {$smarty.foreach.fe_goods.iteration}&nbsp;&nbsp;:&nbsp;&nbsp;<a href="{url route='goods/index' id=$goods.goods_id}" target="_blank"><span>{$goods.goods_name|truncate:30:"...":true}</span></a></p>
+		<!--{/foreach}-->
+      <ul>
+        <li class="mt10">
+          <h3>开启分销:</h3>
+          <p style="line-height: 24px;">
+            <label>
+              <input type="radio"  style="margin-right:5px;" name="enabled" value="0" {if $setting.enabled eq 0}checked="checked"{/if} />
+              {$lang.disable} </label>
+            <label class="ml10">
+              <input type="radio" name="enabled" value="1" {if !$setting || $setting.enabled eq 1}checked="checked"{/if} />
+              {$lang.enable} </label>
+          </p>
+        </li>
+        <li>
+          <h3>{$lang.ratio1}: </h3>
+          <p>
+            <input type="text" class="text width_short" name="ratio1" value="{$setting.ratio1}"/>
+            <label class="field_message"><span class="field_notice">{$lang.ratio_desc}</span></label>
+          </p>
+        </li>
+        <li>
+          <h3>{$lang.ratio2}: </h3>
+          <p>
+            <input type="text" class="text width_short" name="ratio2" value="{$setting.ratio2}" />
+            <label class="field_message"><span class="field_notice">{$lang.ratio_desc}</span></label>
+          </p>
+        </li>
+        <li>
+          <h3>{$lang.ratio3}:</h3>
+          <p>
+            <input type="text" class="text width_short"  name="ratio3" value="{$setting.ratio3}"/>
+            <label class="field_message"><span class="field_notice">{$lang.ratio_desc}</span></label>
+          </p>
+        </li>        
+      </ul>
+      <div class="submit">
+        <input type="submit" class="btn" value="{$lang.submit}" />
+      </div>
+    </form>
+  </div>
+</div>

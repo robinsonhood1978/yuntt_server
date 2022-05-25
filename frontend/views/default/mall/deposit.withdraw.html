@@ -1,0 +1,81 @@
+{include file="user.header.html"}
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful">{include file="user.submenu.html"}
+      <div class="wrap">
+        <div class="public table deposit">
+          <div class="deposit-withdraw"> 
+            <!--{if $deposit_account.money gt 0}--> 
+            <!--{if !$myBank.list}-->
+            <div class="notice-word">
+              <p>您还没有设置提现银行卡，请先设置后再申请提现。<a href="{url route='bank/add'}">马上设置</a></p>
+            </div>
+            <!--{else}-->
+            <div class="notice-word">
+              <p>向平台商提交提现申请，审核通过之后，平台将向您提交的银行卡汇款，请确保您的银行卡信息正确</p>
+            </div>
+            <form method="get" id="deposit-withdraw" action="{url route='deposit/withdrawconfirm'}">
+             <!--{if !$app->urlManager->enablePrettyUrl}-->
+      		<input type="hidden" name="r" value="deposit/withdrawconfirm" />
+      		<!--{/if}-->
+              <div class="title clearfix">
+                <h2 class="float-left">提取余额到银行卡</h2>
+                <p class="float-left">余额：<strong>{$deposit_account.money}</strong> 元</p>
+                <!--{if $deposit_account.nodrawal gt 0}-->
+                <p class="float-left" style="margin-left: 0;">，不可提现金额：<strong>{$deposit_account.nodrawal}</strong> 元</p>
+                <!--{/if}-->
+                <div class="float-right link"> <a class="add-bank" href="{url route='bank/add' type=debit}">添加银行卡</a> <a href="{url route='deposit/drawlist'}">提现记录</a> </div>
+              </div>
+              <div class="form">
+                <dl class="clearfix">
+                  <dt>选择银行卡：</dt>
+                  <dd>   
+                    <!--{foreach from=$myBank.list item=bank name=fe_bank}-->
+                    <div class="bank-each clearfix {if $smarty.foreach.fe_bank.first} selected {/if}">
+                      <div class="radio float-left">
+                        <input name="bid" type="radio" value="{$bank.bid}" {if $smarty.foreach.fe_bank.first} checked="checked" {/if}/>
+                      </div>
+                      <div class="bank-name float-left">{$bank.bank_name}</div>
+                      <div class="bank-num float-left">{$bank.num}</div>
+                      <div class="action float-right"> <a href="{url route='bank/edit' bid=$bank.bid}">{$lang.edit}</a> </div>
+                    </div>
+                    <!--{/foreach}--> 
+                  </dd>
+                </dl>
+                <dl class="clearfix">
+                  <dt>提现金额：</dt>
+                  <dd>
+                    <input type="text" name="money" class="text" value="" />
+                    元</dd>
+                </dl>
+                <dl class="clearfix">
+                  <dt>&nbsp;</dt>
+                  <dd class="submit"> <span class="btn-alipay">
+                    <input type="submit" value="下一步" />
+                    </span> </dd>
+                </dl>
+              </div>
+            </form>
+            <!--{/if}--> 
+            <!--{else}-->
+            <div class="notice-word">
+              <p>您目前账户余额为<span class="f60">0</span>元，不能申请提现。</p>
+            </div>
+            <!--{/if}--> 
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$('#deposit-withdraw').submit(function(){
+		if($(this).find('input[name="money"]').val()=='' || $(this).find('input[name="money"]').val() <= 0) {
+			layer.msg('{$lang.withdraw_money_error}');
+			return false;
+		}
+	});
+})
+</script>
+{include file="user.footer.html"}

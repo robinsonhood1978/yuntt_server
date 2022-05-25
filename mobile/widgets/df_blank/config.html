@@ -1,0 +1,34 @@
+<div class="widget-box">
+    <h3 class="title mt20 mb20 pb20"><strong class="fs18">辅助空白</strong></h3>
+    <div class="content">
+        <div class="item webkit-box">
+            <label class="gray">填充颜色</label>
+            <p class="flex1 ml10 color">{$options.bgcolor|default:''}</p>
+            <input type="hidden" name="bgcolor" value="{$options.bgcolor|default:''}" />
+            <span class="f60 pointer J_Reset" data-id="picker1" data-value="">重置</span>
+            <p class="picker1 ml10"></p>
+        </div>
+        <div class="item webkit-box">
+            <label class="gray">空白高度</label>
+            <input type="hidden" name="height" value="{$options.height|default:60}" />
+            <div class="flex1 ml20 slider" style="margin-top:15px"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.J_Reset').click(function () {
+            var value = $(this).attr('data-value');
+            $(this).parent('.item').find('input[type="hidden"]').val(value);
+            save_widget();
+        });
+        colorRender('.picker1', function(dom, value) {
+            save_widget();
+        })
+        slideRender('.slider', function (dom, value) {
+            save_widget(false);
+        });
+
+    });
+</script>

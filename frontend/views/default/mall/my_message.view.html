@@ -1,0 +1,53 @@
+{include file="user.header.html"}
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful">{include file="user.submenu.html"}
+      <div class="wrap">
+        <div class="public">
+          <div class="message message_line">
+            <div class="message_con">
+              <div class="user">
+                <p><img src="{$message.portrait|default:$app->params['default_user_portrait']|url_format}" width="50" height="50" /></p>
+                <h3><span>{$message.username}</span><br />
+                  {$message.add_time|date_format:"%Y.%m.%d %H:%M:%S"}</h3>
+              </div>
+              <div class="txt">{$message.content}</div>
+            </div>
+             
+            <!--{foreach from=$message.replies item=reply}-->
+            <div class="message_con">
+              <div class="user">
+                <p><img src="{$reply.portrait|default:$app->params['default_user_portrait']|url_format}" width="50" height="50" /></p>
+                <h3><span>{$reply.username|escape}</span><br />
+                  {$reply.add_time|date_format:"%Y.%m.%d %H:%M:%S"}</h3>
+              </div>
+              <div class="txt">{$reply.content}</div>
+            </div>
+            <!--{/foreach}--> 
+            
+          </div>
+          <!--{if $message.privatepm}-->
+          <div class="message">
+            <h2><span>{$lang.reply}</span></h2>
+            <dl>
+              <form method="post">
+                <dt>{$lang.content}</dt>
+                <dd>
+                  <p>
+                    <textarea class="text" name="content"></textarea>
+                  </p>
+                  
+                  <p>
+                    <input type="submit" class="btn-alipay" value="{$lang.submit}" />
+                  </p>
+                </dd>
+              </form>
+            </dl>
+          </div>
+          <!--{/if}--> 
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{include file="user.footer.html"} 

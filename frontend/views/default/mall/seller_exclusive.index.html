@@ -1,0 +1,53 @@
+{include file="user.header.html"}
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful">{include file="user.submenu.html"}
+      <div id="page-promotool" class="wrap page-promotool clearfix">
+        <div class="public_select">
+          <div class="promotool">
+            <div class="bundle bundle-list"> 
+              <!--{if $tooldisabled}-->
+              <div class="notice-word">
+                <p>{$tooldisabled}</p>
+              </div>
+              <!--{else}-->
+              <div class="notice-word">
+                <p class="yellow-big">{$lang.note_for_create}</p>
+              </div>
+              <div class="promotool-form exclusive">
+                <form id="exclusive_form" method="post">
+                  <ul class="form">
+                    <li>
+                      <h3>{$lang.exclusive_discount}<span class="gray">({$lang.default})</span></h3>
+                    </li>
+                    <li>
+                      <input type="text" name="exclusive[discount]" id="exclusive[discount]" class="input" value="{$exclusive.rules.discount}" />
+                      <span>{$lang.zhe}</span></li>
+                    <li>
+                      <h3>{$lang.exclusive_decrease}</h3>
+                    </li>
+                    <li>
+                      <input type="text" name="exclusive[decrease]" id="exclusive[decrease]" class="input" value="{$exclusive.rules.decrease}" />
+                      <span>{$lang.yuan}</span></li>
+                    <li>
+                      <h3>{$lang.launch}</h3>
+                    </li>
+                    <li class="clearfix">
+                      <label class="switch-checkbox-radio inline-block box-align-center J_SwtcherInput {if $exclusive.status || !$exclusive}checked{/if}" for="switcher"><span class="switcher-style block"></span></label>
+                      <input name="status" class="hidden" id="switcher" value="1" type="checkbox" {if $exclusive.status || !$exclusive} checked="checked" {/if}>
+                    </li>
+                    <li>
+                      <input type="submit" value="{$lang.submit}" class="J_AjaxSubmit submit" />
+                    </li>
+                  </ul>
+                </form>
+              </div>
+              <!--{/if}--> 
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{include file="user.footer.html"}

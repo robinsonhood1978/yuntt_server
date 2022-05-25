@@ -1,0 +1,90 @@
+ShopWind多用户商城系统V3.x
+
+一、产品介绍
+ShopWind是广西南宁领众网络科技有限公司开发的PHP多用户商城系统。一款基于Yii2.0框架深度重构的B2B2C、O2O行业的电商系统软件， 配合iOS、Android移动应用，您可以轻松创建和发布属于自己品牌的专业的电商平台， 进行全方位的品牌宣传和产品推广。  
+系统支持入驻和自营两种模式，支持手机PC、后台绑定独立城名，支持流行的微信支付，扫码支付，支付宝支付，银联支付，余额支付等，也可以方便拓展对接其他的支付接口。可以与微信公众号的对接，实现自定义菜单、自动回复、关注自动登录、微信分享等。包含了常规的营销工具，如：限时促销、满包邮、满折满减、搭配套餐、手机专享以及积分换购功能。系统支持三级分销功能，可以实现无限级会员，三级分佣，用户无需开店，申请成为分销商即可分享佣金，获取收益。
+ShopWind系统高拓展性可以使其很方便的通过Composer安装强大的第三方资源库，这极大的提高了开发人员的开发效率，系统内核也可以通过Composer直接免费升级。
+
+二、产品架构
+ShopWind基于优秀的开源框架Yii2.0底层开发，采用MVC开发模式，逻辑层和视图层完美分离，拓展性高，安全性高。Yii以快速、安全、专业著称，是一个高性能、高拓展，适合开发大型WEB2.0的PHP框架，ShopWind集成了Yii2框架的所有优点，是您搭建电商网站，移动应用的理想选择。
+
+三、环境要求：https://www.shopwind.net/forum/thread-264.html
+四、安装流程：https://www.shopwind.net/forum/thread-252.html
+五、官方演示：http://test.shopwind.net
+
+	
+
+**特别声明**
+
+ShopWind电商系统遵循Apache2.0开源协议，但为了更好的保护我们的软件不被侵害，我们对开源协议做了附加条款，在使用该软件前，请务必认真阅读我们的《开源协议》，以了解您的权利和义务。
+ShopWind唯一官网：https://www.shopwind.net 
+ShopWind开源协议：https://www.shopwind.net/license/
+ShopWind产品终端：https://www.shopwind.net/product/index.html
+ShopWind开发交流：https://www.shopwind.net/forum/portal.html
+ShopWind运维手册：https://www.shopwind.net/product/guide.html
+ShopWind微信公众号：ShopWind
+ShopWind开发者交流群：86696159
+
+为了保护版权，ShopWind电商系统早已申请了《计算机软件著作权登记证书》和提交了商标申请。
+软著证书：
+https://www.shopwind.net/static/images/authorize1.jpg
+https://www.shopwind.net/static/images/authorize2.jpg
+
+
+
+**系统基础功能配置**
+
+第三方接口（支付，登录，短信）
+
+一、支付宝电脑网站支付接口申请：
+申请地址：http://www.alipay.com  在这个页面登陆后，进入https://b.alipay.com/signing/productDetail.htm?productId=I1011000290000001000  申请电脑网站支付接口
+申请好了之后到：后台-》设置-》支付方式-》支付宝-》启用-》配置-》填写信息， 接口类型填写即时到帐交易接口
+
+二、如果支付宝手机支付接口申请
+申请地址：https://b.alipay.com/signing/productDetail.htm?productId=I1011000290000001001
+申请好了之后到：后台-》设置-》支付方式-》支付宝（WAP）-》启用-》配置-》填写信息，接口类型填写即时到帐交易接口
+
+三、物流跟踪申请key步骤：
+http://www.kuaidi100.com/openapi/api_2_02.shtml
+去这里申请一下接口，不用注册的，按照他的说法做就行，审核通过之后，会把key发到你的邮箱，得到key后，在后台-》拓展-》快递跟踪-》填写key
+
+四、账号通KEY申请
+1.QQ账号登陆KEY申请
+https://connect.qq.com/manage.html
+创建应用-》网站-》填写相关信息
+回调地址填写：  http://你的网站网址/connect/qqcallback.html
+
+2.支付宝登陆申请KEY：
+https://b.alipay.com/order/productDetail.htm?productId=2015090914994961
+
+新版（rsa）：https://docs.open.alipay.com/263/105809
+新版回调地址填：http://你的网址/connect/alipaycallback.html
+
+3.新浪微博申请KEY：
+http://open.weibo.com/authentication/
+
+4.微信登陆申请KEY
+申请地址：https://open.weixin.qq.com/cgi-bin/frame?t=home/web_tmpl&lang=zh_CN
+回调地址填：您的网站地址，如： www.shopwind.net
+申请好了之后，到网站后台-》拓展-》插件管理-》启用-》填写key即可
+
+五、手机短信接口申请
+去： http://www.smschinese.cn/reg.shtml  注册一个账号，并充值短信，注册之后，会得到 一个 密钥。 然后到 后台-》拓展-》模块管理-》手机短信-》安装-》管理-》设置-》填写用户名，短信密钥
+
+六：微信支付接口申请：
+到微信公众平台（https://mp.weixin.qq.com），注册账户，注册类型选服务号（以企业形式注册），提交信息之后， 支付 300元年费，等待微信审核。审核通过之后，到 微信公众平台后台申请微信支付。
+微信支付的申请过程比较复杂。具体细节可跟我们咨询。
+配置：1）微信公众平台-》开发-》接口权限-》网页授权获取用户基本信息-》填写域名（含www）
+      2）微信公众平台-》设置-》公众号设置-》功能设置-》JS接口安全域名-》填写域名（含www）
+      3）微信公众平台-》微信支付-》开发配置-》公众号支付-》支付授权目录-》填写http://m.abc.com/
+
+七、中国银联支付接口申请：
+进入：https://open.unionpay.com/ajweb/index
+点击：产品介绍-》网关支付-》我要入网->登录（或注册）
+
+八、百度地图KEY申请 
+   申请地址： http://lbsyun.baidu.com/apiconsole/key/create   创建应用-》应用类型 选浏览器端， 启用服务默认
+   接着再申请一个服务端的，申请地址： http://lbsyun.baidu.com/apiconsole/key/create   创建应用-》应用类型 选服务端， 启用服务默认
+   得到KEY后，到后台-》设置-》网站设置-》基本信息-》百度地图KEY-》浏览器KEY
+
+

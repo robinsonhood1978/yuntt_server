@@ -1,0 +1,142 @@
+{include file="header.html"}
+<div id="main">
+    {include file="menus.html"}
+    <div id="rightCon" class="clearfix layui-body">
+        <div class="scroller">
+            <div class="flexigrid">
+                <div class="layui-btn-container">
+                    <a href="{url route='db/backup'}" class="layui-btn layui-bg-blue"><i class="layui-icon layui-icon-addition"></i>新增备份</a>
+                  
+                    <a class="layui-btn layui-btn-primary J_BatchDel" confirm="{$lang.drop_confirm}" uri="{url route='db/delete'}" name="backup_name"><i
+                      class="fa fa-trash"></i>批量删除</a>
+                  </div>
+                <table class="distinction">
+                    <!--{if $backups}-->
+                    <thead>
+                        <tr>
+                            <th class="w30" class="firstCell"><input type="checkbox" class="checkall" id="checkall" /></th>
+                            <th align="left" width="350"><label for="checkall">{$lang.backup_name}</label></th>
+                            <th class="align_center">{$lang.add_time}</th>
+                            <th class="align_center">{$lang.size}</th>
+                            <th class="align_center">{$lang.total}</th>
+                            <th class="handler" style="width:200px;">{$lang.handler}</th>
+                        </tr>
+                    </thead>
+                    <!--{/if}-->
+                    <tbody>
+                        <!--{foreach from=$backups item=backup}-->
+                        <tr name="{$backup.name}">
+                            <td class="align_center w30"><input value="{$backup.name}" class='checkitem'
+                                    type="checkbox" /></td>
+                            <td align="left" width="350"><i ectype="expand" class="layui-icon layui-icon-addition"></i>{$backup.name|escape}</td>
+                            <td class="align_center">{$backup.date|date_format:"%Y.%m.%d %H:%M:%S"}</td>
+                            <td class="align_center">{$backup.size}KB</td>
+                            <td class="align_center">{count($backup.vols)}</td>
+                            <td class="handler bDiv" style=" background:none; width:220px;">
+                                <a uri="{url route='db/delete' backup_name=$backup.name}" confirm="{$lang.drop_confirm}"
+                                    class="btn red J_AjaxRequest"><i class="fa fa-trash-o"></i>{$lang.drop}</a> <a
+                                    href="javascript:;" class="btn blue J_Import" name="{$backup.name}"><i
+                                        class="fa fa-sign-in"></i>{$lang.import}</a>
+                            </td>
+                        </tr>
+                        <!--{foreach from=$backup.vols item=vol}-->
+                        <tr class="tatr2" style="display:none" parent="{$backup.name}">
+                            <td class="firstCell"></td>
+                            <td align="left" width="350"><span class="ml20">{$vol.name|escape}</span></td>
+                            <td>{$vol.date|date_format:"%Y.%m.%d %H:%M:%S"}</td>
+                            <td>{$vol.size}KB</td>
+                            <td></td>
+                            <td class="handler bDiv" style=" background:none; width:220px;">
+                                <a name="drop" href="{url route='db/download' backup_name=$backup.name file=$vol.name}"
+                                    class="btn green"><i class="fa fa-download"></i>{$lang.download}</a>
+                            </td>
+                        </tr>
+                        <!--{/foreach}-->
+                        <!--{foreachelse}-->
+                        <tr class="no_data">
+                            <td colspan="6">{$lang.no_data}</td>
+                        </tr>
+                        <!--{/foreach}-->
+                    </tbody>
+                </table>
+            </div>
+            {include file="version.html"}
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $('[ectype="expand"]').click(function () {
+            if($(this).hasClass('layui-icon-addition')) {
+                $(this).removeClass('layui-icon-addition').addClass('layui-icon-subtraction');
+                $("tr[parent='" + $(this).parents('tr').attr('name') + "']").show();
+            } else {
+                $(this).addClass('layui-icon-addition').removeClass('layui-icon-subtraction');
+                $("tr[parent='" + $(this).parents('tr').attr('name') + "']").hide();
+            }
+            // if ($(this).attr('expanded') == "true") {
+            //     $(this).attr('src', "{lib file='treetable/images/tv-expandable.gif'}");
+            //     $("tr[parent='" + $(this).attr('backup_name') + "']").hide();
+            //     $(this).attr('expanded', "false");
+            // }
+            // else {
+            //     $(this).attr('src', "{lib file='treetable/images/tv-collapsable.gif'}");
+            //     $("tr[parent='" + $(this).attr('backup_name') + "']").show();
+            //     $(this).attr('expanded', "true");
+            // }
+        });
+
+        $(".J_Import").click(function () {
+            var self = this, status = ".", name = $(this).attr('name'), index = null;
+
+            layer.open({
+                content: lang.db_operate_confirm, btn: ['开始还原', '关闭'],
+                yes: function (i) {
+                    layer.close(i);
+                    index = layer.open({
+                        type: 1,
+                        area: ['400px', '120px'], //宽高
+                        closeBtn: false,
+                        move: false,
+                        content: '<div class="con" style="padding:20px 20px; text-align: center;font-size:14px;">正在还原数据库，请不要关闭！</div>'
+                    });
+                    $.post(url(['db/recover']), { name: name }, success, "json");
+                    window.onbeforeunload = function () { return "正在还原数据库，请不要关闭！" }
+                },
+                no: function (i) {
+                    layer.close(i);
+                }
+            });
+
+            function success(data) {
+                if (data.status) {
+                    $('.layui-layer-content .con').html(data.info);
+                    if (data.gz) {
+                        data.info += status;
+                        if (status.length === 5) {
+                            status = ".";
+                        } else {
+                            status += ".";
+                        }
+                    }
+
+                    if (data.part) {
+                        $.post(url(['db/import']), { name: name, "part": data.part, "start": data.start }, success, "json");
+                    } else {
+                        window.onbeforeunload = function () { return null; }
+                        setTimeout(function () {
+                            layer.close(index);
+                        }, 2000);
+                    }
+                }
+                else {
+                    $('.layui-layer-content .con').html(data.info);
+                    setTimeout(function () {
+                        layer.close(index);
+                    }, 2000);
+                }
+            }
+        });
+    });
+</script>
+{include file="footer.html"}

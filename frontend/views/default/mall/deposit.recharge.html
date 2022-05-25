@@ -1,0 +1,66 @@
+{include file="user.header.html"}
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful">{include file="user.submenu.html"}
+      <div class="wrap">
+        <div class="public table deposit">
+          <div class="deposit-withdraw deposit-recharge">
+            <div class="notice-word">
+              <p>可以通过线上为自己的账户充值，充值成功后即时到账</p>
+            </div>
+            <form method="post" id="deposit-recharge">
+              <div class="title clearfix">
+                <h2 class="float-left">充值到您的预存款账户</h2>
+                <p class="float-right"><a href="{url route='deposit/cardrecharge'}" class="fs14">充值卡充值</a></p>
+              </div>
+              <div class="form">
+                <dl class="bank-list clearfix" ectype="online">
+                  <dt style="line-height:35px;">充值渠道：</dt>
+                  <dd>
+                    <ul class="ui-list-icons clearfix">
+                      <!--{foreach from=$payments item=payment name=fe_payment}-->
+                      <li class="clearfix" >
+                        <input class="float-left" {if $smarty.foreach.fe_payment.first} checked="checked"{/if} type="radio" name="payment_code" id="payment_{$payment.code}" value="{$payment.code}" />
+                        <label class="float-left  icon-box" for="payment_{$payment.code}" > <span class="icon-cashier icon-cashier-{$payment.code}">&nbsp;</span> </label>
+                      </li>
+                      <!--{/foreach}-->
+                    </ul>
+                  </dd>
+                </dl>
+                <dl class="clearfix">
+                  <dt>充值金额：</dt>
+                  <dd>
+                    <input type="text" name="money" class="text" value="" />
+                    元</dd>
+                </dl>
+                <dl class="clearfix">
+                  <dt>充值备注：</dt>
+                  <dd>
+                    <textarea name="remark" class="text"></textarea>
+                  </dd>
+                </dl>
+                <dl class="clearfix">
+                  <dt>&nbsp;</dt>
+                  <dd class="submit"> <span class="btn-alipay">
+                    <input type="submit" value="下一步" />
+                    </span> </dd>
+                </dl>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+$(function(){
+	$('#deposit-recharge').submit(function(){
+		if($(this).find('input[name="money"]').val()=='' || $(this).find('input[name="money"]').val() <= 0) {
+			layer.msg('{$lang.recharge_money_error}');
+			return false;
+		}
+	});
+})
+</script>
+{include file="user.footer.html"}

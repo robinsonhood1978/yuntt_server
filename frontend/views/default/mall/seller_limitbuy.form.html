@@ -1,0 +1,194 @@
+{include file="user.header.html"}
+<style>
+.txt { margin-right:20px}
+.spec ul { width: 630px; overflow: hidden; }
+.spec .td { padding-bottom: 10px; }
+.spec li { float: left; margin-left: 6px; display: inline; }
+.spec li input { text-align: center; }
+.spec .th { padding: 3px 0; margin-bottom: 10px; background: #f8f8f8; }
+</style>
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful">{include file="user.submenu.html"}
+      <div id="seller_limitbuy_form" class="wrap">
+        <div class="public">
+          <div class="promotool">
+            <div class="bundle bundle-list"> 
+              <!--{if $tooldisabled}-->
+              <div class="notice-word">
+                <p>{$tooldisabled}</p>
+              </div>
+              <!--{else}-->
+              <div class="notice-word">
+                <p class="yellow-big">{$lang.note_for_create}</p>
+              </div>
+              <form method="post" id="pro_form" enctype="multipart/form-data">
+                <div class="information_index">
+                  <h4>{$lang.limitbuy_basic_info}</h4>
+                  <div class="add_wrap">
+                    <div class="assort">
+                      <p class="txt">{$lang.limitbuy_name}:</p>
+                      <p>
+                        <input type="text" name="title" value="{$limitbuy.title|escape}" class="text" />
+                        <span class="red">*</span></p>
+                    </div>
+                    <div class="assort">
+                      <p class="txt">{$lang.pro_image}:</p>
+                      <p>
+                        <input type="file" name="image" /><input type="hidden" name="fileVal" value="image" />
+                        <span class="red">*</span>{$lang.pro_image_note}</p>
+                      <!--{if $limitbuy.image}-->
+                      <p><img src="{$limitbuy.image|url_format}" height="30" /></p>
+                      <!--{/if}--> 
+                    </div>
+                    <div class="assort">
+                      <p class="txt" > {$lang.start_time}:</p>
+                      <p>
+                        <input name="start_time" id="start_time" value='{$limitbuy.start_time|default:$now|date_format:"%Y-%m-%d %H:%M:%S"}' type="text" class="text" />
+                        <span class="red">*</span> </p>
+                    </div>
+                    <div class="assort">
+                      <p class="txt"> {$lang.end_time}:</p>
+                      <p>
+                        <input name="end_time" id="end_time" value='{$limitbuy.end_time|default:$now|date_format:"%Y-%m-%d %H:%M:%S"}' type="text" class="text" />
+                        <span class="red">*</span> </p>
+                    </div>
+                    <div class="assort">
+                      <p class="txt"> {$lang.summary}:</p>
+                      <p>
+                        <textarea style="overflow-y: auto; width: 250px; vertical-align: top;" id="summary" name="summary" class="text">{$limitbuy.summary|escape}</textarea>
+                      </p>
+                    </div>
+                  </div>
+                  <div class="add_wrap">
+                    <div class="assort">
+                      <p class="txt">{$lang.select_goods}:</p>
+                      <p class="lst-products" style="width:630px;"> <a href="javascript:;" gs_id="seller_limitbuy" gs_name="goods_name" gs_callback="gs_callback1" gs_title="{$lang.gselector}" gs_width="690" gs_type="goods" gs_store_id="{$visitor.store_id}" ectype="gselector" gs_uri="{url route='gselector/goods'}" class="btn-add-product">{$lang.gselector}</a> <span class="block mt10" id="goods_name"></span>
+                        <input type="hidden" id="seller_limitbuy" name="goods_id" value="{$limitbuy.goods_id}" />
+                      </p>
+                    </div>
+                    <div class="assort clearfix">
+                      <p class="txt float-left">{$lang.rules}: </p>
+                      <div ectype="spec_list" class="spec float-left">
+                        <ul class="th">
+                          <li id="spec_name" class="distance2">{$lang.spec}</li>
+                          <li class="distance1">{$lang.stock}</li>
+                          <li class="distance1">{$lang.price}</li>
+                          <li class="distance2" style="width:120px;">{$lang.decrease}</li>
+                          <li class="distance2" style="width:120px;">{$lang.discount}</li>
+                        </ul>
+                      </div>
+                      <div ectype="template" class="hidden">
+                        <ul ectype="spec_item" class="td">
+                          <li class="distance2">[1]</li>
+                          <li class="distance1">[2]</li>
+                          <li class="distance1">[3]</li>
+                          <li class="distance1" style="width:130px;">
+                            <input ecname="rules[[4]][price]" type="text" class="text width2" value="[5]" />
+                            <label>{$lang.pro_type_price}</label>
+                          </li>
+                          <li class="distance1" style="width:130px;">
+                            <input placeholder="0.01-9.99" ecname="rules[[6]][discount]" type="text" class="text width2" value="[7]" />
+                            <label>{$lang.pro_type_discount}</label>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <!-- <div class="assort issuance">
+                      <p class="txt">库存限制</p>
+                      <p>
+                        <input type="text" class="text" name="quantity" value="{$limitbuy.quantity|default:0}" />
+                        <label class="gray ml10">如秒杀销量超过库存限制，则结束活动，0为不限制</label>
+                      </p>
+                    </div> -->
+                    <div class="assort issuance">
+                      <p class="txt"></p>
+                      <p>
+                        <input type="submit" class="J_AjaxSubmit btn-alipay" style="width:200px;" value="{$lang.submit}" />
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </form>
+              <!--{/if}--> 
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+$(function(){
+    $('#start_time').datetimepicker({
+      timeText: '时间',
+      hourText: '小时',
+      minuteText: '分钟',
+      secondText: '秒',
+      currentText: '现在',
+      closeText: '完成',
+      showSecond: true, //显示秒  
+      timeFormat: 'HH:mm:ss' //格式化时间
+    });
+    $('#end_time').datetimepicker({
+      timeText: '时间',
+      hourText: '小时',
+      minuteText: '分钟',
+      secondText: '秒',
+      currentText: '现在',
+      closeText: '完成',
+      showSecond: true, //显示秒  
+      timeFormat: 'HH:mm:ss' //格式化时间
+    });
+	
+	  gs_query_info1({$limitbuy.goods_id|default:0}, {$limitbuy.id|default:0});
+});
+function gs_submit_check(id,name,callback)
+{
+	if(DATA_LIST_TEMP.length != 1) {
+		msg(lang.records_error);
+	}
+	else {
+		gs_submit(id,name,callback);
+	}
+}
+function gs_callback1(id)
+{
+	var goods_id = '';
+	$.each(DATA_LIST_TEMP, function(i,item){
+		goods_id = item.goods_id;
+	});
+	if(goods_id.length == 0 || (goods_id == 0)){
+		//$('.J_ListAdded').hide();
+        msg(lang.add_records);
+	}
+	else {
+		$('#'+id).val($('#gs_goods_id').val());
+		gs_query_info1(goods_id);
+		DialogManager.close(id);
+	}
+}
+function gs_query_info1(goods_id, toolId)
+{
+	$.getJSON(url(['seller_limitbuy/query']),{ id:goods_id, toolId: toolId},function(data) {
+		if(data.done){
+			if(data.retval) {
+				var goods = data.retval;
+
+				$('#seller_limitbuy').val(goods_id);
+				$('#goods_name').html(goods.goods_name);
+				$('#spec_name').html(goods.spec_name);
+				$('*[ectype="spec_list"]').find('ul[ectype="spec_item"]').remove();
+				
+				var html = '';
+				var template = $('*[ectype="template"]').clone(true);
+				$.each(goods.goodsSpec, function(i,item) {
+					html += sprintf(replace_all(template.html(), 'ecname', 'name'), item.spec, item.stock, item.price, item.spec_id, (item.pro_type == 'price' && item.pro_price) ? item.pro_price : '', item.spec_id, (item.pro_type == 'discount' && item.pro_price) ? item.pro_price : '');
+				});
+				$('*[ectype="spec_list"]').append(html);
+			}	
+ 		}
+ 	});
+}
+</script> 
+{include file="user.footer.html"} 

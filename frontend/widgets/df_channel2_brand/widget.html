@@ -1,0 +1,26 @@
+<div class="channel2-brand clearfix">
+    <div class="title"><h2>{$widget_data.model_name}</h2></div>
+    <div class="brand-list">
+        <ul class="clearfix">
+            <!--{foreach from=$widget_data.ads item=image name=fe_image}-->
+            <li class="brand-pic{$smarty.foreach.fe_image.iteration}">
+                <a class="down clearfix" href="{$image.ad_link_url}" target="_blank">
+                    <img src="{$image.ad_image_url|url_format}" width="199" height="440">
+                    <div class="image-box">
+                        <span class="bg"></span>
+                        <div class="text1">
+                            <span class="title1">{$image.ad_m_title_url}</span>
+                            <span class="title2">{$image.ad_s_title_url}</span>
+                        </div>
+                        <div class="text2">
+                            <span class="title1" >{$image.ad_m_title_url}</span>
+                            <span class="title2">{$image.ad_s_title_url}</span>
+                        </div>
+                        <i class="view"></i>
+                    </div>
+                </a>
+            </li>   
+            <!--{/foreach}-->
+        </ul> 
+    </div>
+</div>

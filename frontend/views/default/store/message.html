@@ -1,0 +1,40 @@
+{include file="header.html"}
+<style>
+body{ background:#eeefef}
+#header{ background:#fff;}
+.particular_wrap { background: #fff;position: relative; margin: 30px 0}
+.particular_wrap .con { margin: 0 auto;padding: 100px 300px;}
+	.particular_wrap .con i{ width: 200px;    height: 130px;    display: block;    float: left;  background: url({res file='images/no_record.png'}) no-repeat;}
+	.particular_wrap .con .text{ float: left; margin-left: 50px; padding: 50px 0; color: #8c8c8c;}
+	.particular_wrap .con .text b{ font-size: 16px; font-weight: bold;}
+	.red-btn{  padding: 0 10px;    height: 23px;    line-height: 23px;    border: 1px solid #f42424;    display: inline-block;    margin-right: 5px;    font-size: 12px;    cursor: pointer;     background: #f42424;    border-color: #f42424;    color: #fff; margin-top: 10px;}
+	.red-btn:hover{ color: #fff; text-decoration: none;}
+</style>
+<div id="main" class="clearfix">
+    <div class="particular w">
+        <div class="particular_wrap">
+            <div class="con {if $notice.done}success{else}defeated{/if} clearfix">
+                <i></i>
+                <div class="text">
+					<b>{$notice.msg}</b>
+					<!--{if !$notice.done}-->
+					<font style="clear: both; display:block; margin:0 0 0 50px;">
+					<!--{foreach from=$notice.links item=item}-->
+					<a href="{$item.url}" class="mr10">>>{$item.label}</a>
+					<!--{/foreach}-->
+					</font>
+					<!--{/if}-->
+               		<a href="javascript:history.back()" class="red-btn">返回上一页</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+<!--{if $notice.redirect}-->
+window.setTimeout(function(){
+	location.href = "{$notice.redirect}";
+}, 2000);
+<!--{/if}-->
+</script>
+{include file="footer.html"}

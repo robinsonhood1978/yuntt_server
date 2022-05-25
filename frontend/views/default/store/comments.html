@@ -1,0 +1,62 @@
+<div style="{if in_array($app->controller->action->id, array('index',''))}border-top:1px solid #D7D7D7;{/if}" class="statistics clearfix">
+  <div class="rate">
+    <p> <strong> {$gcomments.statistics.good.percentage|default:0} </strong> <i> 好评 </i> </p>
+    <em> 总共{$gcomments.statistics.total}人参加评分 </em> </div>
+  <div class="per-evaluation">
+    <dl class="clearfix">
+      <dt> 好评 <em> ({$gcomments.statistics.good.percentage|default:0}) </em> </dt>
+      <dd> <b style="width:{$gcomments.statistics.good.percentage|default:0}"> </b> </dd>
+    </dl>
+    <dl class="clearfix">
+      <dt> 中评 <em> ({$gcomments.statistics.middle.percentage|default:0}) </em> </dt>
+      <dd> <b style="width:{$gcomments.statistics.middle.percentage|default:0}"> </b> </dd>
+    </dl>
+    <dl class="clearfix">
+      <dt> 差评 <em> ({$gcomments.statistics.bad.percentage|default:0}) </em> </dt>
+      <dd> <b style="width:{$gcomments.statistics.bad.percentage|default:0}"> </b> </dd>
+    </dl>
+  </div>
+  <div class="i-want-comment">
+    <p class="mt10 pt5"> <a href="{url route='buyer_order/index' type='finished' evaluation_status=0}"> 我要评价 </a> </p>
+  </div>
+</div>
+<div class="attr-tabs">
+  <ul class="user-menu">
+    <li class="{if !$smarty.get.level}active {/if} ml10 mr10 float-left"> <a href="{url route='goods/comment' id=$goods.goods_id}#menu"> <span> 全部评价（{$gcomments.statistics.total|default:0}） </span> </a> </li>
+    <li class="{if $smarty.get.level eq 3}active {/if} ml10 mr10 float-left"> <a href="{url route='goods/comment' id=$goods.goods_id level=3}#menu"> <span> 好评（{$gcomments.statistics.good.count|default:0}） </span> </a> </li>
+    <li class="{if $smarty.get.level eq 2}active {/if} ml10 mr10 float-left"> <a href="{url route='goods/comment' id=$goods.goods_id level=2}#menu"> <span> 中评（{$gcomments.statistics.middle.count|default:0}） </span> </a> </li>
+    <li class="{if $smarty.get.level eq 1}active {/if} ml10 mr10 float-left"> <a href="{url route='goods/comment' id=$goods.goods_id level=1}#menu"> <span> 差评（{$gcomments.statistics.bad.count|default:0}） </span> </a> </li>
+  </ul>
+</div>
+<div class="eval-list"> 
+  <!-- {foreach from=$gcomments.list item=item name=fe_item}--> 
+  <div class="list mt10">
+    <div class="user_avatar"> <a href="{url route='my_message/send' to_id=$item.buyer_id}" target="_blank" title="给他（她）发站内信？"> <img src="{$item.portrait|url_format}" /> </a> </div>
+    <dl class="comment-detail">
+      <dt class="clearfix"> <a href="{url route='my_message/send' to_id=$item.buyer_id}" target="_blank" title="给他（她）发站内信？" class="name"> {$item.buyer_name} </a> <i> {$item.evaluation_time|date_format:"%Y.%m.%d %H:%M:%S"} </i> </dt>
+      <dd> <span> 用户评分：</span> <span class="J_Evaluation" score="{$item.evaluation|default:0}"></span> </dd>
+      <!--{if $item.comment}--><dd> <span> 评价详情：</span> <span class="content"> {$item.comment|nl2br}</span> </dd><!--{/if}-->
+      <!--{if $item.reply_comment}-->
+      <dd class="reply w-full clearfix"> <span> 商家回复：</span> <span class="content"> {$item.reply_comment|escape}</span> </dd>
+      <!--{/if}-->
+    </dl>
+  </div>
+  <!-- {foreachelse} -->
+  <div class="no-access"> {$lang.no_records} </div>
+  <!-- {/foreach} --> 
+</div>
+<!--{if $gcomments.list}-->
+<div class="clearfix mt10">{include file="page.bottom.html"}</div>
+<script type="text/javascript">
+$(function() {
+	$('.J_Evaluation').each(function(index, element) {
+		var score = parseFloat($(this).attr('score'));
+      $(this).raty({
+			readOnly: true,
+			score: score,
+			path: "{$siteUrl}/static/images"
+		});
+  });
+})
+</script>
+<!--{/if}--> 

@@ -1,0 +1,26 @@
+<div class="shop mb20">
+  <div class="ftit">
+    <h3>{$widget_data.model_name}</h3>
+  </div>
+  <div class="shop-list clearfix">
+  	<!-- {foreach from=$widget_data.storeList item=store name=fe_store} -->
+    <div class="shop-item"{if $smarty.foreach.fe_store.iteration % 4 eq 0} style="margin-right:0"{/if}> 
+      <a href="{url route='store/index' id=$store.store_id}" target="_blank">
+        <div class="shop-img"> 
+          <img class="img lazyload" initial-url="{$store.image|url_format}" src="{res file='images/empty.gif'}" />
+        </div>
+        <div class="shop-info">
+          <div class="s-logo"> 
+            <img src="{$store.store_logo|url_format}"/>
+          </div>
+          <div class="s-title">
+            <p class="s-name">{$store.store_name}</p>
+            <p class="s-tit">{$store.title}</p>
+          </div>
+        </div>
+      </a> 
+    </div>
+    <!-- {/foreach} -->
+  </div>
+</div>
+

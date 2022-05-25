@@ -1,0 +1,74 @@
+{include file="user.header.html"}
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful">{include file="user.submenu.html"}
+      <div class="wrap">
+        <div class="public table deposit">
+          <div class="recordlist"> 
+            <!--{if $recordlist}-->
+            <div class="notice-word">
+              <p>您资金账户余额变动的所有财务明细</p>
+            </div>
+            <!--{/if}-->
+            <div class="title clearfix">
+              <form method="get" class="float-left" action="{url route='deposit/rechargelist'}">
+        		<!--{if !$app->urlManager->enablePrettyUrl}-->
+      			<input type="hidden" name="r" value="deposit/rechargelist" />
+                <!--{/if}-->
+                <input type="text" name="add_time_from" id="add_time_from" value="{$smarty.get.add_time_from}" />
+                <span>-</span>
+                <input type="text" name="add_time_to" id="add_time_to"  value="{$smarty.get.add_time_to}" />
+                <input type="submit" class="btn-record" value="{$lang.search}" />
+              </form>
+              <!--{if $filtered}--> 
+         		<a class="detlink" href="{url route='deposit/recordlist'}">{$lang.cancel_query}</a>
+        		<!--{/if}--> 
+              <div class="float-left ml10"> 总收入 <strong>{$total.income}</strong> 元，总支出 <strong>{$total.outlay}</strong> 元 </div>
+              <div class="float-right"> <a href="{url route='deposit/monthbill'}">月账单下载</a> </div>
+            </div>
+            <ul class="subtit">
+              <li class="clearfix">
+                <div class="time">付款日期</div>
+                <div class="info" style="width:100px;" >类型<!--名称 | 备注--></div>
+                <div class="tradeNo" style="width:245px;">商户订单号 | 交易号</div>
+                <div class="income">收入(元)</div>
+                <div class="defray">支出(元)</div>
+                <div class="balanceNum">账户余额(元)</div>
+                <div class="fundchannel">资金渠道</div>
+                <div class="detail">操作</div>
+              </li>
+            </ul>
+            <div class="content"> 
+              <!--{foreach from=$recordlist item=record}-->
+              <ul>
+                <li class="clearfix">
+                  <div class="time">{$record.pay_time|date_format:"%Y.%m.%d %H:%M:%S"}</div>
+                  <div class="info break-word" style="width:100px;"> {$record.tradeTypeName} </div>
+                  <div class="tradeNo" style="width:245px;">{$record.bizOrderId} | {$record.tradeNo}</div>
+                  <div class="income"><strong class="price green">{if $record.flow eq 'income'}+{$record.amount}{else}&nbsp;{/if}</strong></div>
+                  <div class="defray"><strong class="price f60">{if $record.flow eq 'outlay'}-{$record.amount}{else}&nbsp;{/if}</strong></div>
+                  <div class="balanceNum"><strong class="price">{$record.balance}</strong></div>
+                  <div class="fundchannel">{$record.fundchannel}</div>
+                  <div class="detail"> <a target="_blank" href="{url route='deposit/record' tradeNo=$record.tradeNo}">查看</a> </div>
+                </li>
+              </ul>
+              <!--{foreachelse}-->
+              <div class="notice-word mt10">
+                <p class="yellow">{$lang.no_record}</p>
+              </div>
+              <!--{/foreach}--> 
+            </div>
+            <div class="mt10 clearfix center">{include file="page.bottom.html"}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+    $('#add_time_from').datepicker({ dateFormat: 'yy-mm-dd'});
+    $('#add_time_to').datepicker({ dateFormat: 'yy-mm-dd'});
+});
+</script>
+{include file="user.footer.html"} 

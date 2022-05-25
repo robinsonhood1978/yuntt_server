@@ -1,0 +1,21 @@
+<div class="master mb20">
+  <div class="ftit">
+    <h3>{$widget_data.model_name}</h3>
+  </div>
+  <div class="master-con clearfix">
+    <!-- {foreach from=$widget_data.list item=item name=fe_item} -->
+    <div class="m-item clearfix m-item-1 style-default style-{$item.style}"{if $smarty.foreach.fe_item.iteration % 5 eq 0} style="margin-right:0"{/if}>
+      <div class="m-content clearfix">
+        <div class="title">
+          <h3>{$item.title.0}</h3>
+          <p>{$item.title.1}</p>
+        </div>
+        <a class="m-btn" href="{$item.link}" target="_blank">去见识</a> 
+      </div>
+      <div class="m-img transition-3s"> 
+        <a href="javascript:;"><img src="{$item.url|url_format}" /></a> 
+      </div>
+    </div>
+    <!-- {/foreach} -->
+  </div>
+</div>

@@ -1,0 +1,44 @@
+{include file="header.html"}
+<div id="page-store-index">
+    <div class="w-shop clearfix pt20">
+        <div class="col-sub">
+            {include file="left.html"}
+        </div>
+        <div class="col-main float-right">
+            {include file="store.swiper.html"}
+            <!--{if $store.recommendedGoods}-->
+            <div class="new-goods goods-list-shop mb10">
+                <div class="pb10 ml5">
+                    <p class="strong fs18">店铺推荐</p>
+                </div>
+                <ul class="content  clearfix">
+                    <!--{foreach from=$store.recommendedGoods item=item name=fe_item}-->
+                    <li class="float-left">
+                        <dl>
+                            <dt><a href="{url route='goods/index' id=$item.goods_id}" target="_blank"><img
+                                        src="{$item.default_image|url_format}" /></a></dt>
+                            <dd class="desc mt10"><a class="fs14" href="{url route='goods/index' id=$item.goods_id}"
+                                    target="_blank">{$item.goods_name|escape}</a></dd>
+                            <dd class="price mt10 mb10 clearfix"><span>{$item.price|price_format}</span><em
+                                    class="float-right gray fs12">已售{$item.sales|default:0}件</em></dd>
+                        </dl>
+                    </li>
+                    <!--{/foreach}-->
+                </ul>
+            </div>
+            <!--{/if}-->
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $.each($('.countdown'), function () {
+            var theDaysBox = $(this).find('.NumDays');
+            var theHoursBox = $(this).find('.NumHours');
+            var theMinsBox = $(this).find('.NumMins');
+            var theSecsBox = $(this).find('.NumSeconds');
+            countdown(theDaysBox, theHoursBox, theMinsBox, theSecsBox)
+        });
+    });
+</script>
+{include file="footer.html"}

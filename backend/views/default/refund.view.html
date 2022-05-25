@@ -1,0 +1,97 @@
+{include file="header.html"}
+<div id="main">
+  {include file="menus.html"}
+  <div id="rightCon" class="clearfix layui-body">
+    <div class="scroller">
+      <div class="flexigrid clearfix">
+        <div class="order_form">
+          <dl>
+            <dt><span class="bold layui-font-16 blue">{$refund.status_label}</span></dt>
+            <dd>
+              <ul class="clearfix">
+                <li>退款编号：{$refund.refund_sn}</li>
+                <li>申请时间：{$refund.created|date_format:"%Y.%m.%d %H:%M:%S"}</li>
+                <li>订单总额：{$refund.total_fee|price_format} <span class="gray">(含运费)</span></li>
+                <li>退款金额：{$refund.refund_total_fee|price_format}</li>
+                <li>收货情况：{$refund.shipped_label}</li>
+                <li>退款原因：{$refund.refund_reason}</li>
+                <li>退款说明：{$refund.refund_desc}</li>
+              </ul>
+            </dd>
+          </dl>
+        </div>
+        <div class="order_form mt20">
+          <dl>
+            <dt><span class="bold">订单信息</span></dt>
+            <dd>
+              <ul class="clearfix">
+                <li>订单编号：{$order.order_sn}</li>
+                <li>订单总额：{$order.order_amount|price_format}</li>
+                <li>配送费用：{$order.shipping.shipping_fee|price_format}</li>
+                <li>卖家信息：<a href="{url route='store/index' id=$order.seller_id baseUrl=$homeUrl}"
+                    target="_blank">{$order.seller_name}</a></li>
+                <li>买家昵称：{$order.buyer_name}</li>
+              </ul>
+            </dd>
+          </dl>
+        </div>
+      </div>
+       <!--{if !in_array($refund.status, ['SUCCESS','CLOSED'])}-->
+      <div class="flexigrid clearfix">
+        <h3 class="bold mb20 layui-font-16">平台处理</h3>
+        <div class="refund_message clearfix">
+         
+          <form method="post">
+            <input type="hidden" name="id" value="{$refund.refund_id}" />
+            <ul class="clearfix">
+              <li>退款金额：
+                <input type="text" name="refund_goods_fee" value="{$refund.refund_goods_fee}" class="text" />
+                <div class="notice-word mb20" style="margin-left: 75px;">
+                  <p class="layui-font-12 mt10">最多{$refund.goods_fee}元，客服与买卖双方协商后的商品退款金额。</p>
+                </div>
+              </li>
+              <li>退<ins style="margin:0 7px">运</ins>费：
+                <input type="text" name="refund_shipping_fee" value="{$refund.refund_shipping_fee}" />
+                <div class="notice-word mb20" style="margin-left: 75px;">
+                  <p class="layui-font-12 mt10">最多{$refund.shipping_fee}元，如果不是商品质量问题，买家承担寄送运费，则建议为0元。</p>
+                </div>
+              </li>
+              <li>处理意见：
+                <textarea name="content" style="height: 72px; width:200px;padding: 5px; vertical-align: middle;"></textarea>
+              </li>
+              <li>
+                <div class="mt10" style="margin-left: 75px;">
+                <input onclick="javacript:return confirm('{$lang.note_for_submit}');" type="submit" value="提交"
+                  class="layui-btn layui-bg-blue" />
+                </div>
+              </li>
+            </ul>
+          </form>
+        </div>
+      </div>
+      <!--{/if}-->
+
+      <div class="flexigrid">
+        <div class="message_list">
+          <h3 class="bold mb20 layui-font-16">协商记录</h3>
+          <!--{foreach from=$refund.message item=message name=fe_message}-->
+          <div class="title clearfix webkit-box mb10">
+            <h3 style="border-left: 4px #eee solid;padding-left: 5px;">{if $message.owner_id==$visitor.userid}{$lang.self}{else}{$lang.{$message.owner_role}}{/if}</h3>
+            <span class="gray ml20">{$message.created|date_format:"%Y-%m-%d %H:%M:%S"}</span>
+          </div>
+          <div class="content mb20 pb10 f-13" style="border-bottom:1px #ddd solid;padding: 10px 0 20px">
+            {$message.content}
+            <!--{if $message.image}-->
+            <p class="mt10"><img src="{$message.image|url_format}" width="200" /></p>
+            <!--{/if}-->
+          </div>
+          <!--{/foreach}-->
+        </div>
+        <div class="clearfix mt20"> {if $refund.message}{include file="page.bottom.html"}{/if} </div>
+      </div>
+
+      {include file="version.html"}
+    </div>
+  </div>
+</div>
+{include file="footer.html"}

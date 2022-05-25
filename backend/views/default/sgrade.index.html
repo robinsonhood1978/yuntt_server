@@ -1,0 +1,126 @@
+{include file="header.html"}
+<div id="main">
+	{include file="menus.html"}
+	<div id="rightCon" class="clearfix layui-body">
+		<div class="scroller">
+			<div class="search-form clearfix">
+				<form method="get" id="formSearch">
+					<div class="webkit-box box-align-center">
+						<input type="hidden" name="r" value="sgrade/index" />
+						{$lang.grade_name}
+						<input class="queryInput" type="text" name="grade_name"
+							value="{$smarty.get.grade_name|escape}" />
+						<input type="submit" class="layui-btn layui-bg-blue layui-btn-sm block width7"
+							value="{$lang.query}" />
+						<!--{if $filtered}-->
+						<a class="layui-btn layui-btn-primary layui-btn-sm box-align-center"
+							href="{url route='sgrade/index'}">{$lang.cancel_query}</a>
+						<!--{/if}-->
+					</div>
+				</form>
+			</div>
+			<div class="tablegrid">
+				<table class="layui-hide" id="tablegrid" lay-filter="tablegrid"></table>
+			</div>
+			{include file="version.html"}
+		</div>
+	</div>
+</div>
+<script type="text/html" id="toolbar">
+	<div class="layui-btn-container">
+		<a class="layui-btn layui-bg-blue" href="{url route='sgrade/add'}"><i class="layui-icon layui-icon-addition"></i>新增等级</a>
+	  <button class="layui-btn layui-btn-primary layui-border-blue" lay-event="batdel"><i class="layui-icon layui-icon-close"></i>批量删除</button>
+	  <button class="layui-btn layui-btn-primary layui-border-black" lay-event="export"><i class="layui-icon layui-icon-export"></i>导出数据</button>
+	</div>
+</script>
+
+<script type="text/html" id="colBar">
+	<a class="ml5 mr5 blue pointer" lay-event="edit">编辑</a>
+  	<a class="ml5 mr5 blue pointer" lay-event="del" confirm="删除后将不能恢复，确认删除该项吗？">删除</a>
+</script>
+
+<script>
+	layui.use('table', function () {
+		var table = layui.table;
+
+		table.render({
+			elem: '#tablegrid'
+			//,skin: 'line'
+			, url: url(['sgrade/index', $("#formSearch").serializeJson()])
+			, toolbar: '#toolbar'
+			, defaultToolbar: ['filter', /*'exports',*/ 'print']
+			, title: '店铺等级列表'
+			//, size: 'lg'
+			, cols: [[
+				{ type: 'checkbox', fixed: 'left' }
+				, { field: 'grade_id', title: 'ID', width: 70, fixed: 'left', unresize: true, sort: true }
+				, { field: 'grade_name', title: '等级名称', width: 100 }
+				, {
+					field: 'goods_limit', title: '允许发布商品数', width: 160, templet: function (res) {
+						return res.goods_limit > 0 ? res.goods_limit : lang.no_limit;
+					}
+				}
+				, {
+					field: 'space_limit', title: '上传空间大小(MB)', width: 160, sort: true, templet: function (res) {
+						return res.space_limit > 0 ? res.space_limit : lang.no_limit;
+					}
+				}
+				, { field: 'charge', title: '收费标准', width: 160, sort: true, align: 'center' }
+				, { field: 'sgrade', title: '店铺等级', width: 210, sort: true }
+				, {
+					field: 'need_confirm', title: '需要审核', width: 120, sort: true, align: 'center', templet: function (res) {
+						return res.need_confirm == 1 ? '<em class="no" ectype="inline_edit" controller="sgrade" fieldname="need_confirm" fieldid="' + res.grade_id + '" fieldvalue="0" title="' + lang.editable + '"><i class="fa fa-ban"></i>' + lang.no + '</em>' : '<em class="yes" ectype="inline_edit" controller="sgrade" fieldname="need_confirm" fieldid="' + res.grade_id + '" fieldvalue="1" title="' + lang.editable + '"><i class="fa fa-check-circle"></i>' + lang.yes + '</em>';
+					}
+				}
+				, { field: 'sort_order', title: '排序', width: 90, edit: 'text', sort: true, align: 'center' }
+				, { fixed: 'right', title: '操作', toolbar: '#colBar', width: 140, align: 'center' }
+			]]
+			, page: {
+				theme: 'blue'
+			}
+		});
+
+		//监听头工具栏事件
+		table.on('toolbar(tablegrid)', function (obj) {
+			var checkStatus = table.checkStatus(obj.config.id);
+			if (checkStatus.data.length <= 0) {
+				return false;
+			}
+			var items = new Array();
+			$.each(checkStatus.data, function (i, item) {
+				items.push(item.grade_id);
+			});
+			if (obj.event === 'batdel') {
+				var btnObj = $('[lay-event="' + obj.event + '"]');
+				btnObj.attr('confirm', '删除后将不能恢复，确认删除这 ' + items.length + ' 项吗？');
+				ajaxRequest(btnObj, url(['sgrade/delete', { id: items.join(',') }]), function () {
+					table.reload('tablegrid');
+				});
+			}
+			else if (obj.event === 'export') {
+				window.location.href = url(['sgrade/export', $.extend($("#formSearch").serializeJson(), { id: items.join(',') })]);
+			}
+		});
+
+		//监听行工具事件
+		table.on('tool(tablegrid)', function (obj) {
+			var data = obj.data;
+			if (obj.event === 'del') {
+				var btnObj = $(obj.tr).find('[lay-event="' + obj.event + '"]');
+				ajaxRequest(btnObj, url(['sgrade/delete', { id: data.grade_id }]), function () {
+					obj.del();
+				});
+			} else if (obj.event === 'edit') {
+				window.location.href = url(['sgrade/edit', { id: data.grade_id }]);
+			}
+		});
+		//监听行单元格编辑事件
+		table.on('edit(tablegrid)', function (obj) {
+			var fieldObj = $(obj.tr).find('[data-field="' + obj.field + '"]');
+			ajaxRequest(fieldObj, url(['sgrade/editcol', { id: obj.data.grade_id, column: obj.field, value: obj.value }]), function () {
+				obj.update();
+			});
+		});
+	});
+</script>
+{include file="footer.html"}

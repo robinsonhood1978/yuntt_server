@@ -1,0 +1,108 @@
+{include file="header.html"}
+<div id="main">
+	{include file="menus.html"}
+	<div id="rightCon" class="clearfix layui-body">
+		<div class="scroller">
+			<div class="search-form clearfix">
+				<form method="get" id="formSearch">
+					<div class="webkit-box box-align-center">
+						<input type="hidden" name="r" value="deposit/rechargelist" />
+						<select class="querySelect" name="field">
+							{html_options options=$search_options selected=$smarty.get.field}
+						</select>
+						<input class="infoTableInput mr10" type="text" name="search_name"
+							value="{$smarty.get.search_name}" />
+						<label>{$lang.trade_status}</label>
+						<select class="querySelect" name="status">
+							<option value="">{$lang.no_limit}</option>
+							{html_options options=$status_list selected=$smarty.get.status}
+						</select>
+						{$lang.amount_from}
+						<input class="queryInput2" type="text" value="{$smarty.get.amount_from}" name="amount_from" />
+						{$lang.to}
+						<input class="queryInput2" type="text" value="{$smarty.get.amount_to}" name="amount_to"
+							class="pick_date" />
+					</div>
+					<div class="webkit-box box-align-center mt20">
+						{$lang.add_time_from}
+						<input class="queryInput" type="text" value="{$smarty.get.add_time_from}" id="add_time_from"
+							name="add_time_from" class="pick_date" />
+						{$lang.to}
+						<input class="queryInput" type="text" value="{$smarty.get.add_time_to}" id="add_time_to"
+							name="add_time_to" class="pick_date" />
+						<input type="submit" class="layui-btn layui-bg-blue layui-btn-sm block width7"
+							value="{$lang.query}" />
+						<!--{if $filtered}-->
+						<a class="layui-btn layui-btn-primary layui-btn-sm box-align-center"
+							href="{url route='deposit/rechargelist'}">{$lang.cancel_query}</a>
+						<!--{/if}-->
+					</div>
+				</form>
+			</div>
+			<div class="tablegrid">
+				<table class="layui-hide" id="tablegrid" lay-filter="tablegrid"></table>
+			</div>
+			{include file="version.html"}
+		</div>
+	</div>
+</div>
+<script type="text/html" id="toolbar">
+	<div class="layui-btn-container">
+		<a class="layui-btn layui-bg-blue" href="{url route='deposit/index'}"><i class="layui-icon layui-icon-addition"></i>用户充值</a>
+		<button class="layui-btn layui-btn-primary layui-border-black" lay-event="export"><i class="layui-icon layui-icon-export"></i>导出数据</button>
+	</div>
+</script>
+
+<script>
+	layui.use('table', function () {
+		var table = layui.table;
+
+		table.render({
+			elem: '#tablegrid'
+			//,skin: 'line'
+			, url: url(['deposit/rechargelist', $("#formSearch").serializeJson()])
+			, toolbar: '#toolbar'
+			, defaultToolbar: ['filter', /*'exports',*/ 'print']
+			, title: '充值记录'
+			//, size: 'lg'
+			, cols: [[
+				{ type: 'checkbox', fixed: 'left' }
+				, { field: 'recharge_id', title: 'ID', width: 70, fixed: 'left', unresize: true, sort: true }
+				, { field: 'tradeNo', title: '交易号', width: 200, sort: true, }
+				, { field: 'orderId', title: '商户订单号', width: 200, sort: true }
+				, { field: 'amount', title: '充值金额（元）', width: 160, sort: true }
+				, { field: 'username', title: '用户名', width: 110, sort: true }
+				, { field: 'remark', title: '充值备注', width: 110 }
+				, { field: 'examine', title: '操作员', width: 110, sort: true }
+				, { field: 'add_time', title: '创建时间', width: 180, sort: true, align: 'center' }
+				, { field: 'pay_time', title: '支付时间', width: 180, sort: true, align: 'center' }
+				, { field: 'end_time', title: '完成时间', width: 180, sort: true, align: 'center' }
+				, { fixed: 'right', field: 'status', title: '状态', width: 160, sort: true }
+			]]
+			, page: {
+				theme: 'blue'
+			}
+		});
+
+		//监听头工具栏事件
+		table.on('toolbar(tablegrid)', function (obj) {
+			var checkStatus = table.checkStatus(obj.config.id);
+			if (checkStatus.data.length <= 0) {
+				return false;
+			}
+			var items = new Array();
+			$.each(checkStatus.data, function (i, item) {
+				items.push(item.recharge_id);
+			});
+			if (obj.event === 'export') {
+				window.location.href = url(['deposit/export', $.extend($("#formSearch").serializeJson(), { id: items.join(','), model: 'recharge' })]);
+			}
+		});
+	});
+
+	$(function () {
+		$('#add_time_from').datepicker({ dateFormat: 'yy-mm-dd' });
+		$('#add_time_to').datepicker({ dateFormat: 'yy-mm-dd' });
+	});
+</script>
+{include file="footer.html"}

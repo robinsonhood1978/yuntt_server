@@ -1,0 +1,54 @@
+{include file="user.header.html"}
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful">{include file="user.submenu.html"}
+      <div class="wrap">
+        <div class="public table">
+          <table>
+            {if $coupons}
+            <tr class="gray">
+              <th><input id="all" type="checkbox" class="checkall" /></th>
+              <th>{$lang.coupon_sn}</th>
+              <th>{$lang.coupon_value}</th>
+              <th>{$lang.limit_time}</th>
+              <th>{$lang.min_amount}</th>
+              <th>{$lang.store_name}</th>
+              <th>{$lang.if_valid}</th>
+              <th>{$lang.handle}</th>
+            </tr>
+            {/if} 
+            <!-- {foreach from=$coupons item=coupon name=v} -->
+            <tr class="line{if $smarty.foreach.v.last} last_line{/if}">
+              <td class="align2"><input type="checkbox" class="checkitem" value="{$coupon.coupon_sn}" /></td>
+              <td>{$coupon.coupon_sn}</td>
+              <td class="align2"><!--{if $coupon.coupon_value}-->{$coupon.coupon_value|price_format}<!--{else}-->{$lang.no_limit}<!--{/if}--></td>
+              <td class="align2">{$coupon.start_time|date_format:"%Y-%m-%d"} {$lang.to} <!--{if $coupon.end_time}-->{$coupon.end_time|date_format:"%Y-%m-%d"}<!--{else}-->{$lang.no_limit}<!--{/if}--></td>
+              <td class="align2"><!--{if $coupon.min_amount}-->{$lang.min_amount_desc}{$coupon.min_amount|price_format}<!--{else}-->{$lang.no_limit}<!--{/if}--></td>
+              <td class="align2">{if $coupon.store_name}<a href="{url route='store/index' id=$coupon.store_id}">{$coupon.store_name}</a>{else}{$lang.plat}{/if}</td>
+              <td class="align2"><!--{if $coupon.valid}--><img src="{res file='images/usable.gif'}" /><!--{else}--><img src="{res file='images/unusable.gif'}" /><!--{/if}--></td>
+              <td class="align2"><a class="delete J_AjaxRequest" href="javascript:;" confirm="{$lang.drop_confirm}" uri="{url route='my_coupon/delete' id=$coupon.coupon_sn}">{$lang.drop}</a></td>
+            </tr>
+            <!-- {/foreach} --> 
+            <!--{if $coupons}-->
+            <tr class="btion">
+              <th><input id="all2" type="checkbox" class="checkall" /></th>
+              <th colspan="7"><p class="position1">
+                  <label for="all2"><span class="all">{$lang.checkall}</span></label>
+                  <a href="javascript:void(0);" ectype="batchbutton" class="delete" uri="{url route='my_coupon/delete'}" name="id" presubmit="confirm('{$lang.drop_confirm}')">{$lang.drop}</a></p>
+                <div class="position2 clearfix center">{include file="page.bottom.html"}</div>
+              </th>
+            </tr>
+            <!--{else}-->
+            <tr>
+              <td colspan="8"><div class="notice-word">
+                  <p>{$lang.{$app->controller->action->id}}{$lang.no_records}</p>
+                </div></td>
+            </tr>
+            <!--{/if}-->
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{include file="user.footer.html"}

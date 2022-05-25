@@ -1,0 +1,62 @@
+{include file="top.html"}
+<div id="header" class="w-full">
+	<div class="shop-t w-shop clearfix pb10 mb10 mt5">
+      <div class="logo mt10"> <a href="{$siteUrl}" title="{$app->params['site_title']}"><img height="60" alt="{$app->params['site_title']}" src="{$app->params['site_logo']|url_format}" /></a> </div>
+      <div class="top-search"> 
+			<div class="top-search-box clearfix">
+				<div class="form-fields">
+					<form method="GET" action="{if $app->controller->action->id eq 'store'}{url route='search/store'}{else}{url route='search/index'}{/if}" class="clearfix">
+                    	<!--{if !$app->urlManager->enablePrettyUrl}-->
+                        <input type="hidden" name="r" value="search/{if $app->controller->action->id eq 'store'}store{else}index{/if}" />
+                        <!--{/if}-->
+                        <ul class="select-act J_SearchType">
+                        	<li class="{if $app->controller->action->id eq 'index'}current{/if}"><span value="index">{$lang.goods}</span></li>
+                            <li class="{if $app->controller->action->id eq 'store'}current{/if}"><span value="store">{$lang.store}</span></li>
+                        </ul>
+                        
+						<input type="text" name="keyword" value="{$smarty.get.keyword|default}" class="keyword" placeholder="{$hot_keywords.0}" />
+						<input type="submit" value="{$lang.search}" class="submit" hidefocus="true" />
+					</form>
+				</div>
+			</div>
+			<div class="top-search-keywords"> <span>{$lang.hot_search}{$lang.colon}</span> 
+				<!--{foreach from=$hot_keywords item=keyword name=fe_keyword}--> 
+				<a {if $smarty.foreach.fe_keyword.first eq 1}style="color:#ff0000;"{/if} href="{url route='search/index' keyword=$keyword}">{$keyword}</a> 
+				<!--{/foreach}--> 
+			</div>
+		</div>
+      	<div class="header_cart {if $carts_top.kinds eq 0}J_GlobalPop{/if}">
+        	<div class="item">
+			<div class="title clearfix"> <b></b><a href="{url route='cart/index'}">去购物车结算</a><em>></em> </div>
+			<div class="shoping"><span class="count-cart J_C_T_GoodsKinds">{$carts_top.kinds|default:0}</span></div>
+			<div class="shadow"></div>
+			<!--{if $carts_top.kinds eq 0}-->
+			<div class="cart-list eject-box">
+				<div class="nogoods clearfix"> <b></b>购物车中还没有商品，赶紧选购吧！ </div>
+			</div>
+			<!--{/if}-->
+            </div>
+		</div>
+   </div>
+</div>
+<!--{if $store}-->
+<div id="nav" class="w-full">
+    <div class="banner">
+    	<a href="{url route='store/index' id=$store.store_id}" class="w-full block" style="background:url({$store.store_banner|default:'static/images/store_banner.png'|url_format}) no-repeat center center; height:110px;"></a>
+    </div>
+	<div class="shop-nav w-full">
+        <ul class="w J_ShopNav">
+            <li><a href="{url route='store/index' id=$store.store_id}"><span>{$lang.store_index}</span></a></li>
+			<li><a {if $app->controller->action->id eq 'search' && !$smarty.get.cate_id} class="current"{/if} href="{url route='store/search' id=$store.store_id}"><span>{$lang.all_goods}</span></a></li>
+			<li><a {if $app->controller->action->id eq 'credit'} class="current"{/if} href="{url route='store/credit' id=$store.store_id}"><span>{$lang.credit_evaluation}</span></a></li>
+            <!--{foreach from=$store.gcategories item=item}-->
+            <li><a {if $app->controller->action->id eq 'search' && $smarty.get.cate_id eq $item.id} class="current"{/if} href="{url route='store/search' id=$store.store_id cate_id=$item.id}"><span>{$item.value|escape}</span></a></li>
+            <!--{/foreach}-->
+            
+            <!--{if $app->controller->id eq 'goods' && $smarty.get.id}-->
+            <li><a class="current" href="{url route='goods/index' id=$goods.goods_id}"><span>{$lang.goods_detail}</span></a></li>
+            <!--{/if}--> 
+        </ul>
+    </div>
+</div>
+<!--{/if}-->

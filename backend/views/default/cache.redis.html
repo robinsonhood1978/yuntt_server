@@ -1,0 +1,58 @@
+{include file="header.html"}
+<div id="main">
+  {include file="menus.html"}
+  <div id="rightCon" class="clearfix layui-body">
+    <div class="scroller">
+      <div class="explanation" id="explanation">
+        <div class="title" id="checkZoom"> <i class="fa fa-lightbulb-o"></i>
+          <h4>{$lang.operation_tip}</h4>
+        </div>
+        <ul>
+          <li>1. Redis是基于内存的，作为缓存使用可以有效提高页面访问速度</li>
+          <li>2. 在开启Redis缓存之前，请确保在服务端已经安装了Redis服务否则会造成页面无法访问，请开放6379端口（默认）及设置好白名单</li>
+          <li>3. Redis服务可以为本地安装（使用宝塔可以一键安装），也可以是云端，例如：阿里云的【云数据库Redis】产品，开箱即用</li>
+          <li class="red">4. !!!如果配置后导致网站无法访问，请打开文件根目录/frontend/web/data/config.php 删除节点【cache】</li>
+        </ul>
+      </div>
+      <div class="flexigrid">
+        <form method="post">
+          <table class="infoTable">
+            <tr>
+              <th class="paddingT15"><label>{$lang.hostname}</label></th>
+              <td class="paddingT15 wordSpacing5"><input id="hostname" type="text" name="hostname"
+                  value="{$redis.hostname|default:'localhost'}" class="infoTableInput" />
+                <label class="field_notice">{$lang.hostname_desc}</label>
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.port}</label></th>
+              <td class="paddingT15 wordSpacing5"><input id="port" type="text" name="port"
+                  value="{$redis.port|default:'6379'}" class="infoTableInput" />
+                <label class="field_notice">{$lang.port_desc}</label>
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.password}</label></th>
+              <td class="paddingT15 wordSpacing5"><input id="password" type="text" name="password"
+                  value="{$redis.password}" class="infoTableInput" /></td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.status}</label></th>
+              <td class="paddingT15 layui-form">
+                <input type="radio" name="status" value="1" title="{$lang.enable}" {if $redis}checked{/if} />
+                <input type="radio" name="status" value="0" title="{$lang.close}" {if !$redis}checked{/if} />
+              </td>
+            </tr>
+            <tr>
+              <th></th>
+              <td class="ptb20"><input class="layui-btn layui-bg-blue J_AjaxSubmit" confirm="请正确配置后再提交，以免造成网站无法访问！！" type="submit"
+                  value="{$lang.submit}" /></td>
+            </tr>
+          </table>
+        </form>
+      </div>
+      {include file="version.html"}
+    </div>
+  </div>
+</div>
+{include file="footer.html"}

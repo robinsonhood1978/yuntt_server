@@ -1,0 +1,105 @@
+{include file="header.html"}
+<div id="main">
+  {include file="menus.html"}
+  <div id="rightCon" class="clearfix layui-body">
+    <div class="scroller">
+      <div class="flexigrid">
+        <h3 class="bold layui-font-16 mb20">移动端</h3>
+        <table class="distinction">
+          <thead>
+            <tr>
+              <th width="30%" align="left" class="pl10">页面</th>
+              <th width="40%" align="left">描述</th>
+              <th width="10%">{$lang.enable}</th>
+              <th class="handler">{$lang.handler}</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <!--{foreach from=$pages.wap item=page key=key}-->
+            <tr>
+              <td width="30%" align="left" class="pl10">{$page.title}</td>
+              <td width="40%" align="left"><span class="gray">[{$key}]</span></td>
+              <td align="center">
+                <!--{if $page.status || !$page.action}-->
+                <em class="green"><i class="fa fa-check-circle"></i></em>
+                <!--{else}-->
+                <em class="gray"><i class="fa fa-ban"></i></em>
+                <!--{/if}-->
+              </td>
+              <td class="handler gray">
+                <a href="{url route='template/edit' page=$key client=wap}" class="ml5 mr5 " target="_blank">{$lang.visual}</a> |
+                <a href="{$page.path|default:$page.url}" class="ml5 mr5" target="_blank">{$lang.preview}</a>
+                <!--{foreach from=$page.action item=action}-->
+                <!--{if $action eq 'delete'}-->
+                | <a href="javascript:;" uri="{url route='channel/delete' id=$key}" class="ml5 mr5 J_AjaxRequest"
+                  confirm="{$lang.drop_confirm}">{$lang.drop}</a>
+                <!--{else if $action eq 'edit'}-->
+                | <a href="javascript:;" uri="{url route='channel/edit' id=$key}" class="ml5 mr5" ectype="dialog"
+                  dialog_id="dialog" dialog_title="编辑页面" dialog_width="650">{$lang.edit}</a>
+                <!--{else}-->
+                | <a href='{url route="channel/{$action}" id=$key}' class="ml5 mr5">{$lang.$action}</a>
+                <!--{/if}-->
+                <!--{/foreach}-->
+              </td>
+            </tr>
+            <!--{/foreach}-->
+          </tbody>
+        </table>
+      </div>
+
+      <div class="flexigrid">
+        <h3 class="bold layui-font-16 mb20">电脑端</h3>
+        <div class="layui-btn-container box-align-center">
+          <a href="javascript:;" ectype="dialog" dialog_id="dialog" dialog_title="新增页面" dialog_width="650"
+            uri="{url route='channel/add'}" class="layui-btn layui-bg-blue"><i
+              class="layui-icon layui-icon-addition"></i>新增页面</a>
+        </div>
+        <table class="distinction">
+          <thead>
+            <tr>
+              <th width="30%" align="left" class="pl10">页面</th>
+              <th width="40%" align="left">描述</th>
+              <th width="10%">{$lang.enable}</th>
+              <th class="handler">{$lang.handler}</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <!--{foreach from=$pages.pc item=page key=key}-->
+            <tr>
+              <td width="30%" align="left" class="pl10">{$page.title}</td>
+              <td width="40%" align="left"><span class="gray">[{$key}]</span></td>
+              <td align="center">
+                <!--{if $page.status || !$page.action}-->
+                <em class="green"><i class="fa fa-check-circle"></i></em>
+                <!--{else}-->
+                <em class="gray"><i class="fa fa-ban"></i></em>
+                <!--{/if}-->
+              </td>
+              <td class="handler gray">
+                <a href="{url route='template/edit' page=$key}" class="ml5 mr5 " target="_blank">{$lang.visual}</a> |
+                <a href="{$page.path|default:$page.url}" class="ml5 mr5" target="_blank">{$lang.preview}</a>
+                <!--{foreach from=$page.action item=action}-->
+                <!--{if $action eq 'delete'}-->
+                | <a href="javascript:;" uri="{url route='channel/delete' id=$key}" class="ml5 mr5 J_AjaxRequest"
+                  confirm="{$lang.drop_confirm}">{$lang.drop}</a>
+                <!--{else if $action eq 'edit'}-->
+                | <a href="javascript:;" uri="{url route='channel/edit' id=$key}" class="ml5 mr5" ectype="dialog"
+                  dialog_id="dialog" dialog_title="编辑页面" dialog_width="650">{$lang.edit}</a>
+                <!--{else}-->
+                | <a href='{url route="channel/{$action}" id=$key}' class="ml5 mr5">{$lang.$action}</a>
+                <!--{/if}-->
+                <!--{/foreach}-->
+              </td>
+            </tr>
+            <!--{/foreach}-->
+          </tbody>
+        </table>
+      </div>
+      {include file="version.html"}
+    </div>
+  </div>
+</div>
+<iframe id="iframe" name="iframe" src="about:blank" frameborder="0" width="0" height="0" style="display:none"></iframe>
+{include file="footer.html"}

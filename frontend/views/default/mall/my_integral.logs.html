@@ -1,0 +1,45 @@
+{include file="user.header.html"}
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful">{include file="user.submenu.html"}
+      <div class="wrap">
+        <div class="public_index table1"> 
+          <!--{if $integrallogs}-->
+          <div class="user-integral-detail mb10">
+            <table>
+              <tr>
+                <th>来源/用途</th>
+                <th>积分变化</th>
+                <th>余额</th>
+                <th width="80">状态</th>
+                <th>日期</th>
+                <th width="300">备注</th>
+              </tr>
+              <!-- {foreach from=$integrallogs item=log name=fe_log} -->
+              <tr>
+                <td>{$log.name}</td>
+                <td class="change"><!--{if $log.changes gt 0}--> 
+                  <span class="plus">+{$log.changes}</span> 
+                  <!--{else}--> 
+                  <span class="minus">{$log.changes}</span> 
+                  <!--{/if}--></td>
+                <td class="balance"><span>{$log.balance}</span></td>
+                <td>{$log.state}</td>
+                <td>{$log.add_time|date_format:"%Y.%m.%d %H:%M:%S"}</td>
+                <td width="300"><div style="padding-left:5px; text-align:left"> {$log.flag} </div></td>
+              </tr>
+              <!--{/foreach}-->
+            </table>
+          </div>
+          <div class="mt20 clearfix center">{include file="page.bottom.html"}</div>
+          <!--{else}-->
+          <div class="notice-word">
+            <p>{$lang.no_records}</p>
+          </div>
+          <!--{/if}--> 
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{include file="user.footer.html"} 

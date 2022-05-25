@@ -1,0 +1,17 @@
+<div class="channel2-qianggou">
+  <div class="title clearfix">
+    <h2>{$widget_data.model_name}</h2>
+  </div>
+  <div class="goods-list clearfix">
+    <ul>
+      <!--{foreach from=$widget_data.goods_list item=goods name=fe_goods}-->
+      <li class="clearfix" {if $smarty.foreach.fe_goods.last} style="margin-right:0;" {/if}> <i></i> <a href="{url route='goods/index' id=$goods.goods_id}" target="_blank">
+        <dt class="image"> <img src="{$goods.default_image|url_format}" width="140" height="140" /> </dt>
+        <dd class="name"> {$goods.goods_name|escape} </dd>
+        <dd class="price"> <span class="new">{$goods.price|price_format}</span> </dd>
+        <dd class="buy-btn">立即抢购</dd>
+        </a> </li>
+      <!--{/foreach}-->
+    </ul>
+  </div>
+</div>

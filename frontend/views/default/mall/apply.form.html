@@ -1,0 +1,198 @@
+{include file="user.header.html"}
+<style>
+  .apply-submit .soptions .dt,.apply-submit dl dt  { width: 200px;}
+</style>
+<div id="main" class="w-full">
+  <div class="page-apply">
+    <div class="w content clearfix bgf pt10" style="border-radius: 10px;">
+        <div class="title mt10 mb20 pt20 center fs18 strong">商家入驻申请</div>
+        <div class="apply-submit ">
+          <form method="post" enctype="multipart/form-data">
+            <div class="soptions stype clearfix {if !$store}J_Soptions{/if}">
+              <div class="dt">{$lang.stype}{$lang.colon}</div>
+              <ul class="clearfix">
+                <li class="{if !$store || $store.stype eq 'personal'} selected{/if} {if $store}disabled{/if}" data-id="personal"><h2>{{$lang.personal}}</h2></li>
+                <li class="{if $store.stype eq 'company'} selected{/if} {if $store}disabled{/if}" data-id="company"><h2>{{$lang.company}}</h2></li>
+              </ul>
+              <input name="stype" type="hidden" value="{$store.stype}" />
+              <p class="gray clearboth mb10" style="margin-left:220px;">注：主体类型设置后无法更改</p>
+            </div>
+
+            <div class="soptions sgrade clearfix J_Soptions">
+              <div class="dt">{$lang.store_grade}{$lang.colon}</div>
+              <ul class="clearfix">
+                <!--{foreach from=$sgrades item=sgrade name=fe_sgrade}-->
+                <li class="{if $store.sgrade eq $sgrade.grade_id || (!$store && $smarty.foreach.fe_sgrade.first)}selected{/if}" data-id="{$sgrade.grade_id}" {if $smarty.foreach.fe_sgrade.iteration % 3 eq 0}style="margin-right:0"{/if}>
+                  <h2>{$sgrade.grade_name}</h2>
+                  <p> <span>{$lang.goods_limit}{$lang.colon}<em>{$sgrade.goods_limit}</em></span><br />
+                    <span>{$lang.space_limit}{$lang.colon}<em>{$sgrade.space_limit}</em></span><br />
+                    <span>{$lang.charge}{$lang.colon}<em>{if $sgrade.charge}{$sgrade.charge}{else}{$lang.free}{/if}</em></span><br />
+                  <span>{$lang.need_confirm}{$lang.colon}<em>{if $sgrade.need_confirm}{$lang.yes}{else}{$lang.no}{/if}</em></span></p>
+                </li>
+                <!--{/foreach}-->
+              </ul>
+              <input name="sgrade" type="hidden" value="{$store.sgrade}" />
+            </div>
+            <dl>
+              <dt><span class="f60">*</span>{$lang.owner_name}{$lang.colon}</dt>
+              <dd class="widdt7">
+                <input type="text" class="input border" name="owner_name" placeholder="{$lang.note_for_owner_name}" value="{$store.owner_name|escape}"/>
+              </dd>
+            </dl>
+            <dl class="J_IdentityCard">
+              <dt><span class="f60">*</span>{$lang.identity_card}{$lang.colon}</dt>
+              <dd>
+                <input type="text" class="input border" name="identity_card" value="{$store.identity_card|escape}" />
+              </dd>
+            </dl>
+            <dl>
+              <dt><span class="f60">*</span>{$lang.tel}{$lang.colon}</dt>
+              <dd>
+                <input type="text" class="input border" name="tel"  value="{$store.tel|escape}"/>
+              </dd>
+            </dl>
+            <dl>
+              <dt><span class="f60">*</span>{$lang.store_name}{$lang.colon}</dt>
+              <dd>
+                <input type="text" class="input border" name="store_name" id="store_name" value="{$store.store_name|escape}"/>
+              </dd>
+            </dl>
+            <dl>
+              <dt>{$lang.store_category}{$lang.colon}</dt>
+              <dd class="clearfix">
+                <div class="select_add">
+                  <select name="cate_id">
+                    <option value="0">{$lang.select_pls}</option>
+                    
+                    {html_options options=$scategories selected=$store.cate_id}
+                  
+                  </select>
+                </div>
+              </dd>
+              <dd></dd>
+            </dl>
+            <dl>
+              <dt>{$lang.region}{$lang.colon}</dt>
+              <dd class="clearfix">
+                <div class="select_add" id="region">
+                  <input type="hidden" name="region_id" value="{$store.region_id}" class="mls_id" />
+                  <input type="hidden" name="region_name" value="{$store.region_name}" class="mls_names" />
+                  {if $store.region_name} <span>{$store.region_name|escape}</span>
+                  <input type="button" value="{$lang.edit}" class="edit_region" />
+                  {/if}
+                  <select class="d_inline"{if $store.region_name} style="display:none;"{/if}>
+                    <option value="0">{$lang.select_pls}</option>
+                    
+                    {html_options options=$regions}
+                  
+                  </select>
+                </div>
+              </dd>
+            </dl>
+            <dl>
+              <dt>{$lang.address}{$lang.colon}</dt>
+              <dd>
+                <input type="text" class="input border" name="address" value="{$store.address|escape}"/>
+              </dd>
+            </dl>
+            <dl>
+              <dt>{$lang.zipcode}{$lang.colon}</dt>
+              <dd>
+                <input type="text" class="input border" name="zipcode" value="{$store.zipcode|escape}"/>
+              </dd>
+            </dl>
+            <dl class="clearfix">
+              <dt class="pt10 mt10"><span class="f60">*</span>{$lang.upload_image}{$lang.colon}</dt>
+              <dd class="pb10">
+                <div class="add-image-btn"> 
+                  <input type="file" name="identity_front" onchange="getTempPathcallback(this)" />
+                  <div class="type-file-image">
+                    <!--{if $store.identity_front}-->
+                    <img class="block" src="{$store.identity_front|url_format}" width="64" height="64" />
+                    <span>修改图片</span>
+                    <!--{else}-->
+                    <em class="bg-img-1"></em>
+                    <!--{/if}-->
+                  </div>
+                </div>
+              </dd>
+              <dd class="depict" style="margin-top:14px;">
+                <h2>身份证正面</h2>
+                <span class="gray">请上传本人（法人）身份证原件图</span> </dd>
+            </dl>
+            <dl class="clearfix">
+              <dt class="pt10 mt10"><span class="f60">*</span>{$lang.upload_image}{$lang.colon}</dt>
+              <dd>
+                <div class="add-image-btn">
+                  <input type="file" name="identity_back"  onchange="getTempPathcallback(this)" />
+                  <div class="type-file-image">
+                    <!--{if $store.identity_back}-->
+                    <img class="block" src="{$store.identity_back|url_format}" width="64" height="64" />
+                    <span>修改图片</span>
+                    <!--{else}-->
+                    <em class="bg-img-2"></em>
+                    <!--{/if}-->
+                  </div>
+                </div>
+              </dd>
+              <dd class="depict" style="margin-top:14px;">
+                <h2>身份证反面</h2>
+                <span class="gray">请上传本人（法人）身份证原件图</span> </dd>
+            </dl>
+            <dl class="clearfix J_BusinessLicense">
+              <dt class="pt10 mt10"><span class="f60">*</span>{$lang.upload_permit}{$lang.colon}</dt>
+              <dd>
+                <div class="add-image-btn">
+                  <input type="file" name="business_license" onchange="getTempPathcallback(this)" />
+                  <div class="type-file-image">
+                    <!--{if $store.business_license}-->
+                    <img class="block" src="{$store.business_license|url_format}" width="64" height="64" />
+                    <span>修改图片</span>
+                    <!--{else}-->
+                    <em class="bg-img-3"></em>
+                    <!--{/if}-->
+                  </div>
+                </div>
+              </dd>
+              <dd class="depict" style="margin-top:14px;">
+                <h2>营业执照</h2>
+                <span class="gray">请上传企业营业执照原件图</span> </dd>
+            </dl>
+            <dl class="mb20 clearfix" style="margin-top:30px;">
+              <dt>&nbsp;</dt>
+              <dd>
+                <input class="btn-apply border0 sdlong fff pointer J_AjaxSubmit" type="submit" value="{$lang.submit}" />
+              </dd>
+            </dl>
+          </form>
+        </div>
+      </div>
+    </div>
+  
+</div>
+<script type="text/javascript">
+$(function(){
+	regionInit("region");
+	
+  $('.J_Soptions').each(function() {
+    $(this).find('input').val($(this).find('li.selected').attr('data-id'))
+  });
+	$('.J_Soptions li').click(function(){
+		$(this).addClass('selected');
+		$(this).siblings().removeClass('selected');
+    $(this).parents('.J_Soptions').find('input').val($(this).attr('data-id'));
+    stypechange();
+	});
+  stypechange();
+});
+function stypechange() {
+    if($('input[name="stype"]').val() == 'company') {
+      $('.J_IdentityCard').hide();
+      $('.J_BusinessLicense').show();
+    } else {
+      $('.J_IdentityCard').show();
+      $('.J_BusinessLicense').hide();
+    }
+}
+</script> 
+{include file="user.footer.html"}

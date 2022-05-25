@@ -1,0 +1,118 @@
+<div id="leftMenus">
+  <div class="layui-side">
+    <div class="layui-side-scroll">
+      <!-- <div class="logo"><a class="block center" href="https://www.shopwind.net" target="_blank"
+          title="{$app->params['site_title']}"><img class="inline-block mr5" style="border-radius: 6px;"
+            src="{res file='images/shop.png'}" height="20"></a>
+      </div> -->
+      <div class="logo">
+        <a class="block center webkit-box white layui-font-18 box-align-center" href="https://www.shopwind.net" target="_blank" title="{$app->params['site_title']}">
+          <img class="inline-block" style="border-radius: 6px;" src="{res file='images/backendlogo.png'}" height="32">
+          <span class="white" style="vertical-align: middle;">SHOPWIND</span>
+        </a>
+      </div>
+      <ul class="layui-nav layui-nav-tree" lay-bar="disabled" lay-accordion="true">
+        <!--{foreach from=$back_nav key=key item=menu name=menu}-->
+        <li class="layui-nav-item">
+          <a href="javascript:;"><i class="iconfont {$menu.ico}"></i><span>{$menu.text}</span></a>
+          <dl class="layui-nav-child">
+            <!--{foreach from=$menu.children key=subkey item=submenu name=submenu}-->
+            <dd class="{if $smarty.server.REQUEST_URI eq $submenu.url}layui-this{/if}"><a
+                href="{$submenu.url}">{$submenu.text}</a></dd>
+            <!--{/foreach}-->
+          </dl>
+        </li>
+        <!--{/foreach}-->
+      </ul>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $(function () {
+      // $.session.clear();
+      var curmenu = $('#leftMenus').find('.layui-this');
+      if (curmenu.length > 0) {
+          curmenu.parents('.layui-nav-item').addClass('layui-nav-itemed');
+
+          var menu = {
+              name: curmenu.parents('.layui-nav-item').find('a span').text(),
+              child: { name: curmenu.find('a').text(), url: window.location.href }
+          };
+          var session = $.session.get('adminmenus');
+          var menus = session ? JSON.parse(session) : [];
+          if(menus.length > 10) {
+            menus.splice(0, 1);
+          }
+
+          var searched = false;
+          $.each(menus, function (i, item) {
+              if (item.child.url == window.location.href) {
+                  searched = true;
+              }
+          });
+          if (searched === false) {
+              menus.push(menu);
+          }
+
+          // 保存起来
+          $.session.set('adminmenus', JSON.stringify(menus));
+          $.session.set('lastadminmenu', JSON.stringify(menu));
+
+          // 绑定栏目TABS
+          bindMenus(menus);
+          bindNavs(menu);
+      }
+
+      // 如果没找到匹配的当前栏目，则定位上一次的栏目
+      else {
+
+          if ((session = $.session.get('lastadminmenu'))) {
+              var menu = JSON.parse(session);
+              $('#leftMenus .layui-nav-item').find('dl dd a').each(function (i, item) {
+                  if ((menu.child.url).indexOf($(item).attr('href')) > -1) {
+                      $(item).parents('.layui-nav-item').addClass('layui-nav-itemed');
+                      $(item).parent().addClass('layui-this');
+                  }
+              });
+
+              // 绑定栏目TABS
+              bindMenus();
+              bindNavs(menu);
+          }
+      }
+
+      $('.J_Menutabs').on('click', '.layui-tab-close', function () {
+          var index = $(this).attr('data-id');
+          var adminmenus = JSON.parse($.session.get('adminmenus'));
+          adminmenus.splice(index, 1);
+          $.session.set('adminmenus', JSON.stringify(adminmenus));
+          bindMenus(adminmenus);
+      });
+
+
+      $('.layui-side-scroll').scrollTop(-100);
+  });
+
+  function bindMenus(adminmenus) {
+      if (!adminmenus) {
+          adminmenus = JSON.parse($.session.get('adminmenus'));
+      }
+
+      var html = '';
+      $.each(adminmenus, function (i, item) {
+          var selected = (item.child.url == window.location.href) ? 'class="selected"' : '';
+          html += '<li ' + selected + '><a class="mr5" href="' + item.child.url + '">' + item.child.name + '</a><i data-id=' + i + ' class="layui-icon layui-icon-close layui-unselect layui-tab-close f-13"></i></li>';
+          $('.J_Menutabs').html(html);
+      });
+  }
+
+  // 当前位置导航
+  function bindNavs(menu) {
+      if (!menu) {
+          menu = JSON.parse($.session.get('lastadminmenu'));
+      }
+
+      $('#header').find('.layui-breadcrumb .menu').text(menu.name);
+      $('#header').find('.layui-breadcrumb .submenu cite').text(menu.child.name);
+  }
+</script>

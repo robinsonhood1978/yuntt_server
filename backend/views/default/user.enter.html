@@ -1,0 +1,45 @@
+{include file="header.html"}
+<div id="main">
+  {include file="menus.html"}
+  <div id="rightCon" class="clearfix layui-body">
+    <div class="scroller">
+      <div class="tablegrid">
+        <table class="layui-hide" id="tablegrid" lay-filter="tablegrid"></table>
+      </div>
+      {include file="version.html"}
+    </div>
+  </div>
+</div>
+<script type="text/html" id="toolbar">
+  <div class="layui-btn-container">
+    <a class="layui-btn layui-bg-blue" href="{url route='user/index'}"><i class="layui-icon layui-icon-left"></i>返回用户列表</a>
+  </div>
+</script>
+<script>
+  layui.use('table', function () {
+    var table = layui.table;
+
+    table.render({
+      elem: '#tablegrid'
+      //,skin: 'line'
+      , url: url(['user/enter', { id: "{$smarty.get.id}" }])
+      , toolbar: '#toolbar'
+      , defaultToolbar: ['filter', /*'exports',*/ 'print']
+      , title: '登录记录'
+      //, size: 'lg'
+      , cols: [[
+        { type: 'checkbox', fixed: 'left' }
+        , { field: 'id', title: 'ID', width: 70, fixed: 'left', unresize: true, sort: true }
+        , { field: 'userid', title: '用户编号', width: 100, align: 'center' }
+        , { field: 'username', title: '用户名', width: 200, align: 'center' }
+        , { field: 'ip', title: '登录IP', width: 200, sort: true, align: 'center' }
+        , { field: 'add_time', title: '登录时间', width: 200, sort: true, align: 'center'}
+        , { field: 'address', title: '登录地址', width: 425, sort: true, align: 'center' }
+      ]]
+      , page: {
+        theme: 'blue'
+      }
+    });
+  });
+</script>
+{include file="footer.html"}

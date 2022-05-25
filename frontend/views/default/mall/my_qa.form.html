@@ -1,0 +1,25 @@
+<div class="eject_con">
+  <div class="add_float">
+    <form method="post" action="{url route='my_qa/reply' id=$question.ques_id}" target="iframe">
+      <div id="warning" style="margin:10px;"></div>
+      <ul>
+        <li>
+          <h3 class="gray mb5">{$lang.question_content}{$lang.colon}</h3>
+          <p style="background: #fafafa; border:1px #ddd dotted;padding:10px;font-size:14px;">
+            <label>{$question.question_content|escape|nl2br}</label>
+          </p>
+        </li>
+        <li class="mt10">
+          <h3 class="gray mb5">{$lang.reply_question}{$lang.colon}</h3>
+          <p>
+            <textarea class="text width11" name="content">{$question.reply_content}</textarea>
+          </p>
+        </li>
+      </ul>
+      <div class="submit">
+        <input type="hidden" name="id"  value="{$question.ques_id}" />
+        <input type="submit" class="btn" value="{$lang.confirm}" />
+      </div>
+    </form>
+  </div>
+</div>

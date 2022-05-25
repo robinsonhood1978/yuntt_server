@@ -1,0 +1,55 @@
+{include file="header.html"}
+<div id="main">
+  {include file="menus.html"}
+  <div id="rightCon" class="clearfix layui-body">
+    <div class="scroller">
+      <div class="flexigrid clearfix promote">
+
+        <!--{foreach from=$result item=list key=key}-->
+        <div class="content">
+          <h3 class="bold mb10 mt10 ml10">{if $key eq 'user'}会员营销{else}店铺营销{/if}</h3>
+          <div class="clearfix items">
+            <!--{foreach from=$list item=item key=key}-->
+            <div class="item float-left mb10 mt10 mr10 ml10 webkit-box box-align-center">
+              <p>
+                <!--{if $item.icon}-->
+                <i class="iconfont {$item.icon}"></i>
+                <!--{else}-->
+                <img src="{res file='images/backendlogos.png'}" width="48" height="48">
+                <!--{/if}-->
+              </p>
+              <div class="flex1 ml10" title="{$item.desc}">
+                <p>{$item.name}</p>
+                <span class="gray f-13 line-clamp-1">{$item.desc}</span>
+              </div>
+              <p class="button ml10">
+                <!--{foreach from=$item.buttons item=button}-->
+                <a {if $button.dialog} href="javascript:;" filter="dialog" uri="{$button.url}" {else}
+                  href="{$button.url}" {/if} class="f-13">{$button.label}</a>
+                <!--{/foreach}-->
+              </p>
+            </div>
+            <!--{/foreach}-->
+          </div>
+        </div>
+        <!--{/foreach}-->
+
+      </div>
+      {include file="version.html"}
+    </div>
+  </div>
+</div>
+<script>
+  $(function () {
+    $('[filter="dialog"]').click(function () {
+      var url = $(this).attr('uri');
+      layer.confirm("该模块是卖家应用，选择确定后跳转到商户中心设置", {
+        yes: function (index) {
+          layer.close(index);
+          window.open(url);
+        }
+      })
+    })
+  })
+</script>
+{include file="footer.html"}

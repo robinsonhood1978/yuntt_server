@@ -1,0 +1,81 @@
+{include file="user.header.html"}
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful">{include file="user.submenu.html"}
+      <div class="wrap">
+        <div class="public table deposit">
+          <div class="drawlist">
+            <div class="tab-ttl">
+              <ul class="withdraw-tab clearfix">
+                <li class="current"><a href="{url route='deposit/drawlist'}"><span>{$lang.withdraw_record}</span></a></li>
+                <li><a href="{url route='deposit/rechargelist'}"><span>{$lang.recharge_record}</span></a></li>
+              </ul>
+            </div>
+            <div class="title clearfix">
+              <form method="get" class="float-left" action="{url route='deposit/drawlist'}">
+        		<!--{if !$app->urlManager->enablePrettyUrl}-->
+      			<input type="hidden" name="r" value="deposit/drawlist" />
+      			<!--{/if}-->
+                <input type="text" name="add_time_from" id="add_time_from" value="{$smarty.get.add_time_from}" />
+                <span>-</span>
+                <input type="text" name="add_time_to" id="add_time_to" value="{$smarty.get.add_time_to}" />
+                <select name="status">
+                  <option value="">{$lang.select_pls}</option>
+                  <option value="success" {if $smarty.get.status eq 'success'} selected="selected" {/if}>{$lang.success}</option>
+                  <option value="verifing" {if $smarty.get.status eq 'verifing'} selected="selected" {/if}>{$lang.verifing}</option>
+                </select>
+                <input type="submit" class="btn-withdraw" value="{$lang.search}" />
+              </form>
+              <!--{if $filtered}--> 
+         		<a class="detlink" href="{url route='deposit/drawlist'}">{$lang.cancel_query}</a>
+        		<!--{/if}--> 
+              
+            </div>
+            <ul class="subtit">
+              <li class="clearfix">
+                <div class="time">创建时间</div>
+                <div class="info">名称 | 备注</div>
+                <div class="tradeNo">商户订单号 | 交易号</div>
+                <div class="method">收/支</div>
+                <div class="money">金额(元)</div>
+                <div class="fundchannel">资金渠道</div>
+                <div class="status">状态</div>
+                <div class="handle">操作</div>
+              </li>
+            </ul>
+            <div class="content">
+              <ul>
+                <!--{foreach from=$recordlist item=record}-->
+                <li class="clearfix">
+                  <div class="time">{$record.add_time|date_format:"%Y.%m.%d %H:%M:%S"}</div>
+                  <div class="info">{$record.title|truncate:30}</div>
+                  <div class="tradeNo">{$record.bizOrderId} | {$record.tradeNo}</div>
+                  <div class="method"><span class="f60">{$lang.outlay}</span></div>
+                  <div class="money">{$record.amount}</div>
+                  <div class="fundchannel">{$record.card_info.bank_name}<br />
+                    <span class="gray">{$record.card_info.num}</span></div>
+                  <div class="status"> <span class="{if in_array($record.status, array('CLOSED'))}gray{elseif !in_array($record.status, array('SUCCESS'))}f60{/if}">{$record.status_label}</span> </div>
+                  <div class="handle"> <a href="{url route='deposit/record' tradeNo=$record.tradeNo}">查看</a> </div>
+                </li>
+                <!--{/foreach}-->
+              </ul>
+              <!--{if !$recordlist}-->
+              <div class="notice-word mt10">
+                <p>{$lang.no_records} <a href="{url route='deposit/withdraw'}">马上提现</a></p>
+              </div>
+              <!--{/if}--> 
+            </div>
+            <div class="mt10 clearfix center">{include file="page.bottom.html"}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+    $('#add_time_from').datepicker({ dateFormat: 'yy-mm-dd'});
+    $('#add_time_to').datepicker({ dateFormat: 'yy-mm-dd'});
+});
+</script> 
+{include file="user.footer.html"}

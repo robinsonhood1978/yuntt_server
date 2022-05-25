@@ -1,0 +1,123 @@
+{include file="user.header.html"}
+{$build_upload}
+{$build_editor}
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful">{include file="user.submenu.html"}
+      <div id="page-promotool" class="wrap page-promotool clearfix"> 
+        <div class="public_select">
+          <div class="promotool">
+            <div class="bundle bundle-form"> 
+              <!--{if $tooldisabled}-->
+              <div class="notice-word">
+                <p>{$tooldisabled}</p>
+              </div>
+              <!--{else}-->
+              <form method="post" id="meal_form" enctype="multipart/form-data">
+                <ul class="form-elem">
+                  <li class="clearfix">
+                    <label class="float-left">{$lang.title}{$lang.colon}<span class="field-required">*</span></label>
+                    <p class="float-left">
+                      <input type="text" name="title" class="input-long" value="{$meal.title}" />
+                      <span class="field-notice">{$lang.note_for_title}</span></p>
+                  </li>
+                  <li class="clearfix" style="width:728px;">
+                    <label class="float-left">{$lang.items}{$lang.colon}<span class="field-required">*</span></label>
+                    <div class="float-left lst-products clearfix">
+                      <div class="th clearfix">
+                        <p class="cell-thumb float-left">搭配宝贝</p>
+                        <p class="cell-title float-left">宝贝标题</p>
+                        <p class="cell-price float-left">原价</p>
+                        <p class="cell-action float-left">操作</p>
+                      </div>
+                      <div class="entity">
+                        <ul ectype="goods_list">
+                          <div class="pt5 pb5 align2 gray-color">{$lang.add_records}</div>
+                        </ul>
+                      </div>
+                      <p> <a href="javascript:;" gs_id="seller_meal" gs_name="goods_name" gs_callback="gs_callback" gs_title="{$lang.gselector}" gs_width="690" gs_type="goods" gs_store_id="{$store_id}" ectype="gselector" gs_uri="{url route='gselector/goods'}" class="btn-add-product">{$lang.gselector}</a> </p>
+                    </div>
+                  </li>
+                  <li class="clearfix">
+                    <label class="float-left">套餐原价{$lang.colon}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
+                    <p class="float-left">
+                      <input class="J_priceTotal gray" type="text" readonly="readonly" value="" />
+                    </p>
+                  </li>
+                  <li class="clearfix">
+                    <label class="float-left">套餐一口价{$lang.colon}<span class="field-required">*</span></label>
+                    <p class="float-left">
+                      <input type="text" name="price" value="{$meal.price}" />
+                      <span class="field-notice">搭配一口价不得高于单个宝贝原价总和。</span></p>
+                  </li>
+                  <li class="clearfix">
+                    <label class="float-left">套餐描述{$lang.colon}<span class="field-required">*</span></label>
+                    <div class="float-left">
+                      <div class="editor">
+                        <div>
+                          <textarea name="description" id="description" style="width:765px; height:400px;">{$meal.description|escape}</textarea>
+                        </div>
+                        <div class="multimage-wrapper descimage-wrapper">
+                          <ul class="multimage-tabs clearfix">
+                            <li class="selected">插入描述图片</li>
+                          </ul>
+                          <div class="multimage-panels clearfix">
+                            <div class="upload_btn">
+                              <div class="btn-upload-image"><b class="hide EDITOR_SWFU_filePicker"></b></div>
+                            </div>
+                            <div class="text">{$lang.note_for_upload}</div>
+                          </div>
+                          <div class="multimage-piclist clearfix">
+                            <ul id="desc_images" class="preview J_descriptioneditor">
+                              <!--{foreach from=$meal.desc_images item=image}-->
+                              <li ectype="handle_pic" file_name="{$image.file_name|escape}" file_path="{$image.file_path|url_format}" file_id="{$image.file_id}">
+                                <input type="hidden" name="desc_file_id[]" value="{$image.file_id}">
+                                <div class="pic"> <img src="{$image.file_path|url_format}" width="80" height="80" alt="{$image.file_name|escape}" title="{$image.file_name|escape}" /> </div>
+                                <div ectype="handler" class="bg">
+                                  <p class="operation"> <a class="cut_in" ectype="insert_editor" href="javascript:void(0);" ecm_title="{$lang.insert_editor}"></a> <span class="delete" ectype="drop_image" ecm_title="{$lang.drop}"></span> </p>
+                                </div>
+                              </li>
+                              <!--{/foreach}-->
+                            </ul>
+                          </div>
+                          <!--{if $meal.desc_images}-->
+                          <div class="notice-word" style="padding:14px;">
+                            <p class="yellow">插入方法：将鼠标移至需要插入的图片上面，然后点击插入按钮，即可将图片插入到编辑器中。</p>
+                          </div>
+                          <!--{/if}--> 
+                        </div>
+                        <div class="clear"></div>
+                      </div>
+                    </div>
+                  </li>
+                  <li class="clearfix relative" style="z-index:99">
+                    <label class="float-left">&nbsp;</label>
+                    <p class="wrap_btn wrap_btn_blue mt20">
+                      <input type="submit" value="{$lang.submit}" class="btn-alipay" style="width:200px;" />
+                    </p>
+                  </li>
+                </ul>
+              </form>
+              <!--{/if}--> 
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+$(function(){
+	gs_query_info(0, {$meal.meal_id|default:0});
+});
+function gs_submit_check(id,name,callback)
+{
+	if(DATA_LIST_TEMP.length < 2 || DATA_LIST_TEMP.length > 10) {
+		msg(lang.records_error);
+	}
+	else {
+		gs_submit(id,name,callback);
+	}
+}
+</script> 
+{include file="user.footer.html"}

@@ -1,0 +1,54 @@
+<div class="eject_con">
+    <div class="adds">
+        <div id="warning"></div>
+        <form method="post" action="{$action}" target="iframe" enctype="multipart/form-data">
+        <ul>
+            <li>
+                <h3>{$lang.coupon_name}:</h3>
+                <p><input type="text" class="text width14" name="coupon_name" value="{$coupon.coupon_name|escape}"/><b class="strong">*</b></p>
+            </li>
+            <li>
+                <h3>{$lang.coupon_value}:</h3>
+                <p><input type="text" class="text width2" name="coupon_value" value="{$coupon.coupon_value}" /><b class="strong">*</b></p>
+            </li>
+            <li>
+                <h3>{$lang.coupon_total}:</h3>
+                <p><input type="text" class="text width2" name="total" value="{$coupon.total|default:1}" /><b class="strong">*</b></p>
+            </li>
+            <!--优惠券图片功能PC端已实现，但暂时用不到，先隐藏
+            <li style="display:none">
+                <h3>{$lang.coupon_image}:</h3>
+                <p>
+                	<input type="file" class="text width_normal" name="image" />
+                    <span class="field_notice">{$lang.coupon_image_desc}</span>
+                    {if $coupon.image}
+                    <p class="image"><img width="40" height="40" src="{$coupon.image|url_format}" /><a href="javascript:;" class="ml5 J_AjaxRequest" uri="{url route='seller_coupon/deleteimage' id=$coupon.coupon_id}" confirm="{$lang.drop_confirm}">{$lang.drop}</a></p>
+                    {/if}
+                </p>
+            </li>-->
+            <li>
+                <h3>{$lang.time_limit}:</h3>
+                <p><input type="text" class="text width2" name="start_time" value="{$coupon.start_time|default:$now|date_format:'%Y-%m-%d'}" id="add_time_from" readonly />
+                 {$lang.to} <input type="text" class="text width2" name="end_time" value="{$coupon.end_time|date_format:'%Y-%m-%d'}" id="add_time_to" readonly /><b class="strong">*</b>
+                </p>
+            </li>
+            <li>
+                <h3>{$lang.min_amount}:</h3>
+                <p><span class="field_notice">{$lang.min_amount_desc_start}  <input type="text" class="text width2" name="min_amount" value="{$coupon.min_amount}" />   {$lang.min_amount_desc_end}</span></p>
+            </li>
+            <li>
+                <h3>{$lang.clickreceive}:</h3>
+                <p style="margin-top:5px;"><input type="checkbox" name="clickreceive" value="1" {if $coupon.clickreceive} checked="checked"{/if} /> {$lang.yes} <span class="field_notice">{$lang.clickreceive_desc}</span></p>
+                <div class="clear"></div>
+            </li>
+        </ul>
+        <div class="submit"><input type="submit" class="btn" value="{$lang.submit}" /></div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+$(function(){
+    $('#add_time_from').datepicker({ dateFormat: 'yy-mm-dd'});
+    $('#add_time_to').datepicker({ dateFormat: 'yy-mm-dd'});
+});
+</script>

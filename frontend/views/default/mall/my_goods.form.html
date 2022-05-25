@@ -1,0 +1,516 @@
+{use class="common\library\Def"}
+{include file="user.header.html"}
+{$images_upload}
+{$build_upload}
+{$build_editor}
+<style>
+.box_arr .table_btn { width: 222px; }
+.box_arr .table_btn a { float: left; }
+.box_arr .table_btn a.disable_spec { background: url({res file='images/member/btn.gif'}) repeat 0 -1018px; float: right; }
+.add_spec .add_link { color:#919191; }
+.add_spec .add_link:hover { color:red; }
+.add_spec h2 { padding-left: 10px; }
+.spec_image{ width:90px;text-align:center; height: 31px; position:relative;}
+.spec_image input{ display:block;z-index:10; position:absolute;cursor: hand;  opacity:0; filter: alpha(opacity=0); width:90px;}
+.spec_image i{ display: inline-block; width: 90px; height: 31px; }
+.spec_image i.no-pic { background:url('{res file="images/pic.png"}') no-repeat center 0 ; background-size:33%;}
+.spec_image i b{ position:absolute; background: #000;right: 23%;top: 0;width: 10px; height: 10px; color:#fff; z-index: 999; cursor: pointer;; text-align: center; font-size: 7px; border-radius: 100%;opacity: 0.3;}
+</style>
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful"> {include file="user.submenu.html"}
+      <div  class="wrap publish">
+        <div class="public">
+          <form method="post" id="goods_form">
+            <div class="information_index">
+              <div class="add_spec" dialog_title="{$lang.edit}{$lang.specification}" ectype="dialog_contents" style="display: none"> 
+                <!--<form>-->
+                <p>{$lang.note_for_add_spec_popup}</p>
+                <div class="table" ectype="spec_editor">
+                  <ul class="th">
+                    <li>
+                      <input col="spec_name_1" type="text" class="text width4" />
+                    </li>
+                    <li>
+                      <input col="spec_name_2" type="text" class="text width4" />
+                    </li>
+                    <li class="distance1">{$lang.price}</li>
+                    <li class="distance1">{$lang.stock}</li>
+                    <li class="distance2">{$lang.sku}</li>
+                    <li class="distance1">{$lang.spec_image}</li>
+                    <li class="distance3">{$lang.handle}</li>
+                  </ul>
+                  <ul class="td" ectype="spec_item">
+                    <li>
+                      <input item="spec_1" type="text" class="text width4" />
+                    </li>
+                    <li>
+                      <input item="spec_2" type="text" class="text width4" />
+                    </li>
+                    <li>
+                      <input item="price" type="text" class="text width4" />
+                    </li>
+                    <li>
+                      <input item="stock" type="text" class="text width4" />
+                    </li>
+                    <li>
+                      <input item="sku" type="text" class="text width8" />
+                      <input item="spec_id" type="hidden" />
+                    </li>
+                     <li class="spec_image">
+                      <input ectype="spec_image" type="file" name="file" size="1" hidefocus="true" maxlength="0" runat="server">
+                      <i class="no-pic"></i> </li>
+                    <li class="padding3"> <span ectype="up_spec_item" class="up_btn"></span> <span ectype="down_spec_item" class="down_btn"></span> <span ectype="drop_spec_item" class="delete_btn"></span> </li>
+                  </ul>
+                  <ul>
+                    <li class="add"><a href="javascript:;" ectype="add_spec_item" class="add_link">{$lang.add_spec_item}</a></li>
+                  </ul>
+                </div>
+                <div class="btn_wrap">
+                  <input ectype="save_spec" type="submit" class="btn-alipay pl10 pr10" value="{$lang.save_spec}" />
+                </div>
+                <!--</form>--> 
+              </div>
+            </div>
+            <h5 class="box-title">1.商品基本信息</h5>
+            <ul class="box-body">
+              <li class="subbox clearfix">
+                <label class="subbox-title">商品类目：</label>
+                <div class="subbox-body"> 
+                  <!--{foreach from=$goods.publish_gcategory item=item name=fe_item}--> 
+                  <!--{if !$smarty.foreach.fe_item.first}--> > <!--{/if}--> 
+                  <span class="border-field">{$item.cate_name}</span> 
+                  <!--{/foreach}--> 
+                  <!--{if in_array({$app->controller->action->id}, ['edit'])}--> 
+                  <a class="btn-gedit" href="{url route='my_goods/publish' id=$smarty.get.id}">编辑类目</a> 
+                  <!--{else}--> 
+                  <a class="btn-gedit" href="{url route='my_goods/add'}">编辑类目</a> 
+                  <!--{/if}-->
+                  <input type="hidden" id="cate_id" name="cate_id" value="{$goods.cate_id}" />
+                  <input type="hidden" name="cate_name" value="{$goods.cate_name|escape}" />
+                </div>
+              </li>
+              <li class="subbox clearfix">
+                <label class="subbox-title">商品标题：</label>
+                <div class="subbox-body">
+                  <input style="width:500px;" type="text" name="goods_name" value="{$goods.goods_name|escape}" class="text width_normal" />
+                </div>
+              </li>
+              <!--{if $propList}-->
+              <li class="subbox clearfix">
+                <label class="subbox-title">商品属性：</label>
+                <div class="subbox-body">
+                  <div id="props"> {foreach from=$propList item=prop}
+                    <dl class="clearfix">
+                      <dt class="float-left">{$prop.name}{$lang.colon}</dt>
+                      <dd class="float-left"> 
+                        <!--{if $prop.ptype eq 'checkbox' || $prop.ptype eq 'radio'}--> 
+                        {foreach from=$prop.value item=item}
+                        <label>
+                          <input type="{$prop.ptype}" name="props[{$prop.pid}][]" value="{$item.pid}:{$item.vid}" {if $item.selected} checked="checked"{/if} />
+                          {if $prop.is_color}<i {if $item.color}style="background:{$item.color}"{else}class="duocai"{/if}></i>{/if}
+                          {$item.pvalue} </label>
+                        {/foreach} 
+                        <!--{else}-->
+                        <select name="props[{$prop.pid}][]">
+                          <option value=""></option>
+                          
+                        {foreach from=$prop.value item=item}
+                        
+                          <option value="{$item.pid}:{$item.vid}" {if $item.selected} selected="selected"{/if}>{$item.pvalue}</option>
+                          
+                        {/foreach}
+                      
+                        </select>
+                        <!--{/if}--> 
+                      </dd>
+                    </dl>
+                    {/foreach} </div>
+                  <div class="notice-word mt5">
+                    <p style="margin-bottom:0;">填错宝贝属性，可能会引起宝贝下架，影响您的正常销售。请认真准确填写</p>
+                  </div>
+                </div>
+              </li>
+              <!--{/if}-->
+              
+              <li class="subbox clearfix">
+                <label class="subbox-title">商品品牌：</label>
+                <div class="subbox-body">
+                  <select name="brand">
+                    <option value="">{$lang.select_pls}</option>
+                    <!--{foreach from=$brandList item=item}-->
+                    <option value="{$item.brand_name|escape}" {if $goods.brand eq $item.brand_name} selected="selected"{/if}>{$item.brand_name|escape}</option>
+                    <!--{/foreach}-->
+                  </select>
+                </div>
+              </li>
+              <li class="subbox clearfix"  ectype="no_spec">
+                <label class="subbox-title">商品价格：</label>
+                <div class="subbox-body">
+                  <input name="spec_id" value="{$goods._specs.0.spec_id}" type="hidden" />
+                  <input name="price" value="{$goods._specs.0.price}" type="text" class="text width_short" />
+                </div>
+              </li>
+              <!--{if $integral_enabled}-->
+              <li class="subbox clearfix"  ectype="max_exchange">
+                <label class="subbox-title">积分抵扣：</label>
+                <div class="subbox-body">
+                  <input name="max_exchange" value="{$goods.max_exchange}" type="text" class="text width_short" />
+                  <span class="gray">{$lang.rechange_price_note}</span> </div>
+              </li>
+              <!--{/if}-->
+              
+              <li class="subbox clearfix">
+                <label class="subbox-title">商品规格：</label>
+                <div class="subbox-body">
+                  <div class="arrange">
+                    <div class="box_arr" ectype="no_spec"  style="display: none;">
+                      <p class="pos_btn"><a ectype="add_spec" href="javascript:;" class="add_btn">{$lang.enable_spec}</a></p>
+                      <p class="pos_txt">{$lang.note_for_add_spec}</p>
+                    </div>
+                    <div class="box_arr has_spec" ectype="has_spec"  style="display: none;">
+                      <table ectype="spec_result">
+                        <tr>
+                          <th col="spec_name_1">loading..</th>
+                          <th col="spec_name_2">loading..</th>
+                          <th col="price">{$lang.price}</th>
+                          <th col="stock">{$lang.stock}</th>
+                          <th col="sku">{$lang.sku}</th>
+                          <th col="spec_image" width="80">{$lang.spec_image}</th>
+                        </tr>
+                        <tr ectype="spec_item" style="display:none">
+                          <td item="spec_1"></td>
+                          <td item="spec_2"></td>
+                          <td item="price"></td>
+                          <td item="stock"></td>
+                          <td item="sku"></td>
+                          <td item="spec_image"></td>
+                        </tr>
+                      </table>
+                      <p class="table_btn"> <a ectype="edit_spec" href="javascript:;" class="add_btn edit_spec">{$lang.edit_spec}</a> <a ectype="disable_spec" href="javascript:;" class="add_btn disable_spec">{$lang.disable_spec}</a> </p>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li class="subbox clearfix"  ectype="no_spec">
+                <label class="subbox-title">商品库存：</label>
+                <div class="subbox-body">
+                  <input name="stock" value="{$goods._specs.0.stock}" type="text" class="text width_short" />
+                </div>
+              </li>
+              <li class="subbox clearfix"  ectype="no_spec">
+                <label class="subbox-title">商品货号：</label>
+                <div class="subbox-body">
+                  <input name="sku" value="{$goods._specs.0.sku}" type="text" class="text width_normal" />
+                </div>
+              </li>
+            </ul>
+            <h5 class="box-title">2.商品图片及描述</h5>
+            <ul class="box-body">
+              <li class="subbox clearfix">
+                <label class="subbox-title">商品图片：</label>
+                <div class="subbox-body">
+                  <div class="multimage-wrapper">
+                    <ul class="multimage-tabs clearfix">
+                      <li class="selected">本地上传</li>
+                      <!--<li>图片空间</li>-->
+                    </ul>
+                    <div class="multimage-panels clearfix">
+                      <div class="upload_btn">
+                        <div class="btn-upload-image"><b class="hide GOODS_SWFU_filePicker"></b></div>
+                      </div>
+                      <div class="text">{$lang.note_for_upload}</div>
+                    </div>
+                    <div class="multimage-piclist clearfix">
+                      <div class="small_pic">
+                        <ul id="goods_images">
+                          <!--{foreach from=$goods.goods_images item=image}-->
+                          <li ectype="handle_pic" file_id="{$image.file_id}" thumbnail="{$image.thumbnail|url_format}">
+                            <input type="hidden" name="goods_file_id[]" value="{$image.file_id}">
+                            <div class="pic"> <img src="{$image.thumbnail|url_format}" width="80" height="80" />
+                              <div ectype="handler" class="bg">
+                                <p class="operation"> <span class="cut_in" ectype="set_cover" ecm_title="{$lang.set_cover}"></span> <span class="delete" ectype="drop_image" ecm_title="{$lang.drop}"></span> </p>
+                              </div>
+                            </div>
+                          </li>
+                          <!--{/foreach}-->
+                        </ul>
+                        <div class="clear"></div>
+                      </div>
+                      <div class="notice-word" style="margin-right:14px;">
+                        <p class="yellow">注：第一张为商品主图，也即是在前台页面显示。将鼠标移至图片上可以调整顺序。</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <li class="subbox clearfix">
+                <label class="subbox-title">{$lang.description}：</label>
+                <div class="subbox-body">
+                  <div class="add_wrap">
+                    <div class="editor clearfix">
+                      <div class="clearfix">
+                        <textarea name="description" id="description"  style="width:713px; height:400px;">{$goods.description|escape}</textarea>
+                      </div>
+                      <div style="width:715px; margin:0">
+                        <div class="multimage-wrapper descimage-wrapper">
+                          <ul class="multimage-tabs clearfix">
+                            <li class="selected">插入描述图片</li>
+                          </ul>
+                          <div class="multimage-panels clearfix">
+                            <div class="upload_btn">
+                              <div class="btn-upload-image"><b class="hide EDITOR_SWFU_filePicker"></b></div>
+                            </div>
+                            <div class="text">{$lang.note_for_upload}</div>
+                          </div>
+                          <div class="multimage-piclist clearfix">
+                            <ul id="desc_images" class="preview J_descriptioneditor">
+                              <!--{foreach from=$goods.desc_images item=image}-->
+                              <li ectype="handle_pic" file_type="{$image.file_type}" file_name="{$image.file_name|escape}" file_path="{$image.file_path|url_format}" file_id="{$image.file_id}">
+                                <input type="hidden" name="desc_file_id[]" value="{$image.file_id}">
+                                <div class="pic"> <img src="{$image.file_path|url_format}" width="80" height="80" alt="{$image.file_name|escape}" title="{$image.file_name|escape}" /> </div>
+                                <div ectype="handler" class="bg">
+                                  <p class="operation"> <a class="cut_in" ectype="insert_editor" href="javascript:void(0);" ecm_title="{$lang.insert_editor}"></a> <span class="delete" ectype="drop_image" ecm_title="{$lang.drop}"></span> </p>
+                                </div>
+                              </li>
+                              <!--{/foreach}-->
+                            </ul>
+                          </div>
+                          <!--{if $goods.desc_images}-->
+                          <div class="notice-word" style="padding:14px;">
+                            <p class="yellow">插入方法：将鼠标移至需要插入的图片上面，然后点击插入按钮，即可将图片插入到编辑器中。</p>
+                          </div>
+                          <!--{/if}--> 
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <!--{if $sgcategories}-->
+              <li class="subbox clearfix">
+                <label class="subbox-title">{$lang.sgcategory}：</label>
+                <div class="subbox-body">
+                  <div class="shop-cat-list">
+                    <div class="shop-cat-each"> 
+                      <!--{foreach from=$sgcategories item=sgcate}-->
+                      <p>
+                        <label>
+                          <input type="checkbox" name="sgcate_id[]" value="{$sgcate.id}" {if $sgcate.selected} checked="checked"{/if} />
+                          {$sgcate.value}</label>
+                      </p>
+                      <!--{foreach from=$sgcate.children item=item}-->
+                      <p class="children-1">
+                        <label>
+                          <input type="checkbox" name="sgcate_id[]" value="{$item.id}" {if $item.selected} checked="checked"{/if}/>
+                          {$item.value}</label>
+                      </p>
+                      <!-- {/foreach} --> 
+                      <!-- {/foreach} --> 
+                    </div>
+                  </div>
+                </div>
+              </li>
+              <!--{/if}-->
+            </ul>
+            <h5 class="box-title">3.物流及配送设置</h5>
+            <ul class="box-body">
+              <li class="subbox clearfix">
+                <label class="subbox-title">{$lang.delivery_template}：</label>
+                <div class="subbox-body">
+                  <select class="text" name="dt_id">
+                    <!--{foreach from=$deliverys item=delivery name=fe_delivery}-->
+                    <option value="{$delivery.template_id}" {if $app->controller->action->id eq 'add' && $smarty.foreach.fe_delivery.first} checked="checked" {elseif $goods.dt_id==$delivery.template_id} selected="selected" {/if} >{$delivery.name}</option>
+                    <!--{/foreach}-->
+                  </select>
+                  <a href="{url route='my_delivery/index'}" target="_blank" style="color:blue; text-decoration:none">{$lang.delivery_template_list}</a> </div>
+              </li>
+            </ul>
+            <h5 class="box-title">4.其他设置</h5>
+            <ul class="box-body">
+              <!--{if $exclusive}-->
+              <li class="subbox clearfix">
+                <label class="subbox-title">手机专享：</label>
+                <div class="subbox-body"> <span class="clearfix">
+                  <label class="switch-checkbox-radio box-align-center float-left J_SwtcherInput {if $exclusive.selected neq '0'}checked{/if}" for="exclusive[status]"><span class="switcher-style block"></span></label>
+                  <input type="checkbox" name="exclusive[status]" value="1" id="exclusive[status]" class="J_ExclusiveCheckbox hidden" {if $exclusive.selected neq '0'}checked="checked" {/if}/>
+                  <em class="gray ml10 inline-block" style="margin-top:3px;">{$exclusive.desc}</em> </span>
+                  <div class="J_ExclusiveDetailSetting mt10 {if $exclusive.selected eq '0'}hidden{/if}"> 享
+                    <input type="text" name="exclusive[discount]" id="exclusive[discount]" class="width_short" value="{$exclusive.config.discount}">
+                    折，或减
+                    <input type="text"  name="exclusive[decrease]" id="exclusive[decrease]" class="width_short" value="{$exclusive.config.decrease}">
+                    元 <em class="gray ml10 inline-block mt5">如果留空，则执行默认优惠。仅需设置折扣<font class="red">或</font>减价</em> </div>
+                </div>
+              </li>
+              <!--{/if}-->
+              <li class="subbox clearfix">
+                <label class="subbox-title">商品上架：</label>
+                <div class="subbox-body">
+                  <label class="switch-checkbox-radio box-align-center J_SwtcherInput {if $goods.if_show}checked{/if}" for="if_show"><span class="switcher-style block"></span></label>
+                  <input type="checkbox" name="if_show" value="1" id="if_show" class="hidden" {if $goods.if_show}checked="checked" {/if}/>
+                </div>
+              </li>
+              <li class="subbox clearfix">
+                <label class="subbox-title">商品推荐：</label>
+                <div class="subbox-body clearfix">
+                  <label class="switch-checkbox-radio inline-block box-align-center float-left J_SwtcherInput {if $goods.recommended}checked{/if}" for="recommended"><span class="switcher-style block"></span></label>
+                  <input type="checkbox" name="recommended" value="1" id="recommended" class="hidden" {if $goods.recommended}checked="checked" {/if}/>
+                  <span class="gray float-left block mt5 ml10">{$lang.note_for_recommended}</span> </div>
+              </li>
+              <li class="subbox clearfix">
+                <label class="subbox-title">商品标签：</label>
+                <div class="subbox-body">
+                  <input style="width:300px;" type="text" name="tags" value="{$goods.tags|escape}" class="text width_normal" />
+                  <div class="gray mt5">填写商品卖点，展示在移动端标题下方</div></div>
+              </li>
+            </ul>
+            <div class="issuance">
+              <input type="submit" class="btn" value="{$lang.submit}" />
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+//<!CDATA[
+var SPEC = {$goods.spec_json};
+function add_uploadedfile(file_data)
+{
+    if(file_data.instance == 'goods_image'){
+        $('#goods_images').append('<li style="z-index:4" ectype="handle_pic" file_id="'+ file_data.file_id +'" thumbnail="'+url_format(file_data.thumbnail) +'"><input type="hidden" value="'+ file_data.file_id +'" name="goods_file_id[]"/><div class="pic"><img src="'+url_format(file_data.thumbnail) +'" width="80" height="80" alt="" /><div ectype="handler" class="bg"><p class="operation"><span class="cut_in" ectype="set_cover" ecm_title="{$lang.set_cover}"></span><span class="delete" ectype="drop_image" ecm_title="{$lang.drop}"></span></p></div></div></li>');
+                trigger_uploader();
+        if($('#big_goods_image').attr('src') == '{$goods.default_goods_image}'){
+            set_cover(file_data.file_id);
+        }
+        if(GOODS_SWFU.getStats().progressNum == 0){
+            window.setTimeout(function(){
+                $('#uploader').css('opacity', 0);
+				//$('*[ectype="handle_pic"]').css('z-index', 999);
+                $('#open_uploader').find('.show').attr('class','hide');
+            }, 5000);
+        }
+    }else if(file_data.instance == 'desc_image'){
+        $('#desc_images').append('<li style="z-index:4" file_type="'+file_data.file_type+'" file_name="'+ file_data.file_name +'" file_path="'+ url_format(file_data.file_path) +'" ectype="handle_pic" file_id="'+ file_data.file_id +'"><input type="hidden" name="desc_file_id[]" value="'+ file_data.file_id +'"><div class="pic" style="z-index: 2;"><img src="'+url_format(file_data.file_path) +'" width="80" height="80" alt="'+ file_data.file_name +'" /></div><div ectype="handler" class="bg" style="z-index: 3;display:none"><p class="operation"><a href="javascript:void(0);" class="cut_in" ectype="insert_editor" ecm_title="{$lang.insert_editor}"></a><span class="delete" ectype="drop_image" ecm_title="{$lang.drop}"></span></p></div></li>');
+                trigger_uploader();
+        if(EDITOR_SWFU.getStats().progressNum == 0){
+            window.setTimeout(function(){
+				//$('*[ectype="handle_pic"]').css('z-index', 999);
+                $('#editor_uploader').css('opacity', 0);
+            },5000);
+        }
+    }
+}
+function set_cover(file_id){
+    if(typeof(file_id) == 'undefined'){
+        $('#big_goods_image').attr('src','{$goods.default_goods_image|url_format}');
+        return;
+    }
+    var obj = $('*[file_id="'+ file_id +'"]');
+    $('*[file_id="'+ file_id +'"]').clone(true).prependTo('#goods_images');
+    $('*[ectype="handler"]').hide();
+    $('#big_goods_image').attr('src',obj.attr('thumbnail'));
+    obj.remove();
+}
+
+$(function(){
+     $('#goods_form').validate({
+        errorPlacement: function(error, element){
+            $(element).next('label').remove();
+            $(element).after(error);
+        },
+        success       : function(label){
+			label.removeClass('error');
+            label.addClass('validate_right').text('OK!');
+        },
+        onkeyup : false,
+        rules : {
+            goods_name : {
+                required   : true
+            },
+            price      : {
+                number     : true,
+                required : true,
+                min : 0
+            },
+            stock      : {
+                digits    : true
+            },
+			max_exchange : {
+				digits : true,
+				min    : 0
+			},
+            "exclusive[discount]" : {
+                number     : true,
+				min		   : 0.01,
+				max  	   : 9.99
+            },
+            "exclusive[decrease]" : {
+                 number    : true,
+				 min       : 0.01
+            }
+        },
+        messages : {
+            goods_name  : {
+                required   : '{$lang.goods_name_empty}'
+            },
+            price       : {
+                number     : '{$lang.number_only}',
+                required : '{$lang.price_empty}',
+                min : '{$lang.price_ge_0}'
+            },
+            stock       : {
+                digits  : '{$lang.number_only}'
+            },
+			max_exchange : {
+				digits : '{$lang.number_only}',
+				min    : '{$lang.exchange_number_ge0}'
+			},
+            "exclusive[discount]"  : {
+                number     : '{$lang.discount_invalid}',
+                min : '{$lang.discount_invalid}',
+				max : '{$lang.discount_invalid}'
+            },
+            "exclusive[decrease]" : {
+                number  : '{$lang.decrease_number_only}',
+				min	     : '{$lang.decrease_ge_0}'
+            }
+        }
+    });
+    // init cover
+    set_cover($("#goods_images li:first-child").attr('file_id'));
+
+    // init spec
+    spec_update();
+    
+	$('input[ectype="spec_image"]').wrap("<form action='{url route='upload/index'}' method='post' enctype='multipart/form-data'></form>");
+	$('input[ectype="spec_image"]').after("<input type='hidden' name='belong' value='{Def::BELONG_GOODS_SPEC}'><input type='hidden' name='fileVal' value='file'>");
+	$('input[ectype="spec_image"]').change(function(){
+		  var sp = $(this).parents('.spec_image').find('i');
+		  $(this).parent('form').ajaxSubmit({
+			  dataType:  'json',
+			  success: function(data) {
+				  if(data.done){
+					sp.removeClass('no-pic');
+					sp.html('<img width="30" height="30" src="'+ url_format(data.retval) +'"><b title="删除">x</b>');
+				  }else{
+					  layer.msg(data.msg);
+				  }
+			  }
+		  });
+		  return false; // 阻止表单自动提交事件
+	});
+	
+    /* 手机专享 */
+    $('.J_ExclusiveCheckbox').click(function(){
+    	if($(this).prop('checked')) {
+    		$('.J_ExclusiveDetailSetting').show();
+    	} else {
+    		$('.J_ExclusiveDetailSetting').hide();
+    	}
+    });
+});
+//]]>
+</script> 
+{include file="user.footer.html"} 

@@ -1,0 +1,36 @@
+<div class="eject_con">
+ <div class="adds">
+        <div id="warning"></div>
+        <form id="extend_form" method="post" target="iframe" action="{url route='seller_coupon/extend' id=$id}">
+        <ul style="width:275px;">
+            <li>{$lang.extend_to_users}</li>
+            <li class="clearfix"><p><textarea name="username" cols="35" rows="10"></textarea></p></li>
+            <li><span class="field_notice">{$lang.extend_to_users_desc}</span></li>
+            <li><span class="field_notice">{$lang.extend_to_users_desc1}</span></li>
+        </ul>
+        <div class="submit"><input type="submit" class="btn" value="{$lang.submit}" /></div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+$(function(){
+    $('#extend_form').validate({
+        errorLabelContainer: $('#warning'),
+        invalidHandler: function(form, validator) {
+               $('#warning').show();
+        },
+        onfocusout : false,
+        onkeyup    : false,
+        rules : {
+            username : {
+                required : true
+            }
+        },
+        messages : {
+            username : {
+                required   : '{$lang.username_required}'
+            }
+        }
+    });
+});
+</script

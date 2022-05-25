@@ -1,0 +1,61 @@
+<div class="channel2-floor1 clearfix" >
+    <div class="title clearfix">
+    	<h2>{$widget_data.model_name}</h2>
+        <span class="keyword">
+            <!--{foreach from=$widget_data.keywords item=keyword name=fe_keyword}-->
+            <a href="{url route='search/index' keyword=$keyword}" target="_blank" {if $smarty.foreach.fe_keyword.last} style="border-right:0;"{/if}>{$keyword}</a>
+            <!--{/foreach}-->
+        </span>
+    </div>  
+    <div class="content clearfix">
+        <div class="left-part">
+            <ul class="goods-tag clearfix">
+                <!--{foreach from=$widget_data.cates item=cate name=fe_cate}-->
+                <!--{if $smarty.foreach.fe_cate.iteration le 10}-->
+                <li><a target="_blank" href="{url route='search/index' cate_id=$cate.cate_id}">{$cate.cate_name|escape}</a></li>
+                <!--{/if}-->
+                <!--{/foreach}-->
+            </ul>
+            <a class="l-banner" href="{$widget_data.images.ad1_link_url}" target="_blank">
+                <img src="{$widget_data.images.ad1_image_url|url_format}" width="203" height="200">
+            </a> 
+        </div> 
+        <div class="middle-part">
+            <div class="m-banner clearfix">
+                <a target="_blank" href="{$widget_data.images.ad2_link_url}"><img src="{$widget_data.images.ad2_image_url|url_format}" width="350" height="170"></a>
+                <a target="_blank" href="{$widget_data.images.ad3_link_url}"><img src="{$widget_data.images.ad3_image_url|url_format}" width="220" height="170"></a>
+                <a target="_blank" href="{$widget_data.images.ad4_link_url}"><img src="{$widget_data.images.ad4_image_url|url_format}" width="220" height="170"></a>      
+            </div> 
+            <div class="goods-list">
+                <ul> 
+                    <!--{foreach from=$widget_data.goods_list item=goods name=fe_goods}-->
+                    <li class="clearfix" {if $smarty.foreach.fe_goods.iteration eq 5} style="border-right:0;"{/if}>
+                        <a href="{url route='goods/index' id=$goods.goods_id}" target="_blank">
+                           <img src="{$goods.default_image|url_format}">
+                           <p class="desc">{$goods.goods_name|escape|truncate:50}</p>
+                           <p class="price">{$goods.price|price_format}</p>
+                        </a>
+                    </li>
+                    <!--{/foreach}--> 
+                </ul>
+            </div>                            
+        </div>
+        <div class="right-part">
+            <h2>人气排行</h2>
+            <ul class="clearfix">
+                <!-- {foreach from=$widget_data.rank item=goods name=fe_goods} -->
+                <li class="clearfix">
+                    <i class="rank-icon icon{$smarty.foreach.fe_goods.iteration}"></i>
+                    <span class="goods-img clearfix">
+                        <a href="{url route='goods/index' id=$goods.goods_id}" target="_blank"><img src="{$goods.default_image|url_format}"></a>
+                    </span>
+                    <span class="goods-desc">
+                        <a href="{url route='goods/index' id=$goods.goods_id}" target="_blank">{$goods.goods_name|escape|truncate:50}</a>
+                    </span>
+                    <span class="goods-price"><strong>{$goods.price|price_format}</strong></span>
+                </li>
+                <!--{/foreach}-->  
+            </ul> 
+        </div>
+    </div> 
+</div>

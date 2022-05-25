@@ -1,0 +1,41 @@
+{include file="header.html"}
+<div id="main">
+  {include file="menus.html"}
+  <div id="rightCon" class="clearfix layui-body">
+    <div class="scroller">
+      <div class="flexigrid">
+        <form method="post">
+          <table class="infoTable">
+            <tr>
+              <th class="paddingT15"><label>{$lang.account_name}</label></th>
+              <td class="paddingT15 wordSpacing5">{$account.real_name} ( {$account.account}
+                {$lang.balance}：{$account.money} )</td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.account_money}</label></th>
+              <td class="paddingT15 wordSpacing5"><select name="money_change">
+                  <option value="add">{$lang.increase}</option>
+                  <option value="reduce">{$lang.reduce}</option>
+                </select>
+                <input class="infoTableInput2" name="money" type="text" id="money" />
+                元
+                <label class="field_notice">增加表示充值，减少表示扣费</label>
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.remark}</label></th>
+              <td class="paddingT15 wordSpacing5"><textarea name="remark"></textarea></td>
+            </tr>
+            <tr>
+              <th></th>
+              <td class="ptb20"><input class="layui-btn layui-bg-blue J_AjaxSubmit" type="submit"
+                  value="{$lang.submit}" /></td>
+            </tr>
+          </table>
+        </form>
+      </div>
+      {include file="version.html"}
+    </div>
+  </div>
+</div>
+{include file="footer.html"}

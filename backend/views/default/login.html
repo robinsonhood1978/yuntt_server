@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="{$app->language}">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset={$app->charset}" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width" />
+<meta http-equiv="Content-Type" content="text/html; charset={$app->charset}" />
+<meta name="csrf-param" content="{$app->request->csrfParam}">
+<meta name="csrf-token" content="{$app->request->csrfToken}">
+<!--remove underline for edge-->
+<meta name="format-detection" content="telephone=no">
+<meta name="author" content="ShopWind" />
+<meta name="generator" content="ShopWind" />
+<meta name="copyright" content="ShopWind Inc. All Rights Reserved" />
+<title>{$page.title}</title>
+<meta name="Keywords" content="{$page.keywords}" />
+<meta name="Description" content="{$page.description}" />
+
+<link rel="shortcut icon" href="#"/>
+<link rel="stylesheet" href="{res file='css/login.css'}">
+<link rel="stylesheet" href="{res file='css/supersized.css'}">
+
+<script type="text/javascript">
+var HOME_URL = "{$homeUrl}";
+var SITE_URL = "{$siteUrl}";
+var PRICE_FORMAT = "{$priceFormat}";
+var ENABLE_PRETTY = "{$enablePretty}";
+</script>
+<script type="text/javascript" src='{url route="{$app->controller->id}/jslang"}' charset="{$app->charset}"></script>
+<script type="text/javascript" src="{lib file='jquery-1.11.1.js'}" charset="{$app->charset}"></script>
+<script type="text/javascript" src="{lib file='jquery.plugins/jquery.form.js'}" charset="{$app->charset}"></script>
+<script type="text/javascript" src="{lib file='layui/layui.js' }" charset="{$app->charset}"></script>
+<script type="text/javascript" src="{lib file='shopwind.js'}" charset="{$app->charset}"></script>
+</head>
+<body id="page-layout-{$app->controller->id|default:'default'}-{$app->controller->action->id|default:'index'}">
+<div class="login">
+  <div class="bg">
+    <div class="enter">
+      <h1>{$lang.login}</h1>
+      <form method="POST" class="form-login clearfix">
+        <div class="clearfix">
+          <div class="welcome">
+            您好，欢迎来到<span class="color-1">Shop</span><span class="color-2">Wind</span>后台
+          </div>
+          <dl class="item clearfix">
+            <dt>{$lang.username}{$lang.colon}</dt>
+            <dd>
+              <input type="text" id="username" name="username" class="input" placeholder="{$lang.username}" />
+            </dd>
+          </dl>
+          <dl class="item clearfix" style="border-top:0;">
+            <dt>密<span style="margin:0 7px;"></span>码{$lang.colon}</dt>
+            <dd>
+              <input type="password" name="password" class="input" placeholder="{$lang.password}" />
+            </dd>
+          </dl>
+          <!--{if $app->params['captcha_status']['backend']}-->
+          <dl class="item clearfix" style="margin-top:15px;">
+            <dt>{$lang.captcha}{$lang.colon}</dt>
+            <dd style="width:140px" class="clearfix">
+              <input style="width:140px;" class="input captcha" type="text" name="captcha" placeholder="{$lang.captcha}"  />
+              <img onclick="change_captcha($(this))" class="pointer" src="{url route='default/captcha' v=uniqid('', true)}" /></dd>
+          </dl>
+          <!--{/if}-->
+          <div class="handle-div clearfix"> <a href="{$homeUrl}" class="float-left">{$lang.back_home}</a> <a href="{url route='find_password/index' baseUrl=$homeUrl}" class="float-right" target="_blank">{$lang.forget_pssword}</a> </div>
+          <dl class="clearfix">
+            <dd>
+              <input type="hidden" name="rememberMe" value="0" />
+              <input class="J_AjaxSubmit btn-submit" type="submit" value="{$lang.login}" />
+            </dd>
+          </dl>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script src="{res file='js/supersized.3.2.7.min.js'}"></script> 
+<script src="{res file='js/supersized-init.js'}"></script> 
+<script type="text/javascript">
+// 登陆页跳出框架
+// if(self != top){
+// 	top.location = self.location;
+// }
+$(function(){
+    $('#username').focus();
+});
+</script>
+</body>
+</html>

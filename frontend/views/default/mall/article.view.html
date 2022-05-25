@@ -1,0 +1,52 @@
+{include file="header.html"}
+<style>
+#main{ background:#f9f9f9}
+#footer{ margin-top:0;}
+</style>
+<div id="main" class="w-full">
+<div id="page-article" class="w clearfix pb20 pt20">
+   <div class="col-sub">
+      <div class='articlecategory'>
+	  <div class="title">{$lang.acategory}</div>
+	  <ul class="content mb10">
+	     <!-- {foreach from=$acategories item=acategory} -->
+         <li><a href="{url route='article/index' cate_id=$acategory.cate_id}">{$acategory.cate_name|escape}</a><b></b></li>
+         <div class="child">
+         	<!-- {foreach from=$acategory.children item=children} -->
+            <p><a href="{url route='article/index' cate_id=$children.cate_id}">{$children.cate_name|escape}</a></p>
+            <!-- {/foreach} -->
+         </div>
+         <!-- {/foreach} -->
+     </ul>
+     </div>
+
+     <div class='articlenew'>
+      <div class="title">{$lang.new_article}</div>
+      <ul class="content mb10">
+         <!-- {foreach from=$articlelist item=item} -->
+          <p><a href="{url route='article/view' id=$item.article_id}">{$item.title|escape}</a></p>
+          <!-- {/foreach} -->
+      </ul>
+      </div>
+   </div>
+   <div class="col-main">
+      <div class="content">
+	     <div class="article-info">
+	        <h1>{$article.title|escape}</h1>
+            <h2>{$article.add_time|date_format:"%Y.%m.%d %H:%M"}</h2>
+         </div>
+		 <div class="article-detail">
+            {$article.description|escape:editor}
+		 </div>
+         <div class="more-article mt20">
+            <span>
+            {$lang.pre_article}{$lang.colon}<!--{if $pre_article}--><a href="{url route='article/view' id=$pre_article.article_id}">{$pre_article.title|escape}</a><!--{else}-->{$lang.no_records}<!--{/if}--></span>
+            <span>
+            {$lang.next_article}{$lang.colon}<!--{if $next_article}--><a href="{url route='article/view' id=$next_article.article_id}">{$next_article.title|escape}</a><!--{else}-->{$lang.no_records}<!--{/if}-->
+            </span>
+         </div>
+	  </div>
+   </div>
+</div>
+</div>
+{include file="footer.html"}

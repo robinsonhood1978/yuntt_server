@@ -1,0 +1,53 @@
+{include file="user.header.html"}
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful">{include file="user.submenu.html"}
+      <div id="page-promotool" class="wrap page-promotool clearfix">
+        <div class="public_select">
+          <div class="promotool">
+            <div class="bundle bundle-list"> 
+              <!--{if $tooldisabled}-->
+              <div class="notice-word">
+                <p>{$tooldisabled}</p>
+              </div>
+              <!--{else}-->
+              <div class="notice-word">
+                <p class="yellow-big">{$lang.note_for_create}</p>
+              </div>
+              <div class="promotool-form fullfree">
+                <form id="fullfree_form" method="post">
+                  <ul class="form">
+                    <li>
+                      <h3>{$lang.fullamount}</h3>
+                    </li>
+                    <li>
+                      <input type="text" name="fullfree[amount]" id="fullfree[amount]" class="input" value="{$fullfree.rules.amount}" />
+                      <span>{$lang.yuan}</span></li>
+                    <li>
+                      <h3>{$lang.fullquantity}</h3>
+                    </li>
+                    <li>
+                      <input type="text" name="fullfree[quantity]" id="fullfree[quantity]" class="input" value="{$fullfree.rules.quantity}" />
+                      <span>{$lang.jian}</span></li>
+                    <li>
+                      <h3>{$lang.launch}</h3>
+                    </li>
+                    <li>
+                      <label class="switch-checkbox-radio inline-block box-align-center J_SwtcherInput {if $fullfree.status || !$fullfree} checked{/if}" for="switcher"><span class="switcher-style block"></span></label>
+                      <input name="status" class="hidden" id="switcher" value="1" type="checkbox" {if $fullfree.status || !$fullfree} checked="checked" {/if}>
+                    </li>
+                    <li>
+                      <input type="submit" value="{$lang.submit}" class="J_AjaxSubmit submit" />
+                    </li>
+                  </ul>
+                </form>
+              </div>
+              <!--{/if}--> 
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 
+{include file="user.footer.html"}

@@ -1,0 +1,77 @@
+{include file="header.html"}
+<div id="main">
+  {include file="menus.html"}
+  <div id="rightCon" class="clearfix layui-body">
+    <div class="scroller">
+      <div class="layui-tab">
+        <ul class="layui-tab-title">
+          <li class="layui-this">{$lang.logs}</li>
+          <li><a href="{url route='webim/setting'}">{$lang.setting}</a></li>
+        </ul>
+      </div>
+      <div class="search-form clearfix">
+        <form method="get" id="formSearch">
+        <div class="webkit-box box-align-center">
+          <input type="hidden" name="r" value="webim/index" />
+          <input class="queryInput" type="text" name="fromName" value="{$smarty.get.fromName|escape}"
+            placeholder="用户" />
+          给
+          <input class="queryInput" type="text" name="toName" value="{$smarty.get.toName|escape}" placeholder="用户" />
+          发言，
+          内容为
+          <input class="queryInput" type="text" name="formatContent" value="{$smarty.get.formatContent|escape}" />
+          <input type="submit" class="layui-btn layui-bg-blue layui-btn-sm block width7" value="{$lang.query}"
+            style="float:none; display:inline-block" />
+          <!--{if $filtered}-->
+          <a class="layui-btn layui-btn-primary layui-btn-sm box-align-center" href="{url route='webim/index'}">{$lang.cancel_query}</a>
+          <!--{/if}-->
+          </div>
+        </form>
+      </div>
+      <!--{if $webimlogs}-->
+      <div class="tdare webim">
+        <!--{foreach from=$webimlogs item=item name=fe_item}-->
+        <div class="each">
+          <div class="hd clearfix">
+            <h3>{$item.fromName} > {$item.toName}</h3>
+            <span style="color: #8B8B8B; margin-left: 10px;">发送时间:{$item.add_time|date_format:"%Y.%m.%d
+              %H:%M:%S"}</span>
+            <p><a href="javascript::" class="J_CheckTalk layui-btn layui-bg-blue"
+                data-imforbid="{if $item.imforbid}0{else}1{/if}" data-fromid="{$item.fromid}">{if
+                !$item.imforbid}正常发言{else}<font color="#000">已被禁言</font>{/if}</a> <a href="javascript:;"
+                uri="{url route='webim/deletetalk' id=$item.logid}" class="layui-btn layui-btn-primary J_AjaxRequest"
+                confirm="{$lang.drop_confirm}" data-logid="{$item.logid}">{$lang.drop}</a></p>
+          </div>
+          <div class="bd">
+            <div class="wrap">{$item.formatContent}</div>
+          </div>
+        </div>
+        <!--{/foreach}-->
+        <div id="dataFuncs">
+          <div class="pageLinks">{include file="page.bottom.html"}</div>
+        </div>
+        <div class="clear"></div>
+      </div>
+      <!--{else}-->
+      <div class="notice-word" style="padding:15px;">
+        <p>{$lang.no_data}</p>
+      </div>
+      <!--{/if}-->
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $(function () {
+    $('.J_CheckTalk').click(function () {
+      var fromid = $(this).attr('data-fromid');
+      var imforbid = $(this).attr('data-imforbid');
+      layer.confirm(lang.forbid_confirm, { icon: 3, title: lang.notice }, function (index) {
+        ajaxSubmit('get', url(['webim/checktalk', { id: fromid, imforbid: imforbid }]));
+        layer.close(index);
+      }, function (index) {
+        layer.close(index);
+      });
+    });
+  });
+</script>
+{include file="footer.html"}

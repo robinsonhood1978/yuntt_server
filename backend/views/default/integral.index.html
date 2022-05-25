@@ -1,0 +1,93 @@
+{include file="header.html"}
+<div id="main">
+	{include file="menus.html"}
+	<div id="rightCon" class="clearfix layui-body">
+		<div class="scroller">
+			<div class="search-form clearfix">
+				<form method="get" id="formSearch">
+					<div class="webkit-box box-align-center">
+						<input type="hidden" name="r" value="integral/index" />
+						{$lang.username}
+						<input class="queryInput" type="text" name="username" value="{$smarty.get.username|escape}" />
+						手机号
+						<input class="queryInput" type="text" name="phone_mob" value="{$smarty.get.phone_mob|escape}" />
+						<input type="submit" class="layui-btn layui-bg-blue layui-btn-sm block width7"
+							value="{$lang.query}" />
+						<!--{if $filtered}-->
+						<a class="layui-btn layui-btn-primary layui-btn-sm box-align-center"
+							href="{url route='integral/index'}">{$lang.cancel_query}</a>
+						<!--{/if}-->
+					</div>
+				</form>
+			</div>
+			<div class="tablegrid">
+				<table class="layui-hide" id="tablegrid" lay-filter="tablegrid"></table>
+			</div>
+			{include file="version.html"}
+		</div>
+	</div>
+</div>
+<script type="text/html" id="toolbar">
+	<div class="layui-btn-container">
+	  <button class="layui-btn layui-btn-primary layui-border-black" lay-event="export"><i class="layui-icon layui-icon-export"></i>导出数据</button>
+	</div>
+</script>
+
+<script type="text/html" id="colBar">
+	<a class="ml5 mr5 blue pointer" lay-event="recharge">充积分</a>
+	<a class="ml5 mr5 blue pointer" lay-event="logs">积分明细</a>
+</script>
+<script>
+	layui.use('table', function () {
+		var table = layui.table;
+
+		table.render({
+			elem: '#tablegrid'
+			//,skin: 'line'
+			, url: url(['integral/index', $("#formSearch").serializeJson()])
+			, toolbar: '#toolbar'
+			, defaultToolbar: ['filter', /*'exports',*/ 'print']
+			, title: '用户积分列表'
+			//, size: 'lg'
+			, cols: [[
+				{ type: 'checkbox', fixed: 'left' }
+				, { field: 'userid', title: 'ID', width: 70, fixed: 'left', unresize: true, sort: true }
+				, { field: 'username', title: '用户名', width: 313, sort: true }
+				, { field: 'phone_mob', title: '手机号', width: 300, sort: true }
+				, { field: 'amount', title: '积分', width: 350, sort: true }
+				, { fixed: 'right', title: '操作', toolbar: '#colBar', width: 180, align: 'center' }
+			]]
+			, page: {
+				theme: 'blue'
+			}
+		});
+
+		//监听头工具栏事件
+		table.on('toolbar(tablegrid)', function (obj) {
+			var checkStatus = table.checkStatus(obj.config.id);
+			if (checkStatus.data.length <= 0) {
+				return false;
+			}
+			var items = new Array();
+			$.each(checkStatus.data, function (i, item) {
+				items.push(item.userid);
+			});
+
+			if (obj.event === 'export') {
+				window.location.href = url(['integral/export', $.extend($("#formSearch").serializeJson(), { id: items.join(',') })]);
+			}
+		});
+
+		//监听行工具事件
+		table.on('tool(tablegrid)', function (obj) {
+			var data = obj.data;
+			if (obj.event === 'recharge') {
+				ajax_form('dialog', '充积分', url(['integral/recharge', { id: data.userid }]), 600);
+			} else if (obj.event === 'logs') {
+				window.location.href = url(['integral/logs', { id: data.userid }]);
+			}
+		});
+	});
+</script>
+<iframe id="iframe" name="iframe" src="about:blank" frameborder="0" width="0" height="0" style="display:none"></iframe>
+{include file="footer.html"}

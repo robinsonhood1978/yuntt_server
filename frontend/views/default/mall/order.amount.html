@@ -1,0 +1,33 @@
+﻿<div class="w mt20 clearfix">
+	<div class="address-confirm">
+		<div class="box">
+			<div class="realPay"> 
+				<strong>{$lang.real_amount}{$lang.colon}</strong>
+				<span class="price"><i>&yen;</i><em class="J_OrderAmount">{$goods_info.amount}</em></span>
+			</div>
+			<div class="address">
+				<p> 
+					<strong>{$lang.send_to}{$lang.colon}</strong>
+					<span class="address-detail J_AddressDetail"></span>
+				</p>
+				<p>
+					<strong>{$lang.consignee_and_phone}{$lang.colon}</strong>
+					<span class="address-detail J_Consignee"></span>
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="w clearfix">
+	<div class="make_sure mb10">
+		<p>
+			<!--{if !in_array($smarty.get.goods, array('meal'))}-->
+            <a href="{url route='cart/index'}" class="back">{$lang.backto_cart}</a>
+            <!--{/if}-->
+			<a href="javascript:void($('#order_form').submit());" class="btn-step fff center strong fs14 ml20 J_SubmitOrder">{$lang.submit_order}</a>
+		</p>
+	</div>
+</div>
+<div class="w clearfix">
+	<div class="notice-word price-notice"><span class="yellow">{$lang.price_notice}</span></div>
+</div>

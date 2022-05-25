@@ -1,0 +1,48 @@
+<script type="text/javascript">
+var _d = DialogManager.get('config_dialog');
+_d.setWidth(540);
+_d.setPosition('center');
+</script>
+<div class="field_item webkit-box">
+  <label>模块名称</label>
+  <p>
+    <input type="text" name="model_name" value="{$options.model_name}" />
+  </p>
+</div>
+<div class="field_item webkit-box">
+  <label>选择分类</label>
+  <p>
+    <select name="cate_id">
+      <option value="0">请选择分类...</option>
+      {html_options options=$gcategories selected=$options.cate_id}
+    </select>
+  </p>
+</div>
+<div class="field_item webkit-box">
+  <label>显示数量</label>
+  <p>
+    <input type="text" name="amount" value="{$options.amount}" />
+  <p>
+</div>
+<div class="field_item webkit-box">
+    <label>弹出层级数</label>
+  <p>
+    <select name="layer">
+      <option value="0">请选择分类...</option>
+      <option value="1" {if $options.layer eq 1} selected="selected"{/if}>当前选择分类的下一级分类</option>
+      <option value="2" {if $options.layer eq 2} selected="selected"{/if}>当前选择分类的下两级分类</option>
+    </select>
+  </p>
+</div>
+<div class="field_item webkit-box box-align-center">
+  <label>关键字</label>
+  <p>
+    <textarea name="keyword" style="width:190px;height:60px; padding: 0 5px;">{$options.keyword}</textarea>
+  </p>
+  <font class="ml10" color="gray">多个关键字用空格隔开</font>
+</div>
+<div class="field_item webkit-box box-align-center">
+  <label>模块高度</label>
+  <p><input type="text" name="model_height" value="{$options.model_height}" /> px</p>
+  <font class="ml10" color="gray">主要用来控制与右边对其</font>
+</div>

@@ -1,0 +1,121 @@
+<div class="widget-box">
+    <h3 class="title mt20 mb20 pb20"><strong class="fs18">商品搜索框</strong></h3>
+    <div class="content">
+        <div class="item webkit-box">
+            <label class="gray">默认文本</label>
+            <input value="{$options.keyword}" name="keyword" placeholder="搜索" type="text" class="flex1 input ml10 J_Holder" />
+        </div>
+        <div class="item webkit-box">
+            <label class="gray">文本位置</label>
+            <p class="flex1 ml10 value">{if $options.position eq 'center'}居中{else}居左{/if}</p>
+            <input type="hidden" name="position" value="{$options.position|default:'left'}" />
+            <span class="switch first {if $options.position eq 'left' || !$options.position} selected{/if} J_Switch" title="居左" data-value="left"><i
+                    class="layui-icon layui-icon-align-left"></i></span>
+            <span class="switch {if $options.position eq 'center'} selected{/if} J_Switch" title="居中" data-value="center"><i
+                    class="layui-icon layui-icon-align-center"></i></span>
+        </div>
+        <div class="item webkit-box">
+            <label class="gray">图标颜色</label>
+            <p class="flex1 ml10 color">{$options.iconcolor|default: '#ffffff'}</p>
+            <input type="hidden" name="iconcolor" value="{$options.iconcolor|default: '#ffffff'}" />
+            <span class="f60 pointer J_Reset" data-id="picker1" data-value="#ffffff">重置</span>
+            <p class="picker1 ml10"></p>
+        </div>
+        <div class="item webkit-box">
+            <label class="gray">图标隐藏</label>
+            <p class="flex1"></p>
+            <input type="hidden" name="iconhide" value="{$options.iconhide|default:0}" />
+            <span class="layui-form">
+                <input lay-filter="filter" type="checkbox" {if $options.iconhide}checked{/if} lay-skin="switch">
+            </span>
+        </div>
+        <h4 class="mt10 pb10 mt20 pt20">搜索样式</h4>
+        <div class="item webkit-box">
+            <label class="gray">文字颜色</label>
+            <p class="flex1 ml10 color">{$options.txtcolor|default:'#999999'}</p>
+            <input type="hidden" name="txtcolor" value="{$options.txtcolor|default:'#999999'}" />
+            <span class="f60 pointer J_Reset" data-id="picker2" data-value="#999999">重置</span>
+            <p class="picker2 ml10"></p>
+        </div>
+        <div class="item webkit-box">
+            <label class="gray">背景颜色</label>
+            <p class="flex1 ml10 color">{$options.bgcolor|default:'#fc2b34'}</p>
+            <input type="hidden" name="bgcolor" value="{$options.bgcolor|default:'#fc2b34'}" />
+            <span class="f60 pointer J_Reset" data-id="picker3" data-value="#fc2b34">重置</span>
+            <p class="picker3 ml10"></p>
+        </div>
+        <div class="item webkit-box">
+            <label class="gray">框体颜色</label>
+            <p class="flex1 ml10 color">{$options.boxcolor|default:'#ffffff'}</p>
+            <input type="hidden" name="boxcolor" value="{$options.boxcolor|default:'#ffffff'}" />
+            <span class="f60 pointer J_Reset" data-id="picker4" data-value="#ffffff">重置</span>
+            <p class="picker4 ml10"></p>
+        </div>
+        <div class="item webkit-box">
+            <label class="gray">框体风格</label>
+            <p class="flex1 ml10 value">{if $options.boxstyle eq 'square'}直角{else}圆角{/if}</p>
+            <input type="hidden" name="boxstyle" value="{$options.boxstyle|default:'round'}" />
+            <span class="switch first {if $options.boxstyle neq 'square'} selected {/if} J_Edge" title="圆角" data-value="round"><i class="iconfont icon-radius-upright"></i></span>
+            <span class="switch {if $options.boxstyle eq 'square'} selected {/if} J_Edge" title="直角" data-value="square"><i class="iconfont icon-fangkuang"></i></span>
+        </div>
+        <div class="item webkit-box">
+            <label class="gray">模块间距</label>
+            <input type="hidden" name="space" value="{$options.space|default:5}" />
+            <div class="flex1 ml20 slider" style="margin-top:15px"></div>
+        </div>
+    </div>
+</div>
+<script>
+
+    $(function () {
+        $('.J_Switch').click(function () {
+            var value = $(this).attr('data-value');
+            $(this).parent('.item').find('input').val(value);
+            save_widget();
+        });
+
+        $('.J_Holder').keyup(function () {
+           $('#'+$(this).parents('form').attr('widget_id')).find('.searchbox .keyword').text($(this).val());
+        });
+        $('.J_Holder').change(function() {
+            save_widget(false);
+        });
+        $('.J_Edge').click(function () {
+            var value = $(this).attr('data-value');
+            $(this).parent('.item').find('input').val(value);
+            save_widget();   
+        });
+        $('.J_Reset').click(function () {
+            var value = $(this).attr('data-value');
+            $(this).parent('.item').find('input[type="hidden"]').val(value);
+            save_widget();
+        });
+
+        layui.use('form', function () {
+            var form = layui.form;
+            form.on('switch(filter)', function (data) {
+                $(this).parents('.item').find('input').val(data.elem.checked ? 1 : 0); 
+                save_widget();
+            });
+
+            form.render();
+        });
+
+        slideRender('.slider', function(dom, value) {
+            save_widget(false);
+        })
+
+        colorRender('.picker1', function(dom, value) {
+            save_widget();
+        });
+        colorRender('.picker2', function(dom, value) {
+            save_widget();
+        });
+        colorRender('.picker3', function(dom, value) {
+            save_widget();
+        });
+        colorRender('.picker4', function(dom, value) {
+            save_widget();
+        });
+    });
+</script>

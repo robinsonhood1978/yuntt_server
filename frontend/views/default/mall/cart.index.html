@@ -1,0 +1,81 @@
+{include file="header.html"}
+<style type="text/css">
+.mall-nav{ display:none}
+</style>
+<div id="main" class="w-full">
+  <div id="page-cart" class="w cart-index mb20">
+    <div class="step step1 mt10 clearfix"> <span class="fs14 fff">{$lang.ckgwc}</span> <span class="fs14">{$lang.qrddxx}</span> <span class="fs14">{$lang.fk}</span> <span class="fs14">{$lang.qrsh}</span> <span class="fs14">{$lang.pj}</span> </div>
+    <div class="cartbox w mt20 mb10">
+      <div class="amount"> </div>
+      <div class="title clearfix mb10"> <span class="sellect-all">{$lang.sellect}</span> <span class="col-desc">{$lang.store_goods}</span> <span>{$lang.price}</span> <span>{$lang.quantity}</span> <span>{$lang.subtotal}</span> <span>{$lang.handle}</span> </div>
+      <div class="content">
+        <form method="post" class="J_Cart">
+          <!--{foreach from=$carts.list item=cart key=store_id}-->
+          <div class="store-each mb20 J_Store-{$store_id}">
+            <div class="store-name pb10 clearfix">
+              <label class="ml10 float-left">
+                <input id="{$store_id}" value="{$store_id}" type="checkbox" class="J_SelectStoreAll" />
+                {$lang.store}{$lang.colon}<a href="{url route='store/index' id=$store_id}" target="_blank">{$cart.store_name|escape}</a></label>
+              
+              <!--{if $cart.couponReceive}-->
+              <a class="ml20" style="color:#f50;" href="javascript:;" ectype="dialog" dialog_id="coupon" dialog_width="600" dialog_title="领取优惠券" uri="{url route='coupon/search' store_id=$store_id}">领券后再购买</a>
+              <!--{/if}--> 
+              
+              <!--{if $cart.storeFullPreferInfo}-->
+              <div class="float-left fullprefer-info clearfix J_FullPerferAmount ml20" data-value="{$cart.storeFullPreferInfo.amount}" perfer-type="{$cart.storeFullPreferInfo.prefer.type}" perfer-value="{$cart.storeFullPreferInfo.prefer.value}"> <i style="padding:2px 5px; font-size:10px; border:1px #f23015 solid; border-radius:3px; color:#f23015;">满减</i> {$cart.storeFullPreferInfo.text}<ins class="J_FullPerferPlus">,还差{$cart.storeFullPreferInfo.amount}元</ins><a href="{url route='store/index' id=$store_id}" class="float-right f60 ml10" target="_blank">去凑单</a> </div>
+              <!--{/if}--> 
+            </div>
+            <!--{foreach from=$cart.items item=goods name=fe_goods key=key}-->
+            <dl class="goods-each clearfix J_CartItem-{$key} J_GoodsEach">
+              <dd class="select">
+                <input type="checkbox" name="buy[{$key}]" store_id="{$store_id}" value="{$store_id}:{$key}:{$goods.goods_id}" class="J_SelectGoods" {if $goods.selected} checked{/if} />
+              </dd>
+              <dd class="pic"><a class="block" href="{url route='goods/index' id=$goods.goods_id}" target="_blank"><img src="{$goods.goods_image|default:$app->params['default_goods_image']|url_format}" width="48" height="48" class="block" /></a></dd>
+              <dd class="desc">
+                <p><a href="{url route='goods/index' id=$goods.goods_id}" target="_blank">{$goods.goods_name|escape}</a></p>
+                <span class="f66">{$goods.specification|escape}</span> </dd>
+              <dd class="price J_ItemPrice-{$key}">{$goods.price|price_format}</dd>
+              <dd class="quantity"> <img src="{res file='images/subtract.gif'}" onclick="decrease_quantity('{$key}');" alt="{$lang.decrease}" width="11" height="11"/>
+                <input class="input" id="input_item_{$key}" value="{$goods.quantity}" orig="{$goods.quantity}" changed="{$goods.quantity}" onkeyup="change_quantity({$store_id}, '{$key}', {$goods.spec_id});" type="text" />
+                <img src="{res file='images/adding.gif'}" onclick="add_quantity('{$key}');" alt="{$lang.increase}" width="11" height="11" /> </dd>
+              <dd class="subtotal fs14 J_ItemSubtotal-{$key} J_GetSubtotal" price="{$goods.subtotal}">{$goods.subtotal|price_format}</dd>
+              <dd class="handle"> <a class="move" href="javascript:collect_goods({$goods.goods_id});">{$lang.move_favorite}</a> <br />
+                <a class="del" href="javascript:drop_cart_item({$store_id}, '{$key}');">{$lang.drop}</a> </dd>
+            </dl>
+            <!-- {/foreach} --> 
+            
+          </div>
+          <!--{/foreach}-->
+          
+          <div class="cart-amount mt20 w auto mb10 clearfix">
+            <div class="btn-batch mt5 J_Batch">
+              <label class="pl10">
+                <input type="checkbox" class="J_SelectAll" />
+                {$lang.sellectAll}</label>
+              <a href="javascript:;" name="batch_del" class="center" title="{$lang.batch_del}">{$lang.batch_del}</a> <a href="javascript:;" name="batch_collect" class="center" title="{$lang.batch_collect}">{$lang.batch_collect}</a> </div>
+            <div class="btn-amount">
+              <p class="clearfix"> <a href="{$siteUrl}" class="inline-block back center float-left mr20 mt10">{$lang.goon_shopping}</a> 
+                <strong class="price fs14 float-left J_CartAllAmount">{$carts.amount|price_format}</strong>
+                <input type="submit" class="inline-block btn fs14 center fff border-0 pointer float-left" value="{$lang.next_order_form}" />
+              </p>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="interest mt20">
+      <div class="title border fs14 padding5 f66"><span class="arr"></span>{$lang.interest_note}</div>
+      <div class="content border border-t-0 clearfix"> 
+        <!--{foreach from=$interest item=goods}-->
+        <dl class="float-left">
+          <dt><a href="{url route='goods/index' id=$goods.goods_id}" target="_blank"><img width="160" height="160" src="{$goods.default_image|default:$app->params['default_goods_image']|url_format}" /></a></dt>
+          <dd class="desc"><a href="{url route='goods/index' id=$goods.goods_id}" target="_blank">{$goods.goods_name|escape|truncate:50}</a></dd>
+          <dd class="price clearfix"><em>{$goods.price}</em><span>最近成交{$goods.sales|default:0}笔</span></dd>
+          <dd class="service"></dd>
+        </dl>
+        <!--{/foreach}--> 
+      </div>
+    </div>
+  </div>
+</div>
+{include file="footer.html"}

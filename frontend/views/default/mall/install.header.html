@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="{$app->language}">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset={$app->charset}" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width" />
+<meta name="csrf-param" content="{$app->request->csrfParam}">
+<meta name="csrf-token" content="{$app->request->csrfToken}">
+<meta name="author" content="ShopWind" />
+<meta name="generator" content="ShopWind" />
+<meta name="copyright" content="ShopWind Inc. All Rights Reserved" />
+<title>{$page.title}</title>
+<meta name="Keywords" content="{$page.keywords}" />
+<meta name="Description" content="{$page.description}" />
+
+<link rel="shortcut icon" href="#"/>
+<link type="text/css" href="{res file='css/install.css'}" rel="stylesheet" />
+<script type="text/javascript" src='{url route="{$app->controller->id}/jslang"}' charset="{$app->charset}"></script>
+<script type="text/javascript" src="{lib file='jquery-1.11.1.js'}" charset="{$app->charset}"></script>
+<script type="text/javascript" src="{lib file='layui/layui.js'}" charset="{$app->charset}"></script>
+{$_head_tags|default}
+</head>
+
+<body id="page-layout-{$app->controller->id|default:'default'}-{$app->controller->action->id|default:'index'}">
+<div id="header">
+  <div class="wraper w clearfix">
+    <div class="top-logo mt20"> <a href="{$siteUrl}" title="ShopWind"><img alt="ShopWind" src="{res file='images/install/site_logo.png'}" height="60"></a> </div>
+    <div class="top-link">
+      <ul class="clearfix">
+        <li style="border:0;"><a href="https://www.shopwind.net" target="_blank">官方网站</a></li>
+        <li><a href="https://forum.shopwind.net" target="_blank">技术论坛</a></li>
+        <li><a href="https://www.shopwind.net/product/guide.html" target="_blank">帮助中心</a></li>
+      </ul>
+    </div>
+  </div>
+</div>

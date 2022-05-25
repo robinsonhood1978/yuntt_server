@@ -1,0 +1,77 @@
+{include file="user.header.html"} 
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful">{include file="user.submenu.html"}
+      <div class="wrap">
+        <div class="public table deposit">
+          <div class="deposit-config">
+            <div class="notice-word">
+              <p>{$lang.acount_desc}</p>
+            </div>
+            <form method="post" id="deposit-config">
+              <div class="form">
+                <dl class="clearfix">
+                  <dt>{$lang.deposit_account}</dt>
+                  <dd>
+                    {$deposit_account.account}
+                  </dd>
+                </dl>
+                <dl class="clearfix">
+                  <dt>{$lang.real_name}</dt>
+                  <dd>
+                    <input type="text" name="real_name" class="text width_normal" value="{$deposit_account.real_name}" />
+                  </dd>
+                  <dd class="gray"></dd>
+                </dl>
+                <dl class="clearfix">
+                  <dt>{$lang.pay_password}</dt>
+                  <dd>
+                    <input type="password" name="password" class="text width_normal" />
+                  </dd>
+                  <dd class="gray">{$lang.pay_password_desc}</dd>
+                </dl>
+                <dl class="clearfix">
+                  <dt>{$lang.confirm_password}</dt>
+                  <dd>
+                    <input type="password" name="confirmPassword" class="text width_normal" />
+                  </dd>
+                  <dd class="gray">{$lang.confirm_password_desc}</dd>
+                </dl>
+                <dl class="clearfix">
+                  <dt>{$lang.pay_status_on}</dt>
+                  <dd>
+                    <label>
+                      <input type="radio" name="pay_status" {if $deposit_account.pay_status eq 'ON' || !$deposit_account} checked="checked" {/if}value="on" />
+                      {$lang.yes}</label>
+                    <label>
+                      <input type="radio" name="pay_status" {if $deposit_account.pay_status eq 'OFF'} checked="checked"{/if} value="off" />
+                      {$lang.no}</label>
+                  </dd>
+                  <dd class="gray">{$lang.pay_status_desc}</dd>
+                </dl>
+                <dl class="clearfix">
+                  <dt>&nbsp;</dt>
+                  <dd> <span class="btn-alipay">
+                    <input type="hidden" name="codeType" value="" />
+                    <input type="hidden" name="code" value="" />
+                    <input type="button" value="{$lang.submit}"  gs_id="deposit_captcha" gs_name="deposit_captcha" gs_callback="gs_callback" gs_title="{$lang.captcha}" gs_width="400" gs_uri="{url route='gselector/verifycode'}"  gs_type="captcha" ectype="gselector"  id="deposit-captcha" />
+                    </span> </dd>
+                </dl>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+function gs_callback(id, codeType, code)
+{
+	$('input[name="codeType"]').val(codeType);
+	$('input[name="code"]').val(code);
+	DialogManager.close(id);
+	$('#deposit-config').submit();
+}
+</script>
+{include file="user.footer.html"} 

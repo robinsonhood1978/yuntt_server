@@ -1,0 +1,169 @@
+{include file="header.html"}
+<div id="main">
+	{include file="menus.html"}
+	<div id="rightCon" class="clearfix layui-body">
+		<div class="scroller">
+			<div class="search-form clearfix">
+				<form method="get" id="formSearch">
+					<div class="webkit-box box-align-center">
+						<input type="hidden" name="r" value="cashcard/index" />
+						{$lang.name}
+						<input class="queryInput" type="text" name="name" value="{$smarty.get.name}"
+							style="width:100px;" />
+						{$lang.cardNo}
+						<input class="infoTableInput ml10 mr10" type="text" name="cardNo"
+							value="{$smarty.get.cardNo}" />
+						{$lang.add_time_from}
+						<input class="queryInput" type="text" value="{$query.add_time_from}" id="add_time_from"
+							name="add_time_from" class="pick_date" />
+						{$lang.to}
+						<input class="queryInput" type="text" value="{$query.add_time_to}" id="add_time_to"
+							name="add_time_to" class="pick_date" />
+					</div>
+					<div class="webkit-box box-align-center mt20">
+						{$lang.print_status}
+						<select name="printed" class="querySelect">
+							<option value="0" {if !in_array($smarty.get.printed, array(1,2))} selected="selected" {/if}>
+								{$lang.no_limit}</option>
+							<option value="1" {if in_array($smarty.get.printed, array(1))} selected="selected" {/if}>
+								{$lang.no_print}</option>
+							<option value="2" {if in_array($smarty.get.printed, array(2))} selected="selected" {/if}>
+								{$lang.printed}</option>
+						</select>
+						{$lang.active_status}
+						<select name="actived" class="querySelect">
+							<option value="0" {if !in_array($smarty.get.actived, array(1,2))} selected="selected" {/if}>
+								{$lang.no_limit}</option>
+							<option value="1" {if in_array($smarty.get.actived, array(1))} selected="selected" {/if}>
+								{$lang.no_active}</option>
+							<option value="2" {if in_array($smarty.get.actived, array(2))} selected="selected" {/if}>
+								{$lang.actived}</option>
+						</select>
+						<input type="submit" class="layui-btn layui-bg-blue layui-btn-sm block width7"
+							value="{$lang.query}" />
+						<!--{if $filtered}-->
+						<a class="layui-btn layui-btn-primary layui-btn-sm box-align-center"
+							href="{url route='cashcard/index'}">{$lang.cancel_query}</a>
+						<!--{/if}-->
+					</div>
+				</form>
+			</div>
+			<div class="tablegrid">
+				<table class="layui-hide" id="tablegrid" lay-filter="tablegrid"></table>
+			</div>
+			{include file="version.html"}
+		</div>
+	</div>
+</div>
+<script type="text/html" id="toolbar">
+	<div class="layui-btn-container">
+		<a class="layui-btn layui-bg-blue" href="{url route='cashcard/add'}"><i class="layui-icon layui-icon-addition"></i>新增充值卡</a>
+		<button class="layui-btn layui-bg-orange" lay-event="batprint" confirm="您确定要将选定的行设为已制卡状态吗？"><i class="layui-icon layui-icon-addition"></i>批量制卡</button>
+		<button class="layui-btn layui-btn-primary layui-border-green" lay-event="batcancel" confirm="您确定要将选定的行批量取消制卡吗？"><i class="layui-icon layui-icon-close"></i>取消制卡</button>
+	  	<button class="layui-btn layui-btn-primary layui-border-blue" lay-event="batdel"><i class="layui-icon layui-icon-close"></i>批量删除</button>
+		<button class="layui-btn layui-btn-primary layui-border-black" lay-event="export"><i class="layui-icon layui-icon-export"></i>导出数据</button>
+	</div>
+</script>
+
+<script type="text/html" id="colBar">
+	<a class="ml5 mr5 blue pointer" lay-event="edit">编辑</a>
+  	<a class="ml5 mr5 blue pointer" lay-event="del" confirm="删除后将不能恢复，确认删除该项吗？">删除</a>
+</script>
+
+<script>
+	layui.use('table', function () {
+		var table = layui.table;
+
+		table.render({
+			elem: '#tablegrid'
+			//,skin: 'line'
+			, url: url(['cashcard/index', $("#formSearch").serializeJson()])
+			, toolbar: '#toolbar'
+			, defaultToolbar: ['filter', /*'exports',*/ 'print']
+			, title: '充值卡列表'
+			//, size: 'lg'
+			, cols: [[
+				{ type: 'checkbox', fixed: 'left' }
+				, { field: 'id', title: 'ID', width: 70, fixed: 'left', unresize: true, sort: true }
+				, { field: 'name', title: '卡名称', width: 200, sort: true, edit: 'text' }
+				, { field: 'cardNo', title: '卡号', width: 230, sort: true }
+				, { field: 'password', title: '卡密码', width: 160, sort: true, edit: 'text' }
+				, { field: 'money', title: '卡金额', width: 110, sort: true }
+				, {
+					field: 'printed', title: '已制卡', width: 120, sort: true, align: 'center', templet: function (res) {
+						return res.printed == 0 ? '<em class="no" ectype="inline_edit" controller="cashcard" fieldname="printed" fieldid="' + res.id + '" fieldvalue="0" title="' + lang.editable + '"><i class="fa fa-ban"></i>' + lang.no + '</em>' : '<em class="yes" ectype="inline_edit" controller="cashcard" fieldname="printed" fieldid="' + res.id + '" fieldvalue="1" title="' + lang.editable + '"><i class="fa fa-check-circle"></i>' + lang.yes + '</em>';
+					}
+				}
+				, { field: 'add_time', title: '生成时间', width: 180, sort: true, align: 'center' }
+				, { field: 'expire_time', title: '过期时间', width: 180, sort: true, align: 'center' }
+				, { field: 'active_time', title: '激活时间', width: 180, sort: true, align: 'center', }
+				, {
+					field: 'username', title: '使用者', width: 180, align: 'center', templet: function (res) {
+						return res.username ? res.username : '';
+					}
+				}
+				, { fixed: 'right', title: '操作', toolbar: '#colBar', width: 140, align: 'center' }
+			]]
+			, page: {
+				theme: 'blue'
+			}
+		});
+
+		//监听头工具栏事件
+		table.on('toolbar(tablegrid)', function (obj) {
+			var checkStatus = table.checkStatus(obj.config.id);
+			if (checkStatus.data.length <= 0) {
+				return false;
+			}
+			var items = new Array();
+			$.each(checkStatus.data, function (i, item) {
+				items.push(item.id);
+			});
+			if (obj.event === 'batdel') {
+				var btnObj = $('[lay-event="' + obj.event + '"]');
+				btnObj.attr('confirm', '删除后将不能恢复，确认删除这 ' + items.length + ' 项吗？');
+				ajaxRequest(btnObj, url(['cashcard/delete', { id: items.join(',') }]), function () {
+					table.reload('tablegrid');
+				});
+			} else if (obj.event === 'batprint') {
+				var btnObj = $('[lay-event="' + obj.event + '"]');
+				ajaxRequest(btnObj, url(['cashcard/printed', { id: items.join(','), value: 1 }]), function () {
+					table.reload('tablegrid');
+				});
+			} else if (obj.event === 'batcancel') {
+				var btnObj = $('[lay-event="' + obj.event + '"]');
+				ajaxRequest(btnObj, url(['cashcard/printed', { id: items.join(','), value: 0 }]), function () {
+					table.reload('tablegrid');
+				});
+			} else if (obj.event === 'export') {
+				window.location.href = url(['cashcard/export', $.extend($("#formSearch").serializeJson(), { id: items.join(',') })]);
+			}
+		});
+
+		//监听行工具事件
+		table.on('tool(tablegrid)', function (obj) {
+			var data = obj.data;
+			if (obj.event === 'del') {
+				var btnObj = $(obj.tr).find('[lay-event="' + obj.event + '"]');
+				ajaxRequest(btnObj, url(['cashcard/delete', { id: data.id }]), function () {
+					obj.del();
+				});
+			} else if (obj.event === 'edit') {
+				window.location.href = url(['cashcard/edit', { id: data.id }]);
+			}
+		});
+		//监听行单元格编辑事件
+		table.on('edit(tablegrid)', function (obj) {
+			var fieldObj = $(obj.tr).find('[data-field="' + obj.field + '"]');
+			ajaxRequest(fieldObj, url(['cashcard/editcol', { id: obj.data.id, column: obj.field, value: obj.value }]), function () {
+				obj.update();
+			});
+		});
+	});
+
+	$(function () {
+		$('#add_time_from').datepicker({ dateFormat: 'yy-mm-dd' });
+		$('#add_time_to').datepicker({ dateFormat: 'yy-mm-dd' });
+	});
+</script>
+{include file="footer.html"}

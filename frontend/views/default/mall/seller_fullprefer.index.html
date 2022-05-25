@@ -1,0 +1,70 @@
+{include file="user.header.html"}
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful">{include file="user.submenu.html"}
+      <div id="page-promotool" class="wrap page-promotool clearfix">
+        <div class="public_select">
+          <div class="promotool">
+            <div class="bundle bundle-list"> 
+              <!--{if $tooldisabled}-->
+              <div class="notice-word">
+                <p>{$tooldisabled}</p>
+              </div>
+              <!--{else}-->
+              <div class="notice-word">
+                <p class="yellow-big">{$lang.note_for_create}</p>
+              </div>
+              <div class="promotool-form fullprefer">
+                <form id="fullprefer_form" method="post">
+                  <ul class="form">
+                    <li class="mb10"> <span>{$lang.order_full}</span>
+                      <input type="text" name="fullprefer[amount]" id="fullprefer[amount]" class="input" value="{$fullprefer.rules.amount}" />
+                      <span>{$lang.yuan}</span> </li>
+                    <li class="mb10">
+                      <input type="checkbox" style="margin-left:12px;" name="fullprefer[type]" value="discount" {if $fullprefer.rules.type eq 'discount'} checked="checked"{/if} />
+                      <span>{$lang.da}</span>
+                      <input type="text" style="width:80px;" name="fullprefer[discount]" id="fullprefer[discount]" class="input" value="{$fullprefer.rules.discount}" {if $fullprefer.rules.type neq 'discount'}disabled="disabled" {/if} />
+                      <span>{$lang.zhe}</span> </li>
+                    <li class="mb10">
+                      <input type="checkbox" style="margin-left:12px;" name="fullprefer[type]" value="decrease"  {if $fullprefer.rules.type eq 'decrease'} checked="checked"{/if}/>
+                      <span>{$lang.jianshao}</span>
+                      <input type="text" style="width:80px;" name="fullprefer[decrease]" id="fullprefer[decrease]" class="input" value="{$fullprefer.rules.decrease}" {if $fullprefer.rules.type neq 'decrease'}disabled="disabled" {/if} />
+                      <span>{$lang.yuan}</span> </li>
+                    <li>
+                      <h3>{$lang.launch}</h3>
+                    </li>
+                    <li class="clearfix">
+                      <label class="switch-checkbox-radio inline-block box-align-center J_SwtcherInput {if $fullprefer.status || !$fullprefer}checked{/if}" for="switcher"><span class="switcher-style block"></span></label>
+                      <input name="status" class="hidden" id="switcher" value="1" type="checkbox" {if $fullprefer.status || !$fullprefer} checked="checked" {/if}>
+                    </li>
+                    <li>
+                      <input type="submit" value="{$lang.submit}" class="J_AjaxSubmit submit" />
+                    </li>
+                  </ul>
+                </form>
+              </div>
+              <!--{/if}--> 
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$('input[name="fullprefer[type]"]').click(function(){
+		if($(this).prop('checked') == true) {
+			$(this).parent().parent().find('input[name="fullprefer[type]"]').prop('checked', false);
+			$(this).prop('checked', true);
+		} else {
+			$(this).parent().parent().find('input[name="fullprefer[type]"]').prop('checked', false);
+		}
+		
+		$('input[name="fullprefer[discount]"], input[name="fullprefer[decrease]"').attr('disabled', true);
+		$(this).parent().find('input[type="text"]').attr('disabled', !$(this).prop('checked'));
+		//$(this).parent().find('input[type="text"]').val('');
+	});
+});
+</script> 
+{include file="user.footer.html"}

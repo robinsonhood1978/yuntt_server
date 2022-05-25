@@ -1,0 +1,71 @@
+<!--{if $widget_data.gcategories}-->
+<div class="channel2-category J_S{$widget_data.model_id} clearfix" {if $widget_data.model_height gt 0}style="height:{$widget_data.model_height}px;"{/if}>
+  <div class="J_Category clearfix"> 
+    <!--{foreach from=$widget_data.gcategories item=category name=fe_category}--> 
+    <!--{if $widget_data.amount eq 0 || ($widget_data.amount > 0 && $smarty.foreach.fe_category.iteration le $widget_data.amount)}-->
+    <div class="item clearfix">
+      <div class="title clearfix" > <span><a href="{url route='search/index' cate_id=$category.cate_id}">{$category.cate_name|escape}</a></span>
+        <div class="submenu"> 
+          <!--{foreach from=$category.children item=child name=fe_child}--> 
+          <!--{if $smarty.foreach.fe_child.iteration le 6}--> 
+          <a href="{url route='search/index' cate_id=$child.cate_id}">{$child.cate_name|escape}</a> 
+          <!--{/if}--> 
+          <!--{/foreach}--> 
+        </div>
+        <i class="arrow"></i> </div>
+      <div class="J_SubCategory pop clearfix hidden">
+        <ul class="clearfix show-layer{$widget_data.layer|default:1}">
+          
+          <!--{if $widget_data.layer eq 2}--> 
+          <!--{foreach from=$category.children item=child name=fe_child}--> 
+          <!--{if $smarty.foreach.fe_child.iteration le 100}-->
+          <li class="clearfix"> <span class="cate-name"> <a href="{url route='search/index' cate_id=$child.cate_id}">{$child.cate_name|escape}</a><i>></i> </span> <span class="cate-list"> 
+            <!--{foreach from=$child.children item=child2 name=fe_child2}--> 
+            <a href="{url rout='search/index' cate_id=$child2.cate_id}">{$child2.cate_name|escape}</a> 
+            <!--{/foreach}--> 
+            </span> </li>
+          <!--{/if}--> 
+          <!--{/foreach}--> 
+          
+          <!--{else}-->
+          <li class="clearfix"> <span class="cate-list"> 
+            <!--{foreach from=$category.children item=child name=fe_child}--> 
+            <!--{if $smarty.foreach.fe_child.iteration le 100}--> 
+            <a href="{url route='search/index' cate_id=$child.cate_id}">{$child.cate_name|escape}</a> 
+            <!--{/if}--> 
+            <!--{/foreach}--> 
+            </span> </li>
+          <!--{/if}-->
+        </ul>
+      </div>
+    </div>
+    <!--{/if}--> 
+    <!--{/foreach}--> 
+  </div>
+  <!--{if $widget_data.keywords}-->
+  <div class="keyword clearfix">
+    <h2>热搜关键词</h2>
+    <!--{foreach from=$widget_data.keywords item=keyword}--> 
+    <a href="{url route='search/index' keyword=$keyword}" target="_blank">{$keyword}</a> 
+    <!--{/foreach}--> 
+  </div>
+  <!--{/if}--> 
+  
+</div>
+<script type="text/javascript">
+$(function(){
+	$('.J_Category .item').hover(function(){
+		$(this).addClass('arrow');
+		$(this).find('.J_SubCategory').show();
+	},function(){
+		 $(this).removeClass('arrow');
+		 $(this).find('.J_SubCategory').hide();
+	});
+});
+</script> 
+<!--{else}-->
+<center style="padding:10px;">
+  请配置
+</center>
+<!--{/if}--> 
+

@@ -1,0 +1,34 @@
+{include file="header.html"}
+<div id="main">
+  {include file="menus.html"}
+  <div id="rightCon" class="clearfix layui-body">
+    <div class="scroller">
+      <div class="flexigrid">
+        <form method="post">
+          <table class="infoTable">
+            <tr>
+              <th class="paddingT15"><label>{$lang.store_allow}</label></th>
+              <td class="paddingT15 layui-form">
+                <input type="radio" name="store_allow" value="1" title="{$lang.enable}" {if
+                  $setting.store_allow}checked{/if} />
+                <input type="radio" name="store_allow" value="0" title="{$lang.disable}" {if
+                  !$setting.store_allow}checked{/if} />
+              </td>
+            <tr>
+              <th class="paddingT15"><label>{$lang.upgrade_required}</label></th>
+              <td class="paddingT15 wordSpacing5"><input class="infoTableInput" id="upgrade_required" type="text"
+                  name="upgrade_required" value="{$setting.upgrade_required}" /></td>
+            </tr>
+            <tr>
+              <th></th>
+              <td class="ptb20"><input class="layui-btn layui-bg-blue J_AjaxSubmit" type="submit"
+                  value="{$lang.submit}" /></td>
+            </tr>
+          </table>
+        </form>
+      </div>
+      {include file="version.html"}
+    </div>
+  </div>
+</div>
+{include file="footer.html"}

@@ -1,0 +1,52 @@
+<div class="account J_S{$widget_data.model_id}">
+  <div class="user-info">
+    <div class="avata-pic"> 
+      <a href="{if $widget_data.visitor.userid}{url route='user/index'}{else}javascript:;{/if}">
+        <img src="{$widget_data.visitor.portrait|url_format}" />
+      </a> 
+    </div>
+    <div class="hello clearfix">
+      <p class="he-tit">{$widget_data.visitor.username}</p>
+      <!--{if $widget_data.visitor.userid}--> 
+      <a class="login-btn" href="{url route='my_message/index' folder='newpm'}">消息</a> 
+      <a class="regist-btn" href="{url route='user/logout'}">退出</a> 
+      <!--{else}--> 
+      <a class="login-btn" href="{url route='user/login'}">请登录</a>
+      <a class="regist-btn" href="{url route='apply/index'}">我要开店</a>
+      <!--{/if}--> 
+    </div>
+  </div>
+  <div class="index-notice">
+    <div class="no-tit"> 
+      <!--{foreach from=$widget_data.articleList item=list name=fe_article}-->
+      <a {if $smarty.foreach.fe_article.iteration eq 2} style="margin-right:0; padding-right:0; border-right:0" {/if} class="tab-head-item bor-1" href="javascript:;">{$list.title}</a> 
+	  <!--{/foreach}-->
+    </div>
+    <div class="no-con">
+      <!--{foreach from=$widget_data.articleList item=list}-->
+      <ul>
+      	<!--{foreach from=$list.list item=article}-->
+        <li><a href="{url route='article/view' id=$article.article_id}" target="_blank">{$article.title}</a></li>
+		    <!--{/foreach}-->
+      </ul>
+      <!--{/foreach}-->
+    </div>
+  </div>
+  <div class="quick">
+    <div class="kj-tit">快捷入口</div>
+    <div class="kj-con clearfix">
+      <div class="kj-item bor-r bor-b"> <a href="javascript:;"> <i class="i-con icon-1"></i> <span>我的浏览</span> </a> </div>
+      <div class="kj-item bor-r bor-b"> <a href="{url route='my_favorite/index'}"> <i class="i-con icon-2"></i> <span>我的收藏</span> </a> </div>
+      <div class="kj-item bor-b"> <a href="{url route='buyer_order/index'}"> <i class="i-con icon-3"></i> <span>我的订单</span> </a> </div>
+      <div class="kj-item bor-r"> <a href="{url route='user/setting'}"> <i class="i-con icon-4"></i> <span>账号安全</span> </a> </div>
+      <div class="kj-item bor-r"> <a href="javascript:;"> <i class="i-con icon-5"></i> <span>我要分享</span> </a> </div>
+      <div class="kj-item"> <a href="{url route='apply/index'}"> <i class="i-con icon-6"></i> <span>商家入驻</span> </a> </div>
+    </div>
+  </div>
+</div>
+<script type="text/jscript">
+$(function(){	
+	$(".J_S{$widget_data.model_id}").slide({ titCell:'.no-tit .tab-head-item', mainCell:'.no-con', effect:"fade", trigger:"mouseover", autoPlay:true});	
+});
+</script>      
+      

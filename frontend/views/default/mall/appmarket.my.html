@@ -1,0 +1,51 @@
+{include file="user.header.html"}
+<div id="main" class="clearfix">
+  <div id="page-promotool" class="page-promotool">  {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful">{include file="user.submenu.html"}
+        <div class="wrap">
+          <div class="public_select">
+            <div class="appmarket apprenewal">
+              <div class="bundle bundle-list">
+                <div class="applist"> 
+                  <!--{if $apprenewal}-->
+                  <ul class="list-each clearfix">
+                    <!--{foreach from=$apprenewal item=item name=fe_item}-->
+                    <li class="clearfix">
+                      <div class="pic"><a href="{url route='appmarket/view' id=$item.aid}" target="_blank"><img height="70"  src="{$item.logo|url_format}" /></a></div>
+                      <div class="info">
+                        <p class="title"><font class="f60">[{$lang.{$item.appid}}]</font> {$item.title}</p>
+                        <p class="price clearfix"> <span class="gray fs14">{$lang.buy_at}</span> <strong class="mr10">{$item.add_time|date_format:"%Y.%m.%d"}</strong> 
+                          <!--{if $item.timediff}--> 
+                          <span class="gray fs14">{$lang.expired_at}</span> <strong>{$item.expired|date_format:"%Y.%m.%d"}</strong> <span class="fs14 ml10" style="color:#900">{$item.timediff.format}</span> 
+                          <!--{else}--> 
+                          <span class="gray fs14">{$lang.has_expired}</span> 
+                          <!--{/if}--> 
+                        </p>
+                        <p class="btn-fields mt10 clearfix"> <a class="btn-buy" href="{url route='appmarket/view' id=$item.aid}" target="_blank"> 
+                          <!--{if !$item.checkIsRenewal}--> 
+                          {$lang.buy} 
+                          <!--{else}--> 
+                          {$lang.renewal} 
+                          <!--{/if}--> 
+                          </a> </p>
+                      </div>
+                    </li>
+                    <!--{/foreach}-->
+                  </ul>
+                  <div class="mt20 clearfix center">{include file="page.bottom.html"}</div>
+                  <!--{else}-->
+                  <div class="notice-word">
+                    <p>{$lang.no_records}</p>
+                  </div>
+                  <!--{/if}--> 
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{include file="user.footer.html"} 

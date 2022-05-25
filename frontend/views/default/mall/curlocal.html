@@ -1,0 +1,9 @@
+<div class="location w-shop mt10 mb10">
+    <!--{foreach from=$_curlocal item=lnk}-->
+    <!--{if $lnk.url}-->
+    <a href="{$lnk.url}">{$lnk.text|escape}</a> <span>></span>
+    <!--{else}-->
+    {if $app->controller->id eq 'goods'}{$goods.goods_name|escape}{else}{$lnk.text|escape}{/if}
+    <!--{/if}-->
+    <!--{/foreach}-->
+</div>

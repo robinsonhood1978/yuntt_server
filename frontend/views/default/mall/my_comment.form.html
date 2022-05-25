@@ -1,0 +1,55 @@
+<div class="eject_con">
+  <div class="add_float">
+    <form id="message" target="iframe" method="post" action="{url route='my_comment/reply' rec_id=$my_comment.rec_id}">
+      <div id="warning" style="margin:10px;"></div>
+      <ul>
+        <li>
+          <h3 class="gray mb5">{$lang.comment_content}{$lang.colon}</h3>
+          <p style="background: #fafafa; border:1px #ddd dotted;padding:10px;font-size:14px;">
+            <label>{$my_comment.comment|escape|nl2br}</label>
+          </p>
+        </li>
+        <li class="mt10">
+          <h3 class="gray mb5">{$lang.reply_comment_form}{$lang.colon}</h3>
+          <p>
+            <textarea class="text width11" name="content">{$my_comment.reply_comment}</textarea>
+          </p>
+        </li>
+      </ul>
+      <div class="submit">
+      	<input type="hidden" name="rec_id" value="{$my_comment.rec_id}" />
+        <input type="submit" class="btn" value="{$lang.confirm}" />
+      </div>
+    </form>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+     $('#message').validate({
+        errorLabelContainer: $('#warning'),
+        invalidHandler: function(form, validator) {
+           var errors = validator.numberOfInvalids();
+           if(errors)
+           {
+               $('#warning').show();
+           }
+           else
+           {
+               $('#warning').hide();
+           }
+        },
+        rules : {
+			content : {
+          		required : true,
+          		rangelength : [0,255,'{$charset}']
+       		}
+      	},
+        messages : {
+        	content : {
+         		required : '{$lang.content_not_null}',
+              	rangelength: '{$lang.max_script}'
+      		}
+    	}
+	})
+})
+</script>

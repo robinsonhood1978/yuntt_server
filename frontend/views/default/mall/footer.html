@@ -1,0 +1,112 @@
+<div id="footer" class="w-full">
+  <div class="foot-baozhang">
+    <div class="flow w">
+      <div class="item first"><i class="zp"></i><span>正品保障</span></div>
+      <div class="item"><i class="qt"></i><span>七天包退</span></div>
+      <div class="item"><i class="hp"></i><span>好评如潮</span></div>
+      <div class="item"><i class="sd"></i><span>闪电发货</span></div>
+      <div class="item"><i class="ry"></i><span>权威荣誉</span></div>
+    </div>
+  </div>
+  <div class="foot-service">
+    <div class="w clearfix">
+      <dl class="dl-first">
+        <dt class="fts-1">购物保障</dt>
+        <dd><a href="https://www.shopwind.net">官方认证商家</a></dd>
+        <dd><a href="https://www.shopwind.net">100%全场正品</a></dd>
+      </dl>
+      <dl>
+        <dt class="fts-2">新手上路</dt>
+        <dd><a href="https://www.shopwind.net">新手指南</a></dd>
+        <dd><a href="https://www.shopwind.net">官方微博</a></dd>
+      </dl>
+      <dl>
+        <dt class="fts-3">服务热线</dt>
+        <dd><a href="https://www.shopwind.net">客服专线：010-555888</a></dd>
+        <dd><a href="https://www.shopwind.net">商家入驻：010-555888</a></dd>
+      </dl>
+      <dl>
+        <dt class="fts-4">商家入驻</dt>
+        <dd><a href="https://www.shopwind.net">优质商家入驻</a></dd>
+        <dd><a href="https://www.shopwind.net">大客户绿色通道</a></dd>
+      </dl>
+    </div>
+  </div>
+  <div class="foot-group w clearfix">
+    <div class="float-left tel">
+      <dl class="clearfix">
+        <dt class="float-left"><img src="{res file='images/call.png'}"></dt>
+        <dd class="float-left ml20 mt10">
+          <h3>010-555888</h3>
+          <p>周一到周五 9:00 - 17:30</p>
+        </dd>
+      </dl>
+    </div>
+    <div class="float-left footnav">
+      <ul class="clearfix">
+        <li class="float-left"><a href="https://www.shopwind.net" target="_blank">ShopWind</a><span>|</span></li>
+        <li class="float-left"><a href="https://www.shopwind.net" target="_blank">支付方式</a><span>|</span></li>
+        <li class="float-left"><a href="https://www.shopwind.net" target="_blank">法律条款</a><span>|</span></li>
+        <li class="float-left"><a href="https://www.shopwind.net" target="_blank">合作代理</a><span>|</span></li>
+        <li class="float-left"><a href="https://www.shopwind.net" target="_blank">电商系统</a><span>|</span></li>
+        <li class="float-left"><a href="https://www.shopwind.net" target="_blank">友情链接</a><span>|</span></li>
+        <li class="float-left last"><a href="https://www.shopwind.net" target="_blank">联系我们</a></li>
+      </ul>
+      <div class="copy">
+        <p>Copyright &copy; 2015-2021 <a href="https://www.shopwind.net" class="ml5 mr5">SHOPWIND.NET</a> 版权所有 <!--{if $icp_number}--><a href="https://beian.miit.gov.cn" target="_blank">{$icp_number}</a><!--{/if}--></p>
+        <p>常年法律顾问：广西百纳律师事务所 TEL: 010-555888</p>
+      </div>
+    </div>
+    <ul class="float-right ewm clearfix">
+      <li> <img src="{res file='images/qrcode_for_gh_8658dbe202f2_258.jpg'}" width="80" alt="微信官网">
+        <p>关注公众号</p>
+      </li>
+      <li> <img src="{res file='images/jiaqun-86696159.png'}" width="80" alt="ShopWind开发群">
+        <p>开发交流群</p>
+      </li>
+    </ul>
+  </div>
+  <div class="foot-fixed J_FootFixed">
+    <div class="foot-fixed-box"> 
+	    <a class="cart j-icon J_F_CardItem" href="{url route='cart/index'}"><i></i><em class="count-cart J_C_T_GoodsKinds">{$carts_top.kinds|default:0}</em></a>
+      <a class="qq j-icon J_Icon"><i>qq</i></a> 
+      <a class="tel j-icon J_Icon"><i>tel</i></a> 
+      <a class="code j-icon J_Icon"><i>code</i></a> 
+      <a class="backtop j-icon J_Icon"><i>back_top</i></a>
+      <div class="tencent j-tencent j-box J_Box"> 
+        <a href="tencent://message/?uin=544500267&Site={$siteUrl}&Menu=yes"><i class="tencent-i">tencent</i><b class="tencent-b"><span class="tencent-span"><img style="overflow: hidden; width: 39px; height: 45px; left: 3px;" class="tencent-qq" src="{res file='images/qq-tencent.png'}" alt=""></span></b>
+          <p class="tencent-p">在线客服<br>
+          点击交谈</p>
+        </a>
+      </div>
+      <div class="tel j-box J_Box"><strong>服务热线：</strong>
+        <p>010-555888</p>
+        <i></i>
+      </div>
+      <div class="code j-box J_Box"><img width="155" height="155" src="{res file='images/qrcode_for_gh_8658dbe202f2_258.jpg'}" alt="">
+        <p>关注微信公众号</p>
+        <i></i>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+  	$(function(){
+		$(".J_FootFixed").find(".J_Icon").hover(function(){  
+        	$(".J_FootFixed").find(".J_Box").eq($(this).index()-1).show().siblings(".J_Box").hide();
+		});
+		$(".J_FootFixed").hover(function(){
+		}, function(){
+			$(".J_FootFixed").find(".J_Box").hide();
+		});
+	});
+  </script> 
+</div>
+<script type="text/javascript" src="{lib file='jquery.plugins/SuperSlide/jquery.SuperSlide.2.1.2.js'}" charset="{$app->charset}"></script>
+<script type="text/javascript" src="{lib file='layui/layui.js'}" charset="{$app->charset}"></script>
+<script type="text/javascript" src="{lib file='shopwind.js'}" charset="{$app->charset}"></script>
+{$_foot_tags|default}
+<script type="text/javascript" src="{res file='js/global.js'}" charset="{$app->charset}"></script>
+<script type="text/javascript" src="{res file='js/main.js'}" charset="{$app->charset}"></script>
+{$statistics_code}
+</body>
+</html>

@@ -1,0 +1,58 @@
+{include file="user.header.html"}
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful">{include file="user.submenu.html"}
+      <div class="wrap">
+        <div class="public table">
+          <table>
+            <!--{if $navigations}-->
+            <tr class="gray">
+              <th width="30"><input type="checkbox" id="all" class="checkall"/></th>
+              <th class="align1 width9">{$lang.title}</th>
+              <th class="width15">{$lang.if_show}</th>
+              <th>{$lang.sort_order}</th>
+              <th>{$lang.handle}</th>
+            </tr>
+            <!--{/if}--> 
+            <!-- {foreach from=$navigations item=navigation name=v} -->
+            
+            <tr class="{if $smarty.foreach.v.last}line_bold{else}line{/if}">
+              <td class="align2"><input type="checkbox" class="checkitem" value="{$navigation.article_id}" /></td>
+              <td>{$navigation.title|escape}</td>
+              <td class="align2"><!--{if $navigation.if_show eq 1}-->
+                
+                <p class="padding2"><span class="right_ico"></span></p>
+                
+                <!--{else}-->
+                
+                <p class="padding2"><span class="wrong_ico"></span></p>
+                
+                <!--{/if}--></td>
+              <td class="align2">{$navigation.sort_order}</td>
+              <td class="width13"><a href="{url route='my_navigation/edit' id=$navigation.article_id}" class="edit1">{$lang.edit}</a> <a href="javascript:drop_confirm('{$lang.drop_confirm}', '{url route='my_navigation/delete' id=$navigation.article_id}');" class="delete">{$lang.drop}</a></td>
+            </tr>
+            <!-- {foreachelse} -->
+            <tr>
+              <td colspan="5"><div class="notice-word">
+                  <p>{$lang.no_records}</p>
+                </div></td>
+            </tr>
+            <!--{/foreach}--> 
+            <!--{if $navigations}-->
+       
+            <tr class="btion">
+              <th><input id="all2" type="checkbox" class="checkall" /></th>
+              <th colspan="4"> <p class="position1"> <span class="all">
+                  <label for="all2">{$lang.checkall}</label>
+                  </span> <a href="javascript:void(0);" class="delete" ectype="batchbutton" uri="{url route='my_navigation/delete'}" name="id" presubmit="confirm('{$lang.drop_confirm}')">{$lang.drop}</a> </p>
+                <div class="position2 clearfix center">{include file="page.bottom.html"}</div>
+              </th>
+            </tr>
+            <!--{/if}-->
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{include file="user.footer.html"}

@@ -1,0 +1,27 @@
+{include file="header.html"}
+<div id="main">
+    {include file="menus.html"}
+    <div id="rightCon" class="clearfix layui-body">
+        <div class="scroller">
+            <div class="particular flexigrid">
+                <div class="{if $notice.done}success{else}defeated{/if}">
+                    <span>{$lang.sys_notice}</span>
+                    <p class="mr10 inline-block green">{$notice.msg}</p>
+                    <!--{if !$notice.done}-->
+                    <!--{foreach from=$notice.links item=item}-->
+                    <a href="{$item.url}" class="mr10 inline-block">>>{$item.label}</a>
+                    <!--{/foreach}-->
+                    <!--{/if}-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--{if $notice.redirect}-->
+<script type="text/javascript">
+    window.setTimeout(function () {
+        location.href = "{$notice.redirect}";
+    }, 2000);
+</script>
+<!--{/if}-->
+{include file="footer.html"}

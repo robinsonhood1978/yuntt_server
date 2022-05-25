@@ -1,0 +1,41 @@
+<?php
+
+/**
+ * @link https://www.shopwind.net/
+ * @copyright Copyright (c) 2018 ShopWind Inc. All Rights Reserved.
+ *
+ * This is not free software. Do not use it for commercial purposes. 
+ * If you need commercial operation, please contact us to purchase a license.
+ * @license https://www.shopwind.net/license/
+ */
+
+namespace common\models;
+
+use Yii;
+use yii\db\ActiveRecord;
+
+/**
+ * @Id BankModel.php 2018.4.1 $
+ * @author mosir
+ */
+
+class BankModel extends ActiveRecord
+{
+    /**
+     * @inheritdoc
+     */
+    public static function tableName()
+    {
+        return '{{%bank}}';
+    }
+	
+	public static function checkBankOfUser($bid = 0, $userid = 0)
+	{
+		if(!$userid || !$bid) return false;
+		
+		if(parent::find()->select('bid')->where(['bid' => $bid, 'userid' => $userid])->one()) {
+			return true;
+		}
+		return false;
+	}
+}

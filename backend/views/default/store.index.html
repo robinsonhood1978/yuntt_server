@@ -1,0 +1,150 @@
+{include file="header.html"}
+<div id="main">
+	{include file="menus.html"}
+	<div id="rightCon" class="clearfix layui-body">
+		<div class="scroller">
+			<div class="search-form clearfix">
+				<form method="get" id="formSearch">
+					<div class="webkit-box box-align-center">
+						<input type="hidden" name="r" value="store/index" />
+						{$lang.owner_name}
+						<input class="queryInput" type="text" name="owner_name"
+							value="{$smarty.get.owner_name|escape}" />
+						{$lang.store_name}
+						<input class="infoTableInput mr10 ml10" type="text" name="store_name"
+							value="{$smarty.get.store_name|escape}" />
+						{$lang.stype}
+						<select class="querySelect" name="stype">
+							<option value="">{$lang.select_pls}</option>
+							{html_options options=$stypes selected=$smarty.get.stype}
+						</select>
+						{$lang.sgrade}
+						<select class="querySelect" name="sgrade">
+							<option value="">{$lang.select_pls}</option>
+							{html_options options=$sgrades selected=$smarty.get.sgrade}
+						</select>
+					</div>
+					<div class="webkit-box box-align-center mt20">
+						<label>{$lang.state}</label>
+						<select name="state" class="querySelect">
+							<option value="" {if $smarty.get.state eq '' } selected{/if}>{$lang.no_limit}</option>
+							<option value="1" {if $smarty.get.state eq '1' } selected{/if}>{$lang.open}</option>
+							<option value="2" {if $smarty.get.state eq '2' } selected{/if}>{$lang.close}</option>
+						</select>
+						<input type="submit" class="layui-btn layui-bg-blue layui-btn-sm block width7"
+							value="{$lang.query}" />
+						<!--{if $filtered}-->
+						<a class="layui-btn layui-btn-primary layui-btn-sm box-align-center"
+							href="{url route='store/index'}">{$lang.cancel_query}</a>
+						<!--{/if}-->
+					</div>
+				</form>
+			</div>
+			<div class="tablegrid">
+				<table class="layui-hide" id="tablegrid" lay-filter="tablegrid"></table>
+			</div>
+			{include file="version.html"}
+		</div>
+	</div>
+</div>
+<script type="text/html" id="toolbar">
+	<div class="layui-btn-container">
+	  <button class="layui-btn layui-bg-blue" lay-event="batedit"><i class="layui-icon layui-icon-edit"></i>批量编辑</button>
+	  <button class="layui-btn layui-btn-primary layui-border-blue" lay-event="batdel"><i class="layui-icon layui-icon-close"></i>批量删除</button>
+	  <button class="layui-btn layui-btn-primary layui-border-black" lay-event="export"><i class="layui-icon layui-icon-export"></i>导出数据</button>
+	</div>
+</script>
+
+<script type="text/html" id="colBar">
+	<a class="ml5 mr5 blue pointer" lay-event="edit">编辑</a>
+  	<a class="ml5 mr5 blue pointer" lay-event="del" confirm="删除后将不能恢复，确认删除该项吗？">删除</a>
+	<a class="ml5 mr5 blue pointer" lay-event="view">查看</a>
+</script>
+
+<script>
+	layui.use('table', function () {
+		var table = layui.table;
+
+		table.render({
+			elem: '#tablegrid'
+			//,skin: 'line'
+			, url: url(['store/index', $("#formSearch").serializeJson()])
+			, toolbar: '#toolbar'
+			, defaultToolbar: ['filter', /*'exports',*/ 'print']
+			, title: '店铺列表'
+			//, size: 'lg'
+			, cols: [[
+				{ type: 'checkbox', fixed: 'left' }
+				, { field: 'store_id', title: 'ID', width: 70, fixed: 'left', unresize: true, sort: true }
+				, { field: 'username', title: '用户名', width: 160 }
+				, { field: 'owner_name', title: '店主', width: 100 }
+				, { field: 'store_name', title: '店铺名', width: 200, sort: true }
+				, { field: 'stype', title: '主体类型', width: 120, sort: true, align: 'center' }
+				, { field: 'sgrade', title: '店铺等级', width: 160, sort: true }
+				, { field: 'add_time', title: '开店日期', width: 110, sort: true }
+				, { field: 'end_time', title: '有效期至', width: 110, sort: true }
+				, { field: 'state', title: '店铺状态', width: 120, sort: true, align: 'center' }
+				, { field: 'sort_order', title: '排序', width: 90, edit: 'text', sort: true, align: 'center' }
+				, {
+					field: 'recommended', title: '推荐', width: 90, sort: true, align: 'center', templet: function (res) {
+						return res.recommended == 1 ? '<em class="yes" ectype="inline_edit" controller="store" fieldname="recommended" fieldid="' + res.store_id + '" fieldvalue="1" title="' + lang.editable + '"><i class="fa fa-check-circle"></i>' + lang.yes + '</em>' : '<em class="no" ectype="inline_edit" controller="store" fieldname="recommended" fieldid="' + res.store_id + '" fieldvalue="0" title="' + lang.editable + '"><i class="fa fa-ban"></i>' + lang.no + '</em>';
+					}
+				}
+				, { field: 'region_name', title: '所在地区', width: 260 }
+				, { fixed: 'right', title: '操作', toolbar: '#colBar', width: 200, align: 'center' }
+			]]
+			, page: {
+				theme: 'blue'
+			}
+		});
+
+		//监听头工具栏事件
+		table.on('toolbar(tablegrid)', function (obj) {
+			var checkStatus = table.checkStatus(obj.config.id);
+			if (checkStatus.data.length <= 0) {
+				return false;
+			}
+			var items = new Array();
+			$.each(checkStatus.data, function (i, item) {
+				items.push(item.store_id);
+			});
+			if (obj.event === 'batedit') {
+				window.location.href = url(['store/batch', { id: items.join(',') }]);
+			}
+			else if (obj.event === 'batdel') {
+				var btnObj = $('[lay-event="' + obj.event + '"]');
+				btnObj.attr('confirm', '删除后将不能恢复，确认删除这 ' + items.length + ' 项吗？');
+				ajaxRequest(btnObj, url(['store/delete', { id: items.join(',') }]), function () {
+					table.reload('tablegrid');
+				});
+			}
+			else if (obj.event === 'export') {
+				window.location.href = url(['store/export', $.extend($("#formSearch").serializeJson(), { id: items.join(',') })]);
+			}
+		});
+
+		//监听行工具事件
+		table.on('tool(tablegrid)', function (obj) {
+			var data = obj.data;
+			if (obj.event === 'del') {
+				var btnObj = $(obj.tr).find('[lay-event="' + obj.event + '"]');
+				ajaxRequest(btnObj, url(['store/delete', { id: data.store_id }]), function () {
+					obj.del();
+				});
+			} else if (obj.event === 'edit') {
+				window.location.href = url(['store/edit', { id: data.store_id }]);
+			}
+			else if (obj.event === 'view') {
+				window.open(url(['store/index', { id: data.store_id }, HOME_URL]));
+			}
+		});
+		//监听行单元格编辑事件
+		table.on('edit(tablegrid)', function (obj) {
+			var fieldObj = $(obj.tr).find('[data-field="' + obj.field + '"]');
+			ajaxRequest(fieldObj, url(['store/editcol', { id: obj.data.store_id, column: obj.field, value: obj.value }]), function () {
+				obj.update();
+			});
+		});
+	});
+</script>
+{include file="footer.html"}

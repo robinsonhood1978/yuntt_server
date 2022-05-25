@@ -1,0 +1,66 @@
+<div class="mainnavbox relative" id="mainnavbox-{$widget_data.uniqueid}">
+  <div class="content padding10">
+    <ul class="clearfix">
+      <!--{if !$widget_data.images}-->
+      <li class="block center"><i class="iconfont icon-tupianlunbo1 gray"
+        style="font-size: 40px;"></i></li>
+      <!--{else}-->
+        <!--{foreach from=$widget_data.images item=item}-->
+        <li class="block center"><a href='{$item.link}'><img src="{$item.url|url_format}" /><p class="text mt5 fs13">{$item.title}</p></a></li>
+        <!--{/foreach}-->
+      <!--{/if}-->
+    </ul>
+  </div>
+</div>
+
+<style>
+  .mainnavbox{
+    border-radius: 10px;
+    background-color: #ffffff;
+    width: calc(100% - 20px);
+    margin-left:10px;
+    margin-right: 10px;
+  }
+
+  .mainnavbox ul li{
+    float: left;
+    margin: 5px 0;
+    width: 25%;
+  }
+  .mainnavbox ul li p{
+    height: 20px;
+  }
+
+  .mainnavbox ul li i,
+  .mainnavbox ul li img{
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+  }
+
+</style>
+<script>
+  $(function () {
+    /* {if $widget_data.column eq 5} */
+    $('#mainnavbox-{$widget_data.uniqueid} .content ul li').css('width', '20%');
+    /* {/if} */
+
+    /* {if $widget_data.column eq 3} */
+    $('#mainnavbox-{$widget_data.uniqueid} .content ul li').css('width', '33.33%');
+    /* {/if} */
+
+    /* {if $widget_data.radius eq 'square'} */
+    $('#mainnavbox-{$widget_data.uniqueid}').css('border-radius', '0');
+    $('#mainnavbox-{$widget_data.uniqueid}').css('margin-left', '0').css('margin-right','0');
+    $('#mainnavbox-{$widget_data.uniqueid}').css('width', '100%');
+    /* {/if} */
+
+    /* {if $widget_data.txthide eq 1} */
+    $("#mainnavbox-{$widget_data.uniqueid} .content li p").css('display', 'none');
+    /* {/if} */
+
+    $('#mainnavbox-{$widget_data.uniqueid} .content .text').css('color', '{$widget_data.txtcolor|default:"#333333"}');
+    $('#mainnavbox-{$widget_data.uniqueid}').css('background-color', '{$widget_data.bgcolor|default:"#ffffff"}');
+    $('#mainnavbox-{$widget_data.uniqueid}').css('margin-top', '{$widget_data.space|default:10}px').css('margin-bottom', '{$widget_data.space|default:10}px');
+  });
+</script>

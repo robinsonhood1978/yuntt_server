@@ -1,0 +1,85 @@
+<div class="imagead" id="imagead-{$widget_data.uniqueid}">
+  <div class="content {$widget_data.radius}">
+    <!--{if $widget_data.images}-->
+    <div class="hd webkit-box {if !$widget_data.title}hidden{/if}">{$widget_data.title} {if $widget_data.label}<span class="box-align-center">{$widget_data.label}</span>{/if}</div>
+    <div class="bd webkit-box">
+      <!--{foreach from=$widget_data.images item=item}-->
+      <div class="item"><img class="block" src="{$item.url|url_format}"></div>
+      <!--{/foreach}-->
+    </div>
+    <!--{else}-->
+    <div class="empty center">
+      <p>图片广告</p>
+    </div>
+    <!--{/if}-->
+
+  </div>
+</div>
+
+<style>
+  .imagead .hd {
+    padding: 10px;
+    color: #555555;
+    font-size: 15px;
+    margin: 5px 2px 0 0;
+    font-weight: bold;
+  }
+  .imagead .hd span {
+    font-size: 12px;
+    font-weight: normal;
+    margin-left: 10px;
+  }
+
+  .imagead .content .item,
+  .imagead .content .item img {
+    width: 100%;
+  }
+
+  .imagead .content.round {
+    border-radius: 10px;
+    margin: 0 10px;
+  }
+
+  .imagead .empty {
+    height: 100px;
+    line-height: 100px;
+    width: 100%;
+    background-color: #ebf8fd;
+    color: #b6e3f5;
+  }
+</style>
+<script>
+  $(function () {
+    /* {if $widget_data.column eq 1} */
+    $('#imagead-{$widget_data.uniqueid} .content .item').not(':first').css('display', 'none');
+    /* {/if} */
+
+    /* {if $widget_data.column eq 2} */
+    $('#imagead-{$widget_data.uniqueid} .content .item').css('width', '50%');
+    $('#imagead-{$widget_data.uniqueid} .content .item').eq(2).css('display', 'none');
+    /* {/if} */
+
+    /* {if $widget_data.column eq 3} */
+    $('#imagead-{$widget_data.uniqueid} .content .item').css('width', '33.333%');
+    /* {/if} */
+
+    /* {if $widget_data.color} */
+     $('#imagead-{$widget_data.uniqueid} .hd').css('color', '{$widget_data.color}');
+    /* {/if} */
+
+    /* {if $widget_data.bgcolor} */
+    $('#imagead-{$widget_data.uniqueid} .content').css('background-color', '{$widget_data.bgcolor}');
+    /* {/if} */
+
+    /* {if $widget_data.radius eq 'round'} */
+    $('#imagead-{$widget_data.uniqueid} .content').css('padding-left', '5px').css('padding-right', '5px');
+    $('#imagead-{$widget_data.uniqueid} .content .item').css('padding', '0 5px');
+    $('#imagead-{$widget_data.uniqueid} .content .item img').css('border-radius', '8px');
+    $('#imagead-{$widget_data.uniqueid} .empty').css('margin', '5px').css('border-radius', '8px');
+    /* {/if} */
+
+    // $('#imagead-{$widget_data.uniqueid} .content .item img').css('height', '{$widget_data.height}px');
+
+    $('#imagead-{$widget_data.uniqueid} .content').css('padding-bottom', '{$widget_data.space|default:0}px');
+  });
+</script>

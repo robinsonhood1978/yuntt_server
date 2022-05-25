@@ -1,0 +1,223 @@
+{include file="top.html"}
+<style>
+#footer{ background:#f4f4f4;}
+#footer, #footer a, #footer .foot-group .footnav .copy, #footer .foot-group .footnav .copy a{ color:#bbb;}
+#footer .foot-group .footnav{ margin-left:0;margin-top:0;}
+#footer .foot-group .footnav ul{ width:454px; margin:0 auto;}
+#footer a:hover{ color:#f60; text-decoration:none;}
+.w{ width:1000px;}
+#site-nav{ display:none}
+</style>
+<div id="main" class="w-full">
+  <div id="page-register" class="w-full page-auth mt20 mb20">
+      <div class="w-full auth-header pb10 mb10">
+      <div class="w logo mb10 clearfix"> <a class="float-left" href="{$siteUrl}" title="{$app->params['site_title']}"><img height="60" alt="{$app->params['site_title']}" src="{$app->params['site_logo']|url_format}" /></a> <span>欢迎注册</span><em class="float-right gray fs14 mt20">已有账号 请<a href="{url route='user/login' redirect=$redirect}">登录</a></em></div>
+    </div>
+      <div class="w-full auth-body">
+      <div class="form w clearfix">
+        <form id="register_form" method="post">
+          <div class="each">
+          <dl class="clearfix">
+            <dt>用<span style="margin:0 7px">户</span>名</dt>
+            <dd>
+              <input type="text" id="username" class="input"  name="username" />
+              <i class="i-name"></i> </dd>
+          </dl>
+          </div>
+          <dl class="clearfix">
+            <dt>密<span style="margin:0 15px"></span>码</dt>
+            <dd>
+              <input class="input" type="password" id="password" name="password" />
+              <i class="i-psw"></i> </dd>
+          </dl>
+          <dl class="clearfix">
+            <dt>确认密码</dt>
+            <dd>
+              <input class="input" type="password" id="confirmPassword" name="confirmPassword" />
+              <i class="i-psw"></i> </dd>
+          </dl>
+          <dl class="clearfix">
+            <dt>电子邮箱</dt>
+            <dd>
+              <input class="input" type="text" id="email" name="email" />
+              <i class="i-email"></i> </dd>
+          </dl>
+          <dl class="clearfix">
+            <dt>手<span style="margin:0 7px">机</span>号</dt>
+            <dd>
+              <input type="text" name="phone_mob" id="phone_mob" class="input" />
+              <i class="i-phone"></i> </dd>
+          </dl>
+          <!--{if $phone_captcha}-->
+          <dl class="clearfix">
+            <dt>短信验证码</dt>
+            <dd class="captchaCode clearfix">
+              <input type="text" name="check_code" id="check_code" class="input float-left" />
+              <input type="button" id="send_phonecode" class="float-left btn-captcha" value="{$lang.get_captcha}" />
+            </dd>
+          </dl>
+          <!--{/if}--> 
+          
+          <!--{if $app->params['captcha_status']['register']}-->
+          <dl class="clearfix">
+            <dt>验<span style="margin:0 7px">证</span>码</dt>
+            <dd class="captcha clearfix">
+              <input type="text" class="input float-left" name="captcha" id="captcha1" />
+              <a href="javascript:;" class="float-left mt5" style="margin-right:2px;"><img onclick="change_captcha($(this))" id="captcha" src="{url route='default/captcha' v=uniqid('', true)}" class="float-left" height="38" /></a> </dd>
+          </dl>
+          <!--{/if}-->
+          <dl class="clearfix">
+            <dt>&nbsp;</dt>
+            <dd class="mall-eula">
+              <input id="clause" type="checkbox" name="agree" value="1" class="agree-checkbox" checked="checked" />
+              <span style="margin-right:85px;">{$lang.i_have_read} <a href="{url route='article/view' id=1}" target="_blank">《{$lang.mall_eula}》</a></span> </dd>
+          </dl>
+          <dl class="clearfix">
+            <dt>&nbsp;</dt>
+            <dd>
+              <input type="submit" name="Submit" value="{$lang.register_now}" class="register-submit" />
+              <input type="hidden" name="redirect" value="{$redirect}" />
+            </dd>
+          </dl>
+        </form>
+      </div>
+      </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+    $('#register_form').validate({
+        errorPlacement: function(error, element){
+            var error_td = element.parent('dd');
+			error_td.find('i').removeClass('ok');
+            error_td.find('label').hide();
+            error_td.append(error);
+        },
+        success       : function(label){
+			label.siblings('i').addClass('ok');
+            label.remove();
+        },
+        onkeyup: false,
+        rules : {
+            username : {
+                required : true,
+                rangelength: [3,15,'{$charset}'],
+                remote   : {
+                    url :'{url route="user/checkUser"}',
+                    type:'get',
+                    data:{
+                        username : function(){
+                            return $('#username').val();
+                        }
+                    }
+                }
+            },
+            password : {
+                required : true,
+                minlength: 6
+            },
+            confirmPassword : {
+                required : true,
+                equalTo  : '#password'
+            },
+            email : {
+                required : true,
+                email    : true,
+				remote   : {
+                    url :'{url route="user/checkEmail"}',
+                    type:'get',
+                    data:{
+                        email : function(){
+                            return $('#email').val();
+                        }
+                    }
+                }
+            },
+			phone_mob : {
+                required : true,
+				number : true,
+                minlength: 11,
+				maxlength: 11,
+				remote   : {
+                    url :'{url route="user/checkPhone"}',
+                    type:'get',
+                    data:{
+                        phone_mob : function(){
+                            return $('#phone_mob').val();
+                        }
+                    }
+                }
+            },
+			<!--{if $phone_captcha}-->
+			check_code:{
+				required : true	
+			},
+			<!--{/if}-->
+            captcha : {
+                required : true,
+                remote   : {
+                    url : "{url route='default/checkCaptcha'}",
+                    type: 'get',
+                    data:{
+                        captcha : function(){
+                            return $('#captcha1').val();
+                        }
+                    }
+                }
+            },
+            agree : {
+                required : true
+            }
+        },
+        messages : {
+            username : {
+                required : '{$lang.username_required}',
+                rangelength: '{$lang.username_limit}',
+                remote   : '{$lang.user_already_taken}'
+            },
+            password  : {
+                required : '{$lang.password_required}',
+                minlength: '{$lang.password_length_limit}'
+            },
+            confirmPassword : {
+                required : '{$lang.password_confirm_please}',
+                equalTo  : '{$lang.password_inconsistent}'
+            },
+            email : {
+                required : '{$lang.email_required}',
+                email    : '{$lang.email_invalid}',
+				remote   : '{$lang.email_exist}'
+            },
+			phone_mob : {
+				required : '{$lang.phone_mob_required}',
+				number   : '{$lang.err_number_only}',
+                minlength: '{$lang.err_phone_mob_desc}',
+				maxlength: '{$lang.err_phone_mob_desc}',
+				remote   : '{$lang.phone_mob_existed}'
+            },
+			<!--{if $phone_captcha}-->
+			check_code : {
+				required : '{$lang.check_code_required}',
+			},
+			<!--{/if}-->
+            captcha : {
+                required : '{$lang.captcha_required}',
+                remote   : '{$lang.captcha_error}'
+            },
+            agree : {
+                required : '{$lang.agree_required}'
+            }
+        }
+    });
+
+	$('#send_phonecode').click(function(){
+		var phone_mob = $.trim($("input[name='phone_mob']").val());
+		if(phone_mob =='' || !is_phone(phone_mob)){
+			layer.msg("{$lang.phone_mob_invalid}");
+			return;
+		}
+		send_phonecode($(this), { purpose: "register", phone_mob: phone_mob, "{$app->request->csrfParam}": "{$app->request->csrfToken}"}, 120);
+	});
+});
+</script>
+{include file="user.footer.html"} 

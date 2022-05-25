@@ -1,0 +1,22 @@
+<!--{if $coupons}-->
+<div class="dialog-form coupons-pop-layer">
+  <div class="dialog_content_scroll scroll wraper">
+    <ul class="dialog-form-bd">
+      <!--{foreach from=$coupons item=coupon}-->
+      <li class="clearfix">
+        <div class="lp">
+          <p class="mb10">&yen;<em class="fs18">{$coupon.coupon_value}</em></p>
+          <p>满{$coupon.min_amount}元使用</p>
+          <p>有效期 {$coupon.end_time|date_format:"%Y.%m.%d %H:%M:%S"}</p>
+        </div>
+        <div class="rp"> 
+          <a href="javascript:;" onclick="couponReceive({$coupon.coupon_id}, $(this));">立即领取</a>
+        </div>
+      </li>
+      <!--{/foreach}-->
+    </ul>
+  </div>
+</div>
+<!--{else}-->
+<div class="notice-word padding10 mt20 mb20"><p class="yellow padding10 mt20 mb20">{$lang.no_records}</p></div>
+<!--{/if}--> 

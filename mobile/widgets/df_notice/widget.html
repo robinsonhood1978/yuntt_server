@@ -1,0 +1,43 @@
+<div class="noticebox" id="noticebox-{$widget_data.uniqueid}">
+  <div class="content ml10 mr10 webkit-box">
+    <div class="webkit-box center style{$widget_data.style}">
+      <!--{if $widget_data.style eq 2}-->
+      <img src="{res file='images/notice_style2.png' baseUrl=$widget_data.baseUrl}" />
+      <!--{else}-->
+      <img src="{res file='images/notice_style1.png' baseUrl=$widget_data.baseUrl}" />
+      <!--{/if}-->
+    </div>
+    <div class="flex1 fs12 split pl10 ml10 overflow">{$widget_data.list.0.title|default:'文章标题'}</div>
+  </div>
+</div>
+
+<style>
+  .noticebox .content {
+    background-color: #fff;
+    padding: 15px 10px;
+    border-radius: 5px;
+  }
+
+  .noticebox .content img {
+    display: inline-block;
+    height: 16px;
+  }
+
+  .noticebox .split {
+    border-left: 1px #f1f1f1 solid;
+  }
+  .noticebox .style2 img {
+    height: 19px;
+  }
+</style>
+<script>
+  $(function () {
+
+    /* {if $widget_data.radius eq 'square'} */
+    $('#noticebox-{$widget_data.uniqueid} .content').css('border-radius', '0px').css('margin', 0);
+    /* {/if} */
+
+    $('#noticebox-{$widget_data.uniqueid} .content').css('background-color', '{$widget_data.bgcolor|default:"#ffffff"}');
+    $('#noticebox-{$widget_data.uniqueid}').css('margin-top', '{$widget_data.space|default:10}px').css('margin-bottom', '{$widget_data.space|default:10}px');
+  });
+</script>

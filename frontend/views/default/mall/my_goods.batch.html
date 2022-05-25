@@ -1,0 +1,138 @@
+{include file="user.header.html"}
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful"> {include file="user.submenu.html"}
+      <div class="wrap">
+        <div class="public">
+          <form id="batch_form" method="POST">
+            <div class="information_index">
+              <div class="add_wrap">
+                <div class="assort">
+                  <p class="txt">{$lang.mgcategory}: </p>
+                  <p id="gcategory" class="select">
+                    <input type="hidden" name="cate_id" value="0" class="mls_id" />
+                    <input type="hidden" name="cate_name" value="" class="mls_names" />
+                    <select>
+                      <option>{$lang.select_pls}</option>
+                      
+                    {html_options options=$mgcategories}
+                  
+                    </select>
+                  </p>
+                </div>
+                <div class="assort">
+                  <p class="txt">{$lang.sgcategory}: </p>
+                  <p class="select">
+                    <select name="sgcate_id[]" class="sgcategory">
+                      <option value="0">{$lang.select_pls}</option>
+                      
+                    {html_options options=$sgcategories}
+                  
+                    </select>
+                  </p>
+                  <p class="new_add"> <a id="add_sgcategory" style="padding:0 5px; margin:5px 0 0 5px; border:1px #0099FF solid; display:inline-block" href="javascript:;">{$lang.add}</a> <span>{$lang.note_for_select}</span> </p>
+                </div>
+                <div class="assort">
+                  <p class="txt">{$lang.brand}: </p>
+                  <p>
+                    <input type="text" name="brand" class="text" />
+                  </p>
+                  <p class="new_add"><span>{$lang.note_for_input}</span></p>
+                </div>
+                <div class="assort">
+                  <p class="txt">{$lang.if_show_status}: </p>
+                  <p>
+                    <label>
+                      <input type="radio" name="if_show" value="-1" checked="checked" />
+                      {$lang.no_change}</label>
+                    <label>
+                      <input type="radio" name="if_show" value="1" />
+                      {$lang.show}</label>
+                    <label>
+                      <input type="radio" name="if_show" value="0" />
+                      {$lang.hide}</label>
+                  </p>
+                </div>
+                <div class="assort">
+                  <p class="txt">{$lang.recommended_status}: </p>
+                  <p>
+                    <label>
+                      <input type="radio" name="recommended" value="-1" checked="checked" />
+                      {$lang.no_change}</label>
+                    <label>
+                      <input type="radio" name="recommended" value="1" />
+                      {$lang.recommend}</label>
+                    <label>
+                      <input type="radio" name="recommended" value="0" />
+                      {$lang.not_recommend}</label>
+                  </p>
+                </div>
+                <div class="assort">
+                  <p class="txt">{$lang.price}: </p>
+                  <p class="select">
+                    <select name="price_change">
+                      {html_options options=$lang.change_array}
+                    </select>
+                    <input name="price" type="text" class="text" />
+                  </p>
+                  <p class="new_add"><span>{$lang.note_for_input}</span></p>
+                </div>
+                <div class="assort">
+                  <p class="txt">{$lang.stock}: </p>
+                  <p class="select">
+                    <select name="stock_change">
+                      {html_options options=$lang.change_array}
+                    </select>
+                    <input name="stock" type="text" class="text" />
+                  </p>
+                  <p class="new_add"><span>{$lang.note_for_input}</span></p>
+                </div>
+              </div>
+            </div>
+            <div class="send_out">
+              <input type="hidden" name="id" value="{$smarty.get.id}" />
+              <input class="btn-alipay" type="submit" name="Submit" value="{$lang.submit}" />
+              <input class="btn-alipay btn-alipay-white" type="reset" name="Reset" value="{$lang.reset}" />
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+    
+    gcategoryInit("gcategory");
+   
+    $('#batch_form').validate({
+        errorPlacement: function(error, element){
+            $(element).parent().next('.new_add').hide();
+            $(element).after(error);
+        },
+        success       : function(label){
+            label.addClass('validate_right').text('OK!');
+        },
+        onkeyup : false,
+        rules : {
+            price      : {
+                number     : true,
+                min : 0
+            },
+            stock      : {
+                digits    : true
+            }
+        },
+        messages : {
+            price       : {
+                number     : '{$lang.number_only}',
+                min : '{$lang.price_ge_0}'
+            },
+            stock       : {
+                digits  : '{$lang.number_only}'
+            }
+        }
+    });
+});
+</script>
+{include file="user.footer.html"}

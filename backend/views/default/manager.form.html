@@ -1,0 +1,55 @@
+{include file="header.html"}
+<div id="main">
+  {include file="menus.html"}
+  <div id="rightCon" class="clearfix layui-body">
+    <div class="scroller">
+      <div class="flexigrid">
+        <form method="post">
+          <table class="infoTable">
+            <tr>
+              <th class="paddingT15"><label>{$lang.username}</label></th>
+              <input type="hidden" value="priv">
+              <td class="paddingT15 wordSpacing5">{$admin.username|escape}</td>
+            </tr>
+            <!--{foreach from=$privs item=priv key=key name=fe_priv}-->
+            <tr id="{$key}">
+              <!--{if $smarty.foreach.fe_priv.index eq 0}-->
+              <th class="paddingT15"><label>{$lang.priv}</label></th>
+              <!--{else}-->
+              <th></th>
+              <!--{/if}-->
+              <td class="paddingT15 floatleft wordSpacing5" style="width:150px;"><input type="checkbox"
+                  class="J_SelectAll">
+                <b>{$lang.{$key}}</b>
+              </td>
+              <!--{foreach from=$priv item=item}-->
+              <td class="paddingT15 floatleft"><label>
+                  <input type="checkbox" value="{$item.key}" name="privs[]" {if
+                    $item.selected}checked{/if}>{$item.label}</label></td>
+              <!--{/foreach}-->
+            </tr>
+            <!--{foreachelse}-->
+            <tr class="no_data">
+              <td colspan="10">{$lang.no_data}</td>
+            </tr>
+            <!--{/foreach}-->
+            <tr>
+              <th></th>
+              <td class="ptb20" colspan="2"><input class="layui-btn layui-bg-blue J_AjaxSubmit" type="submit" value="{$lang.submit}" />
+              </td>
+            </tr>
+          </table>
+        </form>
+      </div>
+      {include file="version.html"}
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $(function () {
+    $('.J_SelectAll').click(function () {
+      $(this).parent().parent().find('input').prop('checked', $(this).prop('checked'));
+    });
+  });
+</script>
+{include file="footer.html"}

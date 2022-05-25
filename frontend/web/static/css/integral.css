@@ -1,0 +1,78 @@
+@charset "utf-8";
+.clearfix:after{ content:'\20'; display:block; overflow:hidden; height:0; clear:both;}
+.mt10{margin-top:10px;}
+.mb10{margin-bottom:10px;}
+.ml10{margin-left:10px;}
+.mr10{margin-right:10px;}
+.float-left {float: left;}
+
+.integral-w{width:1200px;margin:auto;}
+
+#page-integral{padding-top:10px;margin:auto;}
+#page-integral .page-main .col-sub{width:222px;float:left;}
+#page-integral .page-main .col-main{width:968px;float:right;}
+
+
+
+.integral-article{width:200px;border:1px solid #ECDAB2;-webkit-box-shadow: 1px 1px 4px #ECDAB2;-moz-box-shadow: 1px 1px 4px #ECDAB2;box-shadow: 1px 1px 4px #ECDAB2;padding:10px;background:#FFEECB;}
+.integral-article .user-integral{width:100%;}
+.integral-article .user-integral dt{float:left;width:68px;border:1px solid #e7d19c;background:#fff;border-radius:34px;z-index:2;}
+.integral-article .user-integral dt a img{display:block;z-index:1;border-radius:34px;}
+.integral-article .user-integral dd{float:right;width:120px;}
+.integral-article .user-integral dd h3 a{font-size:14px;text-decoration:none;color:#333;}
+.integral-article .user-integral dd p b{font-size: 20px;font-weight: 700;color: #b1000f;margin-right:3px;font-family:"Palatino Linotype", "Book Antiqua", Palatino, serif;}
+.integral-article .user-integral dd p a{font: lighter 14px/27px "Microsoft Yahei";color: #FFF;text-align: center;display:block;width:96px;height:29px;border-radius: 3px;position: relative;box-shadow: 0 0 0 2px rgba(204,204,204,0.25);text-decoration: none;background-color: #C00;}
+.integral-article .user-integral dd p a:hover{background-color:#BB0000}
+.integral-article  ul{margin-top:8px;}
+.integral-article  ul li{width:200px;height:25px;line-height:25px;overflow:hidden;list-style:inside;color:#333;}
+.integral-article  ul li a{color:#333;text-decoration:none;}
+
+
+.integral-add-slides{width:968px;height:260px;position:relative; overflow:hidden}
+.integral-add-slides li{display:block;width:968px;height:260px;}
+.integral-add-slides li img{width:100%;height:100%;}
+.integral-add-slides .ks-switchable-nav{position:absolute;left:0px;bottom:0px;z-index:99;width:100%;}
+.integral-add-slides .ks-switchable-nav a{display:block;float: left;width:20%;text-decoration:none;height: 30px;overflow: hidden;line-height: 30px;position:relative;border-radius:0px;}
+.integral-add-slides .ks-switchable-nav a span,.integral-add-slides .ks-switchable-nav a b{color:#fff;display:block;width:100%;height:100%;text-align: center;position:absolute;left:0px;top:0px;z-index:99;}
+.integral-add-slides .ks-switchable-nav a b{background:#000;opacity:0.5;z-index:98;}
+.integral-add-slides .ks-switchable-nav a:hover b,.integral-add-slides .ks-switchable-nav .ks-active b{background:#fff;}
+.integral-add-slides .ks-switchable-nav a:hover span,.integral-add-slides .ks-switchable-nav .ks-active span{color:#000;}
+
+
+.hotsale{border:1px solid #ccc;}
+.hotsale h3{background-color: #F5F5F5;padding: 5px 10px; font-weight:normal}
+.hotsale h3 span{font: 400 14px/20px arial,"microsoft yahei";color: #555;}
+.hotsale .content{width:220px;}
+.hotsale .content .rank-nav{background: #FFF;height: 28px;}
+.hotsale .content .rank-nav li{float:left;}
+.hotsale .content .rank-nav li a{color: #777;line-height: 20px;text-decoration: none;background-color: #F7F7F7;text-align: center;width: 102px;height: 20px;float: left;margin: 4px 0 1px 4px;padding: 1px 0;border: solid #D8D8D8;border-width: 1px 1px 0 1px;border-radius: 4px 4px 0 0;text-shadow: 1px 1px 0 rgba(255,255,255,.75);}
+.hotsale .content .rank-nav .curr a{color: #000;background-color: #FFF;padding: 1px 0 2px 0;margin: 4px 0 0 4px;box-shadow: 0 -1px 1px rgba(0,0,0,.05);}
+.hotsale .content .rank-c li{ padding:10px;border-bottom:1px #ddd dashed;width:200px;overflow:hidden;}
+.hotsale .content .rank-c li .rank_num{height: 20px;margin-bottom: 12px;background:#e9e9e9;color: #999;line-height: 20px;}
+.hotsale .content .rank-c li .rank_num b{display: block;_display: inline;float: left;width: 20px;height: 20px;margin-right: 6px;color: #FFF;text-align: center;background: #E60012;}
+.hotsale .content ul li .pic{float:left;margin-right:10px;}
+.hotsale .content ul li .pic a{height:60px;width:60px;display:block;text-align:center;}
+.hotsale .content ul li .pic img{width:60px; height:60px;display:inline-block;}
+.hotsale .content ul li .pic a:hover img{width:58px;height:58px;padding:1px}
+.hotsale .content ul li .desc,.hotsale .content ul li .price{width:125px;text-align:left;overflow:hidden;}
+.hotsale .content ul li .desc a,.hotsale .content ul li .price a{display: block;height: 36px;overflow: hidden;zoom: 1;line-height: 18px;color:#666;text-decoration:none;overflow:hidden; word-break:break-all}
+.hotsale .content ul li .desc a:hover{color:#DA542E;}
+.hotsale .content ul li .price{margin-top:5px;}
+.hotsale .content ul li .price strong{font-size:14px;color:#DA542E;font-weight:normal}
+.hotsale .content ul li .collecter{padding-top:2px;}
+.hotsale .content ul li .collecter{float:left;height:16px;text-align:left;overflow:hidden;margin-top:3px;}
+
+.integral-list ul {width: 100%;}
+.integral-list ul li {float: left;width: 232px;position: relative;border: 1px #ccc solid;margin-left:10px;padding-top:10px;}
+.integral-list ul li:hover,.integral-list ul .hover{border:1px #EE3000 solid}
+.integral-list ul .desc{width:216px; height:32px; margin:10px; overflow:hidden; line-height:16px;}
+.integral-list ul .desc a,.integral-list ul .pro-info a{font-size:12px;color:#333;text-decoration:none}
+.integral-list ul .desc a:hover,.integral-list ul .pro-info a:hover{color:#EE3000; text-decoration:underline}
+.integral-list ul .pic{padding:9px;padding-top:0;}
+.integral-list ul .pic img{width:212px;height:212px;}
+.integral-list ul span{display:inline-block;margin-left:10px;}
+.integral-list ul .pro-info{width:100%;}
+.integral-list ul .pro-info span{display:inline-block;border:1px dotted #EE3000;}
+.integral-list ul .pro-info i{font-style:normal;padding:0px 8px;padding:0px 4px;color:#EE3000;}
+.integral-list ul .price{display:block;height:28px; font-weight:400;line-height:28px;font-size:18px;color:#EE3000;}
+.integral-list ul .price em{ font-size:14px; color:#000; font-weight:normal}

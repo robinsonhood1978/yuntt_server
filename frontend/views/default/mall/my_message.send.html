@@ -1,0 +1,40 @@
+{include file="user.header.html"}
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful">{include file="user.submenu.html"}
+      <div class="wrap">
+        <div class="eject_wrap_msg">
+          <div class="fill_in">
+            <div class="eject_con clearfix">
+              <div class="msg">
+                <form method="post">
+                  <ul>
+                    <li>
+                      <h3>{$lang.to_username}{$lang.colon}</h3>
+                      <p>
+                        <input name="to_username" type="text" class="text width_normal" value="{$to_username}" />
+                        <label class="gray">{$lang.tips_to_username}</label>
+                      </p>
+                    </li>
+                    <li>
+                      <h3>{$lang.content}{$lang.colon}</h3>
+                      <p>
+                        <textarea class="text width_long" name="content" /></textarea>
+                      </p>
+                      <div class="clear"></div>
+                    </li>
+                  </ul>
+                  <div class="submit">
+                    <input type="submit" class="btn" value="{$lang.confirm_send}" />
+                  </div>
+                </form>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{include file="user.footer.html"} 

@@ -1,0 +1,74 @@
+{include file="user.header.html"}
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful">{include file="user.submenu.html"}
+      <div class="wrap">
+        <div class="public table deposit">
+          <div class="deposit-withdraw-confirm">
+            <div class="notice-word">
+              <p>向平台商提交提现申请，审核通过之后，平台将向您提交的银行卡汇款，请确保您的银行卡信息正确</p>
+            </div>
+            <form method="post" id="deposit-withdraw-confirm">
+              <div class="title"> 确认提现信息 </div>
+              <div class="form">
+                <div class="confirm-info">
+                  <dl class="clearfix">
+                    <dt>银行卡信息：</dt>
+                    <dd> <strong>{$bank.account_name}</strong> {$bank.bank_name}({$bank.num}) </dd>
+                  </dl>
+                  <dl class="clearfix">
+                    <dt>提现金额：</dt>
+                    <dd>
+                      <input type="hidden" name="money" value="{$withdraw.money}" />
+                      <span class="money">{$withdraw.money}</span> 元 </dd>
+                  </dl>
+                </div>
+                <!--{if $withdraw.money gt $deposit_account.money}-->
+                <div class="notice-word draw-notice-word">
+                  <p class="yellow">对不起！您的提现金额 <em class="price">{$withdraw.money}</em> 大于您目前的账户余额<em class="price">{$deposit_account.money}</em>，请您减少提现金额</p>
+                </div>
+                <!--{/if}-->
+                <div class="confirm-form">
+                  <dl class="clearfix">
+                    <dt>支付密码：</dt>
+                    <dd>
+                      <input type="password" name="password" class="text" value="" />
+                    </dd>
+                  </dl>
+                  <dl class="clearfix">
+                    <dt>验证码：</dt>
+                    <dd class="captcha">
+                      <input type="text" name="captcha" class="text" id="captcha1" />
+                      <a href="javascript:;" class="float-left"><img onclick="change_captcha($(this))" id="captcha" src="{url route='default/captcha' v=uniqid('', true)}" class="float-left" height="38" /></a> </dd>
+                  </dl>
+                  <dl class="clearfix">
+                    <dt>&nbsp;</dt>
+                    <dd class="submit"> <span class="btn-alipay">
+                      <input type="hidden" name="bid" value="{$bank.bid}" />
+                      <input type="submit" value="确认提现" {if $withdraw.money gt $deposit_account.money} disabled="disabled" {/if}/>
+                      </span> <a class="goback" href="{url route='deposit/withdraw'}">返回修改</a> </dd>
+                  </dl>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$('#deposit-withdraw-confirm').submit(function(){
+		if($(this).find('input[name="password"]').val()=='') {
+			layer.msg('{$lang.password_empty}');
+			return false;
+		}
+		if($(this).find('input[name="captcha"]').val()=='') {
+			layer.msg('{$lang.captcha_empty}');
+			return false;
+		}
+	});
+})
+</script> 
+{include file="user.footer.html"}

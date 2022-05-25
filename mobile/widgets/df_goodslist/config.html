@@ -1,0 +1,201 @@
+<div class="widget-box">
+    <h3 class="title mt20 mb20 pb20"><strong class="fs18">商品列表</strong></h3>
+    <div class="content">
+        <div class="item webkit-box">
+            <label class="gray">模板风格</label>
+            <p class="flex1"></p>
+            <input type="hidden" name="theme" value="{$options.theme|default:'square'}" />
+            <div class="pointer dropdown1">
+                <span>{if $options.theme eq 'list'}列表模式{else if $options.theme eq 'banner'}大图模式{else}橱窗模式{/if}</span>
+                <i class="layui-icon layui-icon-right layui-font-14"></i>
+            </div>
+        </div>
+        <div class="item webkit-box">
+            <label class="gray">数据来源</label>
+            <p class="flex1 ml10 value">{if $options.source eq 'category'}商品分类{else if $options.source eq
+                'choice'}手动选择{else}默认{/if}</p>
+            <input type="hidden" name="source" value="{$options.source|default:'default'}" />
+            <span class="switch first {if !in_array($options.source, ['category', 'choice'])} selected {/if} J_Switch"
+                title="默认" data-value="default"><i class="iconfont icon-cache"></i></span>
+            <span class="switch {if $options.source eq 'category'} selected {/if} J_Switch" title="商品分类"
+                data-value="category"><i class="iconfont icon-leimupinleifenleileibie"></i></span>
+            <span class="switch {if $options.source eq 'choice'} selected {/if} J_Switch" title="手动选择"
+                data-value="choice"><i class="iconfont icon-select"></i></span>
+        </div>
+        <div class="item webkit-box" {if $options.source neq 'category' }style="display:none" {/if}>
+            <label class="gray">商品分类</label>
+            <p class="flex1"></p>
+            <input type="hidden" name="cate_id" value="{$options.cate_id|default:0}" />
+            <input type="hidden" name="cate_name" value="{$options.cate_name|default:''}" />
+            <div class="pointer" ectype="dialog" dialog_id="category" dialog_width="1000" dialog_title="选择分类"
+                uri="{url route='gselector/category' callback='gscallback'}">
+                <span>{$options.cate_name|default:'请选择'}</span>
+                <i class="layui-icon layui-icon-right layui-font-14"></i>
+            </div>
+        </div>
+        <div class="item webkit-box" {if $options.source neq 'choice' }style="display:none" {/if}>
+            <label class="gray">手动选择</label>
+            <p class="flex1"></p>
+            <input type="hidden" name="items" value="{$options.items|default:''}" />
+            <div class="pointer" ectype="dialog" dialog_id="goods" dialog_width="560" dialog_title="选择商品"
+                uri="{url route='gselector/goods' callback='gscallback'}">
+                <!--{if $options.items}-->
+                <span>已选择({count(explode(',', $options.items))})</span>
+                <!--{else}-->
+                <span>请选择</span>
+                <!--{/if}-->
+                <i class="layui-icon layui-icon-right layui-font-14"></i>
+            </div>
+        </div>
+        <div class="item webkit-box">
+            <label class="gray">排序规则</label>
+            <p class="flex1"></p>
+            <input type="hidden" name="orderby" value="{$options.orderby|default:''}" />
+            <div class="pointer dropdown2">
+                <span>{if $options.orderby eq 'sales|desc'}销量优先{else if $options.orderby eq 'add_time|desc'}新品靠前{else if
+                    $options.orderby eq 'price|asc'}价格低到高{else if $options.orderby eq 'views|desc'}点击高到低{elseif
+                    $options.orderby eq 'comments|desc'}评论多到少{else}默认排序{/if}</span>
+                <i class="layui-icon layui-icon-right layui-font-14"></i>
+            </div>
+        </div>
+        <div class="item webkit-box" {if $options.source eq 'choice' }style="display:none" {/if}>
+            <label class="gray">商品数量</label>
+            <input type="hidden" name="quantity" value="{$options.quantity|default:0}" />
+            <div class="flex1 ml20 slider1" style="margin-top:15px"></div>
+        </div>
+        <h4 class="mt10 pb10 mt20 pt20">分页设置<span class="gray">（开启分页设置后，请将该组件放置于页面最底部，且当前页面只允许有一个分页组件）</span></h4>
+
+        <div class="item webkit-box">
+            <label class="gray">上滑翻页</label>
+            <p class="flex1"></p>
+            <input type="hidden" name="paging" value="{$options.paging|default:0}" />
+            <span class="layui-form">
+                <input lay-filter="filter" type="checkbox" {if $options.paging eq 1}checked{/if} lay-skin="switch">
+            </span>
+        </div>
+        <div class="item webkit-box">
+            <label class="gray">每页显示</label>
+            <input type="hidden" name="page_size" value="{$options.page_size|default:6}" />
+            <div class="flex1 ml20 slider2" style="margin-top:15px"></div>
+        </div>
+        <h4 class="mt10 pb10 mt20 pt20">其他设置</h4>
+        <div class="item webkit-box">
+            <label class="gray">背景颜色</label>
+            <p class="flex1 ml10 color">{$options.bgcolor|default:''}</p>
+            <input type="hidden" name="bgcolor" value="{$options.bgcolor|default:''}" />
+            <span class="f60 pointer J_Reset" data-id="picker1" data-value="">重置</span>
+            <p class="picker1 ml10"></p>
+        </div>
+
+        <div class="item webkit-box">
+            <label class="gray">模块间距</label>
+            <input type="hidden" name="space" value="{$options.space|default:5}" />
+            <div class="flex1 ml20 slider3" style="margin-top:15px"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.J_Reset').click(function () {
+            var value = $(this).attr('data-value');
+            $(this).parent('.item').find('input[type="hidden"]').val(value);
+            save_widget();
+        });
+
+        layui.use('form', function () {
+            var form = layui.form;
+            form.on('switch(filter)', function (data) {
+                $(this).parents('.item').find('input').val(data.elem.checked ? 1 : 0);
+                save_widget();
+            });
+
+            form.render();
+        });
+
+        slideRender('.slider1', function (dom, value) {
+            save_widget(false);
+        });
+        slideRender('.slider2', function (dom, value) {
+            save_widget(false);
+        }, { min: 0, max: 20 });
+        slideRender('.slider3', function (dom, value) {
+            save_widget(false);
+        });
+        colorRender('.picker1', function (dom, value) {
+            save_widget();
+        });
+
+        $('.J_Switch').click(function () {
+            var value = $(this).attr('data-value');
+            $(this).parent('.item').find('input').val(value);
+            save_widget();
+        });
+
+        layui.use('dropdown', function () {
+            var dropdown = layui.dropdown
+            dropdown.render({
+                elem: '.dropdown1',
+                data: [{
+                    title: '橱窗模式',
+                    id: 'square'
+                }, {
+                    title: '列表模式',
+                    id: 'list'
+                }, {
+                    title: '大图模式',
+                    id: 'banner'
+                }],
+                click: function (data, othis) {
+                    this.elem.parents('.item').find('input').val(data.id);
+                    this.elem.find('span').text(data.title);
+                    save_widget(false);
+                }
+            });
+
+            dropdown.render({
+                elem: '.dropdown2',
+                data: [{
+                    title: '默认排序',
+                    id: ''
+                }, {
+                    title: '销量优先',
+                    id: 'sales|desc'
+                }, {
+                    title: '新品靠前',
+                    id: 'add_time|desc'
+                }, {
+                    title: '价格低到高',
+                    id: 'price|asc'
+                }, {
+                    title: '点击高到低',
+                    id: 'views|desc'
+                }, {
+                    title: '评论多到少',
+                    id: 'comments|desc'
+                }],
+                click: function (data, othis) {
+                    this.elem.parents('.item').find('input').val(data.id);
+                    this.elem.find('span').text(data.title);
+                    save_widget(false);
+                }
+            });
+        });
+    });
+
+    function gscallback(dom, value) {
+        var dialog = $('*[dialog_id="' + dom + '"]');
+        if (dom == 'category') {
+            dialog.parent('.item').find('input[name="cate_id"]').val(value.id);
+            dialog.parent('.item').find('input[name="cate_name"]').val(value.name);
+            dialog.find('span').text(value.name);
+        }
+        else if (dom == 'goods') {
+            var values = unique(value);
+            dialog.parent('.item').find('input[name="items"]').val(values.join(','));
+            dialog.find('span').text(value == '' ? '请选择' : '已选择(' + values.length + ')');
+        }
+
+        save_widget(false);
+    }
+</script>

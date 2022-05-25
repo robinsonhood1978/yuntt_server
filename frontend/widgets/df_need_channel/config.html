@@ -1,0 +1,162 @@
+<script type="text/javascript">
+var _d = DialogManager.get('config_dialog');
+_d.setWidth(540);
+_d.setPosition('center');
+	
+function loadImage(obj){
+    getTempPath(obj,function(res){
+        $(obj).parent().find('img').attr('src',res);
+    });
+}
+</script>
+<div class="field_item webkit-box file-box box-align-center">
+    <label>上传广告1</label>
+    <p class="relative">
+        <input class="file absolute pointer" type="file" name="ad1_image_file" onchange="loadImage(this)" />
+        <input type="hidden" name="ad1_image_url" value="{$options.ad1_image_url}" />
+        <img src="{if $options.ad1_image_url}{$options.ad1_image_url|url_format}{else}{res file='images/upload.png'}{/if}"/>
+    </p>
+    <font class="ml10 fs12" color="gray">点击图片上传，图片尺寸：155*155px</font>
+</div>
+<div class="field_item webkit-box">
+    <label>广告1链接</label>
+    <p><input type="text" name="ad1_link_url" value="{$options.ad1_link_url}" /></p>
+</div>
+<div class="field_item webkit-box">
+    <label>广告1标题</label>
+    <p><input type="text" name="model1_title" value="{$options.model1_title}" /></p>
+    <font class="ml10 fs12" color="gray">大小标题用“|”隔开</font>
+</div>
+<div class="field_item webkit-box">
+    <label>背景颜色</label>
+    <p>
+    	<select name="model_style1">
+        	<option {if $options.model_style1 eq 'mi'} selected="selected"{/if} value="mi">背景颜色（米色）</option>
+            <option {if $options.model_style1 eq 'danh'} selected="selected"{/if} value="danh">背景颜色（淡红色）</option>
+            <option {if $options.model_style1 eq 'huang'} selected="selected"{/if} value="huang">背景颜色（黄色）</option>
+            <option {if $options.model_style1 eq 'zi'} selected="selected"{/if} value="zi">背景颜色（紫色）</option>
+            <option {if $options.model_style1 eq 'danzi'} selected="selected"{/if} value="danzi">背景颜色（淡紫色）</option>
+        </select>
+    </p>  
+</div>
+<div class="field_item webkit-box file-box box-align-center">
+    <label>上传广告2</label>
+    <p class="relative">
+        <input class="file absolute pointer" type="file" name="ad2_image_file" onchange="loadImage(this)" />
+        <input type="hidden" name="ad2_image_url" value="{$options.ad2_image_url}" />
+        <img src="{if $options.ad2_image_url}{$options.ad2_image_url|url_format}{else}{res file='images/upload.png'}{/if}"/>
+    </p>
+    <font class="ml10 fs12" color="gray">点击图片上传，图片尺寸：155*155px</font>
+</div>
+<div class="field_item webkit-box">
+    <label>广告2链接</label>
+    <p><input type="text" name="ad2_link_url" value="{$options.ad2_link_url}" /></p>
+</div>
+<div class="field_item webkit-box">
+    <label>广告2标题</label>
+    <p><input type="text" name="model2_title" value="{$options.model2_title}" /></p>
+    <font class="ml10 fs12" color="gray">大小标题用“|”隔开</font>
+</div>
+<div class="field_item webkit-box">
+    <label>背景颜色</label>
+    <p>
+    	<select name="model_style2">
+        	<option {if $options.model_style2 eq 'mi'} selected="selected"{/if} value="mi">背景颜色（米色）</option>
+            <option {if $options.model_style2 eq 'danh'} selected="selected"{/if} value="danh">背景颜色（淡红色）</option>
+            <option {if $options.model_style2 eq 'huang'} selected="selected"{/if} value="huang">背景颜色（黄色）</option>
+            <option {if $options.model_style2 eq 'zi'} selected="selected"{/if} value="zi">背景颜色（紫色）</option>
+            <option {if $options.model_style2 eq 'danzi'} selected="selected"{/if} value="danzi">背景颜色（淡紫色）</option>
+        </select>
+    </p>  
+</div>
+<div class="field_item webkit-box file-box box-align-center">
+    <label>上传广告3</label>
+    <p class="relative">
+        <input class="file absolute pointer" type="file" name="ad3_image_file" onchange="loadImage(this)" />
+        <input type="hidden" name="ad3_image_url" value="{$options.ad3_image_url}" />
+        <img src="{if $options.ad3_image_url}{$options.ad3_image_url|url_format}{else}{res file='images/upload.png'}{/if}"/>
+    </p>
+    <font class="ml10 fs12" color="gray">点击图片上传，图片尺寸：155*155px</font>
+</div>
+<div class="field_item webkit-box">
+    <label>广告3链接</label>
+    <p><input type="text" name="ad3_link_url" value="{$options.ad3_link_url}" /></p>
+</div>
+<div class="field_item webkit-box">
+    <label>广告3标题</label>
+    <p><input type="text" name="model3_title" value="{$options.model3_title}" /></p>
+    <font class="ml10 fs12" color="gray">大小标题用“|”隔开</font>
+</div>
+<div class="field_item webkit-box">
+    <label>背景颜色</label>
+    <p>
+    	<select name="model_style3">
+        	<option {if $options.model_style3 eq 'mi'} selected="selected"{/if} value="mi">背景颜色（米色）</option>
+            <option {if $options.model_style3 eq 'danh'} selected="selected"{/if} value="danh">背景颜色（淡红色）</option>
+            <option {if $options.model_style3 eq 'huang'} selected="selected"{/if} value="huang">背景颜色（黄色）</option>
+            <option {if $options.model_style3 eq 'zi'} selected="selected"{/if} value="zi">背景颜色（紫色）</option>
+            <option {if $options.model_style3 eq 'danzi'} selected="selected"{/if} value="danzi">背景颜色（淡紫色）</option>
+        </select>
+    </p>  
+</div>
+<div class="field_item webkit-box file-box box-align-center">
+    <label>上传广告</label>
+    <p class="relative">
+        <input class="file absolute pointer" type="file" name="ad4_image_file" onchange="loadImage(this)" />
+        <input type="hidden" name="ad4_image_url" value="{$options.ad4_image_url}" />
+        <img src="{if $options.ad4_image_url}{$options.ad4_image_url|url_format}{else}{res file='images/upload.png'}{/if}"/>
+    </p>
+    <font class="ml10 fs12" color="gray">点击图片上传，图片尺寸：155*155px</font>
+</div>
+<div class="field_item webkit-box">
+    <label>广告4链接</label>
+    <p><input type="text" name="ad4_link_url" value="{$options.ad4_link_url}" /></p>
+</div>
+<div class="field_item webkit-box">
+    <label>广告4标题</label>
+    <p><input type="text" name="model4_title" value="{$options.model4_title}" /></p>
+    <font class="ml10 fs12" color="gray">大小标题用“|”隔开</font>
+</div>
+<div class="field_item webkit-box">
+    <label>背景颜色</label>
+    <p>
+    	<select name="model_style4">
+        	<option {if $options.model_style4 eq 'mi'} selected="selected"{/if} value="mi">背景颜色（米色）</option>
+            <option {if $options.model_style4 eq 'danh'} selected="selected"{/if} value="danh">背景颜色（淡红色）</option>
+            <option {if $options.model_style4 eq 'huang'} selected="selected"{/if} value="huang">背景颜色（黄色）</option>
+            <option {if $options.model_style4 eq 'zi'} selected="selected"{/if} value="zi">背景颜色（紫色）</option>
+            <option {if $options.model_style4 eq 'danzi'} selected="selected"{/if} value="danzi">背景颜色（淡紫色）</option>
+        </select>
+    </p>  
+</div>
+<div class="field_item webkit-box file-box box-align-center">
+    <label>上传广告5</label>
+    <p class="relative">
+        <input class="file absolute pointer" type="file" name="ad5_image_file" onchange="loadImage(this)" />
+        <input type="hidden" name="ad5_image_url" value="{$options.ad5_image_url}" />
+        <img src="{if $options.ad5_image_url}{$options.ad5_image_url|url_format}{else}{res file='images/upload.png'}{/if}"/>
+    </p>
+    <font class="ml10 fs12" color="gray">点击图片上传，图片尺寸：155*155px</font>
+</div>
+<div class="field_item webkit-box">
+    <label>广告5链接</label>
+    <p><input type="text" name="ad5_link_url" value="{$options.ad5_link_url}" /></p>
+</div>
+<div class="field_item webkit-box">
+    <label>广告5标题</label>
+    <p><input type="text" name="model5_title" value="{$options.model5_title}" /></p>
+    <font class="ml10 fs12" color="gray">大小标题用“|”隔开</font>
+</div>
+<div class="field_item webkit-box">
+    <label>背景颜色</label>
+    <p>
+    	<select name="model_style5">
+        	<option {if $options.model_style5 eq 'mi'} selected="selected"{/if} value="mi">背景颜色（米色）</option>
+            <option {if $options.model_style5 eq 'danh'} selected="selected"{/if} value="danh">背景颜色（淡红色）</option>
+            <option {if $options.model_style5 eq 'huang'} selected="selected"{/if} value="huang">背景颜色（黄色）</option>
+            <option {if $options.model_style5 eq 'zi'} selected="selected"{/if} value="zi">背景颜色（紫色）</option>
+            <option {if $options.model_style5 eq 'danzi'} selected="selected"{/if} value="danzi">背景颜色（淡紫色）</option>
+        </select>
+    </p>   
+</div>
+

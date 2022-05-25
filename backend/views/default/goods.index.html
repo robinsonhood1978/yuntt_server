@@ -1,0 +1,154 @@
+{include file="header.html"}
+<div id="main">
+	{include file="menus.html"}
+	<div id="rightCon" class="clearfix layui-body">
+		<div class="scroller">
+			<div class="search-form clearfix">
+				<form method="get" id="formSearch">
+					<div class="webkit-box box-align-center">
+						<input type="hidden" name="r" value="goods/index" />
+						{$lang.goods_name}
+						<input class="infoTableInput mr10 ml10" type="text" name="goods_name"
+							value="{$smarty.get.goods_name|escape}" />
+						{$lang.store_name}
+						<input class="infoTableInput mr10 ml10" type="text" name="store_name"
+							value="{$smarty.get.store_name|escape}" />
+						{$lang.brand}
+						<input class="queryInput" type="text" name="brand" value="{$smarty.get.brand|escape}" />
+						{$lang.gcategory}
+						<div id="gcategory" class="ml10 inline-block">
+							<select class="querySelect" name="cate_id">
+								<option value="">{$lang.select_pls}</option>
+								{html_options options=$gcategories selected=$smarty.get.cate_id}
+							</select>
+						</div>
+					</div>
+					<div class="webkit-box box-align-center mt20">
+						<label class="mr10">商品禁售</label>
+						<select class="querySelect" name="closed">
+							<option value="0" {if !$smarty.get.closed} selected{/if}>{$lang.no_limit}</option>
+							<option value="1" {if $smarty.get.closed eq 1} selected{/if}>{$lang.yes}</option>
+						</select>
+						<input type="submit" class="layui-btn layui-bg-blue layui-btn-sm block width7"
+							value="{$lang.query}" />
+						<!--{if $filtered}-->
+						<a class="layui-btn layui-btn-primary layui-btn-sm box-align-center"
+							href="{url route='goods/index'}">{$lang.cancel_query}</a>
+						<!--{/if}-->
+					</div>
+				</form>
+			</div>
+			<div class="tablegrid">
+				<table class="layui-hide" id="tablegrid" lay-filter="tablegrid"></table>
+			</div>
+			{include file="version.html"}
+		</div>
+	</div>
+</div>
+<script type="text/html" id="toolbar">
+	<div class="layui-btn-container">
+	  <button class="layui-btn layui-bg-blue" lay-event="batrecom"><i class="layui-icon layui-icon-praise"></i>批量推荐</button>
+	  <button class="layui-btn layui-btn-warm" lay-event="batedit"><i class="layui-icon layui-icon-edit"></i>批量编辑</button>
+	  <button class="layui-btn layui-btn-primary layui-border-blue" lay-event="batdel"><i class="layui-icon layui-icon-close"></i>批量删除</button>
+	  <button class="layui-btn layui-btn-primary layui-border-black" lay-event="export"><i class="layui-icon layui-icon-export"></i>导出数据</button>
+	</div>
+</script>
+
+<script type="text/html" id="colBar">
+	<a class="ml5 mr5 blue pointer" lay-event="edit">编辑</a>
+  	<a class="ml5 mr5 blue pointer" lay-event="del" confirm="删除后将不能恢复，确认删除该项吗？">删除</a>
+	<a class="ml5 mr5 blue pointer" lay-event="recom">推荐</a>
+	<a class="ml5 mr5 blue pointer" lay-event="view">查看</a>
+</script>
+<script>
+	layui.use('table', function () {
+		var table = layui.table;
+
+		table.render({
+			elem: '#tablegrid'
+			//,skin: 'line'
+			, url: url(['goods/index', $("#formSearch").serializeJson()])
+			, toolbar: '#toolbar'
+			, defaultToolbar: ['filter', /*'exports',*/ 'print']
+			, title: '商品列表'
+			//, size: 'lg'
+			, cols: [[
+				{ type: 'checkbox', fixed: 'left' }
+				, { field: 'goods_id', title: 'ID', width: 70, fixed: 'left', unresize: true, sort: true }
+				, { field: 'goods_name', title: '商品名称', width: 400, edit: 'text' }
+				, { field: 'price', title: '价格', width: 120 }
+				, { field: 'store_name', title: '店铺名', width: 150 }
+				, { field: 'brand', title: '品牌', width: 125, sort: true, align: 'center' }
+				, { field: 'cate_name', title: '所属分类', width: 200, sort: true }
+				, {
+					field: 'if_show', title: '上架', width: 90, sort: true, align: 'center', templet: function (res) {
+						return res.if_show == 1 ? '<em class="yes" ectype="inline_edit" controller="goods" fieldname="if_show" fieldid="' + res.goods_id + '" fieldvalue="1" title="' + lang.editable + '"><i class="fa fa-check-circle"></i>' + lang.yes + '</em>' : '<em class="no" ectype="inline_edit" controller="goods" fieldname="if_show" fieldid="' + res.goods_id + '" fieldvalue="0" title="' + lang.editable + '"><i class="fa fa-ban"></i>' + lang.no + '</em>';
+					}
+				}
+				, {
+					field: 'closed', title: '禁售', width: 90, sort: true, align: 'center', templet: function (res) {
+						return res.closed == 1 ? '<em class="yes" ectype="inline_edit" controller="goods" fieldname="closed" fieldid="' + res.goods_id + '" fieldvalue="1" title="' + lang.editable + '"><i class="fa fa-check-circle"></i>' + lang.yes + '</em>' : '<em class="no" ectype="inline_edit" controller="goods" fieldname="closed" fieldid="' + res.goods_id + '" fieldvalue="0" title="' + lang.editable + '"><i class="fa fa-ban"></i>' + lang.no + '</em>';
+					}
+				}
+				, { field: 'views', title: '浏览量', width: 100, sort: true, align: 'center' }
+				, { field: 'add_time', title: '上架时间', width: 170, sort: true, align: 'center' }
+				, { fixed: 'right', title: '操作', toolbar: '#colBar', width: 200, align: 'center' }
+			]]
+			, page: {
+				theme: 'blue'
+			}
+		});
+
+		//监听头工具栏事件
+		table.on('toolbar(tablegrid)', function (obj) {
+			var checkStatus = table.checkStatus(obj.config.id);
+			if (checkStatus.data.length <= 0) {
+				return false;
+			}
+			var items = new Array();
+			$.each(checkStatus.data, function (i, item) {
+				items.push(item.goods_id);
+			});
+
+			if (obj.event === 'batdel') {
+				var btnObj = $('[lay-event="' + obj.event + '"]');
+				btnObj.attr('confirm', '删除后将不能恢复，确认删除这 ' + items.length + ' 项吗？');
+				ajaxRequest(btnObj, url(['goods/delete', { id: items.join(',') }]), function () {
+					table.reload('tablegrid');
+				});
+			} else if (obj.event === 'batrecom') {
+				ajax_form('dialog', '商品推荐', url(['goods/recommend', { id: items.join(',') }]), 600);
+			} else if (obj.event === 'batedit') {
+				window.location.href = url(['goods/edit', { id: items.join(',') }]);
+			} else if (obj.event === 'export') {
+				window.location.href = url(['goods/export', $.extend($("#formSearch").serializeJson(), { id: items.join(',') })]);
+			}
+		});
+
+		//监听行工具事件
+		table.on('tool(tablegrid)', function (obj) {
+			var data = obj.data;
+			if (obj.event === 'del') {
+				var btnObj = $(obj.tr).find('[lay-event="' + obj.event + '"]');
+				ajaxRequest(btnObj, url(['goods/delete', { id: data.goods_id }]), function () {
+					obj.del();
+				});
+			} else if (obj.event === 'edit') {
+				window.location.href = url(['goods/edit', { id: data.goods_id }]);
+			} else if (obj.event === 'recom') {
+				ajax_form('dialog', '商品推荐', url(['goods/recommend', { id: data.goods_id }]), 600);
+			} else if (obj.event === 'view') {
+				window.open(url(['goods/index', { id: data.goods_id }, HOME_URL]));
+			}
+		});
+		//监听行单元格编辑事件
+		table.on('edit(tablegrid)', function (obj) {
+			var fieldObj = $(obj.tr).find('[data-field="' + obj.field + '"]');
+			ajaxRequest(fieldObj, url(['goods/editcol', { id: obj.data.goods_id, column: obj.field, value: obj.value }]), function () {
+				obj.update();
+			});
+		});
+	});
+</script>
+<iframe id="iframe" name="iframe" src="about:blank" frameborder="0" width="0" height="0" style="display:none"></iframe>
+{include file="footer.html"}

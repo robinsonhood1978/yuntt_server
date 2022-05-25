@@ -1,0 +1,34 @@
+<script type="text/javascript">
+var _d = DialogManager.get('config_dialog');
+_d.setWidth(540);
+_d.setPosition('center');
+</script>
+
+<div class="field_item webkit-box">
+	<label>选项卡1</label>
+    <p><input type="text" name="model1_title" value="{$options.model1_title}" /></p>
+</div>
+<div class="field_item webkit-box">  
+    <label>文章内容</label>
+    <p><select name="cate_id_1">
+    	{html_options options=$acategories selected=$options.cate_id_1}
+    </select>
+    </p>
+</div>
+
+<div class="field_item webkit-box">
+	<label>选项卡2</label>
+    <p><input type="text" name="model2_title" value="{$options.model2_title}" /></p>
+</div>
+<div class="field_item webkit-box">  
+    <label>文章内容</label>
+    <p><select name="cate_id_2">
+    	{html_options options=$acategories selected=$options.cate_id_2}
+    </select>
+    </p>
+</div>
+
+
+
+
+

@@ -1,0 +1,90 @@
+{include file="header.html"}
+<div id="main">
+  {include file="menus.html"}
+  <div id="rightCon" class="clearfix layui-body">
+    <div class="scroller">
+      <div class="explanation">
+        <div class="title"> <i class="fa fa-lightbulb-o"></i>
+          <h4>{$lang.operation_tip}</h4>
+        </div>
+        <ul>
+          <li>1. 设置的邮箱服务器需开启POP3/SMTP服务，如果邮箱不支持该服务，请选择其他邮箱系统</li>
+          <li>2. 阿里云ECS不再提供开放25端口，即使加入安全组也无法使用，<a href="https://help.aliyun.com/document_detail/56130.html" target="_blank">了解详情</a></li>
+          <li>3. 如果发送模式选择异步发送，请执行cmd命令：项目根目录/console > yii queue/listen</li>
+        </ul>
+      </div>
+      <div class="flexigrid">
+        <form method="post">
+          <table class="infoTable">
+            <tr>
+              <th class="paddingT15"><label>{$lang.email_host}</label></th>
+              <td class="paddingT15 wordSpacing5"><input class="infoTableInput" type="text" name="mailer[host]"
+                  value="{$setting.mailer.host}" placeholder="smtp.qq.com" />
+                <label class="field_notice">{$lang.email_host_note}</label>
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.email_port}</label></th>
+              <td class="paddingT15 wordSpacing5"><input class="infoTableInput" type="text" name="mailer[port]"
+                  value="{$setting.mailer.port|default:465}" />
+                <label class="field_notice">{$lang.email_port_note}</label>
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.email_addr}</label></th>
+              <td class="paddingT15 wordSpacing5"><input class="infoTableInput" type="text" name="mailer[email]"
+                  value="{$setting.mailer.email}" placeholder="12345678@qq.com" />
+
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.email_id}</label></th>
+              <td class="paddingT15 wordSpacing5"><input class="infoTableInput" type="text" name="mailer[username]"
+                  value="{$setting.mailer.username}" placeholder="12345678@qq.com" /></td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.email_pass}</label></th>
+              <td class="paddingT15 wordSpacing5"><input class="infoTableInput" type="password" name="mailer[password]"
+                  value="{$setting.mailer.password}" />
+                <label class="field_notice">{$lang.email_pass_note}</label>
+              </td>
+            </tr>
+
+            <tr>
+              <th class="paddingT15"><label>{$lang.email_name}</label></th>
+              <td class="paddingT15 wordSpacing5"><input class="infoTableInput" type="text" name="mailer[admin]"
+                  value="{$setting.mailer.admin|default:'shopwind'}" /></td>
+            </tr>
+
+            <tr>
+              <th class="paddingT15"><label>{$lang.email_mode}</label></th>
+              <td class="paddingT15 layui-form">
+                <input type="radio" name="mailer[async]" value="1" title="{$lang.email_async}" {if
+                  $setting.mailer.async}checked{/if} />
+                <input type="radio" name="mailer[async]" value="0" title="{$lang.email_disasync}" {if
+                  !$setting.mailer.async}checked{/if} />
+                <div class="notice-word"><p class="layui-font-12 mt5">{$lang.email_async_notice}</p></div>
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.status}</label></th>
+              <td class="paddingT15 layui-form">
+                <input type="radio" name="mailer[status]" value="1" title="{$lang.open}" {if
+                  $setting.mailer.status}checked{/if} />
+                <input type="radio" name="mailer[status]" value="0" title="{$lang.closed}" {if
+                  !$setting.mailer.status}checked{/if} />
+              </td>
+            </tr>
+            <tr>
+              <th></th>
+              <td class="ptb20"><input class="layui-btn layui-bg-blue J_AjaxSubmit" type="submit"
+                  value="{$lang.submit}" /></td>
+            </tr>
+          </table>
+        </form>
+      </div>
+      {include file="version.html"}
+    </div>
+  </div>
+</div>
+{include file="footer.html"}

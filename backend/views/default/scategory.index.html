@@ -1,0 +1,72 @@
+{include file="header.html"}
+<div id="main">
+  {include file="menus.html"}
+  <div id="rightCon" class="clearfix layui-body">
+    <div class="scroller">
+      <div class="flexigrid">
+        <div class="layui-btn-container">
+          <a href="{url route='scategory/add'}" class="layui-btn layui-bg-blue"><i
+              class="layui-icon layui-icon-addition"></i>新增分类</a>
+
+          <a class="layui-btn layui-btn-primary J_BatchDel" confirm="{$lang.drop_confirm}" uri="{url route='scategory/delete'}" name="id"><i
+                class="fa fa-trash"></i>批量删除</a>
+        </div>
+        <table class="distinction">
+          <!--{if $scategories}-->
+          <thead>
+            <tr class="tatr1">
+              <th class="w30"><input id="checkall" type="checkbox" class="checkall" /></th>
+              <th width="50%" align="left"><label for="checkall">{$lang.cate_name}</label></th>
+              <th>{$lang.sort_order}</th>
+              <th>{$lang.if_show}</th>
+              <th class="handler">{$lang.handler}</th>
+            </tr>
+          </thead>
+          <!--{/if}-->
+          <!-- {if $scategories} -->
+          <tbody id="treet1">
+            <!-- {/if} -->
+            <!--{foreach from=$scategories item=scategory}-->
+            <tr>
+              <td class="align_center w30"><input type="checkbox" class="checkitem" value="{$scategory.cate_id}" /></td>
+              <td class="node" width="50%">
+                <!--{if $scategory.switchs}--><i class="layui-icon layui-icon-addition" ectype="flex" controller="scategory"
+                  status="open" fieldid="{$scategory.cate_id}"></i>
+                <!--{else}--><i class="tv-item"></i>
+                <!--{/if}--><span ectype="inline_edit" fieldname="cate_name"
+                  fieldid="{$scategory.cate_id}" required="1" title="{$lang.editable}"
+                  controller="scategory">{$scategory.cate_name|escape}<i class="layui-icon layui-icon-edit layui-font-14 layui-font-blue"></i></span>
+              </td>
+              <td class="align_center"><span ectype="inline_edit" fieldname="sort_order"
+                  fieldid="{$scategory.cate_id}" datatype="number" title="{$lang.editable}"
+                  controller="scategory">{$scategory.sort_order}<i class="layui-icon layui-icon-edit layui-font-14 layui-font-blue"></i></span></td>
+              <td class="align_center">
+                <!--{if $scategory.if_show}--><i class="layui-icon layui-icon-ok layui-font-blue" ectype="inline_edit" fieldname="if_show"
+                  fieldid="{$scategory.cate_id}" fieldvalue="1" title="{$lang.editable}" controller="scategory"></i>
+                <!--{else}--><i class="layui-icon layui-icon-ok layui-font-gray" ectype="inline_edit" fieldname="if_show"
+                  fieldid="{$scategory.cate_id}" fieldvalue="0" title="{$lang.editable}" controller="scategory"></i>
+                <!--{/if}-->
+              </td>
+              <td class="handler bDiv" style=" background:none; width:200px; text-align:left;"><a
+                  href="{url route='scategory/edit' id=$scategory.cate_id}" class="btn blue"><i
+                    class="layui-icon layui-icon-edit layui-font-12"></i>{$lang.edit}</a> <a
+                  uri="{url route='scategory/delete' id=$scategory.cate_id}" confirm="{$lang.drop_confirm}"
+                  class="btn red J_AjaxRequest"><i class="layui-icon layui-icon-close layui-font-12"></i>{$lang.drop}</a> <a
+                  href="{url route='scategory/add' pid=$scategory.cate_id}" class="btn green"><i
+                    class="layui-icon layui-icon-add-1 layui-font-12"></i>{$lang.add_child}</a></td>
+            </tr>
+            <!--{foreachelse}-->
+            <tr class="no_data">
+              <td colspan="5">{$lang.no_data}</td>
+            </tr>
+            <!--{/foreach}-->
+            <!-- {if $scategories} -->
+          </tbody>
+          <!-- {/if} -->
+        </table>
+      </div>
+      {include file="version.html"}
+    </div>
+  </div>
+</div>
+{include file="footer.html"}

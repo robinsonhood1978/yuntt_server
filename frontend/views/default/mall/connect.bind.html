@@ -1,0 +1,103 @@
+{include file="user.header.html"}
+<div id="main" class="w-full">
+  <div id="page-member-bind" class="w-full page-auth mt20 mb20">
+    <div class="wrap">
+      <div class="form clearfix w J_TabForm">
+        <form id="member_bind_form" method="post">
+          <div class="each mt20"> 
+            <!--以下"用户昵称"字段仅做为 腾讯QQ登录审核过程中使用，如果腾讯QQ登录审核通过之后应删掉-->
+            <dl class="clearfix">
+              <dt>用户昵称 :</dt>
+              <dd>
+                <input type="text"  class="input" value="{$bind.nickname}" />
+                <i></i> </dd>
+            </dl>
+            <dl class="clearfix">
+              <dt><b>*</b>{$lang.phone_mob} :</dt>
+              <dd>
+                <input type="text" name="phone_mob" id="phone_mob" class="input"  />
+                <label class="field_notice" style="display:none">{$lang.phone_mob_invalid}</label>
+                <i class="i-phone"></i> </dd>
+            </dl>
+            <dl class="J_PhoneCaptcha clearfix">
+              <dt><b>*</b>{$lang.phone_captcha} :</dt>
+              <dd class="captchaCode clearfix">
+                <input type="text" name="code" id="code" class="input float-left" style="width:162px;"/>
+                <input type="button" id="send_phonecode" class="float-left btn-captcha" value="{$lang.get_captcha}" />
+                <label class="field_notice" style="display:none">{$lang.phone_captcha_empty}</label>
+              </dd>
+            </dl>
+          </div>
+          <div class="submit">
+            <dl class="clearfix">
+              <dt>&nbsp;</dt>
+              <dd>
+                <input type="submit" value="{$lang.submit}" class="btn-alipay J_Submit" title="{$lang.submit}" />
+                <input type="hidden" name="redirect" value="{$redirect}" />
+              </dd>
+            </dl>
+          </div>
+          <div class="notice-word mt20" style="width:170px;margin-left:130px;">
+            <p class="yellow">请在10分钟内完成验证</p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+function checkForm(codeType)
+{
+	var checkResult = checkPhone($('#phone_mob'));
+
+	if($.trim($('#code').val()) == ''){
+		$('#code').parent().find('.field_notice').css('display', 'inline-block');
+		checkResult = false;
+	}
+	return checkResult;
+}
+
+function checkPhone(o)
+{
+	var phone_mob = $.trim(o.val());
+		
+	if(!is_phone(phone_mob)){
+		o.parent().find('i').removeClass('ok');
+		o.parent().find('.field_notice').css('display', 'inline-block');
+		return false;
+	}
+	else
+	{
+		o.parent().find('i').addClass('ok');
+		o.parent().find('.field_notice').css('display', 'none');
+		
+		return true;
+	}
+}
+$(function(){
+	
+	$('#phone_mob').change(function(){
+		return checkPhone($(this));
+	});
+
+	$('#code').change(function(){
+		$(this).parent().find('.field_notice').css('display', $.trim($(this).val()) == '' ? 'inline-block' : 'none');
+	})
+	$('.J_Submit').click(function(){
+		if(checkForm('phone') == true){
+			return true;
+		} else return false;
+	});
+	
+	$('#send_phonecode').click(function(){
+		var phone_mob = $.trim($("input[name='phone_mob']").val());
+		if(!is_phone(phone_mob)){
+			layer.msg(lang.phone_mob_invalid);
+			return;
+		}
+		$(this).attr("disabled", true);
+		send_phonecode($(this), { purpose: "bind", phone_mob: phone_mob, "{$app->request->csrfParam}": "{$app->request->csrfToken}"}, 120);
+	});
+});
+</script> 
+{include file="user.footer.html"}

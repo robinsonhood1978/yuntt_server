@@ -1,0 +1,97 @@
+<div class="widget-box">
+    <h3 class="title mt20 mb20 pb20"><strong class="fs18">文本</strong></h3>
+    <div class="content">
+        <div class="item webkit-box">
+            <label class="gray">文本内容</label>
+            <input value="{$options.label}" name="label" placeholder="文本" type="text"
+                class="flex1 input ml10 J_Holder" />
+        </div>
+        <div class="item webkit-box">
+            <label class="gray">文字颜色</label>
+            <p class="flex1 ml10 color">{$options.txtcolor|default:'#333333'}</p>
+            <input type="hidden" name="txtcolor" value="{$options.txtcolor|default:'#333333'}" />
+            <span class="f60 pointer J_Reset" data-id="picker1" data-value="#333333">重置</span>
+            <p class="picker1 ml10"></p>
+        </div>
+        <div class="item webkit-box">
+            <label class="gray">文字加粗</label>
+            <p class="flex1"></p>
+            <input type="hidden" name="txtbold" value="{$options.txtbold|default:0}" />
+            <span class="layui-form">
+                <input lay-filter="filter" type="checkbox" {if $options.txtbold}checked{/if} lay-skin="switch">
+            </span>
+        </div>
+        <div class="item webkit-box">
+            <label class="gray">字号大小</label>
+            <p class="flex1 ml10 value">{if $options.fontsize eq 12}12px{else if $options.fontsize eq
+                16}16px{else}14px{/if}</p>
+            <input type="hidden" name="fontsize" value="{$options.fontsize|default:14}" />
+            <span class="switch first {if $options.fontsize eq 12} selected {/if} J_Switch" title="12px" data-value="12"><i
+                    class="iconfont icon-A fs12"></i></span>
+            <span class="switch {if !in_array($options.fontsize, [12, 16])} selected {/if} J_Switch" title="14px"
+                data-value="14"><i class="iconfont icon-A fs14"></i></span>
+            <span class="switch {if $options.fontsize eq 16} selected {/if} J_Switch" title="16px" data-value="16"><i
+                    class="iconfont icon-A fs16"></i></span>
+        </div>
+    
+        <h4 class="mt10 pb10 mt20 pt20">其他设置</h4>
+        <div class="item webkit-box">
+            <label class="gray">背景颜色</label>
+            <p class="flex1 ml10 color">{$options.bgcolor|default:''}</p>
+            <input type="hidden" name="bgcolor" value="{$options.bgcolor|default:''}" />
+            <span class="f60 pointer J_Reset" data-id="picker2" data-value="">重置</span>
+            <p class="picker2 ml10"></p>
+        </div>
+
+        <div class="item webkit-box">
+            <label class="gray">模块间距</label>
+            <input type="hidden" name="space" value="{$options.space|default:0}" />
+            <div class="flex1 ml20 slider" style="margin-top:15px"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.J_Holder').keyup(function () {
+            var text = $(this).val() == '' ? $(this).attr('placeholder') : $(this).val();
+            $('#' + $(this).parents('form').attr('widget_id')).find('.textbox .text').text(text);
+        });
+        $('.J_Holder').change(function () {
+            save_widget(false);
+        });
+
+        layui.use('form', function () {
+            var form = layui.form;
+            form.on('switch(filter)', function (data) {
+                $(this).parents('.item').find('input').val(data.elem.checked ? 1 : 0);
+                save_widget();
+            });
+
+            form.render();
+        });
+
+        slideRender('.slider', function(dom, value) {
+            save_widget(false);
+        });
+
+        $('.J_Reset').click(function () {
+            var value = $(this).attr('data-value');
+            $(this).parent('.item').find('input[type="hidden"]').val(value);
+            save_widget();
+        });
+        $('.J_Switch').click(function () {
+            var value = $(this).attr('data-value');
+            $(this).parent('.item').find('input').val(value);
+
+            save_widget();
+        });
+
+        colorRender('.picker1', function (dom, value) {
+            save_widget();
+        });
+        colorRender('.picker2', function (dom, value) {
+            save_widget();
+        });
+    });
+</script>

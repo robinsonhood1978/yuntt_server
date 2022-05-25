@@ -1,0 +1,112 @@
+{include file="header.html"}
+<div id="main">
+  {include file="menus.html"}
+  <div id="rightCon" class="clearfix layui-body">
+    <div class="scroller">
+      <div class="layui-tab">
+        <ul class="layui-tab-title">
+          <li><a href="{url route='msg/index'}">{$lang.sendlog}</a></li>
+          <li><a href="{url route='msg/recharge'}">{$lang.msgrecharge}</a></li>
+          <li><a href="{url route='msg/user'}">{$lang.msguser}</a></li>
+          <li><a href="{url route='msg/add'}">{$lang.msgadd}</a></li>
+          <li class="layui-this">{$lang.msgtemplate}</li>
+          <li><a href="{url route='msg/send'}">{$lang.sendtest}</a></li>
+        </ul>
+      </div>
+      <div class="search-form clearfix">
+        <form method="get" id="formSearch">
+          <div class="webkit-box box-align-center">
+            <input type="hidden" name="r" value="msg/template" />
+            {$lang.template_id}
+            <input class="infoTableInput mr10 ml10" type="text" name="templateId" value="{$smarty.get.templateId|escape}" />
+            <input type="submit" class="layui-btn layui-bg-blue layui-btn-sm block width7"
+              value="{$lang.query}" />
+            <!--{if $filtered}-->
+            <a class="layui-btn layui-btn-primary layui-btn-sm box-align-center"
+              href="{url route='msg/template'}">{$lang.cancel_query}</a>
+            <!--{/if}-->
+          </div>
+        </form>
+      </div>
+      <div class="tablegrid">
+        <table class="layui-hide" id="tablegrid" lay-filter="tablegrid"></table>
+      </div>
+      {include file="version.html"}
+    </div>
+  </div>
+</div>
+<script type="text/html" id="toolbar">
+	<div class="layui-btn-container">
+    <a class="layui-btn layui-bg-blue" href="{url route='msg/addtemplate'}"><i class="layui-icon layui-icon-addition"></i>新建短信模板</a>
+		<button class="layui-btn layui-btn-primary layui-border-blue" lay-event="batdel"><i class="layui-icon layui-icon-close"></i>批量删除</button>
+	</div>
+</script>
+<script type="text/html" id="colBar">
+  <a class="ml5 mr5 blue pointer" lay-event="edit">编辑</a>
+  <a class="ml5 mr5 blue pointer" lay-event="del" confirm="删除后将不能恢复，确认删除该项吗？">删除</a>
+</script>
+
+<script>
+  layui.use('table', function () {
+    var table = layui.table;
+
+    table.render({
+      elem: '#tablegrid'
+      //,skin: 'line'
+      , url: url(['msg/template', $("#formSearch").serializeJson()])
+      , toolbar: '#toolbar'
+      , defaultToolbar: ['filter', /*'exports',*/ 'print']
+      , title: '短信模板'
+      //, size: 'lg'
+      , cols: [[
+        { type: 'checkbox', fixed: 'left' }
+        , { field: 'id', title: 'ID', width: 70, fixed: 'left', unresize: true, sort: true }
+        , { field: 'name', title: '短信平台', width: 120, sort: true }
+        , { field: 'scene', title: '短信场景', width: 150, sort: true }
+        , { field: 'signName', title: '短信签名', width: 110, sort: true }
+        , { field: 'templateId', title: '短信模板ID', width: 160, sort: true }
+        , { field: 'content', title: '短信模板', width: 370 }
+        , { field: 'add_time', title: '创建时间', width: 180, sort: true }
+        , { fixed: 'right', title: '操作', toolbar: '#colBar', width: 140, align: 'center' }
+      ]]
+      , page: {
+        theme: 'blue'
+      }
+    });
+
+    //监听头工具栏事件
+    table.on('toolbar(tablegrid)', function (obj) {
+      var checkStatus = table.checkStatus(obj.config.id);
+      if (checkStatus.data.length <= 0) {
+        return false;
+      }
+      var items = new Array();
+      $.each(checkStatus.data, function (i, item) {
+        items.push(item.id);
+      });
+      if (obj.event === 'batdel') {
+        var btnObj = $('[lay-event="' + obj.event + '"]');
+        btnObj.attr('confirm', '删除后将不能恢复，确认删除这 ' + items.length + ' 项吗？');
+        ajaxRequest(btnObj, url(['msg/delete', { id: items.join(',') }]), function () {
+          table.reload('tablegrid');
+        });
+      } else if (obj.event === 'export') {
+        window.location.href = url(['msg/export', $.extend($("#formSearch").serializeJson(), { id: items.join(',') })]);
+      }
+    });
+
+    //监听行工具事件
+    table.on('tool(tablegrid)', function (obj) {
+      var data = obj.data;
+      if (obj.event === 'del') {
+        var btnObj = $(obj.tr).find('[lay-event="' + obj.event + '"]');
+        ajaxRequest(btnObj, url(['msg/deletetemplate', { id: data.id }]), function () {
+          obj.del();
+        });
+      } else if (obj.event === 'edit') {
+        window.location.href = url(['msg/addtemplate', { id: data.id, code: data.code }]);
+      }
+    });
+  });
+</script>
+{include file="footer.html"}

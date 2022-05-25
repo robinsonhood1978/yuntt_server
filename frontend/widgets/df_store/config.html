@@ -1,0 +1,103 @@
+<script type="text/javascript">
+var _d = DialogManager.get('config_dialog');
+_d.setWidth(440);
+_d.setPosition('center');
+	
+function loadImage(obj){
+    getTempPath(obj,function(res){
+        $(obj).parent().find('img').attr('src',res);
+    });
+}
+</script>
+
+<div class="field_item webkit-box">
+    <label>模块标题</label>
+    <p><input type="text" name="model_name" value="{$options.model_name}" /></p>  
+</div>
+<div class="field_item webkit-box file-box box-align-center">
+    <label>店铺1广告图</label>
+    <p class="relative">
+        <input class="file absolute pointer" type="file" name="ad1_image_file" onchange="loadImage(this)" />
+        <input type="hidden" name="ad1_image_url" value="{$options.ad1_image_url}" />
+        <img src="{if $options.ad1_image_url}{$options.ad1_image_url|url_format}{else}{res file='images/upload.png'}{/if}"/>
+    </p>
+    <font class="ml10 fs12" color="gray">点击图片上传，图片尺寸：240*240px</font>
+</div>
+<div class="field_item webkit-box">    
+    <label>店铺ID</label>
+    <p><input type="text" name="ad1_storeId" value="{$options.ad1_storeId}" /></p>
+</div>
+<div class="field_item webkit-box">
+    <label>店铺小标题</label>
+    <p><input type="text" name="ad1_title" value="{$options.ad1_title}" /></p>
+</div>
+<div class="field_item webkit-box file-box box-align-center">
+    <label>店铺2广告图</label>
+    <p class="relative">
+        <input class="file absolute pointer" type="file" name="ad2_image_file" onchange="loadImage(this)" />
+        <input type="hidden" name="ad2_image_url" value="{$options.ad2_image_url}" />
+        <img src="{if $options.ad2_image_url}{$options.ad2_image_url|url_format}{else}{res file='images/upload.png'}{/if}"/>
+    </p>
+    <font class="ml10 fs12" color="gray">点击图片上传，图片尺寸：240*240px</font>
+</div>
+<div class="field_item webkit-box">
+    <label>店铺ID</label>
+    <p><input type="text" name="ad2_storeId" value="{$options.ad2_storeId}" /></p>
+</div>
+<div class="field_item webkit-box">
+    <label>店铺小标题</label>
+    <p><input type="text" name="ad2_title" value="{$options.ad2_title}" /></p>
+</div>
+<div class="field_item webkit-box file-box box-align-center">
+    <label>店铺3广告图</label>
+    <p class="relative">
+        <input class="file absolute pointer" type="file" name="ad3_image_file" onchange="loadImage(this)" />
+        <input type="hidden" name="ad3_image_url" value="{$options.ad3_image_url}" />
+        <img src="{if $options.ad3_image_url}{$options.ad3_image_url|url_format}{else}{res file='images/upload.png'}{/if}"/>
+    </p>
+    <font class="ml10 fs12" color="gray">点击图片上传，图片尺寸：240*240px</font>
+</div>
+<div class="field_item webkit-box">
+    <label>店铺ID</label>
+    <p><input type="text" name="ad3_storeId" value="{$options.ad3_storeId}" /></p>
+</div>
+<div class="field_item webkit-box">
+    <label>店铺小标题</label>
+    <p><input type="text" name="ad3_title" value="{$options.ad3_title}" /></p>
+</div>
+<div class="field_item webkit-box file-box box-align-center">
+    <label>店铺4广告图</label>
+    <p class="relative">
+        <input class="file absolute pointer" type="file" name="ad4_image_file" onchange="loadImage(this)" />
+        <input type="hidden" name="ad4_image_url" value="{$options.ad4_image_url}" />
+        <img src="{if $options.ad4_image_url}{$options.ad4_image_url|url_format}{else}{res file='images/upload.png'}{/if}"/>
+    </p>
+    <font class="ml10 fs12" color="gray">点击图片上传，图片尺寸：240*240px</font>
+</div>
+<div class="field_item webkit-box">   
+    <label>店铺ID</label>
+    <p><input type="text" name="ad4_storeId" value="{$options.ad4_storeId}" /></p>
+</div>
+<div class="field_item webkit-box">
+    <label>店铺小标题</label>
+    <p><input type="text" name="ad4_title" value="{$options.ad4_title}" /></p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

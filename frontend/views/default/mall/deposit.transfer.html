@@ -1,0 +1,52 @@
+{include file="user.header.html"}
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful">{include file="user.submenu.html"}
+      <div class="wrap">
+        <div class="public table deposit">
+          <div class="deposit-withdraw"> 
+            <!--{if $deposit_account.money gt 0}-->
+            <div class="notice-word">
+              <p class="yellow">将您的账户余额转出到另外的预存款账户上，请慎重填写</p>
+            </div>
+            <form method="get" action="{url route='deposit/transferconfirm'}">
+              <!--{if !$app->urlManager->enablePrettyUrl}-->
+              <input type="hidden" name="r" value="deposit/transferconfirm" />
+              <!--{/if}-->
+              <div class="title clearfix">
+                <h2 class="float-left">您的账户（{$deposit_account.account}）</h2>
+                <p class="float-left">余额：<strong>{$deposit_account.money}</strong> 元</p>
+              </div>
+              <div class="form">
+                <dl class="clearfix">
+                  <dt>转入账户：</dt>
+                  <dd>
+                    <input type="text" class="text" name="account" />
+                  </dd>
+                </dl>
+                <dl class="clearfix">
+                  <dt>转账金额：</dt>
+                  <dd>
+                    <input type="text" name="money" class="text" value="" />
+                    元</dd>
+                </dl>
+                <dl class="clearfix">
+                  <dt>&nbsp;</dt>
+                  <dd class="submit"> <span class="btn-alipay">
+                    <input type="submit" value="下一步" />
+                    </span> </dd>
+                </dl>
+              </div>
+            </form>
+            <!--{else}-->
+            <div class="notice-word">
+              <p>您目前账户余额为<span class="f60">0</span>元，不能转账。</p>
+            </div>
+            <!--{/if}--> 
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{include file="user.footer.html"} 

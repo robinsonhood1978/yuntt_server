@@ -1,0 +1,18 @@
+﻿<div class="order-confirm-extra w clearfix mt20" style="background:#fff;">
+	<div class="confirm-extra-info float-left" style="margin-left:670px; ">
+		<div class="extra-list use-integral clearfix">
+			<div class="subtitle float-left">&nbsp;</div>
+			<div class="subcontent float-left">
+				<label class="mr10"><input type="checkbox" class="J_UseIntegralCheckbox" {if !$goods_info.allow_integral} disabled="disabled"{/if}/>{$lang.use_integral}</label>
+				<input type="text" name="exchange_integral" class="integral-input J_IntegralAmount" disabled="disabled" /> {$lang.dian}
+				<i class="icon-remark J_IconRemark">
+					<div class="remark-body hidden"><div class="box">{$lang.exchange_remark}{$goods_info.integralExchange.rate}{$lang.yuan}</div></div>
+				</i>
+			</div>
+			<div class="fee float-right f66">-<em class="J_IntegralPrice">0.00</em></div>
+		</div>
+	</div>
+</div>
+
+                    
+     

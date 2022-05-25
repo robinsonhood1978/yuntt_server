@@ -1,0 +1,45 @@
+<script type="text/javascript">
+$(function(){
+    $('#cancel_button').click(function(){
+        DialogManager.close('seller_order_adjust_fee');
+    });
+});
+</script>
+<div class="eject_con">
+  <form  method="post" target="iframe" action="{url route='seller_order/adjustfee' order_id=$order.order_id}">
+    <div class="content_line">
+      <div id="warning"></div>
+      {$lang.buyer_name}:&nbsp;&nbsp;{$order.buyer_name|escape}<br />
+      {$lang.order_sn}&nbsp;&nbsp;:<strong class="color8">{$order.order_sn}</strong></div>
+    <div class="content_line">
+      <ul class="foll_in">
+        <li>
+          <h3>{$lang.goods_amount}:</h3>
+          <p><strong class="color8">{$order.goods_amount|price_format}</strong></p>
+        </li>
+        <li>
+          <h3>{$lang.shipping_fee}:</h3>
+          <p><strong class="color8">{$order.shipping_fee|price_format}</strong></p>
+        </li>
+        <li>
+          <h3>{$lang.adjust_amount}:</h3>
+          <p> <strong class="color8">{$order.adjust_amount|price_format}</strong> </p>
+        </li>
+        <li>
+          <h3>{$lang.order_discount}:</h3>
+          <p> <strong class="color8">{$order.discount|price_format}</strong> </p>
+        </li>
+      </ul>
+    </div>
+    <div class="total_value">
+      <p> <span style="width:80px; display:inline-block">{$lang.order_amount}:</span>
+        <input type="text" name="order_amount" value="{$order.order_amount}" />
+      </p>
+      <p class="explain gray mt10 mb10" style="padding-left:80px;padding-right:60px;">{$lang.order_amount}:{$lang.adjust_fee_notice}</p>
+    </div>
+    <div class="wrap_btn" style="padding-left:80px;padding-right:60px;">
+      <input type="submit" id="confirm_button" class="btn1" value="{$lang.confirm}" />
+      <input type="button" id="cancel_button" class="btn2" value="{$lang.cancel}" />
+    </div>
+  </form>
+</div>

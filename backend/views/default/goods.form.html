@@ -1,0 +1,80 @@
+{include file="header.html"}
+<div id="main">
+  {include file="menus.html"}
+  <div id="rightCon" class="clearfix layui-body">
+    <div class="scroller">
+      <div class="flexigrid">
+        <form method="post">
+          <table class="infoTable">
+            <tr>
+              <th class="paddingT15"><label>{$lang.gcategory}</label></th>
+              <td class="paddingT15 wordSpacing5">
+                <div id="gcategory">
+                  <input type="hidden" name="cate_id" value="0" class="mls_id" />
+                  <input type="hidden" name="cate_name" value="" class="mls_names" />
+                  <select>
+                    <option value="">{$lang.select_pls}</option>
+                    {html_options options=$gcategories}
+                  </select>
+                  <span class="field_notice">{$lang.note_for_batedit}</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.brand}</label></th>
+              <td class="paddingT15 wordSpacing5">
+                <select name="brand">
+                  <option value="">{$lang.select_pls}</option>
+                  <!--{foreach from=$brandList item=item}-->
+                  <option value="{$item.brand_name|escape}">{$item.brand_name|escape}</option>
+                  <!--{/foreach}-->
+                </select>
+                <span class="field_notice">{$lang.note_for_batedit}</span>
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.status}</label></th>
+              <td class="paddingT15 wordSpacing5">
+                <p>
+                  <label>
+                    <input type="radio" name="closed" value="-1" checked="checked" />
+                    {$lang.no_change}</label>
+                  <label>
+                    <input type="radio" name="closed" value="1" />
+                    {$lang.close}</label>
+                  <label>
+                    <input type="radio" name="closed" value="0" />
+                    {$lang.open}</label>
+                </p>
+              </td>
+            </tr>
+            <tr id="close_reason" style="display:none">
+              <th class="paddingT15"><label for="close_reason">{$lang.close_reason}:</label></th>
+              <td class="paddingT15 wordSpacing5"><textarea name="close_reason" cols="60" rows="3"></textarea></td>
+            </tr>
+            <tr>
+              <th></th>
+              <td class="ptb20"><input type="hidden" name="id" value="{$smarty.get.id}" />
+                <input class="layui-btn layui-bg-blue J_AjaxSubmit" type="submit" value="{$lang.submit}" />
+              </td>
+            </tr>
+          </table>
+        </form>
+      </div>
+      {include file="version.html"}
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $(function () {
+    gcategoryInit("gcategory");
+    $(":radio[name='closed']").click(function () {
+      if (this.value == 1) {
+        $("#close_reason").show();
+      } else {
+        $("#close_reason").hide();
+      }
+    });
+  });
+</script>
+{include file="footer.html"}

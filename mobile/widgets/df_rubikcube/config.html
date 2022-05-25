@@ -1,0 +1,183 @@
+<div class="widget-box">
+    <h3 class="title mt20 mb20 pb20"><strong class="fs18">魔方</strong></h3>
+    <div class="content">
+        <div class="item webkit-box">
+            <label class="gray">模板选择</label>
+            <p class="flex1 ml10 value">{if $options.layout eq 2}左二右一{else}左一右二{/if}
+            </p>
+            <input type="hidden" name="layout" value="{$options.layout|default:1}" />
+            <span class="switch first {if !in_array($options.layout, [2])} selected {/if} J_Switch" title="左一右二"
+                data-value="1"><i class="iconfont icon-layout-2-fill"></i></span>
+            <span class="switch {if $options.layout eq 2} selected {/if} J_Switch" title="左二右一" data-value="2"><i
+                    class="iconfont icon-layout-4-fill"></i></span>
+        </div>
+        <div class="item webkit-box">
+            <label class="gray">图片边框</label>
+            <p class="flex1 ml10 value">{if $options.radius eq 'round'}圆角{else}直角{/if}</p>
+            <input type="hidden" name="radius" value="{$options.radius|default:'square'}" />
+            <span class="switch first {if $options.radius eq 'round'} selected {/if} J_Edge" title="圆角" data-value="round"><i
+                    class="iconfont icon-radius-upright"></i></span>
+            <span class="switch {if $options.radius neq 'round'} selected {/if} J_Edge" title="直角"
+                data-value="square"><i class="iconfont icon-fangkuang"></i></span>
+        </div>
+        <ul class="list">
+            <li class="item padding10 webkit-box">
+                <div class="image center relative">
+                    <input onchange="fileRender(this)" class="file absolute pointer" type="file" name="ad_image_file[]">
+                    <!--{if $options.ad_image_url[0]}-->
+                    <img class="block" src="{$options.ad_image_url[0]|url_format}" />
+                    <!--{else}-->
+                    <i class="layui-icon layui-icon-addition" style="font-size: 20px;"></i>
+                    <!--{/if}-->
+                </div>
+                <div class="link ml10 gray flex1">
+                    <p class="pl10">链接地址</p>
+                    <input type="hidden" name="ad_image_url[]" value="{$options.ad_image_url[0]}" />
+                    <input class="padding10" type="text" name="ad_link_url[]" value="{$options.ad_link_url[0]}"
+                        placeholder="index/index" />
+                </div>
+            </li>
+            <li class="item padding10 webkit-box">
+                <div class="image center relative">
+                    <input onchange="fileRender(this)" class="file absolute pointer" type="file" name="ad_image_file[]">
+                    <!--{if $options.ad_image_url[1]}-->
+                    <img class="block" src="{$options.ad_image_url[1]|url_format}" />
+                    <!--{else}-->
+                    <i class="layui-icon layui-icon-addition" style="font-size: 20px;"></i>
+                    <!--{/if}-->
+                </div>
+                <div class="link ml10 gray flex1">
+                    <p class="pl10">链接地址</p>
+                    <input type="hidden" name="ad_image_url[]" value="{$options.ad_image_url[1]}" />
+                    <input class="padding10" type="text" name="ad_link_url[]" value="{$options.ad_link_url[1]}"
+                        placeholder="index/index" />
+                </div>
+            </li>
+            <li class="item padding10 webkit-box">
+                <div class="image center relative">
+                    <input onchange="fileRender(this)" class="file absolute pointer" type="file" name="ad_image_file[]">
+                    <!--{if $options.ad_image_url[2]}-->
+                    <img class="block" src="{$options.ad_image_url[2]|url_format}" />
+                    <!--{else}-->
+                    <i class="layui-icon layui-icon-addition" style="font-size: 20px;"></i>
+                    <!--{/if}-->
+                </div>
+                <div class="link ml10 gray flex1">
+                    <p class="pl10">链接地址</p>
+                    <input type="hidden" name="ad_image_url[]" value="{$options.ad_image_url[2]}" />
+                    <input class="padding10" type="text" name="ad_link_url[]" value="{$options.ad_link_url[2]}"
+                        placeholder="index/index" />
+                </div>
+            </li>
+        </ul>
+
+        <h4 class="mt10 pb10 mt20 pt20">其他设置</h4>
+        <div class="item webkit-box">
+            <label class="gray">背景颜色</label>
+            <p class="flex1 ml10 color">{$options.bgcolor|default:''}</p>
+            <input type="hidden" name="bgcolor" value="{$options.bgcolor|default:''}" />
+            <span class="f60 pointer J_Reset" data-id="picker3" data-value="">重置</span>
+            <p class="picker3 ml10"></p>
+        </div>
+        <div class="item webkit-box">
+            <label class="gray">模块间距</label>
+            <input type="hidden" name="space" value="{$options.space|default:5}" />
+            <div class="flex1 ml20 slider2" style="margin-top:15px"></div>
+        </div>
+        <div class="extra">
+            <input type="hidden" name="index" value="0" />
+        </div>
+    </div>
+</div>
+<style>
+    .widget-box .list .item {
+        border: 1px #ddd dashed;
+    }
+
+    .widget-box .list .item .image {
+        border: 1px #ddd solid;
+        width: 70px;
+        height: 70px;
+        line-height: 70px;
+        overflow: hidden;
+    }
+
+    .widget-box .list .item .file,
+    .widget-box .list .item img {
+        width: 70px;
+        height: 70px;
+        top: 0;
+        left: 0;
+        overflow: hidden;
+    }
+
+    .widget-box .list .item .file {
+        opacity: 0;
+    }
+
+    .widget-box .item .link input,
+    .widget-box .item .link input:hover {
+        border: 0;
+        border-bottom: 1px #ddd solid;
+        box-shadow: none;
+        width: calc(100% - 20px);
+    }
+</style>
+<script>
+    $(function () {
+
+        $('.J_Edge').click(function () {
+            var value = $(this).attr('data-value');
+            $(this).parent('.item').find('input').val(value);
+
+            save_widget();
+        });
+
+        layui.use('form', function () {
+            var form = layui.form;
+            form.on('switch(filter)', function (data) {
+                $(this).parents('.item').find('input').val(data.elem.checked ? 1 : 0);
+                save_widget();
+            });
+
+            form.render();
+        });
+
+        slideRender('.slider1', function (dom, value) {
+            save_widget(false);
+        }, { min: 0, max: 1000 });
+
+        slideRender('.slider2', function (dom, value) {
+            save_widget(false);
+        });
+
+        $('.J_Reset').click(function () {
+            var value = $(this).attr('data-value');
+            $(this).parent('.item').find('input[type="hidden"]').val(value);
+            save_widget();
+        });
+        $('.J_Switch').click(function () {
+            var value = $(this).attr('data-value');
+            $(this).parent('.item').find('input').val(value);
+
+            save_widget();
+        });
+
+        colorRender('.picker1', function (dom, value) {
+            save_widget();
+        });
+        colorRender('.picker2', function (dom, value) {
+            save_widget();
+        });
+        colorRender('.picker3', function (dom, value) {
+            save_widget();
+        });
+    });
+
+    function fileRender(dom) {
+        var index = $(dom).parents('.item').index();
+        $(dom).parents('form').find('input[name="index"]').val(index);
+
+        save_widget();
+    }
+</script>

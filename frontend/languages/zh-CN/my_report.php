@@ -1,0 +1,22 @@
+<?php
+return array(
+	'report_list'			=> '举报记录',
+	'report_goods' 			=> '举报的商品',
+    'report_store' 			=> '被举报的店铺',
+    'upload_files' 			=> '上传证明',
+    'delete' 				=> '删除',
+    'content' 				=> '举报内容',
+    'wait_verify' 			=> '待审核',
+    'verify' 				=> '已审核',
+    'status' 				=> '状态',
+    'no_such_item' 			=> '没有该举报项',
+    'cannot_drop' 			=> '管理员已审核，不能删除该项',
+    'drop_ok' 				=> '删除成功',
+	'time'					=> '举报时间',
+	'done' 					=> '已处理',
+	'reply'					=> '处理意见',
+	'processing_state'			=> '处理状态',
+	'goods'						=> '商品',
+	'goods_name'				=> '商品名称',
+	'report_reason'				=> '举报原因',
+);

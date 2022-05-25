@@ -1,0 +1,108 @@
+<style>
+    .colslist .wraper {
+        margin: 30px;
+        border: 1px #f1f1f1 solid;
+        border-radius: 4px;
+        height: 440px;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        scrollbar-width: none;
+    }
+
+    .colslist .column {
+        width: 230px;
+        height: 440px;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        border-right: 1px #f1f1f1 solid;
+        scrollbar-width: none;
+        float: left;
+    }
+
+    .colslist .column li {
+        padding: 5px 10px;
+        line-height: 30px;
+        cursor: pointer;
+    }
+
+    .colslist .column li.selected {
+        background-color: #0d6fb8;
+        color: #fff;
+        border-radius: 4px;
+    }
+
+    .colslist .layui-btn {
+        width: 100px;
+    }
+</style>
+
+<div class="colslist">
+    <div class="wraper clearfix">
+        <ul class="column">
+            <!--{foreach from=$list item=item}-->
+            <li class="webkit-box" data-id="{$item.cate_id}">
+                <span class="flex1">{$item.cate_name}</span>
+                <!--{if $item.switchs}-->
+                <i class="layui-icon layui-icon-right layui-font-14"></i>
+                <!--{/if}-->
+            </li>
+            <!--{/foreach}-->
+        </ul>
+    </div>
+    <ul class="template hidden">
+        <li class="webkit-box" data-id="[1]">
+            <span class="flex1">[2]</span>
+            <i class="layui-icon layui-icon-right layui-font-14 [3]"></i>
+        </li>
+    </ul>
+    <div class="submit mb20">
+        <input type="hidden" value="" name="cate_id">
+        <input type="hidden" value="" name="cate_name">
+        <input type="button" id="cancel_button" class="layui-btn layui-btn-primary layui-border-blue"
+            value="{$lang.closed}" />
+        <input type="submit" id="gs_submit" class="layui-btn layui-btn-normal" value="{$lang.confirm}" />
+    </div>
+</div>
+<script>
+    $(function () {
+        $('#gs_submit').click(function () {
+            var value = {
+                id: $(this).parents('.colslist').find('input[name="cate_id"]').val(),
+                name: $(this).parents('.colslist').find('input[name="cate_name"]').val()
+            };
+            var callback = "{$smarty.get.callback}";
+            if (callback.length > 0) {
+                eval(callback + '("acategory", ' + JSON.stringify(value) + ')');
+            }
+            DialogManager.close('acategory');
+        });
+
+        $('#cancel_button').click(function () {
+            DialogManager.close('acategory');
+        });
+
+        $('.colslist').on('click', 'li', function () {
+            var that = $(this);
+            $(this).parents('.colslist').find('input[name="cate_id"]').val(that.attr('data-id'));
+            $(this).parents('.colslist').find('input[name="cate_name"]').val(that.find('span').text());
+            that.parent().find('li').removeClass('selected');
+            that.addClass('selected');
+            $.post(url(['gselector/acategory', { id: that.attr('data-id') }, BACK_URL]), function (data) {
+                if (data.done) {
+                    var html = '';
+                    $.each(data.retval, function (i, item) {
+                        var hidden = item.switchs ? '' : 'hidden';
+                        html += sprintf($('.template').html(), item.cate_id, item.cate_name, hidden);
+                    });
+                    that.parent('ul').nextAll('ul').remove();
+                    if (html) {
+                        that.parents('.wraper').append('<ul class="column">' + html + '</ul>');
+                    }
+
+                    // 重新调整位置
+                    DialogManager.get('acategory').setPosition('center');
+                }
+            });
+        });
+    });
+</script>

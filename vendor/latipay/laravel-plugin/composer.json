@@ -1,0 +1,37 @@
+{
+    "name": "latipay/laravel-plugin",
+    "description": "latipay-plugin php compser",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "latipay support",
+            "email": "customerservice@latipay.net"
+        }
+    ],
+    "require": {
+        "php": ">=5.6",
+        "ext-openssl": "*",
+        "ext-simplexml":"*",
+        "ext-libxml": "*",
+        "ext-json": "*",
+        "ext-mbstring": "*",
+        "guzzlehttp/guzzle": "^6.3",
+        "symfony/http-foundation": "^3.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Latipay\\LaravelPlugin\\": "src/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.3",
+        "mockery/mockery": "^1.2"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Latipay\\LaravelPlugin\\PayServiceProvider"
+            ]
+        }
+    }
+}

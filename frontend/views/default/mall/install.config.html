@@ -1,0 +1,123 @@
+{include file="install.header.html"}
+<div id="main" class="main w clearfix">
+  <div class="title">{$lang.install_config}</div>
+  <div class="content">
+  	 <ul class="messages hidden">
+      </ul>
+    <form action="{url route='install/build'}" method="POST" id="post_form">
+      <div class="pr-title">
+        <h3>{$lang.db_info}</h3>
+      </div>
+      <div class="check-box2 pt20 pb20 bgf">
+        <table>
+          <tr>
+            <th>{$lang.db_host}:</th>
+            <td class="clearfix"><input type="text" class="input_text" name="db_host" value="{$smarty.post.db_host|default:'127.0.0.1'}" />
+              {$lang.db_host_notice}</td>
+          </tr>
+          <tr>
+            <th>{$lang.db_port}:</th>
+            <td class="clearfix"><input type="text" class="input_text" name="db_port" value="{$smarty.post.db_port|default:3306}" />
+              {$lang.db_port_notice}</td>
+          </tr>
+          <tr>
+            <th>{$lang.db_name}:</th>
+            <td><input type="text" class="input_text" name="db_name" value="{$smarty.post.db_name|default:'shopwind'}" />
+              {$lang.db_name_notice}</td>
+          </tr>
+          <tr>
+            <th>{$lang.db_user}:</th>
+            <td class="clearfix"><input type="text" class="input_text" name="db_user" value="{$smarty.post.db_user|default:'root'}" />
+              {$lang.db_user_notice}</td>
+          </tr>
+          <tr>
+            <th>{$lang.db_password}:</th>
+            <td class="clearfix"><input type="password" class="input_text" name="db_password" value="{$smarty.post.db_password}" />
+              {$lang.db_password_notice}</td>
+          </tr>
+          <tr>
+            <th>{$lang.db_prefix}:</th>
+            <td class="clearfix"><input type="text" class="input_text" name="db_prefix" value="{$smarty.post.db_prefix|default:'swd_'}" />
+              {$lang.db_prefix_notice}</td>
+          </tr>
+          <tr class="has_samedb hidden">
+            <th></th>
+            <td class="clearfix" style="padding:10px;line-height:20px;"><input type="checkbox" name="force" id="force" value="1" />
+              <label for="force">{$lang.force_install}</br>
+                <strong style="color:red;font-weight:400;">{$lang.force_install_notice}</strong></label></td>
+          </tr>
+        </table>
+      </div>
+      <div class="pr-title mt10">
+        <h3>{$lang.init_info}</h3>
+      </div>
+      <div class="check-box2 pt20 pb20 bgf">
+        <table>
+          <tr>
+            <th>{$lang.admin_name}:</th>
+            <td class="clearfix"><input type="text" class="input_text" name="admin_name" value="{$smarty.post.admin_name|default:'admin'}" />
+              {$lang.admin_name_notice}</td>
+          </tr>
+          <tr>
+            <th>{$lang.admin_pass}:</th>
+            <td class="clearfix"><input type="password"  class="input_text" name="admin_pass" value="{$smarty.post.admin_pass}" />
+              {$lang.admin_pass_notice}</td>
+          </tr>
+          <tr>
+            <th>{$lang.confirm_pass}:</th>
+            <td class="clearfix"><input type="password"  class="input_text" name="confirm_pass" value="{$smarty.post.confirm_pass}" />
+              {$lang.confirm_pass_notice}</td>
+          </tr>
+        </table>
+      </div>
+     
+      <div class="btn-box" style="border:0;"> {foreach from=$hiddens item=hv key=hk}
+        <input type="hidden" name="{$hk}" value="{$hv}" />
+        {/foreach}
+        <input class="btn-normal" type="button" value="{$lang.prev}" onclick="window.history.go(-1);" />
+        <input class="btn-normal ml10" type="button" id="submit_button"  value="{$lang.next}"  />
+      </div>
+    </form>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$('#submit_button').click(function() {
+		$('form').ajaxSubmit({
+			type:'post',
+			url:"{url route='install/config'}",
+			async:false,
+			cache:false,
+			dataType: "json",
+			success: function(data) {
+				if(data.done) {
+					if(data.msg == 'missing_item'){
+						var html = '<li><span>'+ lang.have_missing_item + '</span>';
+						$.each(data.retval,function(index,vaule){
+							html += '【' + vaule + '】&nbsp;&nbsp';
+						});
+						html += '</li>';
+						$('.messages').show().html(html);
+						$(document).scrollTop(0);
+						return false;
+					}
+					$('#post_form').submit();
+				}
+				else
+				{
+					if(data.msg == 'table_existed'){
+						$('.messages').hide();
+						$('.has_samedb').show();
+					}else{
+						$('.has_samedb').hide();
+						$('.messages').show().html('<li>' + lang.error_msg + data.msg + '</li>');
+						$(document).scrollTop(0);
+					}
+					return false;
+				} 
+			}
+		});
+	});
+});
+</script> 
+{include file="install.footer.html"}

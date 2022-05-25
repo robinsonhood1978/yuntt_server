@@ -1,0 +1,222 @@
+<script type="text/javascript">
+var _d = DialogManager.get('config_dialog');
+_d.setWidth(540);
+_d.setPosition('center');
+
+function loadImage(obj){
+    getTempPath(obj,function(res){
+        $(obj).parent().find('img').attr('src',res);
+    });
+}
+</script>
+<div class="field_item webkit-box">
+    <label>模块名称</label>
+    <p><input type="text" name="model_name" value="{$options.model_name}"/></p>
+</div>
+<div class="field_item webkit-box">
+	<label>切换一标题</label>
+    <p><input type="text" name="cate_name_1" value="{$options.cate_name_1}"/></p>
+</div>
+<div class="field_item webkit-box file-box box-align-center">
+    <label>切换一图1</label>
+    <p class="relative">
+        <input class="file absolute pointer" type="file" name="ad1_image_file_1" onchange="loadImage(this)" />
+        <input type="hidden" name="ad1_image_file_1" value="{$options.ad1_image_url_1}" />
+        <img src="{if $options.ad1_image_url_1}{$options.ad1_image_url_1|url_format}{else}{res file='images/upload.png'}{/if}"/>
+    </p>
+    <font class="ml10 fs12" color="gray">点击图片上传，图片尺寸：320*360px</font>
+</div>
+<div class="field_item webkit-box">     
+    <label>链接地址</label>
+    <p><input type="text" name="ad1_link_url_1" value="{$options.ad1_link_url_1}" /></p>
+</div>
+<div class="field_item webkit-box file-box box-align-center">
+    <label>切换一图2</label>
+    <p class="relative">
+        <input class="file absolute pointer" type="file" name="ad1_image_file_2" onchange="loadImage(this)" />
+        <input type="hidden" name="ad1_image_file_2" value="{$options.ad1_image_url_2}" />
+        <img src="{if $options.ad1_image_url_2}{$options.ad1_image_url_2|url_format}{else}{res file='images/upload.png'}{/if}"/>
+    </p>
+    <font class="ml10 fs12" color="gray">点击图片上传，图片尺寸：220*360px</font>
+</div>
+<div class="field_item webkit-box">     
+    <label>链接地址</label>
+    <p><input type="text" name="ad1_link_url_2" value="{$options.ad1_link_url_2}" /></p>
+</div>
+<div class="field_item webkit-box file-box box-align-center">
+    <label>切换一图3</label>
+    <p class="relative">
+        <input class="file absolute pointer" type="file" name="ad1_image_file_3" onchange="loadImage(this)" />
+        <input type="hidden" name="ad1_image_file_3" value="{$options.ad1_image_url_3}" />
+        <img src="{if $options.ad1_image_url_3}{$options.ad1_image_url_3|url_format}{else}{res file='images/upload.png'}{/if}"/>
+    </p>
+    <font class="ml10 fs12" color="gray">点击图片上传，图片尺寸：220*360px</font>
+</div>
+<div class="field_item webkit-box">     
+    <label>链接地址</label>
+    <p><input type="text" name="ad1_link_url_3" value="{$options.ad1_link_url_3}" /></p>
+</div>
+<div class="field_item webkit-box file-box box-align-center">
+    <label>切换一图4</label>
+    <p class="relative">
+        <input class="file absolute pointer" type="file" name="ad1_image_file_4" onchange="loadImage(this)" />
+        <input type="hidden" name="ad1_image_file_4" value="{$options.ad1_image_url_4}" />
+        <img src="{if $options.ad1_image_url_4}{$options.ad1_image_url_4|url_format}{else}{res file='images/upload.png'}{/if}"/>
+    </p>
+    <font class="ml10 fs12" color="gray">点击图片上传，图片尺寸：220*360px</font>
+</div>
+<div class="field_item webkit-box">     
+    <label>链接地址</label>
+    <p><input type="text" name="ad1_link_url_4" value="{$options.ad1_link_url_4}" /></p>
+</div>
+<div class="field_item webkit-box file-box box-align-center">
+    <label>切换一图5</label>
+    <p class="relative">
+        <input class="file absolute pointer" type="file" name="ad1_image_file_5" onchange="loadImage(this)" />
+        <input type="hidden" name="ad1_image_file_5" value="{$options.ad1_image_url_5}" />
+        <img src="{if $options.ad1_image_url_5}{$options.ad1_image_url_5|url_format}{else}{res file='images/upload.png'}{/if}"/>
+    </p>
+    <font class="ml10 fs12" color="gray">点击图片上传，图片尺寸：220*360px</font>
+</div>
+<div class="field_item webkit-box">     
+    <label>链接地址</label>
+    <p><input type="text" name="ad1_link_url_5" value="{$options.ad1_link_url_5}" /></p>
+</div>
+<div class="field_item webkit-box">
+	<label>切换二标题</label>
+    <p><input type="text" name="cate_name_2" value="{$options.cate_name_2}"/></p>
+</div>
+<div class="field_item webkit-box file-box box-align-center">
+    <label>切换二图1</label>
+    <p class="relative">
+        <input class="file absolute pointer" type="file" name="ad2_image_file_1" onchange="loadImage(this)" />
+        <input type="hidden" name="ad2_image_file_1" value="{$options.ad2_image_url_1}" />
+        <img src="{if $options.ad2_image_url_1}{$options.ad2_image_url_1|url_format}{else}{res file='images/upload.png'}{/if}"/>
+    </p>
+    <font class="ml10 fs12" color="gray">点击图片上传，图片尺寸：320*360px</font>
+</div>
+<div class="field_item webkit-box">     
+    <label>链接地址</label>
+    <p><input type="text" name="ad2_link_url_1" value="{$options.ad2_link_url_1}" /></p>
+</div>
+<div class="field_item webkit-box file-box box-align-center">
+    <label>切换二图2</label>
+    <p class="relative">
+        <input class="file absolute pointer" type="file" name="ad2_image_file_2" onchange="loadImage(this)" />
+        <input type="hidden" name="ad2_image_file_2" value="{$options.ad2_image_url_2}" />
+        <img src="{if $options.ad2_image_url_2}{$options.ad2_image_url_2|url_format}{else}{res file='images/upload.png'}{/if}"/>
+    </p>
+    <font class="ml10 fs12" color="gray">点击图片上传，图片尺寸：220*360px</font>
+</div>
+<div class="field_item webkit-box">     
+    <label>链接地址</label>
+    <p><input type="text" name="ad2_link_url_2" value="{$options.ad2_link_url_2}" /></p>
+</div>
+<div class="field_item webkit-box file-box box-align-center">
+    <label>切换二图3</label>
+    <p class="relative">
+        <input class="file absolute pointer" type="file" name="ad2_image_file_3" onchange="loadImage(this)" />
+        <input type="hidden" name="ad2_image_file_3" value="{$options.ad2_image_url_3}" />
+        <img src="{if $options.ad2_image_url_3}{$options.ad2_image_url_3|url_format}{else}{res file='images/upload.png'}{/if}"/>
+    </p>
+    <font class="ml10 fs12" color="gray">点击图片上传，图片尺寸：220*360px</font>
+</div>
+<div class="field_item webkit-box">     
+    <label>链接地址</label>
+    <p><input type="text" name="ad2_link_url_3" value="{$options.ad2_link_url_3}" /></p>
+</div>
+<div class="field_item webkit-box file-box box-align-center">
+    <label>切换二图4</label>
+    <p class="relative">
+        <input class="file absolute pointer" type="file" name="ad2_image_file_4" onchange="loadImage(this)" />
+        <input type="hidden" name="ad2_image_file_4" value="{$options.ad2_image_url_4}" />
+        <img src="{if $options.ad2_image_url_4}{$options.ad2_image_url_4|url_format}{else}{res file='images/upload.png'}{/if}"/>
+    </p>
+    <font class="ml10 fs12" color="gray">点击图片上传，图片尺寸：220*360px</font>
+</div>
+<div class="field_item webkit-box">     
+    <label>链接地址</label>
+    <p><input type="text" name="ad2_link_url_4" value="{$options.ad2_link_url_4}" /></p>
+</div>
+<div class="field_item webkit-box file-box box-align-center">
+    <label>切换二图5</label>
+    <p class="relative">
+        <input class="file absolute pointer" type="file" name="ad2_image_file_5" onchange="loadImage(this)" />
+        <input type="hidden" name="ad2_image_file_5" value="{$options.ad2_image_url_5}" />
+        <img src="{if $options.ad2_image_url_5}{$options.ad2_image_url_5|url_format}{else}{res file='images/upload.png'}{/if}"/>
+    </p>
+    <font class="ml10 fs12" color="gray">点击图片上传，图片尺寸：220*360px</font>
+</div>
+<div class="field_item webkit-box">     
+    <label>链接地址</label>
+    <p><input type="text" name="ad2_link_url_5" value="{$options.ad2_link_url_5}" /></p>
+</div>
+<div class="field_item webkit-box">
+	<label>切换三标题</label>
+    <p><input type="text" name="cate_name_3" value="{$options.cate_name_3}"/></p>
+</div>
+<div class="field_item webkit-box file-box box-align-center">
+    <label>切换三图1</label>
+    <p class="relative">
+        <input class="file absolute pointer" type="file" name="ad3_image_file_1" onchange="loadImage(this)" />
+        <input type="hidden" name="ad3_image_file_1" value="{$options.ad3_image_url_1}" />
+        <img src="{if $options.ad3_image_url_1}{$options.ad3_image_url_1|url_format}{else}{res file='images/upload.png'}{/if}"/>
+    </p>
+    <font class="ml10 fs12" color="gray">点击图片上传，图片尺寸：320*360px</font>
+</div>
+<div class="field_item webkit-box">     
+    <label>链接地址</label>
+    <p><input type="text" name="ad3_link_url_1" value="{$options.ad3_link_url_1}" /></p>
+</div>
+<div class="field_item webkit-box file-box box-align-center">
+    <label>切换三图2</label>
+    <p class="relative">
+        <input class="file absolute pointer" type="file" name="ad3_image_file_2" onchange="loadImage(this)" />
+        <input type="hidden" name="ad3_image_file_2" value="{$options.ad3_image_url_2}" />
+        <img src="{if $options.ad3_image_url_2}{$options.ad3_image_url_2|url_format}{else}{res file='images/upload.png'}{/if}"/>
+    </p>
+    <font class="ml10 fs12" color="gray">点击图片上传，图片尺寸：220*360px</font>
+</div>
+<div class="field_item webkit-box">     
+    <label>链接地址</label>
+    <p><input type="text" name="ad3_link_url_2" value="{$options.ad3_link_url_2}" /></p>
+</div>
+<div class="field_item webkit-box file-box box-align-center">
+    <label>切换三图3</label>
+    <p class="relative">
+        <input class="file absolute pointer" type="file" name="ad3_image_file_3" onchange="loadImage(this)" />
+        <input type="hidden" name="ad3_image_file_3" value="{$options.ad3_image_url_3}" />
+        <img src="{if $options.ad3_image_url_3}{$options.ad3_image_url_3|url_format}{else}{res file='images/upload.png'}{/if}"/>
+    </p>
+    <font class="ml10 fs12" color="gray">点击图片上传，图片尺寸：220*360px</font>
+</div>
+<div class="field_item webkit-box">     
+    <label>链接地址</label>
+    <p><input type="text" name="ad3_link_url_3" value="{$options.ad3_link_url_3}" /></p>
+</div>
+<div class="field_item webkit-box file-box box-align-center">
+    <label>切换三图4</label>
+    <p class="relative">
+        <input class="file absolute pointer" type="file" name="ad3_image_file_4" onchange="loadImage(this)" />
+        <input type="hidden" name="ad3_image_file_4" value="{$options.ad3_image_url_4}" />
+        <img src="{if $options.ad3_image_url_4}{$options.ad3_image_url_4|url_format}{else}{res file='images/upload.png'}{/if}"/>
+    </p>
+    <font class="ml10 fs12" color="gray">点击图片上传，图片尺寸：220*360px</font>
+</div>
+<div class="field_item webkit-box">     
+    <label>链接地址</label>
+    <p><input type="text" name="ad3_link_url_4" value="{$options.ad3_link_url_4}" /></p>
+</div>
+<div class="field_item webkit-box file-box box-align-center">
+    <label>切换三图5</label>
+    <p class="relative">
+        <input class="file absolute pointer" type="file" name="ad3_image_file_5" onchange="loadImage(this)" />
+        <input type="hidden" name="ad3_image_file_5" value="{$options.ad3_image_url_5}" />
+        <img src="{if $options.ad3_image_url_5}{$options.ad3_image_url_5|url_format}{else}{res file='images/upload.png'}{/if}"/>
+    </p>
+    <font class="ml10 fs12" color="gray">点击图片上传，图片尺寸：220*360px</font>
+</div>
+<div class="field_item webkit-box">     
+    <label>链接地址</label>
+    <p><input type="text" name="ad3_link_url_5" value="{$options.ad3_link_url_5}" /></p>
+</div>

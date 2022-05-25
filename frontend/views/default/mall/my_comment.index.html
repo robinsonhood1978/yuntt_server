@@ -1,0 +1,57 @@
+{include file="user.header.html"} 
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful"> {include file="user.submenu.html"}
+      <div class="wrap">
+        <div class="public_index table1">
+          <table>
+            <!-- {foreach from=$commentlist item=item name=fe_item}-->
+            <tr class="bgcolor">
+              <td class="align2"></td>
+              <td><a class="pl10" href="{url route='goods/index' id=$item.goods_id}" target="_blank" class="link3">{$item.goods_name}</a></td>
+              <td width="150"><span class="table_user">{$item.buyer_name|escape}</span></td>
+              <td><!--{if $item.reply_comment eq ''}--> 
+                <a href="javascript:void(0);" class="add1_ico reply" ectype="dialog" dialog_id="my_comment_reply" dialog_title="{$lang.reply_comment_form}" dialog_width="400" uri="{url route='my_comment/reply' rec_id=$item.rec_id}">{$lang.reply}</a> 
+                <!--{/if}--></td>
+            </tr>
+            <tr style="height:40px;">
+              <td height="20"></td>
+              <td><span class="pl10">{$lang.comment_content}{$lang.colon}</span> <span>{$item.comment|default:$lang.empty_comment}</span></td>
+              <td><span class="time">{$item.evaluation_time|date_format:"%Y.%m.%d %H:%M:%S"}</span></td>
+              <td></td>
+            </tr>
+            <!--{if $item.reply_comment neq ''}-->
+            <tr class="{if $smarty.foreach.fe_item.last}line_bold{/if}">
+              <td height="40"></td>
+              <td><span class="color8 pl10">{$lang.my_reply}{$lang.colon}</span><span class="color3">{$item.reply_comment|escape}</span></td>
+              <td><span class="time">{$item.time_reply|date_format:"%Y.%m.%d %H:%M:%S"}</span></td>
+              <td></td>
+            </tr>
+            <!-- {else} --> 
+            <!--{if $smarty.foreach.qa.last}-->
+            <tr class="line_bold">
+              <td colspan="4">&nbsp;</td>
+            </tr>
+            <!--{/if}--> 
+            <!--{/if}--> 
+            <!-- {foreachelse} -->
+            <tr>
+              <td colspan="4"><div class="notice-word">
+                  <p>{$lang.no_records}</p>
+                </div></td>
+            </tr>
+            <!-- {/foreach} --> 
+            <!--{if $commentlist}-->
+            <tr style=" background:#f4f4f4;">
+              <th></th>
+              <th colspan="3"> <div class="position2 clearfix pr10">{include file="page.bottom.html"}</div> </th>
+            </tr>
+            <!--{/if}-->
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<iframe id="iframe" name="iframe" src="about:blank" frameborder="0" width="0" height="0" style="display:none"></iframe>
+{include file="user.footer.html"} 

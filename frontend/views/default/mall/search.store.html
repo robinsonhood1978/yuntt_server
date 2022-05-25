@@ -1,0 +1,146 @@
+{include file="header.html"}
+<div id="main" class="w-full">
+  <div id="page-search-store" class="w mb20 mt20">
+    <div class="w mb20 border relative wrap-by">
+      <div class="search-by by-category relative">
+        <!--{foreach from=$scategories item=scategory name=fe_scategory}-->
+        <dl class="relative clearfix {if $smarty.foreach.fe_scategory.iteration gt 4}hidden{/if}">
+          <dt class="float-left"><a href="{url route='search/store' cate_id=$scategory.id}">{$scategory.value|escape}</a></dt>
+          <dd class="float-left"> 
+            <!--{if $scategory.children}--> 
+            <!--{foreach from=$scategory.children item=child name=fe_child}--> 
+            <a href="{url route='search/store' cate_id=$child.id}" class="{if $smarty.foreach.fe_child.iteration gt 7}toggle hidden{/if}">{$child.value|escape}</a> 
+            <!--{/foreach}--> 
+            <!--{else}--> 
+            &nbsp; 
+            <!--{/if}--> 
+          </dd>
+          <dd class="float-left" style="position:absolute;top:3px; right:0;width:80px; height:30px;padding:0;"><span class="more-it clearfix"><em>{$lang.more}</em><i></i></span></dd>
+        </dl>
+        <!--{/foreach}--> 
+      </div>
+      <div class="attr-bottom"> <ins></ins><b class="show-more"><span>展开</span>分类<i></i></b> </div>
+    </div>
+    <div class="shops-list w clearfix">
+      <div  class="sort-type  mb10 clearfix">
+        <div class="clearfix float-left btn-order"> 
+          <!--<span>{$lang.order_by}{$lang.colon}</span>--> 
+          <!--{foreach from=$orders item=order key=k name=fe_order}--> 
+          <!--{if !$k}--> 
+          <a class="btn-order-click default-sort" id="{$k}" href="javascript:;">{$order}</a> 
+          <!--{else}--> 
+          <a class="btn-order-click order-down-gray" ectype="{$k}" id="{$k}" href="javascript:;">{$order}<b></b></a> 
+          <!--{/if}--> 
+          <!--{/foreach}--> 
+        </div>
+        <div class="clearfix float-right mt5"> <a class="select-param"  href="javascript:;"> {$lang.credit_grade} <span><i></i></span>
+          <ul class="tan" ectype="level">
+            <li v="crown">{$lang.crowns}</li>
+            <li v="diamond">{$lang.diamonds}</li>
+            <li v="heart">{$lang.hearts}</li>
+            <li v="">{$lang.no_limit}</li>
+          </ul>
+          </a> <a class="select-param"  href="javascript:;"> {$lang.recommended} <span><i></i></span>
+          <ul class="tan" ectype="recommended">
+            <li v="1">{$lang.yes}</li>
+            <li v="0">{$lang.no}</li>
+            <li v="">{$lang.no_limit}</li>
+          </ul>
+          </a> <a class="select-param"  href="javascript:;"> {$lang.praise_rate} <span><i></i></span>
+          <ul class="tan" ectype="praise_rate">
+            <li v="90">{$lang.gt90}</li>
+            <li v="80">{$lang.gt80}</li>
+            <li v="70">{$lang.gt70}</li>
+            <li v="60">{$lang.gt60}</li>
+            <li v="50">{$lang.gt50}</li>
+            <li v="">{$lang.no_limit}</li>
+          </ul>
+          </a> <a class="select-param"  href="javascript:;"> {$lang.sgrade} <span><i></i></span>
+          <ul class="tan" ectype="sgrade">
+            <!--{foreach from=$sgrades item=sgrade key=key}-->
+            <li v="{$key}">{$sgrade}</li>
+            <!--{/foreach}-->
+            <li v="">{$lang.no_limit}</li>
+          </ul>
+          </a> </div>
+      </div>
+      <div class="list-fields w mb10">
+        <ul>
+          <!--{foreach from=$storelist item=store}-->
+          <li>
+            <div class="store-info clearfix">
+              <div class="row_1 float-left"><a href="{url route='store/index' id=$store.store_id}" target="_blank"><img class="lazyload" initial-url="{$store.store_logo|url_format}" width="80" height="80" /></a></div>
+              <div class="row_2 float-left">
+                <h2><a href="{url route='store/index' id=$store.store_id}" target="_blank">{$store.store_name|escape}</a> 
+                  <!--{if $store.credit_value ge 0}--> 
+                  <img src="{$store.credit_image|url_format}" align="absMiddle" /> 
+                  <!--{/if}-->
+                </h2>
+                <div class="d-info"> <span>{$lang.address}{$lang.colon}</span><em>{$store.address|escape}</em> </div>
+                <div class="owner_info"> <span>{$lang.owner}{$lang.colon}</span> <a href="{url route='store/index' id=$store.store_id}">{$store.owner_name|escape}</a> <a href="tencent://message/?uin={$store.im_qq|default:'561223725'}&Site={$homeUrl}&Menu=yes"><img border="0" align="absMiddle" src="http://wpa.qq.com/pa?p=2:{$store.im_qq|default:'561223725'}:41" /></a></div>
+              </div>
+              <div class="row_3 float-left">
+                <div class="rate-info">
+                  
+                  <ul>
+                    <li> {$lang.goods_evaluation} <span class="credit">{$store.dynamicEvaluation.goods.value}</span>  </li>
+                    <li> {$lang.service_evaluation} <span class="credit">{$store.dynamicEvaluation.service.value}</span>  </li>
+                    <li> {$lang.shipped_evaluation} <span class="credit">{$store.dynamicEvaluation.shipped.value}</span>  </li>
+                  </ul>
+                </div>
+              </div>
+              <div class="row_4 float-left">
+                <p>{$store.sgrade_name}</p>
+                <p>{$lang.praise_rate}{$lang.colon}{$store.praise_rate|default:0}%</p>
+                <p>{$lang.store_all_sold}<b>{$store.sales|default:0}</b>{$lang.count_of_order}</p>
+              </div>
+              <div class="row_5 float-right"> <a href="{url route='store/index' id=$store.store_id}" target="_blank" class="enter-shop">进入店铺<i> >></i></a> <a href="javascript:;" class="view-all-goods"><em>{$store.goods_count|default:0}</em>件相关商品<i class="drop-icon"></i></a> </div>
+            </div>
+            
+            <!--{if $store.goodslist}-->
+            <div class="store-goods mt5 mb5 J_Swiper"> <b></b> <a class="prev" href="javascript:;"></a> <a class="next" href="javascript:;"></a>
+              <div class="clr"></div>
+              <!--for ie -->
+              <div class="scroller">
+                <div class="ks-switchable-content"> 
+                  <!--{foreach from=$store.goodslist item=goods}-->
+                  <dl>
+                    <dt><a href="{url route='goods/index' id=$goods.goods_id}" target="_blank"><img width="160" height="160" class="lazyload" initial-url="{$goods.default_image|default:$app->params['default_goods_image']|url_format}" /></a></dt>
+                    <dd>
+                      <div class="desc"><a href="{url route='goods/index' id=$goods.goods_id}" target="_blank">{$goods.goods_name}</a></div>
+                      <div class="price"><span>{$goods.price|price_format}</span></div>
+                    </dd>
+                  </dl>
+                  <!-- {/foreach} --> 
+                </div>
+              </div>
+              <div class="more-store-goods"> <a href="{url route='store/search' id=$store.store_id}" target="_blank">更多相关商品 >></a> </div>
+            </div> 
+            <!--{/if}--> 
+          </li>
+          <!-- {foreachelse} -->
+          <div class="notice-word">
+            <p class="yellow-big">{$lang.no_store}</p>
+          </div>
+          <!--{/foreach}-->
+        </ul>
+      </div>
+      <div class="clearfix page-big center mt20">{include file="page.bottom.html"}</div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function (){
+	
+	// 设置排序
+	setFilterOrder('{$smarty.get.orderby}');
+	$(".btn-order a").click(function(){
+		setFilterOrder('{$smarty.get.orderby}', this);
+	});
+	
+	$('.J_Swiper').each(function(index, element) {
+  		$(this).slide({ mainCell:".ks-switchable-content", titCell:".ks-switchable-nav span", effect:"leftLoop", scroll:1, vis:5, trigger:"click", prevCell:".prev", nextCell:".next", titOnClassName:"ks-active", autoPlay:false});
+    });
+});
+</script> 
+{include file="footer.html"}

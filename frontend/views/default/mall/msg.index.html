@@ -1,0 +1,46 @@
+{include file="user.header.html"}
+<style>
+.page-msg form { margin-left: 30px;}
+.page-msg form p { line-height: 30px;} 
+.page-msg form h3 { font-size: 14px;margin-bottom: 5px;margin-top:20px;}
+</style>
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+    <div id="right"> {include file="user.curlocal.html"}
+        <div class="wrapful">{include file="user.submenu.html"}
+            <div class="wrap page-msg">
+                <div class="notice-word">
+                    <p>
+                        <!--{if $visitor.phone_mob}-->
+                        接收短信号码：<strong class="fs14 f60">{$visitor.phone_mob}</strong> <a href="{url route='user/phone' redirect=$redirect}" class="mr20">[{$lang.modify}]</a> 短信可用数量：<strong class="fs14 f60"> {$msg.num|default:0} </strong>{$lang.item}， 已发送数量：
+                        <strong class="fs14 f60"> {$msg.sendTotal|default:0} </strong>{$lang.item}
+                        <!--{else}-->
+                        您还没有绑定手机，不能使用短信功能，请先绑定手机！ <a href="{url route='user/phone' redirect=$redirect}">绑定</a>
+                        <!--{/if}-->
+                    </p>
+                </div>
+                <form method="post">
+                    <div class="mt20">
+                        <h3>是否开启：</h3>
+                        <p class="ml10">
+                            <label class="switch-checkbox-radio inline-block box-align-center J_SwtcherInput {if $msg.state eq '1'} checked{/if}" for="switcher"><span class="switcher-style block"></span></label>
+                            <input name="state" class="hidden" id="switcher" value="1" type="checkbox" {if $msg.state eq '1'} checked="checked" {/if}>
+                        </p>
+                        <h3>选择发送：</h3>
+                        <div class="ml10">
+                            <!--{if $functions}-->
+                            {foreach from=$functions item=fun}
+                            <p><input type="checkbox" name="functions[]" {if in_array($fun, explode( ',', $msg[ 'functions']))} checked{/if} value="{$fun}" id="function_{$fun}" />
+                                <label for="function_{$fun}">&nbsp;{$lang.$fun}</label> &nbsp;&nbsp; {/foreach}
+                            </p>
+                            <!--{/if}-->
+                        </div>
+                        <div class="submit" style="padding-left:0;">
+                            <input type="submit" value="{$lang.submit}" class="btn-alipay mt20 J_AjaxSubmit" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{include file="user.footer.html"}

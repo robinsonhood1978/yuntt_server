@@ -1,0 +1,67 @@
+{include file="user.header.html"}
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful">{include file="user.submenu.html"}
+      <div class="bind clearfix">
+        <div class="notice-word pt20">
+          <p>使用第三方账号绑定本站，您可以第三方账号轻松登录，无需记住本站的账号和密码，随时轻松登录…</p>
+        </div>
+        <div class="con clearfix"> 
+          <!--{foreach from=$binds item=item}-->
+          <dl class="float-left mr10 clearfix">
+            <dt class="float-left"><img src='{res file="images/{$item.code}.png"}' width="80" height="80" /></dt>
+            <dd class="float-left ml10">
+              <h3>{$item.name}</h3>
+              <div class="status"> 
+                <!--{if $item.enabled}-->
+                <p><i class="ico good"></i><span class="gray mt5 mb5">已绑定</span></p>
+                <a class="btn J_Relieve" href="javascript:;" data-id="{$item.code}">解除绑定</a> 
+                <!--{else}-->
+                <p><i class="ico error"></i><span class="gray mt5 mb5">未绑定</span></p>
+                <a class="btn J_Bind" href="javascript:;" uri='{url route="connect/{$item.code}"}'>添加绑定</a> 
+                <!--{/if}--> 
+              </div>
+            </dd>
+          </dl>
+          <!--{/foreach}-->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+	$(function(){
+		$('.J_Bind').click(function(){
+			var uri = $(this).attr('uri');
+			layer.open({
+			  type: 2,
+			  title: '使用第三方账号绑定本站',
+			  shadeClose: true,
+			  shade: false,
+			  area: ['800px', '600px'],
+			  content: uri,
+			  end:function(){
+					window.location.reload();
+				}
+			});
+		});
+		$('.J_Relieve').click(function(){
+			var code = $(this).attr("data-id");
+			layer.confirm('解绑后将无法继续使用此账户快速登录网站。',{ icon: 3, title:'解除绑定'},function(index){
+				$.getJSON("{url route='connect/relieve'}", { code: code},function(data){
+					if(data.done){
+						layer.msg(data.msg, { icon: 1});
+						layer.close(index);
+						window.location.reload();
+					}else{
+						layer.msg(data.msg);
+						layer.close(index);
+					}
+				});
+			},function(index){
+				layer.close(index);
+			});
+		});
+	})
+</script>
+{include file="user.footer.html"} 

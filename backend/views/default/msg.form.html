@@ -1,0 +1,65 @@
+{include file="header.html"}
+<div id="main">
+  {include file="menus.html"}
+  <div id="rightCon" class="clearfix layui-body">
+    <div class="scroller">
+      <div class="explanation" id="explanation">
+        <div class="title" id="checkZoom"> <i class="fa fa-lightbulb-o"></i>
+          <h4>{$lang.operation_tip}</h4>
+        </div>
+        <ul>
+          <li>1. 为避免短信被滥用，造成不必要的损失，需要平台分配给用户一定的短信数量，用户才能使用短信功能</li>
+          <li>2. 如果用户短信消耗完毕，则无法发送如：下单提醒，付款提醒等的短信</li>
+        </ul>
+      </div>
+      <div class="layui-tab">
+        <ul class="layui-tab-title">
+          <li><a href="{url route='msg/index'}">{$lang.sendlog}</a></li>
+          <li><a href="{url route='msg/recharge'}">{$lang.msgrecharge}</a></li>
+          <li><a href="{url route='msg/user'}">{$lang.msguser}</a></li>
+          <li class="layui-this">{$lang.msgadd}</li>
+          <li><a href="{url route='msg/template'}">{$lang.msgtemplate}</a></li>
+          <li><a href="{url route='msg/send'}">{$lang.sendtest}</a></li>
+        </ul>
+      </div>
+      <div class="flexigrid mt10">
+        <form method="post">
+          <table class="infoTable">
+            <tr>
+              <th class="paddingT15"><label>{$lang.username}</label></th>
+              <td class="paddingT15 wordSpacing5"><input name="username" type="text" value="{$user.username}" size="10">
+                <label class="field_notice">{$lang.username_desc}</label>
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.num}</label></th>
+              <td class="paddingT15 wordSpacing5"><input name="num" type="text" size="10">
+                <label class="field_notice">{$lang.num_desc}</label>
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.command}</label></th>
+              <td class="paddingT15 layui-form">
+                <input type="radio" name="direction" value="add" title="{$lang.add_msg}" checked="checked" />
+                <input type="radio" name="direction" value="reduce" title="{$lang.dec_msg}" />
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.command_log}</label></th>
+              <td class="paddingT15 wordSpacing5"><textarea
+                  name="content">{$visitor.username}{$lang.adminmsglog}</textarea></td>
+            </tr>
+            <tr>
+              <th></th>
+              <td class="ptb20"><input class="layui-btn layui-bg-blue J_AjaxSubmit" type="submit"
+                  value="{$lang.submit}" />
+              </td>
+            </tr>
+          </table>
+        </form>
+      </div>
+      {include file="version.html"}
+    </div>
+  </div>
+</div>
+{include file="footer.html"}

@@ -1,0 +1,112 @@
+{use class="common\library\Def"}
+<script type="text/javascript">		
+$(function(){
+	$('#confirm_button').click(function(){
+		// 打印出现页头页尾问题：跟浏览器有关，以火狐为例：火狐->右上角->打印->页面设置->页边距和页眉/页脚->页眉和页脚->填空白
+		$(".J_PrintArea").printArea({ popTitle:'{$order.seller_name}'});
+	});
+	$('#cancel_button, #confirm_button').click(function(){
+		DialogManager.close('seller_order_printed');
+	});
+});
+</script>
+<div class="content1">
+  <div id="warning"></div>
+  <form method="post" action="{url route='seller_order/printed' order_id=$order_id}" target="iframe">
+    <div class="print-area J_PrintArea">
+      <style type="text/css" media="all">
+			.print-area { max-height:500px; overflow-y:scroll; color:#000}
+			.print-area .item { margin-right:20px;  page-break-after:always;}
+			.print-area .item .hd { font-size:18px; text-align:center;line-height:38px;height:38px;}
+			.print-area table{ border-spacing:0px; line-height:18px;border-collapse:separate}
+			.print-area table th,.print-area table td{ background:#fff; width:20%; font-weight:normal;padding:10px 0; font-size:14px;border:1px #000000 solid;}
+			.print-area table td{ width:30%}
+			.print-area table tr td span,.print-area table tr th span{ padding:0 5px; display:block}
+			.print-area table tr span i{ font-size:14px; font-style:normal}
+			.print-area table td.noborder,.print-area table th.noborder{ border:0;width:50%;}
+	</style>
+      <style type="text/css" media="print">
+			.print-area { max-height:2000px;}
+			.print-area .item .hd { font-size:38px;line-height:38px;height:38px;margin:60px 0 50px 0;}
+			.print-area table{ line-height:28px;}
+			.print-area table th,.print-area table td{ font-size:22px; width:9%; text-align:left}
+			.print-area table td{ width:41%}
+			.print-area table tr span i{ font-size:22px}
+		</style>
+      
+      <!--{foreach from=$orders item=order name=fe_order}-->
+      <div class="item mb20">
+        <div class="hd">销售清单</div>
+        <table border="0" width="100%" height="500">
+          <tr>
+            <td class="noborder" colspan="2"><span>卖家：{$order.seller_name}</span></td>
+            <td class="noborder" colspan="2" align="right"><span style="text-align:right">制单时间：{$now|date_format:"%Y.%m.%d"}</span></td>
+          </tr>
+          <tr>
+            <th><span>订单编号</span></th>
+            <td><span>{$order.order_sn}</span></td>
+            <th><span>订单状态</span></th>
+            <td><span>{Def::getOrderStatus($order.status)}</span></td>
+          </tr>
+          <tr>
+            <th><span>订单金额</span></th>
+            <td><span>{$order.order_amount|price_format}</span></td>
+            <th><span>配送费用</span></th>
+            <td><span>{$order.shipping_fee|price_format}</span></td>
+          </tr>
+          <tr>
+            <th><span>支付方式</span></th>
+            <td><span>{$order.payment_name}</span></td>
+            <th><span>配送方式</span></th>
+            <td><span>{$order.shipping_name}</span></td>
+          </tr>
+          <tr>
+            <th><span>下单时间</span></th>
+            <td><span>{$order.add_time|date_format:"%Y.%m.%d %H:%M:%S"}</span></td>
+            <th><span>付款时间</span></th>
+            <td><span>{if $order.pay_time}{$order.pay_time|date_format:"%Y.%m.%d %H:%M:%S"}{/if}</span></td>
+          </tr>
+          <tr>
+            <th><span>发货时间</span></th>
+            <td><span>{if $order.ship_time}{$order.ship_time|date_format:"%Y.%m.%d %H:%M:%S"}{/if}</span></td>
+            <th><span>完成时间</span></th>
+            <td><span>{if $order.finished_time}{$order.finished_time|date_format:"%Y.%m.%d %H:%M:%S"}{/if}</span></td>
+          </tr>
+          <tr>
+            <td colspan="4" align="left"><span>收货人信息</span></td>
+          </tr>
+          <tr>
+            <th><span>收<i style="margin:0 7px">货</i>人</span></th>
+            <td><span>{$order.consignee|escape}</span></td>
+            <th><span>收货地址</span></th>
+            <td><span>{$order.region_name|escape}{$order.address|escape}</span></td>
+          </tr>
+          <tr>
+            <th><span>联系电话</span></th>
+            <td><span><!--{if $order.phone_mob}-->{$order.phone_mob}<!--{else}-->{$order.phone_tel}<!--{/if}--></span></td>
+            <th><span>买家QQ</span></th>
+            <td><span>{$order.im_qq|escape}</span></td>
+          </tr>
+          <tr>
+            <th colspan="1"><span>下单附言</span></th>
+            <td colspan="3"><span>{$order.postscript|escape}</span></td>
+          </tr>
+          <tr>
+            <td colspan="4" align="left"><span>商品信息</span></td>
+          </tr>
+          <!--{foreach from=$order.orderGoods item=goods name=fe_goods}-->
+          <tr>
+            <td colspan="3" align="left"><span>{$smarty.foreach.fe_goods.iteration}) {$goods.goods_name} {if $goods.specification}<i class="gray">({$goods.specification})</i>{/if}</span></td>
+            <td><span>{$goods.price|price_format} x {$goods.quantity}</span></td>
+          </tr>
+          <!--{/foreach}--> 
+        </table>
+      </div>
+      <!--{/foreach}--> 
+    </div>
+    <div class="center mt20 submit">
+      <input type="button" id="confirm_button" class="btn" value="开始打印" />
+      <input type="button" id="cancel_button" class="btn2" value="取消打印" />
+    </div>
+  </form>
+</div>

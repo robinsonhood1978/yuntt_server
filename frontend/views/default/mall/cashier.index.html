@@ -1,0 +1,176 @@
+{include file="user.header.html"}
+<style>#main, .w{ width:1000px;}</style>
+<div id="main" class="clearfix">
+  <div id="mycart" class="w auto pb20" style="background:#eeefef; display:none">
+    <div class="step step1000 step3 mt10 clearfix"> <span class="fs14 f60">{$lang.ckgwc}</span> <span class="fs14 f60">{$lang.qrddxx}</span> <span class="fs14 fff">{$lang.fk}</span> 
+      <!--{if in_array($orderInfo.payType, array('INSTANT'))}--> 
+      <span class="fs14">{$lang.jywc}</span> 
+      <!--{else}--> 
+      <span class="fs14">{$lang.qrsh}</span> 
+      <!--{/if}--> 
+      <span class="fs14">{$lang.pj}</span> </div>
+  </div>
+  <div class="depopay">
+    <div class="content">
+      <div class="order-info">
+        <div class="order-base clearfix">
+          <div class="explain"> <span></span>
+            <p>您正在使用{$lang.{$orderInfo.payType}}付款</p>
+          </div>
+          <div class="goods-message clearfix">
+            <h3 class="float-left">{$orderInfo.title|escape|truncate:200}</h3>
+          </div>
+          <div class="payAmount clearfix"> <strong class="float-left mr5">{$orderInfo.amount|price_format}</strong> 元 <a href="javascript:window.location.reload();" class="f60">刷新</a> </div>
+        </div>
+        <div class="order-detail hidden" id="depopay-order-detail">
+          <div class="clearfix {if $orderInfo.mergePay}mergepay{else}normalpay{/if}">
+            <ul class="hd clearfix">
+              <li>订单编号<span>{$lang.colon}</span></li>
+              <li class="name">商品名称<span>{$lang.colon}</span></li>
+              <li>卖家店铺<span>{$lang.colon}</span></li>
+              <li>交易金额<span>{$lang.colon}</span></li>
+            </ul>
+            <div class="bd"> 
+              <!--{foreach from=$orderInfo.tradeList item=tradeInfo}-->
+              <ul class="clearfix">
+                <li>{$tradeInfo.bizOrderId}</li>
+                <li class="name">{$tradeInfo.name} </li>
+                <li>{$tradeInfo.seller} </li>
+                <li>{$tradeInfo.amount|default:0}</li>
+              </ul>
+              <!--{/foreach}--> 
+            </div>
+          </div>
+        </div>
+        <div class="detail-more J_OrderDetail"> <em class="arrow-down"></em> <a href="javascript:;">订单详情</a> </div>
+      </div>
+      <div  class="depay-form">
+        <form method="post" id="depayform">
+          <div class="account-detail">
+            <ul class="detail-line clearfix">
+              <li>{$lang.deposit_account}{$lang.colon}</span> {$deposit_account.account}</li>
+              <li>可支付余额：<strong class="price">{$deposit_account.money|default:0}</strong> 元</li>
+            </ul>
+            <div class="notice-word mt10">
+              <p>提示：如果订单金额较大，无法一次完成扣款，请先<a href="{url route='deposit/recharge'}" target="_blank">充值</a>后再支付订单。</p>
+            </div>
+          </div>
+          <div class="netpay">
+            <div class="netpay-title"><span>{$lang.pls_select_paymethod}</span></div>
+            <div class="netpay-content clearfix">
+              <div class="bank-list bank-list-line clearfix">
+                <ul class="ui-list-icons clearfix J_SelectPaymentMethod" style="border-bottom:0;">
+                  
+                  <!--{foreach from=$payments item=payment name=fe_payment}-->
+                  <li class="{if $payment.selected}current{/if} clearfix">
+                    <input class="float-left" {if $payment.disabled}disabled="disabled" {elseif $payment.selected} checked="checked"{/if} type="radio" name="payment_code" id="payment_{$payment.code}" value="{$payment.code}" />
+                    <label class="float-left  icon-box" for="payment_{$payment.code}" > <span class="icon-cashier icon-cashier-{$payment.code}">&nbsp;</span> </label>
+                    <!--{if in_array($payment.code, array('deposit'))}--> 
+                    <em class="gray">账户余额 {$deposit_account.money} 元
+                    {if $payment.disabled}，{$payment.disabled_desc}{/if}</em> 
+                    <!--{/if}--> 
+                  </li>
+                  <!--{/foreach}-->
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="paysubmit" style="margin:10px 30px 30px 30px;">
+            <dl class="clearfix mt20 J_DepositPassword hidden" style="height:100px;">
+              <dt style="margin:0;">{$lang.pay_password}{$lang.colon}</dt>
+              <dd class="mt5">
+                <input type="password" class="pay-password J_Password" name="password" />
+                <a href="{url route='deposit/config'}" target="_blank">忘记密码？</a> </dd>
+              <dd class="notice-word J_PasswordNotice">&nbsp;</dd>
+            </dl>
+            <dl class="clearfix">
+              <dd class="float-left"><span class="btn-alipay">
+                <input type="submit" value="{$lang.pay_submit}" />
+                </span></dd>
+            </dl>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+$(function(){
+	$('.J_OrderDetail').click(function(){
+		$(this).find('em').toggleClass('arrow-down');
+		$('#depopay-order-detail').toggle();
+	});
+	
+	// 是否需要输入支付密码（余额支付需要，其他支付不需要）
+	var checkPassword = false;
+	
+	// 如果首次加载，默认选择的不是余额支付（如余额不够或余额支付未开启）
+	if($.inArray($('.J_SelectPaymentMethod li').find('input[name="payment_code"]:checked').val(), ["deposit"]) < 0){
+		// TODO..
+	} else {
+		checkPassword = true;
+		$('.J_DepositPassword').show();
+	}
+	
+	$('.J_SelectPaymentMethod li').click(function(){
+		if($(this).find('input[name="payment_code"]').prop('disabled') != true) {
+			$(this).parent().find('li').removeClass('current');
+			$(this).addClass('current');
+		
+			$(this).find('input[name="payment_code"]').prop('checked', true);
+			
+			if($.inArray($(this).find('input[name="payment_code"]').val(), ["deposit"]) > -1) {
+				checkPassword = true;
+				$('.J_DepositPassword').show();
+			}
+			else
+			{
+				checkPassword = false;
+				$('.J_DepositPassword').hide();
+			}
+		}
+	});
+	$('.J_Password').change(function(){
+		$('.J_PasswordNotice').hide();
+		$('.J_PasswordNotice p').removeClass('correct-nobg').addClass('yellow');
+	});
+	
+	$('#depayform').validate({
+        errorPlacement: function(error, element){
+			$('#depayform').find('.J_PasswordNotice').html('<p class="yellow">'+error.text()+'</p>');
+            $('#depayform').find('.J_PasswordNotice').css('display', 'inline-block');
+        },
+        success : function(label){
+            $('#depayform').find('.J_PasswordNotice').html('<p class="correct-nobg">&nbsp;</p>');
+			return true;
+        },
+		submitHandler : function(form){
+			form.submit();
+		},
+        onkeyup : false,
+        rules : {
+            password : {
+				required : function(){
+					return checkPassword;
+				},
+				remote   : {
+                    url : "{url route='deposit/ckpaypassword'}",
+                    type: 'get',
+                    data:{
+                        password : function(){
+                            return $.trim($('.J_Password').val());
+                        }
+                    }
+                }
+            }
+        },
+        messages : {
+            password  : {
+				required : '{$lang.password_empty}',
+				remote   : '{$lang.password_error}'
+            }
+        }
+    });
+});
+</script>
+{include file="user.footer.html"}

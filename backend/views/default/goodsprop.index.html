@@ -1,0 +1,77 @@
+{include file="header.html"}
+<div id="main">
+  {include file="menus.html"}
+  <div id="rightCon" class="clearfix layui-body">
+    <div class="scroller">
+      <div class="flexigrid">
+        <div class="layui-btn-container">
+          <a href="{url route='goodsprop/add'}" class="layui-btn layui-bg-blue"><i
+              class="layui-icon layui-icon-addition"></i>添加属性</a>
+
+          <a class="layui-btn layui-btn-primary" href="{url route='gcategory/index'}"><i class="fa fa-list-ul"></i>分配属性</a>
+        </div>
+        <table class="distinction">
+          <!--{if $goodsprop}-->
+          <thead>
+            <tr class="tatr1">
+              <th class="w30"><input id="checkall" type="checkbox" class="checkall" /></th>
+              <th width="50%" align="left"><label for="checkall">{$lang.name}</label></th>
+              <th>{$lang.sort_order}</th>
+              <th>{$lang.status}</th>
+              <th class="handler">{$lang.handler}</th>
+            </tr>
+          </thead>
+          <!--{/if}-->
+          <!-- {if $goodsprop} -->
+          <tbody id="treet1">
+            <!-- {/if} -->
+            <!--{foreach from=$goodsprop item=prop name=fe_prop}-->
+            <tr>
+              <td class="align_center w30"><input type="checkbox" class="checkitem" value="{$prop.pid}" /></td>
+              <td class="node" width="50%">
+                <!--{if $prop.switchs}--><i class="layui-icon layui-icon-addition" ectype="flex" status="open" fieldid="{$prop.pid}"
+                  controller="goodsprop"></i>
+                <!--{else}--><i class="tv-item"></i>
+                <!--{/if}--><span fieldname="name" fieldid="{$prop.pid}" required="1"
+                  title="{$lang.editable}" controller="goodsprop">{$prop.name|escape}</span>
+              </td>
+              <td class="align_center"><span ectype="inline_edit" fieldname="prop_sort_order"
+                  fieldid="{$prop.pid}" datatype="number" title="{$lang.editable}"
+                  controller="goodsprop">{$prop.sort_order}<i class="layui-icon layui-icon-edit layui-font-14 layui-font-blue"></i></span></td>
+              <td class="align_center">
+                <!--{if $prop.status}--><i class="layui-icon layui-icon-ok layui-font-blue" ectype='inline_edit' fieldname="prop_status"
+                  fieldid="{$prop.pid}" fieldvalue="1" title="{$lang.editable}" controller='goodsprop' />
+                <!--{else}--><i class="layui-icon layui-icon-ok layui-font-gray" ectype='inline_edit' fieldname="prop_status"
+                  fieldid="{$prop.pid}" fieldvalue="0" title="{$lang.editable}" controller="goodsprop"></i>
+                <!--{/if}-->
+              </td>
+              <td class="handler bDiv" style=" background:none; width:210px; text-align:left;"><a
+                  href="{url route='goodsprop/edit' id=$prop.pid}" class="btn blue"><i
+                    class="layui-icon layui-icon-edit layui-font-12"></i>{$lang.edit}</a> <a
+                  uri="{url route='goodsprop/delete' id=$prop.pid}" confirm="{$lang.drop_confirm}"
+                  class="btn red J_AjaxRequest"><i class="layui-icon layui-icon-close layui-font-12"></i>{$lang.drop}</a> <a
+                  href="{url route='goodsprop/addvalue' id=$prop.pid}" class="btn green"><i
+                    class="layui-icon layui-icon-add-1 layui-font-12"></i>{$lang.add_pvalue}</a></td>
+            </tr>
+            <!--{if $smarty.foreach.fe_prop.last}-->
+            <tfoot>
+              <tr>
+                <td colspan="5"><div class="clearfix mt20">{include file="page.bottom.html"}</div></td>
+              </tr>
+            </tfoot>
+            <!--{/if}-->
+            <!--{foreachelse}-->
+            <tr class="no_data">
+              <td colspan="5">{$lang.no_data}</td>
+            </tr>
+            <!--{/foreach}-->
+            <!-- {if $goodsprop} -->
+          </tbody>
+          <!-- {/if} -->
+        </table>
+      </div>
+      {include file="version.html"}
+    </div>
+  </div>
+</div>
+{include file="footer.html"}

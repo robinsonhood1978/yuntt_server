@@ -1,0 +1,17 @@
+<!--{if $_usermenu.submenus}-->
+<div class="submenu">
+  <ul class="tab">
+    <!--{foreach from=$_usermenu.submenus item=submenu name=fe_submenu}--> 
+    <!--{if $_usermenu.curmenu eq $submenu.name}-->
+    <li class="active {if $smarty.foreach.fe_submenu.first}first{/if}">
+      <h2><a href="javascript:;">{$submenu.text}</a></h2>
+    </li>
+    <!--{else}-->
+    <li class="normal {if $smarty.foreach.fe_submenu.first}first{/if}">
+      <h2><a href="{$submenu.url}">{$submenu.text}</a></h2>
+    </li>
+    <!--{/if}--> 
+    <!--{/foreach}-->
+  </ul>
+</div>
+<!--{/if}-->

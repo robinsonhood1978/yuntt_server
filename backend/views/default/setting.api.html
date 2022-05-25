@@ -1,0 +1,59 @@
+{include file="header.html"}
+<div id="main">
+  {include file="menus.html"}
+  <div id="rightCon" class="clearfix layui-body">
+    <div class="scroller">
+      <div class="flexigrid">
+        <form method="post">
+          <h2 class="bold layui-font-16">{$lang.apiserver}</h2>
+          <table class="infoTable infoTable2">
+            <tr>
+              <th class="paddingT15"><label>AppID</label></th>
+              <td class="paddingT15 wordSpacing5"><input type="text" name="apiserver[appid]"
+                  value="{$setting.apiserver.appid}" class="infoTableInput" /></td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>AppSecret</label></th>
+              <td class="paddingT15 wordSpacing5"><input type="text" name="apiserver[appsecret]"
+                  value="{$setting.apiserver.appsecret}" class="infoTableInput" /></td>
+            </tr>
+            <tr>
+              <th></th>
+              <td class="ptb20"><input class="layui-btn layui-bg-blue J_AjaxSubmit" type="submit"
+                  value="{$lang.submit}" /></td>
+            </tr>
+          </table>
+        </form>
+      </div>
+      <div class="flexigrid">
+        <form method="post">
+          <h2 class="bold layui-font-16">{$lang.baidukey}</h2>
+          <table class="infoTable infoTable2">
+            <tr>
+              <th class="paddingT15"><label>{$lang.baidukey_browser}</label></th>
+              <td class="paddingT15 wordSpacing5"><input type="text" name="baidukey[browser]"
+                  value="{$setting.baidukey.browser}" class="infoTableInput" /></td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.baidukey_server}</label></th>
+              <td class="paddingT15 wordSpacing5"><input type="text" name="baidukey[server]"
+                  value="{$setting.baidukey.server}" class="infoTableInput" /></td>
+            </tr>
+            <tr>
+              <th class="paddingT15"></th>
+              <td class="paddingT15 wordSpacing5"><a class="layui-font-12 layui-font-blue"
+                  href="http://lbsyun.baidu.com/apiconsole/key/create" target="_blank">{$lang.applykey}</a></td>
+            </tr>
+            <tr>
+              <th></th>
+              <td class="ptb20"><input class="layui-btn layui-bg-blue J_AjaxSubmit" type="submit"
+                  value="{$lang.submit}" /></td>
+            </tr>
+          </table>
+        </form>
+      </div>
+      {include file="version.html"}
+    </div>
+  </div>
+</div>
+{include file="footer.html"}

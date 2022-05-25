@@ -1,0 +1,24 @@
+<div class="slide-c-1 J_S{$widget_data.model_id} mb10">
+    <!--{if !$widget_data.ads}-->
+    <div class="padding10 center">请配置</div>
+    <!--{else}-->
+   <div class="scroller">
+      <ul class="ks-content ks-switchable-content clearfix">
+      <!--{foreach from=$widget_data.ads item=ad}-->
+      <li><a href="{$ad.ad_link_url}"  target="_blank" style="background:url({$ad.ad_image_url|url_format}) scroll center center;"></a></li>
+      <!--{/foreach}-->
+      </ul>
+   </div>
+   <div class="ks-switchable-nav">
+       <!-- {foreach from=$widget_data.ads item=ad name=fe_ad} -->
+       <span {if $smarty.foreach.fe_ad.first}class="ks-active"{/if}></span>
+       <!-- {/foreach} -->
+   </div>
+   <!--{/if}-->
+</div>
+<script>
+$('.J_S{$widget_data.model_id} ul li').css('width', $(window).width() +'px');
+$(function(){
+	$(".J_S{$widget_data.model_id}").slide({ mainCell:".ks-switchable-content", titCell:".ks-switchable-nav span", effect:"leftLoop",trigger:"click", prevCell:".prev", nextCell:".next", titOnClassName:"ks-active", autoPlay:true});
+});
+</script>

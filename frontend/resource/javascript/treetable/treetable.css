@@ -1,0 +1,62 @@
+@charset "utf-8";
+/*
+Copyright: Paul Hanlon
+
+Released under the MIT/BSD licence which means you can do anything you want
+with it, as long as you keep this copyright notice on the page
+*/
+.collapsed { display: none; }
+.tablemain {background-color:#ccf;border-collapse: collapse; border: solid 1px #447; padding: 0px; text-align: left; }
+#treet2 {background-color:#ffc}
+#treet2 td { font: normal 10pt Arial; padding: 0px 2px 0px 0px; cursor: pointer;}
+.adeimg, .preimg, .parimg { border: none; margin: 0px; padding: 0px; vertical-align: bottom;}
+.ttimage { border: none; margin: 0px; padding: 0px; vertical-align: middle;}
+.adeimg, .parimg {cursor: pointer; }
+.even { background-color: #ddd; }
+.over { background-color: #eaf8db; }
+
+/* 后台树形菜单 */
+.info2 {overflow: hidden;}
+.distinction {border-collapse:collapse; width: 100%; background: #fff;}
+.distinction thead th,.distinction tfoot td {line-height: 50px; height: 50px; background-color:#F0F4FC; font-weight:bold;color:#909399; font-size:14px;}
+.distinction tfoot{border-top:1px solid #F5F5F5;}
+.distinction tfoot td{ background-color: #fff;}
+.distinction thead .w30, .distinction tbody .w30 {width: 30px;}
+.align_left {text-align: left;}
+.align_center {text-align: center;}
+.all_checkbox {float:left; font-weight:normal; cursor:pointer; margin-right:10px;margin-top:2px;}
+.distinction .bDiv{min-height:0;}
+.distinction tbody td {height: 50px; line-height:50px; border-bottom:solid 1px #F5F5F5}
+.distinction tbody td a {color: #234f8d;}
+.distinction tbody td a:hover {color: #f90;}
+.distinction tbody tr:last-child td {border-bottom: 0;}
+
+#treet1 tr td.node{ padding-left:0px;}
+
+.tatr1 {line-height: 40px; height: 40px; color: #444; text-align: center;}
+.tatr1 td {border-bottom: 1px solid #bbdbf1;}
+.sort_asc {background: url(images/sort_asc.gif) no-repeat right 2px; padding-right: 10px;}
+.sort_desc {background: url(images/sort_desc.gif) no-repeat right 2px; padding-right: 10px;}
+.editable {background: url(images/editable.gif) no-repeat right 2px; padding-right: 14px;}
+
+.tatr2 {color: #444; text-align: center;}
+.tatr2 td {border-bottom: 1px dotted #bbdbf1; empty-cells:show;}
+.padding1 { padding-right: 15px; }
+.tdare{margin-left: 2px; padding: 0 5px 60px 5px; background: #fbfdff;}
+.tdare td {padding: 10px 0;}
+.tdare th a, .tdare td a {color: #234f8d;}
+.tdare th a:hover, .tdare td a:hover {color: #12325f;}
+.seledr { font-size:12px; }
+tr td.handler, th.handler{text-align: center;}
+tr td.handler span { display:block; width: 140px; text-align:left; margin: 0 auto;}
+
+.adeimg, .preimg, 
+.parimg,.tv-expandable,
+.tv-item,.positive_enabled,
+.positive_disabled,
+.tv-collapsable{ display: inline-block; width: 12px; height: 12px;}
+.adeimg, .preimg, .parimg{ background: url(images/vertline.gif);}
+.tv-expandable{ background: url(images/tv-expandable.png);}
+.tv-collapsable{background: url(images/tv-collapsable.png);} 
+.positive_enabled{ background: url(images/positive_enabled.gif);width: 10px; height: 10px;}
+.positive_disabled{ background: url(images/positive_disabled.gif);width: 10px; height: 10px;}

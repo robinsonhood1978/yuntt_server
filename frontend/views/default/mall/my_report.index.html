@@ -1,0 +1,60 @@
+{include file="user.header.html"}
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful">{include file="user.submenu.html"}
+      <div class="wrap">
+        <div class="public_select table">
+          <table>
+            <tr class="line gray">
+              <th class="align1" width="300"> <label class="mr20">
+                  <input type="checkbox" id="all" class="checkall mr5" />
+                  {$lang.checkall}</label>
+                {$lang.report_goods}</th>
+              <th width="80">{$lang.report_store}</th>
+              <th width="80">{$lang.time}</th>
+              <th>{$lang.content}</th>
+              <th width="50">{$lang.status}</th>
+            </tr>
+            
+            <!--{foreach from=$reports item=report name=fe_report}-->
+            <tbody class="item">
+              <tr class="line">
+                <td valign="top" class="first clearfix"><div class="pic-info float-left">
+                    <input type="checkbox" value="{$report.id}" class="checkitem" />
+                    <a href="{url route='goods/index' id=$report.goods_id}" target="_blank"><img src="{$report.default_image|default:$app->params['default_goods_image']|url_format}" width="50" height="50" /></a> </div>
+                  <div class="txt-info float-left" style="width:180px;">
+                    <div class="txt"> <a href="{url route='goods/index' id=$report.goods_id}" target="_blank">{$report.goods_name|truncate:46}</a></div>
+                  </div></td>
+                <td class="align2"><a href="{url route='store/index' id=$report.store_id}" target="_blank">{$report.store_name}</a></td>
+                <td class="align2">{$report.add_time|date_format:"%Y.%m.%d %H:%M:%S"}</td>
+                <td class="align2">{$report.content|escape}{if $report.verify}<p class="green">{$lang.reply}{$lang.colon}{$report.verify}</p>{/if}</td>
+                <td class="align2">{if $report.status eq 1}{$lang.done}{else}{$lang.wait_verify}{/if}<a href="javascript:;" class="J_AjaxRequest" style="margin-left:15px;" uri="{url route='my_report/delete' id=$report.id}" confirm="{$lang.drop_confirm}">{$lang.drop}</a></td>
+              </tr>
+            </tbody>
+            <!--{foreachelse}-->
+            <tr>
+              <td colspan="5"><div class="notice-word">
+                  <p>{$lang.no_records}</p>
+                </div></td>
+            </tr>
+            <!--{/foreach}--> 
+            <!--{if $reports}-->
+            <tr class="sep-row">
+              <td colspan="5"></td>
+            </tr>
+            <tr class="operations btion">
+              <th colspan="5"><p class="position1 clearfix">
+                  <input type="checkbox" id="all2" class="checkall"/>
+                  <label for="all2">{$lang.checkall}</label>
+                  <a href="javascript:void(0);" class="delete ml10" style="float:none;" ectype="batchbutton" uri="{url route='my_report/delete'}" name="id" presubmit="confirm('{$lang.drop_confirm}')">{$lang.drop}</a> </p>
+                <div class="position2 clearfix center">{include file="page.bottom.html"}</div>
+              </th>
+            </tr>
+            <!--{/if}-->
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{include file="user.footer.html"}

@@ -1,0 +1,54 @@
+{include file="user.header.html"}
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful">{include file="user.submenu.html"}
+      <div class="wrap">
+        <div class="public table">
+          <table>
+            <!--{if $messages}-->
+            <tr class="gray">
+              <th width="50"><input type="checkbox" id="all" class="checkall"/></th>
+              <th class="align1">{$lang.username}</th>
+              <th class="align1">{$lang.content}</th>
+              <th>{$lang.last_update}</th>
+              <th class="width4">{$lang.handle}</th>
+            </tr>
+            <!--{/if}--> 
+            <!--{foreach from=$messages item=message name=v}-->
+            <tr class="{if $smarty.foreach.v.last}line_bold{else}line{/if}">
+              <td class="align2"><!--{if $app->controller->action->id neq 'announcepm'}-->
+                <input type="checkbox" class="checkitem" value="{$message.msg_id}"/>
+                <!--{/if}--></td>
+              <td class="width13"><img class="makesmall" width="48" height="48" src="{$message.user.portrait|default:$app->params['default_user_portrait']|url_format}" style="vertical-align:middle; margin-right:5px;" /><span class="username">{$message.user.username}</span></td>
+              <td class="link2 {if $message.new eq 1}font_bold{/if}">{$message.content|unescape|strip_tags|truncate:100:"...":true}</td>
+              <td class="align2 color1 width8">{$message.last_update|date_format:"%Y.%m.%d %H:%M:%S"}</td>
+              <td class="width8"><a href="{url route='my_message/view' msg_id=$message.msg_id}" class="desc">{$lang.view_detail}</a> 
+                <!--{if $app->controller->action->id neq 'announcepm'}--><a confirm="{$lang.drop_confirm}" uri="{url route='my_message/delete' msg_id=$message.msg_id}" class="J_AjaxRequest delete pointer">{$lang.drop}</a><!--{/if}--></td>
+            </tr>
+            <!--{foreachelse}-->
+            <tr>
+              <td colspan="5"><div class="notice-word">
+                  <p>{$lang.no_records}</p>
+                </div></td>
+            </tr>
+            <!--{/foreach}--> 
+            <!--{if $messages}-->
+            <tr class="btion">
+              <th><input type="checkbox" id="all2" class="checkall"/></th>
+              <th colspan="4"> <!--{if $app->controller->action->id neq 'announcepm'}-->
+                <p class="position1 clearfix"> <span class="all">
+                  <label for="all2">{$lang.checkall}</label>
+                  </span> <a href="javascript:void(0);" class="delete" uri="{url route='my_message/delete'}" name="msg_id" presubmit="confirm('{$lang.drop_confirm}')" ectype="batchbutton">{$lang.drop}</a> </p>
+                
+                <!--{/if}-->
+                <div class="position2 block clearfix center">{include file="page.bottom.html"}</div>
+              </th>
+            </tr>
+            <!--{/if}-->
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{include file="user.footer.html"} 

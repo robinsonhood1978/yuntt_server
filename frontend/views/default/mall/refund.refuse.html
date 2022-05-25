@@ -1,0 +1,41 @@
+{include file="user.header.html"}
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful">{include file="user.submenu.html"}
+      <div class="wrap">
+        <div class="public refund_form refund_refuse">
+          <form method="post" enctype="multipart/form-data">
+            <input type="hidden" name="id" value="{$refund.refund_id}" />
+            <table>
+              <tr>
+                <td>退款理由：</td>
+                <td><textarea name="content" class="text" style="width:500px; height:40px"></textarea></td>
+              </tr>
+              <tr>
+                <td>上传凭证：</td>
+                <td><input type="file" name="image" /><input type="hidden" name="fileVal" value="image" /></td>
+              </tr>
+              <tr>
+                <td height="40" colspan="2">&nbsp;</td>
+              </tr>
+              <tr>
+                <td>&nbsp;</td>
+                <td><input type="submit" value="{$lang.submit}" class="btn-alipay" /></td>
+              </tr>
+            </table>
+          </form>
+        </div>
+        <ul class="refund_info mt20">
+          <li>退款编号：{$refund.refund_sn}</li>
+          <li>申请时间：{$refund.created|date_format:"%Y.%m.%d %H:%M:%S"}</li>
+          <li>退款状态：{$refund.status_label}</li>
+          <li>交易金额：{$refund.total_fee}</li>
+          <li>退款金额：{$refund.refund_total_fee}</li>
+          <li>退款原因： {$refund.refund_reason}</li>
+          <li>退款说明：{$refund.refund_desc}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{include file="footer.html"}

@@ -1,0 +1,51 @@
+{include file="user.header.html"} 
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful"> {include file="user.submenu.html"}
+      <div class="wrap">
+        <div class="public">
+          <div class="information">
+            <div class="notice-word">
+              <p>将标注拖放到您店铺所在的位置（点击标注可拖动）</p>
+            </div>
+            <div class="info">
+              <form method="post">
+                <div id="allmap" style="height:500px;border:3px #ddd solid;"></div>
+                <div class="mt20">
+               		<input type="hidden" name="latitude" value="{$store.latitude}" />
+        			<input type="hidden" name="longitude" value="{$store.longitude}" />
+        			<input type="hidden" name="zoom" value="{$store.zoom}" />
+                  	<input type="submit" class="btn-alipay" value="{$lang.submit}" />
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+$(function(){
+	// 百度地图API功能
+	var map = new BMap.Map("allmap");
+	var zoom = {$store.zoom} || 15;
+	<!--{if $store.latitude && $store.longitude}-->
+	var point = new BMap.Point({$store.longitude},{$store.latitude});
+	<!--{else}-->
+	var point = new BMap.Point(108.399747,22.815288);
+	<!--{/if}-->
+	map.centerAndZoom(point, zoom);
+	map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+	map.addControl(new BMap.NavigationControl());// 左上角，添加比例尺   
+	var marker = new BMap.Marker(point);// 创建标注
+	map.addOverlay(marker);             // 将标注添加到地图中
+	marker.enableDragging();
+	marker.addEventListener("dragend", function(e){   
+		$("input[name='latitude']").val(e.point.lat); 
+		$("input[name='longitude']").val(e.point.lng); 
+		$("input[name='zoom']").val(map.getZoom());     
+	})
+});
+</script>
+{include file="user.footer.html"}

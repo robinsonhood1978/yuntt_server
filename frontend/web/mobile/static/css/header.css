@@ -1,0 +1,5 @@
+@import url('global.css');
+
+#header .content { background: url('../images/wxhead.png') no-repeat; height: 116px; background-size: 100% 100%;}
+#header .content p {padding: 64px 150px 0 150px; text-align: center; font-size: 15px; color:#ffffff;}
+

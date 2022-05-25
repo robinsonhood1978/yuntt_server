@@ -1,0 +1,49 @@
+{include file="user.header.html"}
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful">{include file="user.submenu.html"}
+      <div class="wrap">
+        <div class="public table deposit">
+          <div class="deposit-withdraw deposit-recharge">
+            <div class="notice-word">
+              <p>可以通过线上为自己的账户充值，充值成功后即时到账</p>
+            </div>
+            <form method="post" id="deposit-recharge">
+              <div class="title clearfix">
+                <h2 class="float-left">充值到您的预存款账户</h2>
+                <p class="float-right"><a href="{url route='deposit/recharge'}" class="fs14">线上充值</a></p>
+              </div>
+              <div class="form">
+                
+                <dl class="clearfix">
+                  <dt>充值卡号：</dt>
+                  <dd>
+                    <input type="text" name="cardNo" class="text" value="" /></dd>
+                </dl>
+                <dl class="clearfix">
+                  <dt>卡号密码：</dt>
+                  <dd>
+                    <input type="text" name="password" class="text" value="" /></dd>
+                </dl>
+                <dl class="clearfix">
+                	<dt>验 证 码：</dt>
+                	<dd class="captcha clearfix">
+                  	<input type="text" class="input float-left" name="captcha" id="captcha1" style="width:80px" />
+                  	<a href="javascript:;" class="float-left"><img onclick="change_captcha($(this))" id="captcha" src="{url route='default/captcha' v=uniqid('', true)}" class="float-left" height="38" /></a>
+                  	</dd>
+              	</dl>
+                <dl class="clearfix">
+                  <dt>&nbsp;</dt>
+                  <dd class="submit"> <span class="btn-alipay">
+                    <input type="submit" value="提交" />
+                    </span> </dd>
+                </dl>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{include file="user.footer.html"}

@@ -1,0 +1,61 @@
+<div class="gselector-goods">
+  <form>
+    <div class="form-filter mt10 mb10">
+      <select id="gs_sgcate_id" name="gs_sgcate_id" class="sgcategory">
+        <option value="0">{$lang.select_pls}</option>
+  		{html_options options=$sgcategories selected=$sgcate.cate_id}
+      </select>
+      <input type="text" name="gs_goods_name" id="gs_goods_name" value="" />
+      <input type="button" value="{$lang.submit}" class="J_GselectorSearch btn-gselector-small" />
+    </div>
+    <div class="form-products">
+      <div class="data-list-item">
+        <div class="hd traderates-index-col">
+          <ul class="clearfix">
+            <li class="col-1 center">宝贝名称</li>
+            <li class="col-2">价格</li>
+            <li class="col-3">库存</li>
+            <li class="col-4 center">{$lang.handle}</li>
+          </ul>
+        </div>
+        <div class="bd traderates-index-content">
+          <div class="item-list traderates-index-col" ectype="gselector-goods-list"></div>
+        </div>
+      </div>
+      <div class="mt20 clearfix" ectype="gselector-page-info"></div>
+    </div>
+    <div class="J_ListAdded lst-added clearfix">
+      <h3 class="float-left">已添加的宝贝</h3>
+      <ul class="sel-list float-left" ectype="sel-list">
+      </ul>
+      <div class="clear"></div>
+    </div>
+    <div class="J_Warning notice-word mt10 hidden">
+      <p></p>
+    </div>
+    <div class="submit mt20 mb20">
+      <input type="button" id="cancel_button" class="btn-alipay" value="{$lang.cancel}" style="width:100px; background:#666;"  />
+      <input type="button" id="gs_submit" class="btn-alipay" value="{$lang.submit}" style="width:100px" />
+    </div>
+  </form>
+</div>
+<script type="text/javascript">
+$(function(){
+	
+	/* 初始化弹出层数据 */
+	init();
+ 
+	$('#gs_submit').click(function(){
+		gs_submit_check('{$smarty.get.id}','{$smarty.get.name}','{$smarty.get.callback}');
+	});
+	
+	$('#cancel_button').click(function(){
+        DialogManager.close('{$smarty.get.id}');
+    });
+	
+	$('.J_GselectorSearch').click(function(){
+		showPage(1);
+	});
+	
+});
+</script>

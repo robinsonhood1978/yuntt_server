@@ -1,0 +1,112 @@
+{include file="header.html"}
+<div id="main">
+  {include file="menus.html"}
+  <div id="rightCon" class="clearfix layui-body">
+    <div class="scroller">
+      <div class="flexigrid">
+        <form method="post">
+          <table class="infoTable">
+            <tr>
+              <th class="paddingT15"><label>{$lang.scategory}</label></th>
+              <td class="paddingT15 wordSpacing5"><select name="cate_id">
+                  <option value="0">{$lang.select_pls}</option>
+
+                  {html_options options=$scategories selected=$store.scate_id}
+
+                </select></td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.region}</label></th>
+              <td class="paddingT15 wordSpacing5">
+                <div id="region">
+                  <input type="hidden" name="region_id" value="0" class="mls_id" />
+                  <input type="hidden" name="region_name" value="" class="mls_names" />
+                  <select>
+                    <option value="0">{$lang.select_pls}</option>
+
+                    {html_options options=$regions}
+
+                  </select>
+                  <span class="field_notice">{$lang.note_for_select}</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label> {$lang.sgrade}</label>
+              </th>
+              <td class="paddingT15 wordSpacing5"><select name="sgrade" id="sgrade">
+                  <option value="0">{$lang.select_pls}</option>
+
+                  {html_options options=$sgrades}
+
+                </select>
+                <span class="field_notice">{$lang.note_for_select}</span>
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.certification}</label></th>
+              <td class="paddingT15 wordSpacing5">
+                <p>
+                  <label>
+                    <input name="certification" type="radio" value="0" checked="checked" />
+                    {$lang.no_change}</label>
+                  <label>
+                    <input type="radio" name="certification" value="1" />
+                    {$lang.change_to}</label>
+                  (
+                  <label for="autonym">
+                    <input type="checkbox" name="autonym" id="autonym" value="1" class="certification"
+                      disabled="disabled" />
+                    {$lang.autonym}</label>
+                  <label for="material">
+                    <input type="checkbox" name="material" id="material" value="1" class="certification"
+                      disabled="disabled" />
+                    {$lang.material}</label>
+                  )
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.recommend}</label></th>
+              <td class="paddingT15 wordSpacing5">
+                <p>
+                  <label>
+                    <input name="recommended" type="radio" value="-1" checked="checked" />
+                    {$lang.no_change}</label>
+                  <label>
+                    <input type="radio" name="recommended" value="1" />
+                    {$lang.yes}</label>
+                  <label>
+                    <input type="radio" name="recommended" value="0" />
+                    {$lang.no}</label>
+                </p>
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.sort_order}</label></th>
+              <td class="paddingT15 wordSpacing5"><input class="sort_order" name="sort_order" type="text"
+                  id="sort_order" />
+                <span class="field_notice">{$lang.note_for_input}</span>
+              </td>
+            </tr>
+            <tr>
+              <th></th>
+              <td class="ptb20"><input class="layui-btn layui-bg-blue J_AjaxSubmit" type="submit"
+                  value="{$lang.submit}" /></td>
+            </tr>
+          </table>
+        </form>
+      </div>
+      {include file="version.html"}
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $(function () {
+    regionInit("region");
+    $(":radio[name='certification']").click(function () {
+      $(".certification:checkbox").attr('disabled', this.value == 0);
+    });
+  });
+</script>
+{include file="footer.html"}

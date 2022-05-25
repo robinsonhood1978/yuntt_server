@@ -1,0 +1,66 @@
+{include file="header.html"}
+<div id="main">
+  {include file="menus.html"}
+  <div id="rightCon" class="clearfix layui-body">
+    <div class="scroller">
+      <div class="flexigrid">
+        <form method="post">
+          <input type="hidden" name="r" value="goodsprop/distribute" />
+          <div class="layui-btn-container">
+            <a href="{url route='goodsprop/add'}" class="layui-btn layui-bg-blue"><i
+                class="layui-icon layui-icon-addition"></i>添加属性</a>
+            <input class="layui-btn layui-btn-primary J_AjaxSubmit" value="保存选中" type="submit" />
+          </div>
+
+            <table class="distinction">
+              <tr>
+                <td colspan="2">
+                  <span class="ml20">{$lang.cur_gcate}</span>
+                  <!--{foreach from=$ancestor item=item}-->
+                  / <a href="{url route='goodsprop/distribute' cate_id=$item.cate_id}">{$item.cate_name}</a>
+                  <!--{/foreach}-->
+                </td>
+              </tr>
+              <!--{foreach from=$props item=prop name=fe_prop}-->
+              <tr>
+                <td class="td"><input type="checkbox" name="pid[]" value="{$prop.pid}" ectype="pid" {if $prop.checked}
+                    checked="checked" {/if} id="pid{$prop.pid}" />
+                  <label for="pid{$prop.pid}"> {$prop.name}</label>
+                </td>
+                <td class="td" id="pvs{$prop.pid}" style="width:80%">
+                  <!--{foreach from=$prop.goodsPropValue item=item}-->
+
+                  <input type="checkbox" name="vid[]" value="{$prop.pid}:{$item.vid}" id="vid{$item.vid}"
+                    ectype="pid{$item.pid}" {if $item.checked} checked="checked" {/if} />
+                  <label for="vid{$item.vid}"> {$item.pvalue}</label>
+
+                  <!--{/foreach}-->
+                </td>
+              </tr>
+              <!--{if $smarty.foreach.fe_prop.last}-->
+              <tfoot>
+                <tr>
+                  <td colspan="2"><div class="clearfix mt20">{include file="page.bottom.html"}</div></td>
+                </tr>
+              </tfoot>
+              <!--{/if}-->
+              <!--{foreachelse}-->
+              <tr class="no_data">
+                <td colspan="2">{$lang.no_data}</td>
+              </tr>
+              <!--{/foreach}-->
+            </table>
+        </form>
+      </div>
+      {include file="version.html"}
+    </div>
+  </div>
+</div>
+<script>
+  $(function () {
+    $('input[ectype="pid"]').click(function () {
+      $('input[ectype="pid' + $(this).val() + '"]').prop('checked', $(this).prop('checked'));
+    })
+  });
+</script>
+{include file="footer.html"}

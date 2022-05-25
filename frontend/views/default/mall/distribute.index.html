@@ -1,0 +1,102 @@
+{include file="user.header.html"}
+<style type="text/css">
+	.table .line td, .table .line_bold td{ padding: 5px;}
+	.table .ware_text{ width: 250px; height: 40px; line-height: 20px; overflow: hidden;}
+</style>
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful">{include file="user.submenu.html"}
+      <div class="wrap">
+       	<div class="notice-word">
+			<p class="yellow-big">{$lang.note_for_create}</p>
+	    </div>
+        <div class="public_select table">
+          <table id="my_goods" server="{url route='my_goods/ajax_col'}">
+            <!--{if $goods_list}-->
+            <tr class="gray"  ectype="table_header">
+              <th class="align1" width="10"><input type="checkbox" id="all" class="checkall"/></th>
+              <th class="align1" width="300"><span ectype="order_by">{$lang.goods_name}</span></th>
+              <th><span ectype="order_by">{$lang.price}</span></th>
+              <th><span ectype="order_by">{$lang.stock}</span></th>
+              <th coltype="switchable" column="ratio1" onclass="right_ico" offclass="wrong_ico" title="{$lang.sort_order}"  class="cursor_pointer"><span ectype="order_by">{$lang.ratio1}</span></th>
+              <th coltype="switchable" column="ratio2" onclass="right_ico" offclass="wrong_ico" title="{$lang.sort_order}"  class="cursor_pointer"><span ectype="order_by">{$lang.ratio2}</span></th>
+              <th coltype="switchable" column="ratio3" onclass="right_ico" offclass="wrong_ico" title="{$lang.sort_order}"  class="cursor_pointer"><span ectype="order_by">{$lang.ratio3}</span></th>
+              <th>{$lang.handle}</th>
+            </tr>
+            <tr class="sep-row">
+              <td colspan="10"></td>
+            </tr>
+            <!--{/if}--> 
+            <!--{foreach from=$goods_list item=goods name=fe_goods}-->
+            <tr class="sep-row">
+              <td colspan="10"></td>
+            </tr>
+            <tr class="line line-blue{if $smarty.foreach.fe_goods.last} last_line{/if}" ectype="table_item" idvalue="{$goods.goods_id}">
+              <td width="10" class="align1 first" style="border: 0;"><input id="checkbox_{$goods.goods_id}" type="checkbox" class="checkitem" value="{$goods.goods_id}" align="absmiddle" />  </td>
+              <td class="align1" style="border: 0;"><a href="{url route='goods/index' id=$goods.goods_id}" target="_blank"><img src="{$goods.default_image|url_format}" width="40" height="40" class="float-left" /><p class="ware_text"><span class="color2" ectype="editobj">{$goods.goods_name|escape}</span></p></a></td>
+              <td class="align2"><span>{$goods.price}</span></td>
+              <td class="align2"><span class="color2">{$goods.stock}</span></td>
+              <td class="align2"><span>{if $goods.ratio1}{$goods.ratio1}{else}-{/if}</span></td>
+              <td class="align2"><span>{if $goods.ratio2}{$goods.ratio2}{else}-{/if}</span></td>
+              <td class="align2"><span>{if $goods.ratio3}{$goods.ratio3}{else}-{/if}</span></td>
+              <td class="last align2"> 
+              {if $goods.enabled}
+              <a href="javascript:void(0);" ectype="dialog" dialog_id="distribute_edit" dialog_title="{$lang.set_ratio}" dialog_width="450" uri="{url route='distribute/edit' goods_id=$goods.goods_id}" class="edit1 inline-block" style="float:none;">{$lang.edit}</a>
+              <a href="javascript:drop_confirm('{$lang.disable_confirm}', '{url route='distribute/disable' goods_id=$goods.goods_id}');" class="delete inline-block" style="float:none;">{$lang.disable}</a>
+              {else}
+              <a href="javascript:void(0);" ectype="dialog" dialog_id="distribute_edit" dialog_title="{$lang.set_ratio}" dialog_width="450" uri="{url route='distribute/edit' goods_id=$goods.goods_id}" class="edit1 inline-block" style="float:none;">{$lang.enable}</a>
+              {/if}
+              </td>
+            </tr>
+            <!--{foreachelse}-->
+            <tr>
+              <td colspan="10"><div class="notice-word">
+                  <p>{$lang.{$app->controller->action->id}}{$lang.no_records}</p>
+                </div></td>
+            </tr>
+            <!--{/foreach}--> 
+            <!--{if $goods_list}-->
+            <tr class="sep-row">
+              <td colspan="10"></td>
+            </tr>
+            <tr class="operations btion">
+              <th class="clearfix" colspan="2">
+                 <p class="position1 clearfix">
+                  <input type="checkbox" id="all2" class="checkall float-left" style="margin:6px 5px 0 0" />
+                  <label for="all2" class="float-left" style="margin:3px 15px 0 0">{$lang.checkall}</label>
+                  <a href="javascript:;" class="delete" ectype="batchopt" uri="{url route='distribute/edit'}" name="goods_id" dialog_id="distribute_edit" dialog_title="{$lang.set_ratio}" dialog_width="450">{$lang.batch_edit}</a>
+                  <a href="javascript:void(0);" class="delete" ectype="batchbutton" uri="{url route='distribute/disable'}" name="goods_id" presubmit="confirm('{$lang.disable_confirm}')">{$lang.disable}</a> </p>
+                 </th>
+              <th colspan="9">
+                <div class="position2 clearfix center">{include file="page.bottom.html"}</div>
+              </th>
+            </tr>
+            <!--{/if}-->
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+	$(function(){
+		$('*[ectype="batchopt"]').click(function(){
+			var items = getCheckItemIds();
+			if(items)
+			{
+				var uri = $(this).attr('uri');
+				var depr = ($(this).attr('uri').indexOf('?') > -1) ? '&' : '?';
+				var id = $(this).attr('dialog_id');
+				var title = $(this).attr('dialog_title');
+				var width = $(this).attr('dialog_width');
+				ajax_form(id, title, uri + depr + $(this).attr('name') + '=' + items, width);
+			}
+			else {
+				layer.msg(lang.no_records)
+			}
+			return false;
+		});
+	})
+</script>
+<iframe id="iframe" name="iframe" src="about:blank" frameborder="0" width="0" height="0" style="display:none"></iframe>
+{include file="user.footer.html"}

@@ -1,0 +1,112 @@
+{include file="header.html"}
+<div id="main">
+	{include file="menus.html"}
+	<div id="rightCon" class="clearfix layui-body">
+		<div class="scroller">
+			<div class="explanation" id="explanation">
+				<div class="title" id="checkZoom"> <i class="fa fa-lightbulb-o"></i>
+					<h4 title="{$lang.operation_tip}">{$lang.operation_tip}</h4>
+				</div>
+				<ul>
+					<li><i class="fa fa-angle-double-right"></i> {$lang.reply_desc_1}</li>
+					<li><i class="fa fa-angle-double-right"></i> {$lang.reply_desc_2}</li>
+					<li><i class="fa fa-angle-double-right"></i> {$lang.reply_desc_3}</li>
+				</ul>
+			</div>
+			<div class="tablegrid">
+				<table class="layui-hide" id="tablegrid" lay-filter="tablegrid"></table>
+			</div>
+			{include file="version.html"}
+		</div>
+	</div>
+</div>
+<script type="text/html" id="toolbar">
+	<div class="layui-btn-container">
+		<a class="layui-btn layui-bg-blue" href="{url route='weixin/addreply'}"><i class="layui-icon layui-icon-addition"></i>新增自动回复</a>
+		<button class="layui-btn layui-btn-primary layui-border-blue" lay-event="batdel"><i class="layui-icon layui-icon-close"></i>批量删除</button>
+	</div>
+</script>
+
+<script type="text/html" id="colBar">
+	<a class="ml5 mr5 blue pointer" lay-event="edit">编辑</a>
+	<a class="ml5 mr5 blue pointer" lay-event="del" confirm="删除后将不能恢复，确认删除该项吗？">删除</a>
+</script>
+<script>
+	layui.use('table', function () {
+		var table = layui.table;
+
+		table.render({
+			elem: '#tablegrid'
+			//,skin: 'line'
+			, url: url(['weixin/index', $("#formSearch").serializeJson()])
+			, toolbar: '#toolbar'
+			, defaultToolbar: ['filter', /*'exports',*/ 'print']
+			, title: '公众号回复'
+			//, size: 'lg'
+			, cols: [[
+				{ type: 'checkbox', fixed: 'left' }
+				, { field: 'reply_id', title: 'ID', width: 70, fixed: 'left', unresize: true, sort: true }
+				, {
+					field: 'action', title: '回复类型', width: 200, templet: function (res) {
+						return lang[res.action];
+					}
+				}
+				, {
+					field: 'rule_name', title: '规则名称', width: 120, templet: function (res) {
+						return res.action == 'smartreply' ? res.rule_name : '-';
+					}
+				}
+				, {
+					field: 'keywords', title: '关键字', width: 250, templet: function (res) {
+						return res.action == 'smartreply' ? res.keywords : '-';
+					}
+				}
+				, {
+					field: 'type', title: '消息类型', width: 125, sort: true, align: 'center', templet: function (res) {
+						return res.type == 1 ? lang.imgmsg : lang.textmsg;
+					}
+				}
+				, { field: 'description', title: '回复内容', width: 286, sort: true }
+				, { fixed: 'right', title: '操作', toolbar: '#colBar', width: 160, align: 'center' }
+			]]
+			, page: {
+				theme: 'blue'
+			}
+		});
+
+		//监听头工具栏事件
+		table.on('toolbar(tablegrid)', function (obj) {
+			var checkStatus = table.checkStatus(obj.config.id);
+			if (checkStatus.data.length <= 0) {
+				return false;
+			}
+			var items = new Array();
+			$.each(checkStatus.data, function (i, item) {
+				items.push(item.reply_id);
+			});
+
+			if (obj.event === 'batdel') {
+				var btnObj = $('[lay-event="' + obj.event + '"]');
+				btnObj.attr('confirm', '删除后将不能恢复，确认删除这 ' + items.length + ' 项吗？');
+				ajaxRequest(btnObj, url(['weixin/deletereply', { id: items.join(',') }]), function () {
+					table.reload('tablegrid');
+				});
+			}
+		});
+
+		//监听行工具事件
+		table.on('tool(tablegrid)', function (obj) {
+			var data = obj.data;
+			if (obj.event === 'edit') {
+				window.location.href = url(['weixin/editreply', { id: data.reply_id }]);
+			}
+			else if (obj.event === 'del') {
+				var btnObj = $(obj.tr).find('[lay-event="' + obj.event + '"]');
+				ajaxRequest(btnObj, url(['weixin/deletereply', { id: data.reply_id }]), function () {
+					obj.del();
+				});
+			}
+		});
+	});
+</script>
+{include file="footer.html"}

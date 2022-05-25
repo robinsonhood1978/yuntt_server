@@ -1,0 +1,33 @@
+{include file="user.header.html"}
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful"> {include file="user.submenu.html"}
+      <div class="wrap">
+        <div class="public_index table">
+          <div class="express-info">{$lang.express_company}{$lang.colon}<span>{$kuaidi_info.company}</span>&nbsp;&nbsp;&nbsp;&nbsp;{$lang.express_num}{$lang.colon}<span>{$kuaidi_info.number}</span></div>
+          <!--{if $kuaidi_info.url}-->
+          <iframe src="{$kuaidi_info.url}" width="534" height="340" frameborder="0" ></iframe>
+          <!--{else}--> 
+          <!--{if $kuaidi_info.status eq 1}-->
+          <div class="express-body">
+            <dl class="title">
+              <dt><strong>{$lang.time}</strong></dt>
+              <dd><strong>{$lang.process}</strong></dd>
+            </dl>
+            <!--{foreach from=$kuaidi_info.details item=kuaidi name=fe_kuaidi}-->
+            <dl {if $smarty.foreach.fe_kuaidi.first} style="color:{if $kuaidi_info.state eq 3}#1B730C{else}#FF6600{/if}"{/if}>
+              <dt>{$kuaidi.time}</dt>
+              <dd>{$kuaidi.context}</dd>
+            </dl>
+            <!--{/foreach}--> 
+          </div>
+          <!--{else}-->
+          <div class="">{$kuaidi_info.message}</div>
+          <!--{/if}--> 
+          <!--{/if}-->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{include file="user.footer.html"} 

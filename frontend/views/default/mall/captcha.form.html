@@ -1,0 +1,79 @@
+<div class="dialog-bd captcha-form">
+    <ul class="tab J_Tab clearfix ml20 mr20">
+        <li class="active" codeType="phone">手机短信验证</li>
+        <li codeType="email">邮箱验证</li>
+    </ul>
+    <div class="pt20 pr20 pb20 pl20">
+        <div id="warning"></div>
+        <div class="captcha-fields J_TabForm">
+            <form method="post" action="{$action_url}" id="captcah_form" target="iframe">
+                <ul class="each">
+                    <li class="clearfix">
+                        <p class="first">您的手机号</p>
+                        <p class="f60">
+                            <input type="hidden" name="phone_mob" value="{$user.phonb_mob}" /> {$user.phone_mob|default:'请先配置手机号'}
+                        </p>
+                    </li>
+                    <li class="clearfix">
+                        <p class="first">手机验证码</p>
+                        <p>
+                            <input type="text" name="phone_code" class="text width_short" />
+                            <input type="button" value="{$lang.get_captcha}" id="send_phonecode" class="btn-sendcode" />
+                        </p>
+                    </li>
+                </ul>
+                <ul class="each hidden">
+                    <li class="clearfix">
+                        <p class="first">您的邮箱</p>
+                        <p class="f60">
+                            <input type="hidden" name="email" value="{$user.email}" /> {$user.email|default:'请先配置邮箱'}
+                        </p>
+                    </li>
+                    <li class="clearfix">
+                        <p class="first">邮箱验证码</p>
+                        <p>
+                            <input type="text" name="email_code" class="text width_short" />
+                            <input type="button" value="{$lang.get_captcha}" id="send_emailcode" class="btn-sendcode" />
+                        </p>
+                    </li>
+                </ul>
+                <div class="mt10 clearfix">
+                    <input type="hidden" value="phone" class="J_CodeType" />
+                    <input type="button" value="{$lang.submit}" id="gs_submit" class="btn-submit" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function() {
+        $('.J_Tab li').click(function() {
+            $('.J_CodeType').val($(this).attr('codeType'));
+            $(this).parent().find('li').removeClass('active');
+            $('.J_TabForm').find('.each').hide();
+            $(this).addClass('active');
+            $('.J_TabForm').find('.each:eq(' + $(this).parent().children('li').index(this) + ')').show();
+        });
+
+        $('#send_phonecode').click(function() {
+            $(this).attr("disabled", true);
+            send_phonecode($(this), {
+                purpose: "{$captcha.purpose}",
+                userid: "{$user.userid}",
+                "{$app->request->csrfParam}": "{$app->request->csrfToken}"
+            }, 120);
+        });
+        $('#send_emailcode').click(function() {
+            $(this).attr("disabled", true);
+            send_emailcode($(this), {
+                purpose: "{$captcha.purpose}",
+                userid: "{$user.userid}"
+            }, 120);
+        });
+
+        $('#gs_submit').click(function() {
+            var codeType = $('.J_CodeType').val();
+            gs_callback('{$smarty.get.id}', codeType, $('input[name="' + codeType + '_code"]').val());
+        });
+    });
+</script>

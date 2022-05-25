@@ -1,0 +1,75 @@
+body {font-size: 12px;}
+/* flex */
+.webkit-box{display: box;display: -webkit-box;display: -moz-box;display: -ms-flexbox;display: -webkit-flex;display: flex;}
+.flex1{-webkit-box-flex: 1;-moz-box-flex: 1;-webkit-flex: 1;-ms-flex: 1;flex: 1;}
+.line-clamp-2{overflow : hidden;text-overflow: ellipsis;-webkit-line-clamp: 2;-moz-line-clamp: 2;-ms-line-clamp: 2;-o-line-clamp: 2;line-clamp: 2;-webkit-box-orient: vertical;-moz-box-orient: vertical;-ms-box-orient: vertical;-o-box-orient: vertical;box-orient: vertical;display: -webkit-box;display: -moz-box;display: -ms-box;display: -o-box;display: box;word-break: break-all;}
+.box-align-center{-webkit-box-align: center;-moz-box-align: center;-ms-box-align: center;-o-box-align: center;box-align: center;display: -webkit-box;display: -moz-box;display: -ms-box;display: -o-box;display: box;}/*垂直居中*/
+.overflow-ellipsis{text-overflow:ellipsis;white-space:nowrap;overflow:hidden;}/*文字溢出隐藏*/
+.flex-wrap{flex-wrap: wrap;}/*换行*/
+
+/* 挂件区域 */
+.empty_widget_area { padding:20px; background:#eee; text-align:center; }
+
+/* 挂件样式 */
+.widget .widget_icons { position:absolute; top:0px; right:0px; cursor:move; height:25px; z-index:999; }
+.widget .widget_icons span { position:absolute; top:10px; cursor:pointer; width:15px; height:15px; text-indent:-99999px; }
+.widget .widget_icons .delete_widget { background:transparent url(../../images/delete.gif) no-repeat center center; right:5px; }
+.widget .widget_icons .config_widget { background:transparent url(../../images/config.gif) no-repeat center center; right:25px; }
+
+/* 配置对话框样式 */
+/* .widget_config_form {padding-bottom: 10px;} */
+.widget_config_form_body { padding:10px; }
+.widget_config_form_body .field_item { padding:5px; }
+.widget_config_form_body .field_item label {display:block; padding:5px 0px;font-size: 14px; margin-right: 10px; width: 80px; text-align: right;}
+.widget_config_form_body .field_item label span { font-weight:normal; color:#888; font-size: 14px; }
+.widget_config_form_body .field_item  p{font-size: 14px;}
+.widget_config_form_body .field_item  p input{ width: 200px;}
+.widget_config_form_body .file-box{
+    height: 50px;
+}
+.widget_config_form_body .file-box .file{
+    opacity:0;
+    width: 50px;
+    height: 50px;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+}
+.widget_config_form_body .file-box img{
+    height: 50px;
+    width: 50px;
+}
+
+.widget_config_form_body input[type="button"]{ background: #3e6caa;border:0;color:#fff; padding:6px 10px; cursor: pointer; }
+.widget_config_form_body #add_image { line-height: 30px; cursor: pointer; text-align: center;}
+.widget_config_form_body input[type="text"]{border-radius: 0;}
+
+/* 面板的样式 */
+.handle {background: #cde4f6; padding-bottom: 10px; position: relative; width: 100%;}
+.handle_top {margin: 0 7px; position: relative; height: 30px; z-index: 2;}
+.handle_logo {position: absolute; top: 5px; left: 2px;}
+.handle_top ul {position: relative; top: 2px; margin: 1px 0 0 0px; height: 31px; _top: 3px; overflow:hidden}
+.handle_top ul li {float: left;}
+
+#page-layout-community-index.editTmplateMode .handle,#page-layout-default-newindex.editTmplateMode .handle {
+    margin-top: 60px;
+}
+
+.handle_hover {border:1px solid #b2d7f1; border-bottom:0;display: block; font-size: 14px; text-decoration: none; color:#3e6caa; }
+.handle_hover span {background: #fff; padding: 5px 20px 5px 18px; display: block;}
+
+.handle_hide {display: block; background: url(../../images/handle_hide.gif); width: 33px; height: 19px; padding: 2px 0 0 25px; position: absolute; top: 5px; right: 0; text-decoration: none; color: #22508e}
+.handle_bot {margin: 0 7px;}
+.handle_con { position: relative; z-index: 1; width: 100%;}
+.handle_con_box {border: 1px solid #b2d7f1; background: #fff; width: 100%; padding-bottom: 15px;}
+.handle_btn { padding-top: 15px; border-top: 1px solid #cde4f6; }
+.handle_btn a{border-radius:3px; width:80px; height:30px; line-height:30px; display:inline-block;  text-align: center; text-decoration: none; color: #fff; margin-left: 10px;}
+.handle_btn1 {background:#f60; }
+.handle_btn2 {background:#666;}
+.handle_btn a:hover{color:#fff;opacity:0.9}
+
+.widget_list { height:70px; overflow:auto; }
+.widget_list ul { list-style:none; margin:0px 5px; overflow: hidden;}
+.widget_list ul li { float:left; }
+.widget_list ul li { padding:0 20px; height:50px; overflow:hidden; text-align:center; line-height:50px; margin:10px 5px; background:#eee; border:#ddd 1px solid; }
+.widget_list ul li .add_widget_note { color:#aaa; font-size:12px; position:absolute; top:0px; right:0px; line-height:12px; }

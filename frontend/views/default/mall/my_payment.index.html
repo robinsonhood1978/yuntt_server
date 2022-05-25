@@ -1,0 +1,47 @@
+{include file="user.header.html"}
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful">{include file="user.submenu.html"}
+      <div class="wrap">
+        <div class="public_index table">
+          <table>
+            <tr class="gray gray_new">
+              <th class="width13">{$lang.payment_name}</th>
+              <th>{$lang.builtin_payment_desc}</th>
+              <th class="width4">{$lang.enabled}</th>
+              <th class="width13">{$lang.handle}</th>
+            </tr>
+            
+            <!--{foreach from=$payments item=payment name=fe_payment}-->
+            <tr class="{if $smarty.foreach.fe_payment.last}line_bold{else}line{/if}">
+              <td><span class="padding1">{$payment.name|escape}</span></td>
+              <td>{$payment.desc}</td>
+              <td class="align2"><!--{if ($payment.code neq 'cod' && $payment.enabled) || ($payment.code eq 'cod' && $payment.enabled && $payment.status)}-->{$lang.yes}<!--{else}-->{$lang.no}<!--{/if}--></td>
+              <td><div class="clearfix"> 
+                  <!--{if in_array($payment.code, array('cod'))}-->
+                  <!--{if !isset($payment.status)}-->
+                  <a href="javascript:void(0);" ectype="dialog" uri="{url route='my_payment/install' code='cod'}" dialog_id="my_payment_install" dialog_title="{$lang.install}" dialog_width="600" class="add2_ico">{$lang.install}</a>
+                  <!--{else}-->
+                  <a href="javascript:void(0);" ectype="dialog" uri="{url route='my_payment/config' code=$payment.code}" dialog_id="my_payment_config" dialog_title="{$lang.config}" dialog_width="600" class="add2_ico">{$lang.config}</a> <a href="javascript:;" confirm="{$lang.uninstall_confirm}" uri="{url route='my_payment/uninstall' code=$payment.code}" class="J_AjaxRequest delete">{$lang.uninstall}</a> 
+                  <!--{/if}-->
+                  <!--{else}-->
+                  <span class="gray">{$lang.unify_config}</span> 
+                  <!--{/if}--> 
+                </div></td>
+            </tr>
+            <!--{/foreach}-->
+            <!--{if !$payments}-->
+            <tr>
+              <td colspan="4"><div class="notice-word">
+                  <p>{$lang.no_records}</p>
+                </div></td>
+            </tr>
+            <!--{/if}-->
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<iframe id="iframe" name="iframe" src="about:blank" frameborder="0" width="0" height="0" style="display:none"></iframe>
+{include file="user.footer.html"}

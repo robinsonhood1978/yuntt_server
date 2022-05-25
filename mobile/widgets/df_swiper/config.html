@@ -1,0 +1,122 @@
+<div class="widget-box">
+    <h3 class="title mt20 mb20 pb20"><strong class="fs18">轮播图</strong></h3>
+    <div class="content">
+        <div class="item webkit-box">
+            <label class="gray">背景颜色</label>
+            <p class="flex1 ml10 color">{$options.bgcolor|default:'#fc2b34'}</p>
+            <input type="hidden" name="bgcolor" value="{$options.bgcolor|default:'#fc2b34'}" />
+            <span class="f60 pointer J_Reset" data-id="picker1" data-value="#fc2b34">重置</span>
+            <p class="picker1 ml10"></p>
+        </div>
+        <div class="item webkit-box">
+            <label class="gray">边框风格</label>
+            <p class="flex1 ml10 value">{if $options.radius eq 'square'}直角{else}圆角{/if}</p>
+            <input type="hidden" name="radius" value="{$options.radius|default:'round'}" />
+            <span class="switch first {if $options.radius neq 'square'} selected {/if} J_Edge" title="圆角" data-value="round"><i
+                    class="iconfont icon-radius-upright"></i></span>
+            <span class="switch {if $options.radius eq 'square'} selected {/if} J_Edge" title="直角"
+                data-value="square"><i class="iconfont icon-fangkuang"></i></span>
+        </div>
+        <div class="item webkit-box">
+            <label class="gray">模块间距</label>
+            <input type="hidden" name="space" value="{$options.space|default:0}" />
+            <div class="flex1 ml20 slider" style="margin-top:15px"></div>
+        </div>
+        <div class="extra">
+            <input type="hidden" name="index" value="0" />
+            <p class="mt10 pb10 mt20 pt20">图片<span class="gray">（尺寸要求：750PX * 300PX）</span></p>
+        </div>
+        <div class="list">
+            <!-- {foreach from=$options.images item=item} -->
+            <div class="item">
+                <div class="relative">
+                    <img class="image" src="{$item.ad_image_url|url_format}" width="312" height="100" />
+                    <input onchange="fileRender(this)" class="file absolute pointer" type="file" name="ad_image_file[]" />
+                    <i class="layui-icon layui-icon-close-fill absolute del pointer J_Del" style="font-size: 20px;"></i>
+                </div>
+                <input type="hidden" name="ad_image_url[]" value="{$item.ad_image_url}" />
+                <p class="webkit-box mt10">
+                    <label class="blue mr10 mt10">链接</label>
+                    <input class="flex1 input mt10" type="text"
+                        name="ad_link_url[]" value="{$item.ad_link_url}" placeholder="index/index" /></p>
+            </div>
+            <!-- {/foreach} -->
+
+            <div class="item">
+                <div class="relative">
+                    <p class="image center"><i class="layui-icon layui-icon-addition" style="font-size: 28px;"></i></p>
+                    <input onchange="fileRender(this)" class="file absolute pointer" type="file" name="ad_image_file[]" />
+                </div>
+                <p class="webkit-box mt10"><label class="blue mr10 mt10">链接</label>
+                    <input class="flex1 input mt10" type="text" name="ad_link_url[]" value="" placeholder="index/index" />
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .widget-box .list .item {
+        width: 360px;
+        background: #fff;
+        box-shadow: 0 0 20px 0 rgba(0, 0, 0, .05);
+        border-radius: 8px;
+        box-sizing: border-box;
+        padding: 24px;
+    }
+
+    .widget-box .list .image {
+        border-radius: 8px;
+        width: 312px;
+        height: 100px;
+        background-color: #f9f9f9;
+        line-height: 100px;
+    }
+
+    .widget-box .list .file {
+        width: 312px;
+        height: 100px;
+        left: 0;
+        top: 0;
+        opacity: 0;
+    }
+
+    .widget-box .list .del {
+        right: -26px;
+        top: -32px;
+    }
+</style>
+<script>
+    $(function () {
+        $('body').on('click', '.J_Del', function () {
+            $(this).parents('.item').remove();
+            save_widget(false);
+        });
+
+        $('.J_Reset').click(function () {
+            var value = $(this).attr('data-value');
+            $(this).parent('.item').find('input[type="hidden"]').val(value);
+            save_widget();
+        });
+        $('.J_Edge').click(function () {
+            var value = $(this).attr('data-value');
+            $(this).parent('.item').find('input').val(value);
+            save_widget();   
+        });
+
+        colorRender('.picker1', function(dom, value) {
+            save_widget();
+        });
+
+        slideRender('.slider', function (dom, value) {
+            save_widget(false);
+        });
+    });
+
+    function fileRender(obj) {
+        var index = $(obj).parents('.item').index();
+        $(obj).parents('form').find('input[name="index"]').val(index);
+
+        save_widget();
+    }
+</script>

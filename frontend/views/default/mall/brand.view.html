@@ -1,0 +1,59 @@
+{include file="header.html"}
+<div id="main" class="w-full">
+    <div class="brand-home-top">
+		<div class="w w1200">
+			<div class="attention-rate">
+				<div class="brand-logo"><img src="{$brand.brand_logo|url_format}"></div>
+				<div class="follow-info">
+					<div class="follow-sum">共 <em>{$goods_count}</em> 件商品</div>
+					<div class="follow-sum">有 <em>{$collects}</em> 人关注</div>
+					<div class="go-follow" onClick="collect_brand({$brand.brand_id});"><i class="iconfont icon-zan-alt"></i><span ectype="follow_span">关注</span></div>
+				</div>
+			</div>
+			<div class="brand-cate-info">
+				<div class="title">
+					<h3>品牌描述</h3>
+				</div>
+				<div class="brand_desc" title="">{if $brand.description}{$brand.description}{else}此品牌还没有描述，请联系管理员添加品牌描述{/if}</div>
+			</div>
+		</div>
+	</div>
+	<div id="page-brand" class="w mb20 mt10">
+		<div class="brand-list">
+			<div class="title mt20"><span>品牌商品列表</span></div>
+			<div class="goods J_InfiniteList">
+				<ul class="infinite-result clearfix hidden">
+				</ul>
+				<ul class="clearfix infinite-template">
+					<li>
+						<div class="p-img"><a href="[1]" target="_blank"><img src="[2]"></a>
+						</div>
+						<div class="p-price">[3]</div>
+						<div class="p-name"><a href="[4]" target="_blank" title="[5]">[6]</a></div>
+					</li>								
+				</ul>
+				<div class="infinite-more fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadmore}<ins class="vline vright"></ins></div>
+                <div class="infinite-loading hidden"><ins class="vline vleft"></ins><span class="loading clearfix"><i></i><em>{$lang.loading}</em></span><ins class="vline vright"></ins></div>
+                <div class="infinite-bottom f99 fs12 hidden"><ins class="vline vleft"></ins>{$lang.loadend}<ins class="vline vright"></ins></div>
+                <div class="infinite-empty notice-empty hidden"><i>&#xe715;</i>
+				  <p>{$lang.no_records}</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script>
+$(function(){
+	$('.J_InfiniteList').infinite({ pageper: 10, params: {$infiniteParams}, callback: function(data, page, target, TEMP){
+			var html = '';
+			var template = TEMP.clone(true);
+			
+			$.each(data, function(k, v) {		  
+				html += sprintf(template.html(), url(['goods/index', { id:v.goods_id}]), url_format(v.default_image), price_format(v.price), v.goods_name, url(['goods/index', { id:v.goods_id}]), v.goods_name, v.goods_name);
+			});
+			target.find('.infinite-result').append(html).show();  
+		}
+	});
+})
+</script>
+{include file="footer.html"} 

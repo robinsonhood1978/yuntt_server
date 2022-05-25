@@ -1,0 +1,74 @@
+{include file="header.html"}
+<div id="main">
+  {include file="menus.html"}
+  <div id="rightCon" class="clearfix layui-body">
+    <div class="scroller">
+      <div class="flexigrid">
+        <form method="post" id="flagstore_form">
+          <table class="infoTable">
+            <!--{if !$flagstore}-->
+            <tr>
+              <th class="paddingT15">请输入店家用户名</th>
+              <td class="paddingT15 wordSpacing5"><input type="text" name="username" id="username" value="" /></td>
+            </tr>
+            <!--{else}-->
+            <tr>
+              <th class="paddingT15"><label>{$lang.store_name}</label></th>
+              <td class="paddingT15 wordSpacing5"> {$flagstore.store_name} </td>
+            </tr>
+            <!--{/if}-->
+            <tr>
+              <th class="paddingT15"><label>{$lang.alias_brand}</label></th>
+              <td class="paddingT15 wordSpacing5"><select id="brand_id" name="brand_id">
+                  <option value="">{$lang.alias_brand}</option>
+                  {html_options options=$brands selected=$flagstore.brand_id}
+                </select>
+                <label class="field_notice">优先级最高，如果搜索条件中同时有品牌，关键词，分类的，则优先显示品牌对应的旗舰店。</label>
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.store_keyword}</label></th>
+              <td class="paddingT15 wordSpacing5"><input id="keyword" name="keyword" value="{$flagstore.keyword}"
+                  type="text" />
+                <label class="field_notice">优先级次之，如果搜索条件中同时有关键词，分类的，则优先显示关键词对应的旗舰店。</label>
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.alias_gcategory}</label></th>
+              <td class="paddingT15 wordSpacing5"><select id="cate_id" name="cate_id">
+                  <option value="">{$lang.alias_gcategory}</option>
+                  {html_options options=$gcategories selected=$flagstore.cate_id}
+                </select>
+                <label class="field_notice">优先级最低，如果搜索条件中没有品牌和关键词，则显示该分类对应的旗舰店（不显示该分类下的子分类对应的旗舰店）。</label>
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.description}</label></th>
+              <td class="paddingT15 wordSpacing5"><textarea id="description" style="width:300px;height:100px;"
+                  name="description">{$flagstore.description}</textarea></td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.status}</label></th>
+              <td class="paddingT15 layui-form">
+                <input type="radio" name="status" value="1" title="{$lang.yes}" {if $flagstore.status}checked{/if} />
+                <input type="radio" name="status" value="0" title="{$lang.no}" {if !$flagstore.status}checked{/if} />
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.sort_order}</label></th>
+              <td class="paddingT15 wordSpacing5"><input class="sort_order" name="sort_order" type="text"
+                  id="sort_order" value="{$flagstore.sort_order|default:255}" /></td>
+            </tr>
+            <tr>
+              <th></th>
+              <td class="ptb20"><input class="layui-btn layui-bg-blue J_AjaxSubmit" type="submit"
+                  value="{$lang.submit}" /></td>
+            </tr>
+          </table>
+        </form>
+      </div>
+      {include file="version.html"}
+    </div>
+  </div>
+</div>
+{include file="footer.html"}

@@ -1,0 +1,76 @@
+{include file="user.header.html"}
+<div id="main" class="clearfix">
+  <div id="page-promotool" class="page-promotool"> {include file="user.menu.html"}
+    <div id="right"> {include file="user.curlocal.html"}
+      <div class="wrapful">{include file="user.submenu.html"}
+        <div class="wrap">
+          <div class="public_select">
+            <div class="appmarket">
+              <div class="appdetail mb20 clearfix">
+                <form method="get">
+                  <div class="default-image float-left"><img width="300" height="200"
+                      src="{$appmarket.logo|url_format}" /></div>
+                  <ul class="app-info float-left">
+                    <li>
+                      <h3>{$appmarket.title}</h3>
+                      <p class="gray">{$appmarket.summary}</p>
+                    </li>
+                    <li class="twocol"> <span class="first">{$lang.format_price}{$lang.colon}</span> <span
+                        class="price"><em>{$appmarket.price|price_format}</em> {$lang.yuan}/{$lang.month}</span> </li>
+                    <li class="twocol clearfix"> <span
+                        class="float-left first">{$lang.format_period}{$lang.colon}</span>
+                      <span class="float-left period clearfix J_Period">
+                        <input type="hidden" name="period" value="1" />
+                        <a href="javascript:;" value="1" class="selected"><b>一个月</b></a>
+                        <a href="javascript:;" value="2"><b>二个月</b></a>
+                        <a href="javascript:;" value="6"><b>半年</b></a>
+                      </span>
+                    </li>
+                    <li class="twocol"> <span>
+                        <input type="hidden" name="aid" value="{$appmarket.aid}" />
+                        <input type="button" class="btn-buy J_Buy"
+                          value="{if !$appmarket.checkIsRenewal}{$lang.buy}{else}{$lang.renewal}{/if}" />
+                      </span> </li>
+                  </ul>
+                </form>
+              </div>
+              <div class="attr-tabs">
+                <ul class="user-menu">
+                  <li class="active"> <a style="border-left:1px solid #ddd;" href="javascript:;"> <span>
+                        {$lang.app_detail} </span> </a> </li>
+                </ul>
+                </ul>
+              </div>
+              <div class="option_box">
+                <div class="default fs14"> {$appmarket.description|escape:editor} </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $(function () {
+    $('.J_Period a').click(function () {
+      $(this).parent().find('a').removeClass('selected');
+      $(this).addClass('selected');
+      $(this).parent().find('input[name="period"]').val($(this).attr('value'));
+    });
+
+    $('.J_Buy').click(function () {
+      var aid = $.trim($('input[name="aid"]').val());
+      var period = $.trim($('input[name="period"]').val());
+      $.getJSON(url(['appmarket/buy']), { id: aid, period: period }, function (data) {
+        if (data.done) {
+          location.href = url(['appmarket/cashier', { id: data.retval }]);
+        } else {
+          layer.close(index);
+          layer.msg(data.msg);
+        }
+      });
+    });
+  });
+</script>
+{include file="user.footer.html"}

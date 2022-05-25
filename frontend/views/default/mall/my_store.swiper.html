@@ -1,0 +1,65 @@
+{include file="user.header.html"} 
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful"> {include file="user.submenu.html"}
+      <div class="wrap">
+        <div class="public">
+          <div class="information">
+            <div class="notice-word"><p class="yellow">请上传图片尺寸：950px * 425px</p></div>
+            <form method="post" enctype="multipart/form-data">
+              <div class="setup info shop">
+                <table style="width: 100%;">
+                  <tr>
+                    <th style="width:150px; text-align: right;">图片轮播一</th>
+                    <td style="width:250px;"><p class="td_block">
+                        <input type="file" class="text width_normal" name="swiper_url[]" />
+                      </p></td>
+                    <td>{if $store.swiper.0.url}<img align="absMiddle" src="{$store.swiper.0.url|url_format}"  height="25"/> <a href="javascript:;" class="J_AjaxRequest" uri="{url route='my_store/deleteswiper' id=0}" confirm="{$lang.drop_confirm}">{$lang.drop}</a>{/if}</td>
+                  </tr>
+                  <tr>
+                    <th class="width2" style=" text-align: right;">图片轮播一链接</th>
+                    <td><p class="td_block">
+                        <input type="text" class="text width_normal" name="swiper_link[]" value="{$store.swiper.0.link}" />
+                      </p></td>
+                  </tr>
+                  <tr>
+                    <th style="width:150px; text-align: right;">图片轮播二</th>
+                    <td><p class="td_block">
+                        <input type="file" class="text width_normal" name="swiper_url[]" />
+                      </p></td>
+                    <td>{if $store.swiper.1.url}<img align="absMiddle" src="{$store.swiper.1.url|url_format}"  height="25"/> <a href="javascript:;" class="J_AjaxRequest" uri="{url route='my_store/deleteswiper' id=1}" confirm="{$lang.drop_confirm}">{$lang.drop}</a>{/if}</td>
+                  </tr>
+                  <tr>
+                    <th class="width2" style=" text-align: right;">图片轮播二链接</th>
+                    <td><p class="td_block">
+                        <input type="text" class="text width_normal" name="swiper_link[]" value="{$store.swiper.1.link}"/>
+                      </p></td>
+                  </tr>
+                  <tr>
+                    <th style="width:150px; text-align: right;">图片轮播三</th>
+                    <td><p class="td_block">
+                        <input type="file" class="text width_normal" name="swiper_url[]" />
+                      </p></td>
+                    <td>{if $store.swiper.2.url}<img align="absMiddle" src="{$store.swiper.2.url|url_format}"  height="25"/> <a href="javascript:;" class="J_AjaxRequest" uri="{url route='my_store/deleteswiper' id=2}" confirm="{$lang.drop_confirm}">{$lang.drop}</a>{/if}</td>
+                  </tr>
+                  <tr>
+                    <th class="width2" style=" text-align: right;">图片轮播三链接</th>
+                    <td><p class="td_block">
+                        <input type="text" class="text width_normal" name="swiper_link[]" value="{$store.swiper.2.link}"/>
+                      </p></td>
+                  </tr>
+                  <tr>
+                    <th></th>
+                    <td><input type="submit" class="btn-alipay mt20" value="{$lang.submit}" /></td>
+                    <td></td>
+                  </tr>
+                </table>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{include file="user.footer.html"}

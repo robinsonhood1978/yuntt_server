@@ -1,0 +1,59 @@
+<div class="widget-box">
+    <h3 class="title mt20 mb20 pb20"><strong class="fs18">辅助线</strong></h3>
+    <div class="content">
+        <div class="item webkit-box">
+            <label class="gray">线条样式</label>
+            <p class="flex1 ml10 value">{if $options.line eq 'dashed'}虚线{else}实线{/if}</p>
+            <input type="hidden" name="line" value="{$options.line|default:'solid'}" />
+            <span class="switch first {if $options.line neq 'dashed'} selected {/if} J_Switch" title="实线"
+                data-value="solid"><i class="iconfont icon-line"></i></span>
+            <span class="switch {if $options.line eq 'dashed'} selected {/if} J_Switch" title="虚线"
+                data-value="dashed"><i class="iconfont icon-dash"></i></span>
+        </div>
+        <div class="item webkit-box">
+            <label class="gray">线条颜色</label>
+            <p class="flex1 ml10 color">{$options.color|default:'#0d6fb8'}</p>
+            <input type="hidden" name="color" value="{$options.color|default:'#0d6fb8'}" />
+            <span class="f60 pointer J_Reset" data-id="picker1" data-value="#0d6fb8">重置</span>
+            <p class="picker1 ml10"></p>
+        </div>
+        <h4 class="mt10 pb10 mt20 pt20">其他设置</h4>
+        <div class="item webkit-box">
+            <label class="gray">左右边距</label>
+            <input type="hidden" name="padding" value="{$options.padding|default:10}" />
+            <div class="flex1 ml20 slider1" style="margin-top:15px"></div>
+        </div>
+
+        <div class="item webkit-box">
+            <label class="gray">模块间距</label>
+            <input type="hidden" name="space" value="{$options.space|default:10}" />
+            <div class="flex1 ml20 slider2" style="margin-top:15px"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.J_Switch').click(function () {
+            var value = $(this).attr('data-value');
+            $(this).parent('.item').find('input').val(value);
+
+            save_widget();
+        });
+        $('.J_Reset').click(function () {
+            var value = $(this).attr('data-value');
+            $(this).parent('.item').find('input[type="hidden"]').val(value);
+            save_widget();
+        });
+        colorRender('.picker1', function (dom, value) {
+            save_widget();
+        })
+        slideRender('.slider1', function (dom, value) {
+            save_widget(false);
+        }, { min: 0, max: 375 });
+        slideRender('.slider2', function (dom, value) {
+            save_widget(false);
+        });
+
+    });
+</script>

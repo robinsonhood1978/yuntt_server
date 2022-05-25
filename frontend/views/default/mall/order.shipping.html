@@ -1,0 +1,201 @@
+﻿<script type="text/javascript">
+	var shippings = {$shippings|default:'[]'};
+	var addresses = {$addresses|default:'[]'};
+	var integralExchangeRate 	= {$goods_info.integralExchange.rate|default:0};
+	var integralMaxPoints 		= {$goods_info.integralExchange.maxPoints|default:0};
+	var allowIntegral			= {$goods_info.allow_integral|default:false};
+	$(function(){
+		
+		/* 订单总额初始化 */
+		fill_order_amount();
+					
+		/*  收货地址初始化 */
+		fill_address_info($('.J_AddressEach').find('input[name="addr_id"]').val());
+					 
+		$('.J_LogisticFeesSelect').on('change', function(){
+			fill_order_amount();
+		});
+		
+		$('.J_AddressEach').click(function(){
+			$(this).parent().children().removeClass('selected_address');
+			$(this).addClass('selected_address');
+			$(this).parent().children().find('input[name="addr_id"]').prop('checked' ,false);
+			$(this).find('input[name="addr_id"]').prop('checked', true);
+			
+			var addr_id = $(this).find('input[name="addr_id"]').val();
+						
+			/* 加载该收货地址对应的运费 */
+			fill_logistic_fee_by_address(addr_id);
+						
+			/* 赋值收货地址 */
+			fill_address_info(addr_id);
+						
+			/* 更新订单总额 */
+			fill_order_amount();
+						
+		});
+		
+		$('.J_UseIntegralCheckbox').click(function(){
+			$('.J_IntegralAmount').val('');
+			if($(this).prop('checked')==true) {
+				$('.J_IntegralAmount').val(integralMaxPoints);
+			}
+			$('.J_IntegralAmount').prop('disabled', $(this).prop('checked')==false);
+			fill_order_amount();
+		});
+
+		$('.J_IntegralAmount').keyup(function(){
+			if(isNaN($(this).val())) {
+				alert('{$lang.integral_must_num}');
+				$(this).val(integralMaxPoints);  
+				$(this).select();
+			}
+			else if(parseFloat($(this).val()) < 0)
+			{
+				alert('{$lang.integral_must_gt0}');
+				$(this).val(integralMaxPoints);
+				$(this).select();  
+			}
+			else
+			{
+				if($(this).val().toString().indexOf('.') > 0)
+				{
+					// 必须先判断是不是有点，再判断小数点位数，要不JS报错
+					if($(this).val().toString().split(".")[1].length > 2)
+					{
+						$(this).val(number_format($(this).val(), 2));
+					}
+				}
+				else {
+					// $(this).val(0); // @edit 2018.7.14
+				}
+			}
+			fill_order_amount();
+		});
+	});
+				
+	/* 赋值收货地址 */
+	function fill_address_info(addr_id)
+	{
+		var address = addresses[addr_id];
+		$('.J_AddressDetail').html(address['region_name'] + ' ' + address['address']);
+		$('.J_Consignee').html(address['consignee'] + ' ' + (address['phone_mob'] ? address['phone_mob'] : address['phone_tel']));
+	}
+				
+	/* 加载该收货地址对应的运费 */
+	function fill_logistic_fee_by_address(addr_id)
+	{
+		var address = addresses[addr_id];
+		$('.J_Store').each(function(){
+			store_id = $(this).attr('store_id');
+			$('.J_LogisticFeesSelect-' + store_id).children().remove();
+			shipping_data = shippings[store_id][address['region_id']];
+			
+			$.each(shipping_data,function(k,v) {
+				html = '<option value="'+v.type+'" price="'+v.logistic_fees+'">'+v.name+'：'+number_format(v.logistic_fees,2)+'</option>';
+				$('.J_LogisticFeesSelect-' + store_id).append(html);
+			});
+		});
+	}
+	
+	/* 设置总费用 */ 
+	function fill_order_amount()
+	{
+		var order_amount, logistic_fee, coupon_value, integral_value, mealprefer_value, fullprefer_value;
+		
+		order_amount = integral_value = 0;
+	
+		$('.J_Store').each(function(index, element){
+			store_id = $(this).attr('store_id');
+			store_amount = goods_amount = logistic_fee = coupon_value = mealprefer_value = fullprefer_value = 0;
+			
+			$('.J_Subtotal-'+store_id).each(function(index, element) {
+                goods_amount += parseFloat($(this).attr('price'));
+            });
+
+			//  如果存在搭配套餐
+			if($('.J_MealPreferPrice-'+store_id).length > 0) {
+				mealprefer_value = parseFloat($('.J_MealPreferPrice-'+store_id).attr('data-price'));
+			}
+			
+			// 如果存在满折满减
+			if($('.J_FullPreferPrice-'+store_id).length > 0) {
+				fullprefer_value = parseFloat($('.J_FullPreferPrice-'+store_id).attr('data-price'));
+			}
+		
+			logistic_fee = parseFloat($('.J_LogisticFeesSelect-'+store_id).find('option:selected').attr('price'));
+			$('.J_LogisticFees-'+store_id).html(number_format(logistic_fee, 2));
+			
+			store_amount = goods_amount-mealprefer_value-fullprefer_value+logistic_fee;
+			
+			$('.J_UseCouponSelect-'+store_id+' option').each(function(index, element) {
+                if($(this).attr('price') != undefined && (parseFloat($(this).attr('price')) > store_amount)) {
+					$(this).prop('disabled', true);
+				} else {
+					$(this).prop('disabled', false);
+				}
+            });
+
+			if($('.J_UseCouponSelect-'+store_id).val() != ''){
+				coupon_value = parseFloat($('.J_UseCouponSelect-'+store_id).find('option:selected').attr('price'));
+				store_amount -= coupon_value;
+			}
+			
+			store_amount = goods_amount-mealprefer_value-fullprefer_value+logistic_fee-coupon_value;
+			
+			$('.J_OrderAmount-'+store_id).html(number_format(store_amount.toFixed(2), 2));
+			
+			order_amount += parseFloat(store_amount);
+			
+		});
+
+		if(allowIntegral) {
+			if($('.J_UseIntegralCheckbox').prop('checked') == true && $('.J_IntegralAmount').val() > 0){
+				usePoints = parseFloat($('.J_IntegralAmount').val());
+				
+				if(usePoints > integralMaxPoints) {
+					usePoints = integralMaxPoints;
+					$('.J_IntegralAmount').val(usePoints);
+				}
+				
+				integral_value = (usePoints * integralExchangeRate).toFixed(4);
+				if(integral_value > order_amount) {
+					integral_value 	= order_amount;
+					usePoints		= number_format((integral_value / integralExchangeRate).toFixed(2), 2);
+					$('.J_IntegralAmount').val(usePoints);
+				} 
+				integral_value = parseFloat(integral_value).toFixed(2);
+				$('.J_IntegralPrice').html(number_format(integral_value, 2));
+				
+			} else $('.J_IntegralPrice').html('0.00');
+		}
+	
+		$('.J_OrderAmount').html(number_format((order_amount-integral_value).toFixed(2), 2));
+	}
+</script>
+
+<div id="select-address" class="w mt20">
+	<div class="title w mb10">
+		<b class="fs14">{$lang.consignee_address}</b> <a href="{url route='my_address/index'}" target="_blank">[{$lang.manage_address}]</a> </div>
+	<!--{if $my_address}-->
+	<div class="oldaddress w clearfix"> 
+		<!--{foreach from=$my_address item=address name=fe_address}-->
+		<dl class="f66 clearfix {if $smarty.foreach.fe_address.first} selected_address{/if} J_AddressEach" {if $smarty.foreach.fe_address.iteration % 4 eq 0} style="margin-right:0;"{/if}>
+			<dt>
+				<input type="checkbox" name="addr_id" value="{$address.addr_id}" {if $smarty.foreach.fe_address.first} checked="checked" {/if}/>
+				<b>{$address.region_name} ( {$address.consignee|escape} {$lang.shou} )</b> <ins class="deftip" {if $address.defaddr} style="display:block"{/if}>{$lang.default_addr}</ins>
+			</dt>
+			<dd class="addr-bd"> {$address.address|escape} {$address.phone_mob|default:$address.phone_tel} 
+			</dd>
+			<dd class="addr-toolbar">
+				<i class="curmarker"></i>
+				<a href="javascript:;" class="btn-modify" ectype="dialog" dialog_id="my_address_edit" dialog_title="{$lang.edit_address}" uri="{url route='my_address/edit' redirect=$redirect addr_id=$address.addr_id}">{$lang.modify}</a>
+			</dd>
+		</dl>
+		<!--{/foreach}-->
+	</div>
+	<!--{/if}-->
+	<div class="mb10 mt10 clearfix">
+		<a href="javascript:;" ectype="dialog" dialog_title="{$lang.add_address}" dialog_id="my_address_add" dialog_width="600" uri="{url route='my_address/add' redirect=$redirect}" class="btn-new-addr">{$lang.use_new_address}</a>
+	</div>
+</div>

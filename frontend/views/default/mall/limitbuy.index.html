@@ -1,0 +1,78 @@
+{include file="header.html"}
+<div id="main" class="w-full">
+  <div id="page-search-limitbuy" class="w mt10 mb20">
+    <!--{if $categorys}-->
+    <div class="w mb20 border relative wrap-by">
+      <div class="search-by by-category relative"> 
+        <!--{foreach from=$categorys item=item name=fe_item}-->
+        <dl class="relative clearfix {if $smarty.foreach.fe_item.iteration gt 4}hidden{/if}">
+          <dt class="float-left"><a href="{url route='limitbuy/index' cate_id=$item.cate_id}">{$item.cate_name|escape}</a></dt>
+          <dd class="float-left"> 
+            <!--{if $item.children}--> 
+            <!--{foreach from=$item.children item=child name=fe_child}--> 
+            <a href="{url route='limitbuy/index' cate_id=$child.cate_id}" class="{if $smarty.foreach.fe_child.iteration gt 7}toggle hidden{/if}" {if $smarty.get.cate_id eq $child.cate_id} style="color:#F00"{/if}>{$child.cate_name|escape}</a> 
+            <!--{/foreach}--> 
+            <!--{else}--> 
+            &nbsp; 
+            <!--{/if}--> 
+          </dd>
+          <dd class="float-left" style="position:absolute;top:3px; right:0;width:80px; height:30px;padding:0;"><span class="more-it clearfix"><em>{$lang.more}</em><i></i></span></dd>
+        </dl>
+        <!--{/foreach}--> 
+      </div>
+      <div class="attr-bottom"> <ins></ins><b class="show-more"><span>展开</span>分类<i></i></b> </div>
+    </div>
+    <!--{/if}-->
+    <div class="w mt20" style="margin-top:40px;">
+      <div class="search-type clearfix">
+        <div class="float-left btn-type clearfix"> <a href="javascript:;" class="current">{$lang.limitbuy}</a> </div>
+        {include file="page.top.html"}</div>
+      <div class="group-list mt10 mb10 clearfix">
+        <ul class="clearfix">
+          <!-- {foreach from=$goodslist item=goods name=fe_goods} -->
+          <li class="item mb20" {if $smarty.foreach.fe_goods.iteration % 4 eq 0} style="margin-right:0"{/if}>
+            <div class="desc"><a target="_blank" href="{url route='goods/index' id=$goods.goods_id}">{$goods.goods_name|escape|truncate:60}</a></div>
+            <div class="pic"><a target="_blank" href="{url route='goods/index' id=$goods.goods_id}"><img src="{$goods.default_image|url_format}" height="200" alt="{$goods.goods_name|escape}" /></a></div>
+            <div class="buy"><span class="price">{$goods.pro_price|price_format}</span><del>{$goods.price}</del><a href="{url route='goods/index' id=$goods.goods_id}">立即抢购</a></div>
+          </li>
+          <!--{foreachelse}-->
+          <div class="notice-word">
+            <p class="yellow-big">{$lang.no_limitbuy_goods}</p>
+          </div>
+          <!-- {/foreach} -->
+        </ul>
+        
+      </div>
+      
+      <div class="mt20 clearfix center">{include file="page.bottom.html"}</div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$('.attr-bottom .show-more').click(function(){
+		$(this).parent().parent().children('.by-category').find('dl.hidden').toggle();
+		if($(this).find('span').html() == lang.expand){
+			$(this).find('span').html(lang.fold);
+			$(this).children().children('i').css('background-position','0 -1488px');
+		} else {
+			$(this).find('span').html(lang.expand);
+			$(this).children().children('i').css('background-position','0 -1497px');
+		}
+	});
+	$('.search-by .more-it').click(function(){
+		$(this).parent().parent().find('.hidden').toggle();
+		if($(this).find('em').html() == lang.more)
+		{
+			$(this).find('em').html(lang.fold);
+			$(this).find('i').addClass('foldUp');
+		}
+		else
+		{
+			$(this).find('em').html(lang.more);
+			$(this).find('i').removeClass('foldUp');
+		}
+	});
+});
+</script>
+{include file="footer.html"}

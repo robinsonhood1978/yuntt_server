@@ -1,0 +1,52 @@
+{include file="header.html"}
+<div id="main">
+	{include file="menus.html"}
+	<div id="rightCon" class="clearfix layui-body">
+		<div class="scroller">
+			<div class="tablegrid">
+				<table class="layui-hide" id="tablegrid" lay-filter="tablegrid"></table>
+			</div>
+			{include file="version.html"}
+		</div>
+	</div>
+</div>
+<script type="text/html" id="toolbar">
+	<div class="layui-btn-container">
+		<a class="layui-btn layui-bg-blue" href="{url route='integral/index'}"><i class="layui-icon layui-icon-left"></i>返回用户积分</a>
+	</div>
+</script>
+
+<script>
+	layui.use('table', function () {
+		var table = layui.table;
+
+		table.render({
+			elem: '#tablegrid'
+			//,skin: 'line'
+			, url: url(['integral/logs', { id: '{$smarty.get.id}' }])
+			, toolbar: '#toolbar'
+			, defaultToolbar: ['filter', /*'exports',*/ 'print']
+			, title: '用户积分列表'
+			//, size: 'lg'
+			, cols: [[
+				{ type: 'checkbox', fixed: 'left' }
+				, { field: 'log_id', title: 'ID', width: 70, fixed: 'left', unresize: true, sort: true }
+				, { field: 'username', title: '用户名', width: 100 }
+				, { field: 'type', title: '积分类型', width: 200, sort: true }
+				, {
+					field: 'changes', title: '积分变化', width: 160, sort: true, templet: function (res) {
+						return res.changes > 0 ? '<span class="red">+' + res.changes + '</span>' : res.changes;
+					}
+				}
+				, { field: 'balance', title: '积分余额', width: 110, sort: true }
+				, { field: 'state', title: '状态', width: 110, sort: true }
+				, { field: 'add_time', title: '日期', width: 200, sort: true }
+				, { field: 'flag', title: '备注', width: 260 }
+			]]
+			, page: {
+				theme: 'blue'
+			}
+		});
+	});
+</script>
+{include file="footer.html"}

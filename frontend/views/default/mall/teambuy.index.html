@@ -1,0 +1,87 @@
+{include file="user.header.html"}
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful">{include file="user.submenu.html"}
+      <div class="wrap">
+        <div class="public_select table">
+          <div class="promotool">
+            <div class="bundle bundle-list"> 
+              <!--{if $tooldisabled}-->
+              <div class="notice-word">
+                <p>{$tooldisabled}</p>
+              </div>
+              <!--{else}-->
+              <table>
+                <tr class="line_bold">
+                  <th colspan="7"> <div class="search_div clearfix">
+                      <form method="get" class="clearfix">
+                        <div class="float-left">
+                          <label>{$lang.title}{$lang.colon}</label>
+                          <input type="text" name="title" value="{$smarty.get.title|escape}"/>
+                          <input type="submit" class="btn" value="{$lang.search}" />
+                        </div>
+                        <!--{if $filtered}--> 
+                        <a class="detlink" href="{url route='teambuy/index'}">{$lang.cancel_query}</a> 
+                        <!--{/if}-->
+                      </form>
+                    </div>
+                  </th>
+                </tr>
+                <tr class="sep-row" height="20">
+                  <td colspan="7"></td>
+                </tr>
+                <!--{if $teambuys}-->
+                <tr class="gray">
+                  <th width="50">{$lang.goods_image}</th>
+                  <th width="140">{$lang.goods_name}</th>
+                  <th width="60"><span>{$lang.title}</span></th>
+                  <th width="80"><span>{$lang.price}</span></th>
+                  <th width="80"><span>{$lang.teambuy_price}</span></th>
+                  <th width="80"><span>{$lang.status}</span></th>
+                  <th width="150"><span>{$lang.handle}</span></th>
+                </tr>
+                <!--{/if}--> 
+                <!--{foreach from=$teambuys item=teambuy name=fe_teambuy}-->
+                <tr class="line {if $smarty.foreach.fe_teambuy.last}last_line{/if}">
+                  <td width="50"><a href="{url route='goods/index' id=$teambuy.goods_id}" target="_blank"><img src="{$teambuy.default_image|url_format}" width="50" height="50"  /></a></td>
+                  <td width="140"><a href="{url route='goods/index' id=$teambuy.goods_id}" target="_blank">{$teambuy.goods_name|escape|truncate:50}</a></td>
+                  <td width="60" class="align2">{$teambuy.title}</td>
+                  <td width="80" class="align2">{$teambuy.price}</td>
+                  <td width="80" class="align2">{$teambuy.pro_price}</td>
+                  <td width="80" class="align2">{if $teambuy.status}{$lang.normal}{else}<font class="f60">{$lang.invalid}</font>{/if}</td>
+                  <td width="150" class="align2 last">
+                    <div class="btn">
+                      <a class="mr5" href="{url route='teambuy/edit' id=$teambuy.id}" style="border:1px #f60 solid; border-radius:4px; padding:3px 5px;color: #f60">{$lang.edit}</a>
+                      <!--{if $teambuy.status}-->
+                      <a class="ml5 J_AjaxRequest" href="javascript:;" uri="{url route='teambuy/closed' id=$teambuy.id}" style="border:1px #f60 solid; border-radius:4px; padding:3px 5px;color: #f60">{$lang.teambuy_closed}</a> 
+                      <!--{/if}-->
+                      <a class="ml5" href="{url route='teambuy/delete' id=$teambuy.id}" style="border:1px #19ACF7 solid; border-radius:4px; padding:3px 5px; color:#19ACF7;">{$lang.drop}</a> 
+                    </div>
+                  </td>
+                </tr>
+                <!--{foreachelse}-->
+                <tr>
+                  <td class="align2" colspan="7"><div class="notice-word">
+                      <p>{$lang.no_records}</p>
+                    </div></td>
+                </tr>
+                <!--{/foreach}--> 
+                <!--{if $teambuys}-->
+                <tr class="line_bold line_bold_bottom">
+                  <td colspan="7"></td>
+                </tr>
+                <tr>
+                  <th colspan="7"> <div class="position2 clearfix center">{include file="page.bottom.html"}</div>
+                  </th>
+                </tr>
+                <!--{/if}-->
+              </table>
+              <!--{/if}--> 
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{include file="user.footer.html"}

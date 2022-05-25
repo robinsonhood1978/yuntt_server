@@ -1,0 +1,102 @@
+{include file="header.html"}
+<div id="main">
+  {include file="menus.html"}
+  <div id="rightCon" class="clearfix layui-body">
+    <div class="scroller">
+      <div class="explanation" id="explanation">
+        <div class="title" id="checkZoom"> <i class="fa fa-lightbulb-o"></i>
+          <h4>{$lang.operation_tip}</h4>
+        </div>
+        <ul>
+          <li><i class="fa fa-angle-double-right"></i> 点击同意，分销商即可分销商品赚取佣金。
+          </li>
+          <li><i class="fa fa-angle-double-right"></i> 点击拒绝，须填写拒绝原因，拒绝后该分销商将允许申请者修改后重新审核</li>
+        </ul>
+      </div>
+      <div class="flexigrid">
+        <form method="post">
+          <table class="infoTable">
+            <tr>
+              <th class="paddingT15"><label>{$lang.username}</label></th>
+              <td class="paddingT15 wordSpacing5">{$distribute.username}</td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.phone_mob}</label></th>
+              <td class="paddingT15 wordSpacing5">{$distribute.phone_mob}</td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.name}</label></th>
+              <td class="paddingT15 wordSpacing5">{$distribute.name}</td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.logo}</label></th>
+              <td class="paddingT15 wordSpacing5">
+                <!--{if $distribute.logo}-->
+                <a href="{$distribute.logo|url_format}" target="_blank" class="mr20"><img
+                    src="{$distribute.logo|url_format}" height="30" /></a>
+                <!--{/if}-->
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.parent}</label></th>
+              <td class="paddingT15 wordSpacing5">{$distribute.parent|default:'无'}</td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.created}</label></th>
+              <td class="paddingT15 wordSpacing5">{$distribute.created|date_format:"%Y-%m-%d %H:%M:%S"}</td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.status}</label></th>
+              <td class="paddingT15 wordSpacing5">{$distribute.status}</td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.remark}</label></th>
+              <td class="paddingT15 wordSpacing5">{$distribute.remark|escape|nl2br}</td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.reject_reason}</label></th>
+              <td class="paddingT15 wordSpacing5"><textarea name="reason" cols="60" rows="4"
+                  id="reject_reason"></textarea></td>
+            </tr>
+            <tr>
+              <th></th>
+              <td class="ptb20"><input type="hidden" id="action" name="action" value="agree" />
+                <input class="layui-btn layui-bg-blue" type="submit" id="agree" value="{$lang.agree}" />
+                <input class="layui-btn layui-btn-warm" type="button" id="reject" value="{$lang.reject}" />
+              </td>
+            </tr>
+          </table>
+        </form>
+      </div>
+      {include file="version.html"}
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $(function () {
+    $("#reject").click(function () {
+      var reason = $.trim($("#reject_reason").val());
+      if (reason == '') {
+        layer.msg(lang.input_reason);
+        return false;
+      }
+      $('#action').val('reject');
+      var type = $(this).parents('form').attr('method').toUpperCase();
+      var url = window.location.href;
+      var fromObj = $(this).parents('form');
+      ajaxSubmit(type, url, fromObj);
+      return false;
+    });
+
+    $("#agree").click(function () {
+      $('#action').val('agree');
+      $('#reject_reason').val('');
+      var type = $(this).parents('form').attr('method').toUpperCase();
+      var url = window.location.href;
+      var fromObj = $(this).parents('form');
+      ajaxSubmit(type, url, fromObj);
+      return false;
+    });
+  });
+</script>
+{include file="footer.html"}

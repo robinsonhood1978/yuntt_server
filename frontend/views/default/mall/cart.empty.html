@@ -1,0 +1,38 @@
+{include file="header.html"}
+<style type="text/css">
+.mall-nav{ display:none}
+</style>
+<div id="main" class="w-full">
+<div id="page-cart" class="cart-empty w">
+   <div class="step step1 mt10 clearfix">
+      <span class="fs14 fff">{$lang.ckgwc}</span>
+      <span class="fs14">{$lang.qrddxx}</span>
+      <span class="fs14">{$lang.fk}</span>
+      <span class="fs14">{$lang.qrsh}</span>
+      <span class="fs14">{$lang.pj}</span>
+   </div>
+   <div class="empty-notice w clearfix">
+      <div class="empty-ico"></div>
+      <div class="empty-text">
+         <p class="fs14 strong">{$lang.cart_empty_notice}</p>
+         <a href="{$siteUrl}">{$lang.choice_goods}>></a>
+         <a href="{url route='buyer_order/index'}">{$lang.view_orders}>></a>
+      </div>
+   </div>
+   
+   <div class="interest mt20 mb10">
+      <div class="title border fs14 padding5 f66 strong"><span class="arr"></span>{$lang.interest_note}</div>
+      <div class="content border border-t-0 clearfix">
+         <!--{foreach from=$interest item=goods}-->
+         <dl class="float-left">
+           <dt><a href="{url route='goods/index' id=$goods.goods_id}" target="_blank"><img width="160" height="160" src="{$goods.default_image|url_format}" /></a></dt>
+           <dd class="desc"><a href="{url route='goods/index' id=$goods.goods_id}" target="_blank">{$goods.goods_name|escape|truncate:42}</a></dd>
+           <dd class="price clearfix"><em>{$goods.price}</em><span>最近成交{$goods.sales|default:0}笔</span></dd>
+           <dd class="service"></dd>
+         </dl> 
+         <!--{/foreach}-->
+      </div>
+   </div>
+</div>
+</div>
+{include file="footer.html"}

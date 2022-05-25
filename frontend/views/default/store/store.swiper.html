@@ -1,0 +1,26 @@
+<!--{if $store.swiper}-->
+<div class="w-full mb20">
+    <div class="store-slides J_StoreSwiper">
+		<div class="scroller">
+			<ul class="ks-content ks-switchable-content clearfix">
+				<!--{foreach from=$store.swiper item=swiper name=fe_swiper}-->
+				<li class="clearfix">
+					<a href="{$swiper.link}" target="_blank"><img class="w-full" src="{$swiper.url|url_format}" /></a>
+				</li>
+				<!--{/foreach}-->
+			</ul>
+		</div>
+		<div class="ks-switchable-nav">
+			<!--{foreach from=$store.swiper item=swiper name=fe_swiper}-->
+			<span {if $smarty.foreach.fe_swiper.first}class="ks-active" {/if}></span>
+			<!--{/foreach}-->
+		</div>
+    </div>
+</div>
+<script type="text/javascript">
+//$('.J_StoreSwiper ul li').css('width', $(window).width() +'px');
+$(function(){
+	$(".J_StoreSwiper").slide({ mainCell:".ks-switchable-content", titCell:".ks-switchable-nav span", effect:"leftLoop", trigger:"mouseover", prevCell:".prev", nextCell:".next", titOnClassName:"ks-active", autoPlay:true});					
+});	
+</script>
+<!--{/if}-->

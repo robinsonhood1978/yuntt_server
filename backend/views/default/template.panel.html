@@ -1,0 +1,102 @@
+<script type="text/javascript">
+    var __widgets = {$widgets};
+    $(function () {
+        for (k in __widgets) {
+            var disabled = __widgets[k]['disabled'] ? '<s>即将推出</s>' : '';
+            var _widget = $('<li widget_name="' + __widgets[k]['name'] + '" title="{$lang.click_to_add}">' + disabled + '<i class="iconfont ' + __widgets[k]['icon'] + '"></i><span>' + __widgets[k]['display_name'] + '</span></li>');
+            if (!disabled) {
+                _widget.css('cursor', 'pointer').click(add_widget);
+            }
+            $('#widget_list_ul_' + __widgets[k]['category']).append(_widget);
+        }
+        $('#widget_save_button').click(save_widget);
+        $('#page_save_button').click(save_page);
+
+        $('#template_panel .fold').click(function () {
+            $(this).prev('.scroller').fadeToggle('slow', 'linear', function () {
+                $('#template_page .ewraper').css('max-width', $(this).css('display') == 'none' ? 500 : 375);
+            });
+        });
+
+        $('.J_Preview').click(function () {
+            var d = DialogManager.create('preview');
+            d.setWidth(400);
+            d.setTitle('预览效果');
+            d.setContents('message', {
+                type: 'notice',
+                text: '<div class="center mt20 mb20 gray">点击“发布”后，直接打开小程序或APP查看实际效果</div>'
+            });
+            d.show('center');
+        });
+
+        $('#clear_file').click(function () {
+            $.getJSON(url(['template/clearfile', null, BACK_URL]), function (data) {
+                if(data.done) {
+                    layer.msg(data.msg);
+                    return true;
+                }
+                layer.msg(lang.clear_empty);
+            });
+        });
+    });
+</script>
+<div id="template_nav" class="mainnav">
+    <div class="wraper clearfix w-full bgf">
+        <div class="float-left mt10 mb10 ml5 mr5 clearfix webkit-box box-align-center">
+            <a class="inline-block fff" href="{$homeUrl}" target="_blank"><img align="absMiddle" height="20"
+                    src="{res file='images/backendlogow.png'}"></a>
+            <a href="{url route='template/index'}" class="fs16 ml20 pl20 fff block" style="color:#fff">
+                <i class="layui-icon layui-icon-left layui-font-14 mt10 mb10"></i>
+                <span>{$page.title}</span>
+            </a>
+        </div>
+        <div class="float-right mt10 mb10">
+            <a class="layui-btn layui-btn-primary layui-border-black mr10" href="javascript:;"
+                id="clear_file">清理垃圾</a>
+            <a class="layui-btn layui-btn-primary layui-border-black mr10 J_Preview" uri="{$page.url}"
+                target="_blank">预览</a>
+            <a class="layui-btn layui-btn-primary layui-border-black mr10" href="javascript:;"
+                id="widget_save_button">保存</a>
+            <a class="layui-btn layui-btn-normal mr20" href="javascript:;" id="page_save_button">发布</a>
+        </div>
+    </div>
+</div>
+<div class="handle relative" id="template_panel">
+    <div class="scroller">
+        <div class="content">
+            <div class="webkit-box mt10" style="line-height: 14px;">
+                <span class="handle_hover mt10 mb10 ml10 pl10">基础组件</span>
+                <i class="layui-icon layui-icon-down layui-font-12 mt10 mb10 ml5"></i>
+            </div>
+            <div class="handle_bot mt10">
+                <div class="widget_list">
+                    <ul id="widget_list_ul_basic"></ul>
+                    <div class="clear"></div>
+                </div>
+            </div>
+            <div class="webkit-box mt10" style="line-height: 14px;">
+                <span class="handle_hover mt10 mb10 ml10 pl10">营销组件</span>
+                <i class="layui-icon layui-icon-down layui-font-12 mt10 mb10 ml5"></i>
+            </div>
+            <div class="handle_bot mt10">
+                <div class="widget_list">
+                    <ul id="widget_list_ul_promote"></ul>
+                    <div class="clear"></div>
+                </div>
+            </div>
+            <div class="webkit-box mt10" style="line-height: 14px;">
+                <span class="handle_hover mt10 mb10 ml10 pl10">其他组件</span>
+                <i class="layui-icon layui-icon-down layui-font-12 mt10 mb10 ml5"></i>
+            </div>
+            <div class="handle_bot mt10">
+                <div class="widget_list">
+                    <ul id="widget_list_ul_other"></ul>
+                    <div class="clear"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="fold absolute"><i class="layui-icon layui-icon-left"></i></div>
+</div>
+<div id="template_config"></div>
+<form id="_edit_page_form_" style="display:none"></form>

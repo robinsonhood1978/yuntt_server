@@ -1,0 +1,91 @@
+
+<div class="clothing mb20 electrical J_S{$widget_data.model_id}">
+  <div class="style-default style-{$widget_data.model_style}">
+    <div class="cl-title  clearfix"> 
+    <p class="cl-tie">{$widget_data.model_name}</p>
+    <div class="cl-tags">
+      <ul class="clearfix">
+      	<!--{foreach from=$widget_data.goods_list item=item name=fe_item}-->
+        <!--{if $item.title}-->
+        <li> <span>{$item.title}</span> <i class="arrowImg"></i> </li>
+        <!--{/if}-->
+        <!--{/foreach}-->
+      </ul>
+    </div>
+  </div>
+    <div class="cl-content clearfix">
+      <div class="con-left clearfix">
+        <div class="con-left-slide">
+          <div class="s-content">
+            <ul>
+              <!-- {foreach from=$widget_data.left_side item=item} -->          	
+              <li><a href="{$item.link}" target="_blank"><img src="{$item.url|url_format}" /></a></li>
+              <!-- {/foreach} -->             
+      		</ul>
+          </div>
+        <div class="s-tit">
+          <ul>
+            <li></li>
+            <li></li>
+            <li></li>
+          </ul>
+        </div>
+      </div>
+                    
+      <div class="con-adv clearfix">
+      <a class="mr10" href="{$widget_data.ad4_link_url}"><img src="{$widget_data.ad4_image_url|url_format}" /></a>
+      <a href="{$widget_data.ad5_link_url}"><img src="{$widget_data.ad5_image_url|url_format}" /></a>
+      </div>
+      </div>
+    <div class="con-right">
+     <!--{if $widget_data.goods_list.0.cut}-->
+      <ul class="clearfix">
+      	<!-- {foreach from=$widget_data.right_side item=item name=fe_item} -->
+        <li class="con-upload mb10"{if $smarty.foreach.fe_item.iteration % 3 eq 0} style="margin-right:0"{/if}> 
+          <a href="{$item.link}">
+            <div class="title">
+              <h3>{$item.title.0}</h3>
+              <span>{$item.title.1}</span> 
+            </div>
+            <img src="{$item.url|url_format}" /> 
+          </a> 
+        </li>
+        <!-- {/foreach} -->
+      </ul>
+      <!--{/if}-->
+      
+      <!--{foreach from=$widget_data.goods_list item=item name=fe_item}-->
+      <!--{if $item.title}-->
+      <!--{if $widget_data.goods_list.0.cut eq 0 || !$smarty.foreach.fe_item.first}-->
+      <ul class="clearfix">
+      <!--{foreach from=$item.list item=goods name=fe_goods}-->
+        <li class="con-item mb10">
+          <div class="c-img"> 
+            <a href="{url route='goods/index' id=$goods.goods_id}" target="_blank">
+              <img src="{$goods.default_image|url_format}" />
+            </a> 
+          </div>
+          <div class="c-name"> 
+            <a href="{url route='goods/index' id=$goods.goods_id}">{$goods.goods_name}</a> 
+          </div>
+          <div class="c-price clearfix"> 
+            <del>{$goods.price|price_format}</del>
+            <p>{$goods.price|price_format}</p>
+          </div>
+        </li>
+        <!--{/foreach}-->
+      </ul>
+      <!--{/if}-->
+      <!--{/if}-->
+      <!--{/foreach}-->
+      
+    </div>
+  </div>
+  </div>
+</div>
+<script type="text/jscript">
+$(function(){	
+	$(".J_S{$widget_data.model_id}").slide({ titCell:'.cl-tags ul li', mainCell:'.con-right', effect:"fade", trigger:"mouseover", autoPlay:true});	
+	$(".J_S{$widget_data.model_id} .con-left-slide").slide({ titCell:'.s-tit ul li', mainCell:'.s-content ul', effect:"leftLoop", autoPlay:true});
+});
+</script> 

@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="{$app->language}">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset={$app->charset}" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width" />
+<meta name="csrf-param" content="{$app->request->csrfParam}">
+<meta name="csrf-token" content="{$app->request->csrfToken}">
+
+<meta name="author" content="ShopWind" />
+<meta name="generator" content="ShopWind" />
+<meta name="copyright" content="ShopWind Inc. All Rights Reserved" />
+
+<title>{$page.title}</title>
+<meta name="Keywords" content="{$page.keywords}" />
+<meta name="Description" content="{$page.description}" />
+
+<link rel="shortcut icon" href="#"/>
+<link type="text/css" href="{lib file='layui/css/layui.css' }" rel="stylesheet" />
+<link type="text/css" href="{res file='css/global.css'}" rel="stylesheet" />
+<link type="text/css" href="{res file='css/footer.css'}" rel="stylesheet" />
+<link type="text/css" href="{res file='css/user.css'}" rel="stylesheet" />
+
+<script type="text/javascript">
+var HOME_URL = "{$homeUrl}";
+var SITE_URL = "{$siteUrl}";
+var PRICE_FORMAT = "{$priceFormat}";
+var ENABLE_PRETTY = "{$enablePretty}";
+</script>
+<script type="text/javascript" src='{url route="{$app->controller->id}/jslang"}' charset="{$app->charset}"></script>
+<script type="text/javascript" src="{lib file='jquery-1.11.1.js'}" charset="{$app->charset}"></script>
+{$_head_tags|default}
+</head>
+<body id="page-layout-{$app->controller->id|default:'default'}-{$app->controller->action->id|default:'index'}">
+   <div id="site-nav" class="w-full">
+      <div class="shoptop w clearfix">
+         <div class="login_info clearfix">
+            <span class="ml10" >您好, </span>
+            {if $visitor.userid}
+            <!-- <img class="float-left" src="{$visitor.portrait|url_format}" width="24" height="24" /> -->
+            <a class="blue" href="{url route='user/index'}">{$visitor.username}</a>
+            <a class="ml5" href="{url route='user/logout'}">{$lang.logout}</a>
+            {else}
+            <a class="red" href="{url route='user/login'}">请登录</a>
+            {/if}
+         </div>
+         <ul class="quick-menu">
+           {if !$index}<li class="home"><a href="{$siteUrl}">{$lang.back_home}</a></li>{/if}
+           <li><a href="{url route='buyer_order/index'}">我的订单</a></li>
+           <li><a href="{url route='my_favorite/index'}">我的收藏</a></li>
+           <li><a href="{url route='my_coupon/index'}">我的优惠券</a></li>
+           <li><a href="{url route='my_integral/index'}">我的积分</a></li>
+           <li><a class="red" href="{url route='seller/index'}">商家管理</a></li>
+           <li><a href="{url route='apply/fill'}" style="border-right: 0; padding-right:0;">商家入驻</a></li>
+        </ul>
+      </div>
+   </div>
+<div id="header">
+	<div class="w clearfix">
+    	<div class="logo" title="{$app->params['site_title']}"><a href="{$siteUrl}"><img height="46" src="{$app->params['site_logo']|url_format}" alt="{$app->params['site_title']}" /></a></div>
+        <div class="shopnav">
+            <ul class="clearfix">
+                <li class="first"><a href="{$app->homeUrl}"><span>首页</span></a></li>
+                <!--{if in_array($smarty.session.userRole, array('buyer'))}-->
+                <li class="{if $app->controller->id eq 'user'}current{/if}"><a href="{url route='user/index'}"><span>账户概览</span></a></li>
+                <li class="{if $app->controller->id eq 'buyer_order'}current{/if}"><a href="{url route='buyer_order/index'}"><span>我的订单</span></a></li>
+                <li class="{if $app->controller->id eq 'deposit'}current{/if}"><a href="{url route='deposit/index'}"><span>资产管理</span></a></li>
+                <li class="{if $app->controller->id eq 'refund'}current{/if}"><a href="{url route='refund/index'}"><span>退款/维权</span></a></li>
+                <!--{else}-->
+                <li class="{if $app->controller->id eq 'my_goods'}current{/if}"><a href="{url route='my_goods/index'}"><span>商品管理</span></a></li>
+                <li class="{if $app->controller->id eq 'seller_order'}current{/if}"><a href="{url route='seller_order/index'}"><span>订单管理</span></a></li>
+                <li class="{if $app->controller->id eq 'my_store'}current{/if}"><a href="{url route='my_store/index'}"><span>店铺设置</span></a></li>
+                <li class="{if $app->controller->id eq 'appmarket'}current{/if}"><a href="{url route='appmarket/index'}"><span>插件市场</span></a></li>
+                <!--{/if}-->
+            </ul>
+    	</div>
+    </div>
+</div>

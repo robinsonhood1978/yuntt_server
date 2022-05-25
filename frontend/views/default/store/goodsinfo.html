@@ -1,0 +1,308 @@
+<div class="w-shop mb20 clearfix">
+	<div class="zoom-pics relative float-left">
+		<div class="big_pic mb10"> <a class="javascript:;"> <img
+					src="{$goods.goodsImage.0.thumbnail|default:$app->params['default_goods_image']|url_format}"
+					width="428" height="428" id="main_img" class="main_img" /> </a> </div>
+		<div class="tiny-pics">
+			<a href="javascript:;" id="forword" class="controler prev"> </a> <a href="javascript:;"
+		id="backword" class="controler next"> </a>
+			<ul class="list clearfix">
+				<!--{foreach from=$goods.goodsImage item=item name=fe_item}-->
+				<li {if $smarty.foreach.fe_item.first}class="pic_hover" {/if}> <a herf="javascript:;"> <img
+							src="{$item.thumbnail|default:$app->params['default_goods_image']|url_format}" /> </a> </li>
+				<!--{/foreach}-->
+			</ul>
+		</div>
+		<script>
+			$(function() {
+				$(".tiny-pics").slide({  mainCell:"ul",autoPage:true,effect:"left",vis:6,trigger:"click"});
+			});
+			</script>
+		<div class="share w-full clearfix mb10">
+			<a name="menu"></a>
+			<div class="view-big-imgs ml20 mr20" style="margin-left: 75px;">
+				<!--{foreach from=$goods.goodsImage item=item name=fe_item}-->
+				<a href="{$item.image_url|default:$app->params['default_goods_image']|url_format}"
+					data-fresco-group="goods_info" target="_blank"
+					class="fresco {if $smarty.foreach.fe_item.iteration gt 1}hidden{/if}">{$lang.view_bigimg}</a>
+				<!--{/foreach}-->
+			</div>
+			<div class="collect-goods ml20 mr20"> 
+				<a href="javascript:collect_goods({$goods.goods_id});">加入收藏</a> 
+			</div>
+			<div class="goods-report float-left ml20 mr20">
+				<a href="{url route='report/index' id=$goods.goods_id redirect=$redirect}" target="_blank">虚假举报</a> 
+			</div>
+		</div>
+	</div>
+	<div class="ml20 goods-attr float-left ">
+		<div class="goods-name fs16">
+			{$goods.goods_name|escape}
+			<p class="fs12 red mb20 mt5"><!--{foreach from=$goods.tags item=tag}-->{$tag}&nbsp;<!--{/foreach}--></p>
+		</div>
+		<div class="attribute clearfix">
+			<div class="attr-detail float-left">
+				<!--{if $goods.promotion.lefttime}-->
+				<div class="promotes clearfix">
+					<h3 class="ml10 float-left">限时抢购</h3>
+					<div class="J_CountDown countdown float-left"> <span><ins class="lefttime">还剩</ins></span> <span
+						class="tm NumDays"> {$goods.promotion.lefttime.d} </span> <em> 天 </em> <span
+						class="tm NumHours"> {$goods.promotion.lefttime.h} </span> <em> 小时 </em> <span
+						class="tm NumMins"> {$goods.promotion.lefttime.m} </span> <em> 分 </em> <span
+						class="tm NumSeconds"> {$goods.promotion.lefttime.s} </span> <em> 秒 </em> 
+					</div>
+				</div>
+				<!--{/if}-->
+				<div class="prices padding10">
+					<dl class="clearfix mt5">
+						<dt>市<s style="margin:0 7px">场</s>价：</dt>
+						<dd class="gray">
+							<del ectype="goods_mkprice">{$goods.mkprice|price_format}</del>
+						</dd>
+					</dl>
+					<dl class="clearfix">
+						<dt>商<s style="margin:0 7px">城</s>价：</dt>
+						<dd ectype="goods_price" class="red fs16">{$goods.price|price_format}</dd>
+					</dl>
+				
+					<dl class="clearfix hidden">
+						<dt>活<s style="margin:0 7px">动</s>价：</dt>
+						<dd ectype="goods_pro_price" class="red fs16"></dd>
+					</dl>
+
+					
+					<!--{if $promotool.storeFullPreferInfo}-->
+					<dl class="clearfix">
+						<dt>满<s style="margin:0 11px">&nbsp;</s>减：</dt>
+						<dd class="red" >{$promotool.storeFullPreferInfo}</dd>
+					</dl>
+					<!--{/if}-->
+					<!--{if $goods.promotion.name}-->
+					<dl class="clearfix">
+						<dt>活<s style="margin:0 11px">&nbsp;</s>动：</dt>
+						<dd>{$goods.promotion.name}</dd>
+					</dl>
+					<!--{/if}-->
+
+
+					<!--{if $goods.integral_enabled && $goods.exchange_price}-->
+					<dl class="clearfix">
+						<dt>积分抵扣：</dt>
+						<dd>可使用{$goods.max_exchange} 积分</dd>
+					</dl>
+					<!--{/if}-->
+				</div>
+				<div class="prices padding10 basics">
+					<dl class="clearfix mt5">
+						<dt>配送费用：</dt>
+						<dd class="postage clearfix">
+						<div class="postage-cont mr10"> <ins id="selected_city" dtid="{$goods.dt_id}"
+								sid="{$goods.store_id}" class="J_Region fs12"><b></b></ins>
+							<div class="postage-area" style="display:none">
+								<div class="province clearfix J_Province"></div>
+								<div class="cities J_City"></div>
+							</div>
+						</div>
+						<div class="postage-info"></div>
+					
+						</dd>
+					</dl>
+					<!--{if $goods.brand}-->
+					<dl class="clearfix">
+						<dt>品<s style="margin:0 11px">&nbsp;</s>牌：</dt>
+						<dd>{$goods.brand|escape}</dd>
+					</dl>
+					<!--{/if}-->
+
+					<!--{if $goods.sales gt 0}-->
+					<dl class="clearfix">
+						<dt>销<s style="margin:0 11px">&nbsp;</s>量：</dt>
+						<dd>已售出{$goods.sales|default:0}件</dd>
+					</dl>
+					<!--{/if}-->
+				</div>
+
+
+				<div class="handle">
+					<!--{if $goods.spec_qty gt 0}-->
+					<ul class="spec1 clearfix w-full sale-attr" style="overflow:visible">
+						<li class="handle_title"> {$goods.spec_name_1|escape}{$lang.colon} </li>
+					</ul>
+					<!--{/if}-->
+					<!--{if $goods.spec_qty gt 1}-->
+					<ul class="clearfix w-full sale-attr" style="overflow:visible">
+						<li class="handle_title"> {$goods.spec_name_2|escape}{$lang.colon} </li>
+					</ul>
+					<!--{/if}-->
+					<ul class="clearfix w-full quantity-select pt10">
+						<li style="margin-top:2px;" class="handle_title"> {$lang.quantity}{$lang.colon} </li>
+						<li>
+							<div class="buy-quantity clearfix"> <a class="reduce-btn" href="javascript:;" change="reduce">-</a>
+								<input type="text" class="text float-left" name="quantity" id="quantity" value="1" />
+								<a class="add-btn" href="javascript:;" change="increase">+</a>
+							</div>
+							{$lang.left_bracket}{$lang.stock} <span class="stock" ectype="goods_stock">
+								{$goods.goodsSpec.0.stock} </span> {$lang.unit}{$lang.right_bracket}
+						</li>
+					</ul>
+					<!--{if $goods.spec_qty gt 0}-->
+					<ul class="clearfix w-full pt10">
+						<li class="handle_title"> {$lang.your_select}{$lang.colon} </li>
+						<li class="aggregate red" ectype="current_spec"> </li>
+					</ul>
+					<!--{/if}-->
+				</div>
+				<div class="buy-btn mb20 ml10"> <a href="javascript:buy(true);" class="buy-now btn"> {$lang.buy_now} </a> <a
+						href="javascript:buy(false);" class="add-to-cart btn relative"> {$lang.add_to_cart}<i
+							style="display:block;height:0px;width:0px;right:0px;top:-30px;position:absolute;"></i> </a>
+				</div>
+			</div>
+			<div class="store-info-g w210 float-right mt10 hidden">
+				<div class="store-info border mb10">
+					<h3> <span> {$store.store_name|escape} </span> </h3>
+					<div class="content">
+						<dl class="total_evaluation w-full clearfix">
+							<dt> {$lang.all_evaluation}{$lang.colon} </dt>
+							<dd>
+								<div class="raty">
+									<span style="width:{$store.dynamicEvaluation.comprehensive.percentage|default:0};"></span>
+								</div>
+								<b>{$store.dynamicEvaluation.comprehensive.value|default:0}</b>
+							</dd>
+						</dl>
+						<div class="rate-info">
+							<p> <strong> {$lang.store_evaluation} </strong> {$lang.compare_insdusty} </p>
+							<ul>
+								<li>
+									{$lang.goods_evaluation}
+									<span class="credit">{$store.dynamicEvaluation.goods.value}</span>
+									<span class="{$store.dynamicEvaluation.goods.compare.name}">
+										<i></i>
+										{$lang.{$store.dynamicEvaluation.goods.compare.name}}
+										<em>
+											<!--{if $store.dynamicEvaluation.goods.compare.value eq 0}-->----
+											<!--{else}-->{$store.dynamicEvaluation.goods.compare.value}
+											<!--{/if}--></em>
+									</span>
+								</li>
+								<li>
+									{$lang.service_evaluation}
+									<span class="credit">{$store.dynamicEvaluation.service.value}</span>
+									<span class="{$store.dynamicEvaluation.service.compare.name}">
+										<i></i>
+										{$lang.{$store.dynamicEvaluation.service.compare.name}}
+										<em>
+											<!--{if $store.dynamicEvaluation.service.compare.value eq 0}-->----
+											<!--{else}-->{$store.dynamicEvaluation.service.compare.value}
+											<!--{/if}--></em>
+									</span>
+								</li>
+								<li>
+									{$lang.shipped_evaluation}
+									<span class="credit">{$store.dynamicEvaluation.shipped.value}</span>
+									<span class="{$store.dynamicEvaluation.shipped.compare.name}">
+										<i></i>
+										{$lang.{$store.dynamicEvaluation.shipped.compare.name}}
+										<em>
+											<!--{if $store.dynamicEvaluation.shipped.compare.value eq 0}-->----
+											<!--{else}-->{$store.dynamicEvaluation.shipped.compare.value}
+											<!--{/if}--></em>
+									</span>
+								</li>
+							</ul>
+						</div>
+						<dl class="border-b contact_us dl-c-s clearfix">
+							<dt> {$lang.contact_style}{$lang.colon} </dt>
+							<dd>
+								<a href="tencent://message/?uin={$store.im_qq|default:'561223725'}&Site={$homeUrl}&Menu=yes"><img border="0" align="absMiddle" src="http://wpa.qq.com/pa?p=2:{$store.im_qq|default:'561223725'}:41" /></a>
+							</dd>
+						</dl>
+						<dl class="dl-c-s w-full clearfix">
+							<dt> {$lang.store_name}{$lang.colon} </dt>
+							<dd> {$store.store_name|escape} </dd>
+						</dl>
+						<dl style="padding-top:2px;" class="dl-c-s w-full clearfix">
+							<dt> {$lang.credit_value}{$lang.colon} </dt>
+							<dd>
+								<!--{if $store.credit_value ge 0}-->
+								<img src="{$store.credit_image|url_format}" alt="{$store.store_name}"
+									align="absmiddle" />
+								<!--{/if}-->
+							</dd>
+						</dl>
+						<!--{if $store.certifications}-->
+						<dl style="padding-top:1px;" class="dl-c-s w-full clearfix">
+							<dt style="margin-top:2px;"> {$lang.certification}{$lang.colon} </dt>
+							<dd>
+								<!--{foreach from=$store.certifications item=cert}-->
+								<!--{if $cert eq "autonym"}-->
+								<a href="{url route='article/system' code='cert_autonym'}" target="_blank"
+									title="{$lang.cert_autonym}"> <img
+										src="{res file='images/cert_autonym.gif'}" /> </a>
+								<!--{elseif $cert eq "material"}-->
+								<a href="{url route='article/system' code='cert_material'}" target="_blank"
+									title="{$lang.cert_material}"> <img
+										src="{res file='images/cert_material.gif'}" /> </a>
+								<!--{/if}-->
+								<!--{/foreach}-->
+							</dd>
+						</dl>
+						<!--{/if}-->
+						<!--{if $store.tel}-->
+						<dl style="padding-top:1px;" class="dl-c-s w-full clearfix">
+							<dt> {$lang.store_add_time}{$lang.colon} </dt>
+							<dd> {$store.add_time|date_format:"%Y.%m.%d %H:%M:%S"} </dd>
+						</dl>
+						<!--{/if}-->
+						<dl style="padding-top:2px;" class="dl-c-s w-full clearfix">
+							<dt> {$lang.tel}{$lang.colon} </dt>
+							<dd> {$store.tel|escape} </dd>
+						</dl>
+						<dl style="padding-top:2px;padding-bottom:10px;" class="dl-c-s border-b w-full clearfix">
+							<dt> {$lang.address}{$lang.colon} </dt>
+							<dd> {$store.address|escape} </dd>
+						</dl>
+						<div class="go2store"> <a href="{url route='store/index' id=$store.store_id}"> {$lang.go2store}
+							</a> <a href="javascript:collect_store({$store.store_id})"> 收藏店铺 </a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	var specs = new Array();
+		{foreach from=$goods.goodsSpec item=spec}
+		specs.push(new spec({$spec.spec_id|default: 0}, '{$spec.spec_1}', '{$spec.spec_2}', '{$spec.spec_image|url_format}', {$spec.price|default: 0}, {$spec.mkprice|default: 0}, {$spec.stock|default: 0}, {$goods.goods_id|default: 0}));
+		{/foreach}
+	var specQty = {$goods.spec_qty};
+	var defSpec = {$goods.default_spec|default};
+	var goodsspec = new goodsspec(specs, specQty, defSpec);
+
+	$(function () {
+		$('.J_Region').parent().hover(function () {
+			if ($('.J_Province').html() == '') {
+				setGoodsRegionInfo($('.J_Province'), 0);
+			}
+			$(this).children().next('div').show();
+		}, function () {
+			$(this).children().next('div').hide();
+		});
+
+		$('.J_Province').on('click', 'a', function () {
+			$(this).parent().children().removeClass('selected');
+			$(this).addClass('selected');
+			$('.J_City').css('border-top', '1px #ddd dotted');
+			setGoodsRegionInfo($('.J_City'), $(this).attr('id'));
+		})
+
+		/* 加载运费情况 */
+		load_city_logistic('{$goods.dt_id|default:0}', '{$goods.store_id}', 0);
+
+		$('.J_PromotoolMoreLink').click(function () {
+			$(this).parent().parent().find('.toggle').toggle();
+			$(this).toggleClass('active');
+		});
+	})
+</script>

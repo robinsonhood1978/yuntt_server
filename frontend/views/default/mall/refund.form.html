@@ -1,0 +1,52 @@
+{include file="user.header.html"}
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful">{include file="user.submenu.html"}
+      <div class="wrap">
+        <div class="public refund_form">
+          <form method="post" enctype="multipart/form-data">
+            <table>
+              <tr>
+                <td>{$lang.refund_amount}{$lang.colon}</td>
+                <td><input type="text" name="refund_goods_fee" class="text width_short" value="{$refund.refund_goods_fee}" style="background:none" />
+                  {$lang.yuan} <span class="gray">({$lang.max}{$refund.goods_fee|price_format}{$lang.yuan})</span></td>
+              </tr>
+              <tr>
+                <td>{$lang.refund_shipped}{$lang.colon}</td>
+                <td>
+                    <!--{foreach from=$shippeds item=item key=key}-->
+                    <input type="radio" name="shipped" value="{$key}" id="shipped-{$key}" {if $refund.shipped eq $key} checked="checked"{/if} />
+                  <label for="shipped-{$key}">{$item}</label>
+                  <!--{/foreach}-->
+                 </td>
+              </tr>
+              <tr>
+                <td>{$lang.tuiyunfei}{$lang.colon}</td>
+                <td><input type="text" name="refund_shipping_fee" class="text width_short" value="{$refund.refund_shipping_fee}" />
+                  {$lang.yuan} <span class="gray">({$lang.max}{$refund.shipping_fee}{$lang.yuan})</span></td>
+              </tr>
+              <tr>
+                <td>{$lang.refund_reason}{$lang.colon}</td>
+                <td><select class="mt10" name="refund_reason" style="background:none">
+                    <option value="" selected="selected">{$lang.select_reason}</option>
+                    <!--{foreach from=$reasons item=item}-->
+                    <option value="{$item}" {if $refund.refund_reason eq $item} selected="selected"{/if}>{$item}</option>
+                    <!--{/foreach}-->
+                  </select></td>
+              </tr>
+              <tr>
+                <td>{$lang.refund_desc}{$lang.colon}</td>
+                <td><textarea name="refund_desc" class="mt20" cols="80" rows="5" style="background:none; border-color:#ddd">{$refund.refund_desc}</textarea></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td><input type="submit" value="{if $app->controller->action->id eq 'edit'}{$lang.edit}{else}{$lang.submit}{/if}{$lang.apply}" class="btn-alipay pl20 pr20 mt20 J_AjaxSubmit" /></td>
+              </tr>
+            </table>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{include file="user.footer.html"} 

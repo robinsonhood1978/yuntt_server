@@ -1,0 +1,58 @@
+<div class="seckill-channel mb20 J_S{$widget_data.model_id}">
+  <div class="seckill clearfix">  
+    <i class="se-icon"></i>
+    <div class="sk-time-cd">
+      <p class="sk-cd-tit">距结束</p>
+      <div class="cd-time clearfix J_CountDown{$widget_data.model_id}">
+        <div class="time"> <span class="days NumDays">{$widget_data.lefttime.d}</span>天<span class="hours NumHours">{$widget_data.lefttime.h}</span>时<span class="minutes NumMins">{$widget_data.lefttime.m}</span>分<span class="seconds NumSeconds">{$widget_data.lefttime.s}</span>秒 </div>
+      </div>
+    </div>
+    <div class="sk-more"> 
+      <a href="{url route='limitbuy/index'}" target="_blank">更多秒杀</a> 
+      <i class="arrow"></i> 
+    </div>
+  </div>
+  <div class="seckill-goods">
+    <div class="temp bd">
+      <ul class="clearfix">
+        <!-- {foreach from=$widget_data.goods_list item=goods} -->
+        <li>
+          <div class="p-img"> 
+            <a href="{url route='goods/index' id=$goods.goods_id}" target="_blank">
+              <img src="{$goods.default_image|url_format}" />
+            </a> 
+          </div>
+          <div class="p-name"> 
+            <a href="{url route='goods/index' id=$goods.goods_id}" target="_blank">{$goods.goods_name}</a> 
+          </div>
+          <div class="p-over clearfix">
+            <div class="p-info ">
+              <div class="p-price"> 
+                <span class="shop-price">{if $goods.pro_price}{$goods.pro_price|price_format}{else}{$goods.price|price_format}{/if}</span> 
+                <span class="original-price">{$goods.price|price_format}</span> 
+              </div>
+            </div>
+            <div class="p-btn"> <a href="{url route='goods/index' id=$goods.goods_id}">立即抢购</a> </div>
+          </div>
+        </li>
+ 		<!-- {/foreach} -->       
+      </ul>
+    </div>
+    <div class="prev"><i class="icon-left"></i></div>
+    <div class="next"><i class="icon-right"></i></div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){		
+	$(".J_S{$widget_data.model_id}").slide({ mainCell:'.bd ul', effect:"leftLoop",vis:5,scroll:1, autoPlay:true, autoPage:true, pnLoop:false});
+	
+	$.each($('.J_CountDown{$widget_data.model_id}'),function(){
+		var theDaysBox  = $(this).find('.NumDays');
+		var theHoursBox = $(this).find('.NumHours');
+		var theMinsBox  = $(this).find('.NumMins');
+		var theSecsBox  = $(this).find('.NumSeconds');
+			
+		countdown(theDaysBox, theHoursBox, theMinsBox, theSecsBox)
+	});
+});
+</script> 

@@ -1,0 +1,48 @@
+{include file="user.header.html"}
+<div id="main" class="w-full">
+  <div class="page-apply">
+    <div class="w content clearfix">
+      <div class="left">
+        <div class="steps">
+          <dl class="setpbox">
+            <dt>申请步骤</dt>
+            <dd>
+              <ul>
+                <li class="current">入驻指南</li>
+                <li>签订入驻协议</li>
+                <li>填写店铺信息</li>
+                <li>平台审核</li>
+                <li>店铺开通</li>
+              </ul>
+            </dd>
+          </dl>
+          <dl class="setpbox contact-mall mt10">
+            <dt>平台联系方式</dt>
+            <dd>
+              <p class="tel"><span>电话：</span>010-555888</p>
+              <p class="email mt10"><span>邮箱：</span>shopwind@qq.com</p>
+            </dd>
+          </dl>
+        </div>
+      </div>
+      <div class="right">
+        <div class="joinin-info">
+          <ul class="nav J_ApplyTab clearfix">
+            <!--{foreach from=$articles item=article name=fe_article}-->
+            <li {if $smarty.foreach.fe_article.first}class="on"{/if} {if $smarty.foreach.fe_article.last} style="border:0;"{/if}>
+            {$article.title|escape}
+            </li>
+            <!--{/foreach}-->
+          </ul>
+          <div class="tab-content">
+            <!--{foreach from=$articles item=article name=fe_article}-->
+            <div {if !$smarty.foreach.fe_article.first} class="hidden"{/if}>{$article.description}</div>
+            <!--{/foreach}-->
+          </div>
+        </div>
+        <div class="joinin-btn"> <a href="{url route='apply/agreement'}">我要入驻</a> </div>
+      </div>
+    </div>
+  </div>
+</div>
+{include file="user.footer.html"}

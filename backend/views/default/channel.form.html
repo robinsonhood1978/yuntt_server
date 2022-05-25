@@ -1,0 +1,73 @@
+<div class="content1 pb10">
+  <div class="ml20 mr20 mb20 mt10" id="warning"></div>
+  <form method="post" action="{$smarty.server.REQUEST_URI}" target="iframe">
+    <table class="infoTable">
+      <tr>
+        <th class="paddingT15"><label>{$lang.title}</label></th>
+        <td class="paddingT15 wordSpacing5"><input class="infoTableInput2" type="text" name="title"
+            value="{$channel.title|escape}" />
+          <label class="field_notice">{$lang.title_note}</label>
+        </td>
+      </tr>
+      <tr>
+        <th class="paddingT15"><label>{$lang.cate_id}</label>
+        </th>
+        <td class="paddingT15 wordSpacing5"><select class="querySelect" name="cate_id">
+            <option>{$lang.select_pls}</option>
+            {html_options options=$gcategories selected=$channel.cate_id}
+          </select>
+          <p class="field_notice mt10">{$lang.cate_id_note}</p>
+        </td>
+      </tr>
+      <tr>
+        <th class="paddingT15"><label>{$lang.channel_style}</label></th>
+        <td class="paddingT15 layui-form">
+          <input type="radio" name="style" value="1" title="模板一" {if $channel.status neq '2' }
+            checked{/if} />
+          <input type="radio" name="style" value="2" title="模板二" {if $channel.style eq '2' }
+            checked{/if} />
+          
+          <div class="notice-word mt5"><p class="layui-font-12">查看效果：<a href="{res file='default.screenshot_channel_style1.jpg' baseUrl=$homeUrl}"
+            target="_blank" class="mr10">模板一</a> <a href="{res file='default.screenshot_channel_style2.jpg' baseUrl=$homeUrl}"
+            target="_blank">模板二</a></p></div>
+        </td>
+      </tr>
+      <tr>
+        <th class="paddingT15"><label>{$lang.enable}</label></th>
+        <td class="paddingT15 layui-form">
+          <input type="radio" name="status" value="1" title="{$lang.yes}" {if $channel.status neq '0' }
+            checked{/if} />
+          <input type="radio" name="status" value="0" title="{$lang.no}" {if $channel.status eq '0' }
+            checked{/if} />
+        </td>
+      </tr>
+      <tr>
+        <th></th>
+        <td class="ptb20"><input class="layui-btn layui-bg-blue" type="submit" value="{$lang.submit}" />
+        </td>
+      </tr>
+    </table>
+  </form>
+</div>
+<script type="text/javascript">
+
+  $(function () {
+    var style = '{$channel.style}';
+    $('input[name="style"]').click(function () {
+      if (!style) return;
+
+      if (style != $(this).val() && confirm(lang.change_style_notice)) {
+        $(this).prop('checked', true);
+      } else {
+        $('#style{$channel.style}').prop('checked', true);
+      }
+    });
+
+    layui.use('form', function () {
+      var form = layui.form;
+      form.render();
+    });
+
+  });
+</script>
+{include file="footer.html"}

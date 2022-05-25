@@ -1,0 +1,110 @@
+﻿<script type="text/javascript">
+$(function(){
+	
+	$('.J_UseCouponSelect').change(function(){
+		if($(this).val()=='') couponPrice = 0;
+		else {
+			couponPrice = number_format(parseFloat($(this).find('option:selected').attr('price')),2);
+		}
+		$(this).parent().parent().find('.J_CouponPrice').html(couponPrice);
+		fill_order_amount();
+	});
+	
+	$('.J_IconRemark').hover(function(){
+		$(this).children().css('display','inline-block');
+	}, function(){
+		$(this).children().hide();
+	});
+	
+	$('.J_Postscript').click(function(){
+		$(this).addClass('max-textarea');
+	});
+	$('.J_Postscript').blur(function(){
+		$(this).removeClass('max-textarea');
+	});
+
+});	
+
+</script>
+
+<div class="cartbox w mt20">
+  <div class="title clearfix mb10"> <span class="col-desc">{$lang.store_goods}</span> <span>{$lang.price}</span> <span>{$lang.quantity}</span> <span class="col-promotion-type">{$lang.promotion_type}</span> <span class="col-subtotal">{$lang.subtotal}</span> </div>
+  <div class="content"> 
+    <!--{foreach from=$goods_info.orderList item=order key=store_id}-->
+    <div class="store-each mt20 J_Store" store_id="{$store_id}">
+      <div class="store-name pb10"> {$lang.store}{$lang.colon}<a href="{url route='store/index' id=$order.store_id}">{$order.store_name|escape}</a> 
+      </div>
+      <div class="order-goods">
+      <!--{foreach from=$order.items item=goods name=fe_goods}-->
+      <dl class="goods-each clearfix" {if !$smarty.foreach.fe_goods.first} style="border-top:0;"{/if}>
+        <dd class="pic"><a class="block" href="{url route='goods/index' id=$goods.goods_id}" target="_blank"><img src="{$goods.goods_image|url_format}"width="48" height="48" /></a></dd>
+        <dd class="desc">
+          <p><a href="{url route='goods/index' id=$goods.goods_id}" target="_blank">{$goods.goods_name|escape}</a></p>
+          <span class="f66">{$goods.specification|escape}</span> </dd>
+        <dd class="price">{$goods.price|price_format }</dd>
+        <dd class="quantity">{$goods.quantity}</dd>
+        <dd class="promotion"></dd>
+        <dd class="subtotal fs14 J_Subtotal-{$store_id}" price="{$goods.subtotal}">{$goods.subtotal|price_format }</dd>
+      </dl>
+      <!-- {/foreach} --> 
+      </div>
+      
+      <div class="order-confirm-extra w clearfix">
+        <div class="postscript float-left mt10 clearfix">
+          <div class="float-left ml10">{$lang.postscript}{$lang.colon}</div>
+          <div class="float-left">
+            <textarea class="f66 J_Postscript" name="postscript[{$store_id}]" placeholder="{$lang.postscript_desc}"></textarea>
+          </div>
+        </div>
+        <div class="confirm-extra-info float-left">
+          <div class="extra-list ship-method clearfix">
+            <div class="subtitle float-left">{$lang.delivery_method}{$lang.colon}</div>
+            <div class="subcontent float-left">
+              <select name="delivery_type[{$store_id}]" class="J_LogisticFeesSelect J_LogisticFeesSelect-{$store_id}">
+                <!--{foreach from=$shipping_methods.$store_id item=logistic key=key name=fe_logistic}-->
+                <option value="{$logistic.type}" price="{$logistic.logistic_fees}">{$logistic.name}{$lang.colon}{$logistic.logistic_fees|default:0.00}</option>
+                <!--{/foreach}-->
+              </select>
+            </div>
+            <div class="fee float-right f66">+<em class="J_LogisticFees-{$store_id}">{$logistic.logistic_fees}</em></div>
+          </div>
+          <div class="extra-list use-coupon clearfix">
+            <div class="subtitle float-left">{$lang.use_coupon}{$lang.colon}</div>
+            <div class="subcontent float-left">
+              <select class="J_UseCouponSelect J_UseCouponSelect-{$store_id}" name="coupon_sn[{$store_id}]" {if !$order.coupon_list} disabled="disabled"{/if}>
+                <option value="">{$lang.pls_coupon}</option>
+                <!--{foreach from=$order.coupon_list item=coupon}-->
+                <option value="{$coupon.coupon_sn}" price="{$coupon.coupon_value}">SN:{$coupon.coupon_sn}</option>
+                <!--{/foreach}-->
+              </select>
+              <i class="icon-remark J_IconRemark">
+              <div class="remark-body hidden">
+                <div class="box">{$lang.use_integral_remark}</div>
+              </div>
+              </i> </div>
+            <div class="fee float-right f66">-<em class="J_CouponPrice J_CouponPrice-{$store_id}">0.00</em></div>
+          </div>
+          
+          <!--{if $order.mealprefer}-->
+          <div class="extra-list use-mealprefer clearfix">
+            <div class="subtitle float-left">{$lang.meal}{$lang.colon}</div>
+            <div class="subcontent float-left"> <span>{$order.mealprefer.text}</span> </div>
+            <div class="fee float-right f66">-<em class="J_MealPreferPrice J_MealPreferPrice-{$store_id}" data-price="{$order.mealprefer.price}">{$order.mealprefer.price}</em></div>
+          </div>
+          <!--{/if}--> 
+          
+          <!--{if $order.fullprefer}-->
+          <div class="extra-list use-fullprefer clearfix">
+            <div class="subtitle float-left">{$lang.fullprefer}{$lang.colon}</div>
+            <div class="subcontent float-left"> <span>{$order.fullprefer.text}</span> </div>
+            <div class="fee float-right f66">-<em class="J_FullPreferPrice J_FullPreferPrice-{$store_id}" data-price="{$order.fullprefer.price}">{$order.fullprefer.price}</em></div>
+          </div>
+          <!--{/if}--> 
+  
+        </div>
+        <div class="confirm-extra-bottom w float-left"> <span class="mr10 price mr20 store-amount-fields">{$lang.store_order_amount}{$lang.colon}&nbsp;&nbsp; <i>&yen; <em class="mr20 J_OrderAmount-{$store_id}">{$order.amount}</em></i> </span> </div>
+      </div>
+    </div>
+    <!-- {/foreach} --> 
+  </div>
+</div>

@@ -1,0 +1,102 @@
+{include file="header.html"}
+<div id="main">
+  {include file="menus.html"}
+  <div id="rightCon" class="clearfix layui-body">
+    <div class="scroller">
+      <div class="explanation" id="explanation">
+        <div class="title" id="checkZoom"> <i class="fa fa-lightbulb-o"></i>
+          <h4>{$lang.operation_tip}</h4>
+        </div>
+        <ul>
+          <li><i class="fa fa-angle-double-right"></i> 点击同意，门店即可正常运营，在前台将作为自提点供买家选择，门店自提的订单将由平台来完成配送，所以平台需评估自身的配送能力后开通。
+          </li>
+          <li><i class="fa fa-angle-double-right"></i> 点击拒绝，须填写拒绝原因，拒绝后该门店将允许申请者修改后重新审核</li>
+        </ul>
+      </div>
+      <div class="flexigrid">
+        <form method="post">
+          <table class="infoTable">
+            <tr>
+              <th class="paddingT15"><label>{$lang.owner}:</label></th>
+              <td class="paddingT15 wordSpacing5">{$guideshop.owner}</td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.phone_mob}:</label></th>
+              <td class="paddingT15 wordSpacing5">{$guideshop.phone_mob}</td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.name}:</label></th>
+              <td class="paddingT15 wordSpacing5">{$guideshop.name}</td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.address}:</label></th>
+              <td class="paddingT15 wordSpacing5">{$guideshop.region_name}{$guideshop.address}</td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.banner}:</label></th>
+              <td class="paddingT15 wordSpacing5">
+                <!--{if $guideshop.banner}-->
+                <a href="{$guideshop.banner|url_format}" target="_blank" class="mr20"><img
+                    src="{$guideshop.banner|url_format}" height="30" /></a>
+                <!--{/if}-->
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.created}:</label></th>
+              <td class="paddingT15 wordSpacing5">{$guideshop.created|date_format:"%Y-%m-%d %H:%M:%S"}</td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.status}:</label></th>
+              <td class="paddingT15 wordSpacing5">{$guideshop.status}</td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.remark}:</label></th>
+              <td class="paddingT15 wordSpacing5">{$guideshop.remark|escape|nl2br}</td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.reject_reason}:</label></th>
+              <td class="paddingT15 wordSpacing5"><textarea name="reason" cols="60" rows="4"
+                  id="reject_reason"></textarea></td>
+            </tr>
+            <tr>
+              <th></th>
+              <td class="ptb20"><input type="hidden" id="action" name="action" value="agree" />
+                <input class="layui-btn layui-bg-blue" type="submit" id="agree" value="{$lang.agree}" />
+                <input class="layui-btn layui-btn-warm" type="button" id="reject" value="{$lang.reject}" />
+              </td>
+            </tr>
+          </table>
+        </form>
+      </div>
+      {include file="version.html"}
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $(function () {
+    $("#reject").click(function () {
+      var reason = $.trim($("#reject_reason").val());
+      if (reason == '') {
+        layer.msg(lang.input_reason);
+        return false;
+      }
+      $('#action').val('reject');
+      var type = $(this).parents('form').attr('method').toUpperCase();
+      var url = window.location.href;
+      var fromObj = $(this).parents('form');
+      ajaxSubmit(type, url, fromObj);
+      return false;
+    });
+
+    $("#agree").click(function () {
+      $('#action').val('agree');
+      $('#reject_reason').val('');
+      var type = $(this).parents('form').attr('method').toUpperCase();
+      var url = window.location.href;
+      var fromObj = $(this).parents('form');
+      ajaxSubmit(type, url, fromObj);
+      return false;
+    });
+  });
+</script>
+{include file="footer.html"}

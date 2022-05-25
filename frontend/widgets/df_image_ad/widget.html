@@ -1,0 +1,15 @@
+<!-- {if $widget_data.ad_image_url} -->
+<div class="global-image-ads" style="{if $widget_data.border}border:{$widget_data.border}px solid #ddd;{/if}{if $widget_data.margin}margin:{$widget_data.margin};{/if}{if $widget_data.background}background:{$widget_data.background};{/if}">
+
+<div class="global-image-ads-content">
+    <a href="{$widget_data.ad_link_url}" class="block center" target="_blank"><img {if $widget_data.width} width="{$widget_data.width}px"{/if} {if $widget_data.height} height="{$widget_data.height}px"{/if} class="lazyload block" initial-url="{$widget_data.ad_image_url|url_format}" src="{res file='images/empty.gif'}" /></a>
+</div>
+
+<!-- {if $widget_data.closeButton}-->
+<div class="J_GlobalImageAdsBotton global-image-ads-botton">x</div>
+<!-- {/if}-->
+
+</div>
+<!-- {else} -->
+<div style="padding:10px; text-align:center;">请配置</div>
+<!-- {/if} -->

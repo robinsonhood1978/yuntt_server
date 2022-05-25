@@ -1,0 +1,71 @@
+{include file="header.html"}
+<div id="main">
+    {include file="menus.html"}
+    <div id="rightCon" class="clearfix layui-body">
+        <div class="scroller">
+            <div class="explanation" id="explanation">
+                <div class="title" id="checkZoom"> <i class="fa fa-lightbulb-o"></i>
+                    <h4>{$lang.operation_tip}</h4>
+                </div>
+                <ul>
+                    <li>1. 可以配置一主多从数据库模式，主数据库即安装站点的数据库，无需配置。</li>
+                    <li>2. 主数据库完成插入/更新等操作，从数据库执行查询操作</li>
+                    <li>3. 通过该配置实现读写分离，可以有效解决网站高并发问题，在保障主数据库安全的情况下，实现异地多活</li>
+                    <li>4. 配置一主多从读写分离模式之前，请自行实现数据库同步策略，可使用阿里云产品：云数据库DTS</li>
+                    <li>5. 推荐使用云数据库作为从数据库，相较于自建数据库服务器成本更低，如阿里云的云数据库RDS</li>
+                    <li class="red">6. !!!从数据库只负责读取业务，配置多个从数据库，可以缓解主数据库的压力，提高负载能力实现异地多活</li>
+                </ul>
+            </div>
+            <div class="flexigrid">
+                <!--{if $list}-->
+                <div class="layui-btn-container box-align-center">
+                    <a href="javascript:;" ectype="dialog" dialog_id="dialog" dialog_width="500"
+                        dialog_title="{$lang.config}" uri="{url route='db/slave'}" class="layui-btn layui-bg-blue"><i
+                            class="layui-icon layui-icon-addition"></i>配置数据库</a>
+                </div>
+                <table class="distinction">
+                    <thead>
+                        <tr>
+                            <th width="35%" align="left" style="padding-left:15px;">数据库主机地址</th>
+                            <th align="left">端口</th>
+                            <th width="15%">数据库名</th>
+                            <th width="10%">数据库用户名</th>
+                            <th width="10%">数据库密码</th>
+                            <th width="10%">数据库引擎</th>
+                            <th class="handler">{$lang.handler}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!--{foreach from=$list item=item key=key}-->
+                        <tr>
+                            <td style="padding-left:15px;">{$item.host}</td>
+                            <td align="left">{$item.port}</td>
+                            <td align="center">{$item.dbname}</td>
+                            <td align="center">{$item.username}</td>
+                            <td align="center">{$item.password}</td>
+                            <td align="center">{$item.engine}</td>
+                            <td class="handler">
+                                <a href="javascript:;" ectype="dialog" dialog_id="db_slave" dialog_width="500"
+                                    dialog_title="{$lang.config}"
+                                    uri="{url route='db/slave' key=($key+1)}">{$lang.modify}</a> |
+                                <a href="javascript:;" class="J_AjaxRequest" confirm="{$lang.remove_slave_confirm}"
+                                    uri="{url route='db/remove' key=($key+1)}">{$lang.remove}</a>
+                            </td>
+                        </tr>
+                        <!--{/foreach}-->
+                    </tbody>
+                </table>
+                <!--{else}-->
+                <div class="notice-word  ml10 mr10 mt10 mb10">
+                    <p class="yellow-big block">您还没有配置从数据库，<a href="javascript:;" ectype="dialog" dialog_id="db_slave"
+                            dialog_width="500" dialog_title="{$lang.config}" uri="{url route='db/slave'}">添加第一个从数据库</a>
+                    </p>
+                </div>
+                <!--{/if}-->
+            </div>
+            {include file="version.html"}
+        </div>
+    </div>
+</div>
+<iframe id="iframe" name="iframe" src="about:blank" frameborder="0" width="0" height="0" style="display:none"></iframe>
+{include file="footer.html"}

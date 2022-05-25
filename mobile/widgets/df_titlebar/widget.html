@@ -1,0 +1,92 @@
+<div class="titlebar" id="titlebar-{$widget_data.uniqueid}">
+  <div class="content center {$widget_data.theme}">
+    <div class="relative inline-block">
+      <i class="lp"></i>
+      <span class="text inline-block fs14">{$widget_data.label|default:'标题'}</span>
+      <i class="rp"></i>
+    </div>
+  </div>
+</div>
+
+<style>
+  .titlebar .content {
+    padding: 10px 10px;
+  }
+
+  .titlebar .content .text {
+    padding: 0 10px;
+    color: #FF8000;
+  }
+
+  .titlebar .content .lp,
+  .titlebar .content .rp {
+    position: absolute;
+    display: inline-block;
+    height: 1px;
+    width: 40px;
+    overflow: hidden;
+    background-color: #FF8000;
+    top: 50%;
+  }
+
+  .titlebar .content .lp {
+    left: 0;
+    margin-left: -40px;
+  }
+
+  .titlebar .content .rp {
+    right: 0;
+    margin-right: -40px;
+  }
+
+  .titlebar .content.square .text {
+    padding: 4px 10px;
+    border: 1px #FF8000 solid;
+  }
+  .titlebar .content.square i {
+    top: 46%;
+    height: 3px;
+  }
+
+  .titlebar .content.leftline i {
+    display: none;
+  }
+
+  .titlebar .content.leftline {
+    text-align: left;
+  }
+
+  .titlebar .content.leftline .text {
+    border-left: 4px #FF8000 solid;
+  }
+</style>
+<script>
+  $(function () {
+   
+    /* {if $widget_data.bgcolor} */
+    $('#titlebar-{$widget_data.uniqueid}').css('background-color', '{$widget_data.bgcolor}');
+    /* {/if} */
+
+    /* {if $widget_data.txtbold} */
+    $("#titlebar-{$widget_data.uniqueid} .content .text").css('font-weight', 'bold');
+    /* {/if} */
+
+    /* {if $widget_data.fontsize} */
+    $("#titlebar-{$widget_data.uniqueid} .content .text").css('font-size', '{$widget_data.fontsize}px');
+    /* {/if} */
+
+    /* {if $widget_data.image} */
+    $('#titlebar-{$widget_data.uniqueid}').css('background', 'url({$widget_data.image|url_format}) center center no-repeat').css('background-size', '100%');
+    /* {/if} */
+
+    /* {if $widget_data.txthide} */
+    $("#titlebar-{$widget_data.uniqueid} .content").css('opacity', '0');
+    /* {/if} */
+
+    $('#titlebar-{$widget_data.uniqueid} .content .text').css('color', '{$widget_data.txtcolor|default:"#FF8000"}');
+    $('#titlebar-{$widget_data.uniqueid} .content.square .text').css('border-color', '{$widget_data.linecolor|default:"#ccc"}');
+    $('#titlebar-{$widget_data.uniqueid} .content.leftline .text').css('border-left-color', '{$widget_data.linecolor|default:"#ccc"}');
+    $('#titlebar-{$widget_data.uniqueid} .content i').css('background-color', '{$widget_data.linecolor|default:"#ccc"}');
+    $('#titlebar-{$widget_data.uniqueid}').css('padding', '{$widget_data.space|default:0}px 0');
+  });
+</script>

@@ -1,0 +1,146 @@
+{include file="header.html"}
+{$build_editor}
+<div id="main">
+  {include file="menus.html"}
+  <div id="rightCon" class="clearfix layui-body">
+    <div class="scroller">
+      <div class="explanation" id="explanation">
+        <div class="title" id="checkZoom"> <i class="fa fa-lightbulb-o"></i>
+          <h4 title="{$lang.operation_tip}">{$lang.operation_tip}</h4>
+        </div>
+        <ul>
+          <li><i class="fa fa-angle-double-right"></i> {$lang.reply_desc_1}</li>
+          <li><i class="fa fa-angle-double-right"></i> {$lang.reply_desc_2}</li>
+          <li><i class="fa fa-angle-double-right"></i> {$lang.reply_desc_3}</li>
+        </ul>
+      </div>
+      <div class="flexigrid">
+        <form method="post" enctype="multipart/form-data">
+          <table class="infoTable">
+            <tr>
+              <th class="paddingT15"><label>{$lang.reply_type}</label></th>
+              <td class="paddingT15 wordSpacing5">
+                <p>
+                  <label>
+                    <input type="radio" name="action" value="smartreply" checked="checked" />
+                    {$lang.smartreply}&nbsp;&nbsp; </label>
+                  <label>
+                    <input type="radio" name="action" value="beadded" {if $reply.action eq 'beadded' }checked="checked"
+                      {/if} />
+                    {$lang.beadded}</label>
+                  &nbsp;&nbsp;
+                  <label>
+                    <input type="radio" name="action" value="autoreply" {if $reply.action eq 'autoreply'
+                      }checked="checked" {/if} />
+                    {$lang.autoreply}</label>
+                  <label class="field_notice"></label>
+                </p>
+              </td>
+            </tr>
+            <tr class="smartreply">
+              <th class="paddingT15"><label>{$lang.rule_name}</label></th>
+              <td class="paddingT15 wordSpacing5"><input class="infoTableInput" id="rule_name" type="text"
+                  name="rule_name" value="{$reply.rule_name|escape}" />
+                <label class="field_notice"></label>
+              </td>
+            </tr>
+            <tr class="smartreply">
+              <th class="paddingT15"><label>{$lang.keywords}</label></th>
+              <td class="paddingT15 wordSpacing5"><input class="infoTableInput" type="text" name="keywords"
+                  value="{$reply.keywords|escape}" />
+                <label class="field_notice">{$lang.keyword_desc}</label>
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.msg_type}</label></th>
+              <td class="paddingT15 wordSpacing5">
+                <p>
+                  <label>
+                    <input type="radio" name="type" value="0" data-id="textmsg" {if !$reply.type}checked="checked"
+                      {/if} />
+                    {$lang.textmsg}</label>
+                  &nbsp;&nbsp;
+                  <label>
+                    <input type="radio" name="type" value="1" data-id="imgmsg" {if $reply.type}checked="checked"
+                      {/if} />
+                    {$lang.imgmsg}</label>
+                  <label class="field_notice"></label>
+                </p>
+              </td>
+            </tr>
+            <tr class="imgmsg sel hidden">
+              <th class="paddingT15"><label>{$lang.title}</label></th>
+              <td class="paddingT15 wordSpacing5"><input class="infoTableInput" type="text" name="title"
+                  value="{$reply.title|escape}" />
+                <label class="field_notice"></label>
+              </td>
+            </tr>
+            <tr class="imgmsg sel hidden">
+              <th class="paddingT15"><label>{$lang.image}</label></th>
+              <td class="paddingT15 wordSpacing5 webkit-box">
+                <div class="input-file-show">
+                  <input class="type-file-file" onchange="getTempPathcallback(this)" name="image" type="file" size="30" hidefocus="true">
+                  <input type="hidden" name="fileVal" value="image" />
+                  <div class="type-file-image">
+                    <!--{if $reply.image}-->
+                    <img class="block" src="{$reply.image|url_format}" width="100" height="100" />
+                    <span>修改图片</span>
+                    <!--{else}-->
+                    <i class="iconfont icon-icon_pic"></i>
+                    <!--{/if}-->
+                  </div>
+                </div>
+                <label class="field_notice f-13 inline-block box-align-center ml20"
+                  style="width: 120px;">建议尺寸360像素*160像素</label>
+              </td>
+            </tr>
+            <tr class="imgmsg sel hidden">
+              <th class="paddingT15"><label>{$lang.reply_link}</label></th>
+              <td class="paddingT15 wordSpacing5"><input class="infoTableInput" type="text" name="link"
+                  value="{$reply.link|escape}" />
+                <label class="field_notice"></label>
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.description}</label></th>
+              <td class="paddingT15 wordSpacing5"><textarea name="description"
+                  id="description">{$reply.description|escape}</textarea></td>
+            </tr>
+            <tr>
+              <th></th>
+              <td class="ptb20"><input class="layui-btn layui-bg-blue J_AjaxSubmit" type="submit"
+                  value="{$lang.submit}" /></td>
+            </tr>
+          </table>
+        </form>
+      </div>
+      {include file="version.html"}
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $(function () {
+    $('input[name="type"]').change(function () {
+      var type = $(this).attr('data-id');
+      $('tr.sel').hide();
+      $('tr.' + type).show();
+    });
+    $('tr.sel').hide();
+    $('tr.' + $('input[name="type"]:checked').attr('data-id')).show();
+
+    $('input[name="action"]').change(function () {
+      if ($(this).val() == 'smartreply') {
+        $('tr.smartreply').show();
+      } else {
+        $('tr.smartreply').hide();
+      }
+    });
+
+    if ($('input[name="action"]:checked').val() == 'smartreply') {
+      $('tr.smartreply').show();
+    } else {
+      $('tr.smartreply').hide();
+    }
+  });
+</script>
+{include file="footer.html"}

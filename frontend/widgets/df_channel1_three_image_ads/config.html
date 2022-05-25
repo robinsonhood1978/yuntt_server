@@ -1,0 +1,66 @@
+<script type="text/javascript">
+var _d = DialogManager.get('config_dialog');
+_d.setWidth(540);
+_d.setPosition('center');
+
+function loadImage(obj){
+    getTempPath(obj,function(res){
+        $(obj).parent().find('img').attr('src',res);
+    });
+}
+</script>
+<div class="field_item webkit-box">
+    <label>模块名称</label>
+    <p><input type="text" name="model_name" value="{$options.model_name}" /></p>
+</div>
+<div class="field_item webkit-box file-box box-align-center">
+    <label>上传广告1</label>
+    <p class="relative">
+        <input class="file absolute pointer" type="file" name="ad1_image_file" onchange="loadImage(this)" />
+        <input type="hidden" name="ad1_image_url" value="{$options.ad1_image_url}" />
+        <img src="{if $options.ad1_image_url}{$options.ad1_image_url|url_format}{else}{res file='images/upload.png'}{/if}"/>
+    </p>
+    <font class="ml10 fs12" color="gray">点击图片上传，图片尺寸：160*250px</font>
+</div>
+<div class="field_item webkit-box">
+    <label>广告1标题</label>
+    <p><input type="text" name="ad1_title_url" value="{$options.ad1_title_url}" /></p>
+</div>
+<div class="field_item webkit-box">
+    <label>广告1链接</label>
+    <p><input type="text" name="ad1_link_url" value="{$options.ad1_link_url}" /></p>
+</div>
+<div class="field_item webkit-box file-box box-align-center">
+    <label>上传广告2</label>
+    <p class="relative">
+        <input class="file absolute pointer" type="file" name="ad2_image_file" onchange="loadImage(this)" />
+        <input type="hidden" name="ad2_image_url" value="{$options.ad2_image_url}" />
+        <img src="{if $options.ad2_image_url}{$options.ad2_image_url|url_format}{else}{res file='images/upload.png'}{/if}"/>
+    </p>
+    <font class="ml10 fs12" color="gray">点击图片上传，图片尺寸：160*250px</font>
+</div>
+<div class="field_item webkit-box">
+    <label>广告2标题</label>
+    <p><input type="text" name="ad2_title_url" value="{$options.ad2_title_url}" /></p>
+</div>
+<div class="field_item webkit-box">
+    <label>广告2链接</label>
+    <p><input type="text" name="ad2_link_url" value="{$options.ad2_link_url}" /></p>
+</div>
+<div class="field_item webkit-box file-box box-align-center">
+    <label>上传广告3</label>
+    <p class="relative">
+        <input class="file absolute pointer" type="file" name="ad3_image_file" onchange="loadImage(this)" />
+        <input type="hidden" name="ad3_image_url" value="{$options.ad3_image_url}" />
+        <img src="{if $options.ad3_image_url}{$options.ad3_image_url|url_format}{else}{res file='images/upload.png'}{/if}"/>
+    </p>
+    <font class="ml10 fs12" color="gray">点击图片上传，图片尺寸：160*250px</font>
+</div>
+<div class="field_item webkit-box">
+    <label>广告3标题</label>
+    <p><input type="text" name="ad3_title_url" value="{$options.ad3_title_url}" /></p>
+</div>
+<div class="field_item webkit-box">
+    <label>广告3链接</label>
+    <p><input type="text" name="ad3_link_url" value="{$options.ad3_link_url}" /></p>
+</div>

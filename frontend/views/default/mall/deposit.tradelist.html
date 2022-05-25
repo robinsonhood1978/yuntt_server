@@ -1,0 +1,96 @@
+{include file="user.header.html"}
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful">{include file="user.submenu.html"}
+      <div class="wrap">
+        <div class="public table deposit">
+          <div class="recordlist"> 
+            <!--{if $recordlist}-->
+            <div class="notice-word">
+              <p>显示所有交易记录</p>
+            </div>
+            <!--{/if}-->
+            <div class="title clearfix">
+              <form method="get" class="float-left" action="{url route='deposit/tradelist'}">
+        		<!--{if !$app->urlManager->enablePrettyUrl}-->
+      			<input type="hidden" name="r" value="deposit/tradelist" />
+                <!--{/if}-->
+                <input type="text" name="add_time_from" id="add_time_from" value="{$smarty.get.add_time_from}" />
+                <span>-</span>
+                <input type="text" name="add_time_to" id="add_time_to" value="{$smarty.get.add_time_to}" />
+                <input type="submit" class="btn-record" value="{$lang.search}" />
+              </form>
+              <!--{if $filtered}--> 
+         		<a class="detlink" href="{url route='deposit/tradelist'}">{$lang.cancel_query}</a>
+        		<!--{/if}--> 
+            </div>
+            <ul class="subtit">
+              <li class="clearfix">
+                <div class="time">创建日期</div>
+                <div class="info">名称 | 备注</div>
+                <div class="tradeNo">商户订单号 | 交易号</div>
+                <div class="party">对方</div>
+                <div class="amount">金额 | 明细</div>
+                <div class="status">状态</div>
+                <div class="detail">操作</div>
+              </li>
+            </ul>
+            <div class="content"> 
+              <!--{foreach from=$recordlist item=record}-->
+              <ul>
+                <li class="clearfix" style="{if $record.refund} border-bottom:1px #ddd dotted;{/if}{if in_array($record.refund.status, array('CLOSED'))}color:gray{/if}">
+                  <div class="time">{$record.add_time|date_format:"%Y.%m.%d %H:%M:%S"}</div>
+                  <div class="info break-word">{$record.title|truncate:50} <p class="gray">{$record.buyer_remark|truncate:30}</p></div>
+                  <div class="tradeNo"><span class="break-word">{$record.bizOrderId} | {$record.tradeNo}</span></div>
+                  <div class="party center">{$record.partyInfo.name}</div>
+                  <div class="amount center"> <strong class="price"> 
+                    <!--{if $record.flow eq 'income'}--> 
+                    <span class="green">+{$record.amount}</span> 
+                    <!--{else}--> 
+                    <span class="f60">-{$record.amount}</span> 
+                    <!--{/if}--> 
+                    </strong> </div>
+                  <div class="status"> <span class="{if in_array($record.status, array('CLOSED')) || in_array($record.refund.status, array('CLOSED'))}gray {elseif !in_array($record.status, array('SUCCESS'))}f60{/if}">{$record.status_label}</span> </div>
+                  <div class="detail"> <a target="_blank" href="{url route='deposit/record' tradeNo=$record.tradeNo}">查看</a> </div>
+                </li>
+              </ul>
+              <!--{if in_array($record.refund.status, array('SUCCESS'))}-->
+              <ul class="refund gray clearfix">
+                <li class="clearfix">
+                  <div class="time"></div>
+                  <div class="info break-word"> 
+                    <!--{if $record.buyer_id eq $visitor.userid}--> 
+                    {$lang.refund} 
+                    <!--{else}--> 
+                    {$lang.refund_to_buyer} 
+                    <!--{/if}--> 
+                  </div>
+                  <div class="tradeNo break-word"></div>
+                  <div class="party"> &nbsp; </div>
+                  <div class="amount center"> <strong class="gray"> 
+                    <!--{if $record.buyer_id eq $visitor.userid}-->+<!--{else}-->-<!--{/if}-->{$record.refund.amount}</strong> </div>
+                  <div class="status"></div>
+                  <div class="detail"></div>
+                </li>
+              </ul>
+              <!--{/if}--> 
+              <!--{foreachelse}-->
+              <div class="notice-word mt10">
+                <p class="yellow">{$lang.no_record}</p>
+              </div>
+              <!--{/foreach}--> 
+            </div>
+            <div class="mt20 clearfix center">{include file="page.bottom.html"}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+    $('#add_time_from').datepicker({ dateFormat: 'yy-mm-dd'});
+    $('#add_time_to').datepicker({ dateFormat: 'yy-mm-dd'});
+});
+</script>
+{include file="user.footer.html"} 

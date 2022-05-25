@@ -1,0 +1,100 @@
+{include file="header.html"}
+<div id="main">
+    {include file="menus.html"}
+    <div id="rightCon" class="clearfix layui-body">
+        <div class="scroller">
+            <div class="explanation" id="explanation">
+                <div class="title" id="checkZoom"> <i class="fa fa-lightbulb-o"></i>
+                    <h4>{$lang.operation_tip}</h4>
+                </div>
+                <ul>
+                    <li>1. 只有设置了短信模板内容，才能正常的发送短信。</li>
+                    <li>2. 如果是阿里云通信平台，则短信签名、短信模板ID、短信模板内容必须填写，且跟阿里云短信平台上设置的要完全一致，需要阿里云审核通过才可用。但
+                        <font color="red">网建短信通</font>平台无需审核，填写后即可使用。
+                    </li>
+                    <li>3. 如果设置了
+                        <font color="red">阿里云通信平台</font>，则可以
+                        <font color="red">不需要</font>设置网建短信。
+                    </li>
+                </ul>
+            </div>
+            <div class="layui-tab">
+                <ul class="layui-tab-title">
+                    <li><a href="{url route='msg/index'}">{$lang.sendlog}</a></li>
+                    <li><a href="{url route='msg/recharge'}">{$lang.msgrecharge}</a></li>
+                    <li><a href="{url route='msg/user'}">{$lang.msguser}</a></li>
+                    <li><a href="{url route='msg/add'}">{$lang.msgadd}</a></li>
+                    <li class="layui-this"><a href="{url route='msg/template'}">{$lang.msgtemplate}</a></li>
+                    <li><a href="{url route='msg/send'}">{$lang.sendtest}</a></li>
+                </ul>
+            </div>
+            <div class="flexigrid">
+                <form method="post">
+                    <table class="infoTable">
+                        <tr>
+                            <th class="paddingT15"><label>{$lang.smsplat}</label></th>
+                            <td class="paddingT15 wordSpacing5">
+                                <select class="querySelect" name="code">
+                                    {html_options options=$smslist selected=$smarty.get.code}
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="paddingT15"><label>{$lang.sms_type}</label></th>
+                            <td class="paddingT15 wordSpacing5">
+                                <select class="querySelect" name="scene">
+                                    <option value="">{$lang.select_pls}</option>
+                                    <!--{foreach from=$scenelist item=$scene}-->
+                                    <option value="{$scene}" {if $template.scene eq $scene}selected{/if}>{$lang.$scene}
+                                    </option>
+                                    <!--{/foreach}-->
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="paddingT15"><label>{$lang.sign_name}</label></th>
+                            <td class="paddingT15 wordSpacing5"><input name="signName" type="text"
+                                    value="{$template.signName}">
+                                <label class="field_notice">{$lang.sign_name_desc}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="paddingT15"><label>{$lang.template_id}</label></th>
+                            <td class="paddingT15 wordSpacing5"><input name="templateId" type="text"
+                                    value="{$template.templateId}">
+                                <label class="field_notice">{$lang.template_id_desc}</label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="paddingT15"><label>{$lang.template_content}</label></th>
+                            <td class="paddingT15 wordSpacing5">
+                                <textarea name="content">{$template.content}</textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <td>
+                                <div class="notice-word mt10">
+                                    <p class="layui-font-12" style="background: #E5F5FF;padding:10px 10px;width:450px">
+                                        {$lang.template_content_desc}填写示例：<br>
+                                        <span
+                                            class="gray">验证码：${$code|default:'{code}'}，您正在进行账户信息维护，打死都不要告诉别人哦！</span><br>
+                                        <span
+                                            class="gray">订单号：${$order_sn|default:'{order_sn}'}，买家{$buyer_name|default:'${buyer_name}'}已下单，请联系买家付款！</span>
+                                    </p>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <td class="ptb20"><input class="layui-btn layui-bg-blue J_AjaxSubmit" type="submit"
+                                    value="{$lang.submit}" />
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{include file="footer.html"}

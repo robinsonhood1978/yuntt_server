@@ -1,0 +1,79 @@
+{include file="user.header.html"}
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful">{include file="user.submenu.html"}
+      <div class="wrap">
+        <div class="public refund_form refund_view">
+          <ul class="refund_info">
+            <li>退款编号：{$refund.refund_sn}</li>
+            <li>申请时间：{$refund.created|date_format:"%Y.%m.%d %H:%M:%S"}</li>
+            <li>退款状态：{$refund.status_label}</li>
+            <li>订单总额：{$refund.total_fee|price_format} <span class="gray">(含运费)</span></li>
+            <div class="refund_fee_detail">
+              <h3>该订单退款总额 {$refund.refund_total_fee|price_format}</h3>
+              <p>
+              <li class="first">退款金额：{$refund.refund_goods_fee|price_format} <span class="gray">(商品总额：{$refund.goods_fee|price_format})</span></li>
+              <li>退<ins style="margin:0 6px">运</ins>费：{$refund.refund_shipping_fee|price_format} <span class="gray">(运费总额：{$refund.shipping_fee|price_format})</span></li>
+              </p>
+            </div>
+            <li>收货情况：{$refund.shipped_label}</li>
+            <li>退款原因：{$refund.refund_reason}</li>
+            <li>退款说明：{$refund.refund_desc}</li>
+          </ul>
+          <div class="refund_btn"> 
+            <!--{if !in_array($refund.status,['SUCCESS','CLOSED'])}--> 
+            <!--{if $refund.buyer_id eq $visitor.userid}--> 
+            <a class="btn-alipay pl20 pr20 btn-alipay-white J_AjaxRequest" uri="{url route='refund/cancel' id=$refund.refund_id}" confirm='您确定要取消退款么？'>取消退款</a> <a class="btn-alipay pl20 pr20" href="{url route='refund/edit' id=$refund.refund_id}">修改退款</a> 
+            <!--{else}--> 
+            <a class="btn-alipay pl20 pr20 J_AjaxRequest" href="{url route='refund/agree' id=$refund.refund_id}" confirm='点击“同意退款”按钮，相关货款将退还给买家，是否继续？'>同意退款</a> 
+            
+            <!--{if $refund.status neq 'SELLER_REFUSE_BUYER'}-->
+        	<a class="btn-alipay pl20 pr20 btn-alipay-white" href="{url route='refund/refuse' id=$refund.refund_id}">拒绝退款</a> 
+        	<!--{/if}-->
+  
+            <!--{/if}--> 
+            <!--{if !$refund.intervene}--> 
+            <a class="btn-alipay pl20 pr20 J_AjaxRequest" uri="{url route='refund/intervene' id=$refund.refund_id}" confirm='您确定需要平台客服介入处理么？'>要求客服介入处理</a> 
+            <!--{else}--> 
+            <span class="btn-alipay btn-alipay-white pl20 pr20">客服已介入处理</span>
+            <!--{/if}--> 
+            <!--{/if}--> 
+          </div>
+          <div class="refund_message"> 
+            <!--{if $refund.status neq 'SUCCESS' && $refund.status neq 'CLOSED'}-->
+            <form method="post" enctype="multipart/form-data" action="{url route='refund/message'}">
+              <ul class="message_form clearfix">
+                <li>
+                  <textarea name="content" class="text border"></textarea>
+                </li>
+                <li class="float-left mt10">上传凭证：
+                  <input type="file" name="image" />
+                  <input type="hidden" name="fileVal" value="image" />
+                </li>
+                <li class="float-right mt10">
+                  <input type="hidden" name="id" value="{$refund.refund_id}" />
+                  <input type="submit"  value="{$lang.submit}" class="btn-alipay" style="margin:0;" />
+                </li>
+              </ul>
+            </form>
+            <!--{/if}-->
+            <div class="message_list"> 
+              <!--{foreach from=$refund.messagelist item=message name=fe_message}-->
+              <div class="title clearfix">
+                <h3> {if $message.owner_id eq $visitor.userid}{$lang.self}{else}{$lang.{$message.owner_role}}{/if} </h3>
+                <span>{$message.created|date_format:"%Y.%m.%d %H:%M:%S"}</span> </div>
+              <div class="content" {if $smarty.foreach.fe_message.last} style="border-bottom:1px #ddd solid"{/if}> {$message.content} 
+                <!--{if $message.image}-->
+                <p style="margin-top:10px;"><img src="{$message.image|url_format}" width="200" /></p>
+                <!--{/if}--> 
+              </div>
+              <!--{/foreach}--> 
+            </div>
+            <div class="page-bottom mt10 clearfix center"> {include file="page.bottom.html"} </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{include file="user.footer.html"} 

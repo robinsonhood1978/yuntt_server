@@ -1,0 +1,60 @@
+<!--{if $goods.meals}-->
+<div class="mealgoods mb20">
+	<div class="attr-tabs">
+		<ul class="user-menu J_MealTab">
+			<!--{foreach from=$goods.meals item=meal name=fe_meal}-->
+			<li class="{if $smarty.foreach.fe_meal.first}active{/if}"> <a href="javascript:;"><span>{$meal.title}</span></a></li>
+			<!--{/foreach}-->
+		</ul>
+	</div>
+	<div class="content">
+		<!--{foreach from=$goods.meals item=meal name=fe_meal}-->
+		<div class="mealeach J_MealEach clearfix {if !$smarty.foreach.fe_meal.first}hidden{/if}">
+			<ul class="master float-left">
+				<li class="clearfix">
+					<s class="plus"></s>
+					<div class="pic"><a href="{url route='goods/index' id=$goods.goods_id}" target="_blank" title="{$goods.goods_name}"><img src="{$goods.default_image|url_format}" alt="{$goods.goods_name}" width="100" height="100" /></a></div>
+					<div class="desc float-left"><a href="{url route='goods/index' id=$goods.goods_id}" target="_blank" title="{$goods.goods_name}">{$goods.goods_name|truncate:40|escape}</a></div>
+					<div class="price">{$goods.price|price_format}</div>
+				</li>
+			</ul>
+			<div class="suits float-left clearfix">
+				<ul class="suits-lst float-left" style="width:{$meal.width}px;height:185px;"> 
+					<!--{foreach from=$meal.mealGoods item=item name=fe_item}-->
+					<li class="clearfix">
+						<s class="{if !$smarty.foreach.fe_item.last}plus{/if}"></s>
+						<div class="pic"><a href="{url route='goods/index' id=$item.goods_id}" target="_blank" title="{$item.goods_name}"><img src="{$item.default_image|url_format}" alt="{$item.goods_name}" width="100" height="100" /></a></div>
+						<div class="desc float-left"><a href="{url route='goods/index' id=$item.goods_id}" target="_blank" title="{$item.goods_name}">{$item.goods_name|truncate:40|escape}</a></div>
+						<div class="price">{$item.price|price_format}</div>
+					</li>
+					<!--{/foreach}--> 
+				</ul>
+			</div>
+			<ul class="buy float-right clearfix">
+				<li class="buy-info">
+					<s class="eq"></s>
+					<div class="name"><a href="{url route='meal/index' id=$meal.meal_id}" target="_blank">{$meal.title|escape}</a></div>
+					<div class="meal-price">套餐价：<b>{$meal.price|price_format}</b></div>
+					<div class="original-price">原&nbsp;&nbsp;&nbsp;价：<del>{$meal.priceTotal|price_format}</del></div>
+					<div class="save-price">立&nbsp;&nbsp;&nbsp;省：{$meal.savePrice|price_format}</div>
+					<div class="buybtn"><a href="{url route='meal/index' id=$meal.meal_id}" target="_blank">购买套餐</a></div>
+				</li>
+			</ul>
+		</div>
+		<!--{/foreach}--> 
+	</div>
+</div>
+<script>
+$(function(){
+	$('.J_MealTab li').click(function(){
+		
+		$(this).parent().find('li').removeClass('active').addClass('normal');
+		$(this).removeClass('normal').addClass('active');
+		$('.J_MealEach').hide();
+	
+		i = $(this).index();
+		$('.J_MealEach').parent().find('.J_MealEach:eq('+i+')').show();
+	});
+});
+</script> 
+<!--{/if}-->

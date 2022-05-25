@@ -1,0 +1,223 @@
+<div class="widget-box">
+    <h3 class="title mt20 mb20 pb20"><strong class="fs18">图文导航</strong></h3>
+    <div class="content">
+        <div class="item webkit-box">
+            <label class="gray">展示风格</label>
+            <p class="flex1"></p>
+            <input type="hidden" name="column" value="{$options.column|default:4}" />
+            <div class="pointer dropdown">
+                <span>{if $options.column eq 3}一行三个{else if $options.column eq 5}一行五个{else}一行四个{/if}</span>
+                <i class="layui-icon layui-icon-right layui-font-14"></i>
+            </div>
+        </div>
+        <div class="item webkit-box">
+            <label class="gray">文字颜色</label>
+            <p class="flex1 ml10 color">{$options.txtcolor|default:'#333333'}</p>
+            <input type="hidden" name="txtcolor" value="{$options.txtcolor|default:'#333333'}" />
+            <span class="f60 pointer J_Reset" data-id="picker1" data-value="#333333">重置</span>
+            <p class="picker1 ml10"></p>
+        </div>
+        <div class="item webkit-box">
+            <label class="gray">隐藏文字</label>
+            <p class="flex1"></p>
+            <input type="hidden" name="txthide" value="{$options.txthide|default:0}" />
+            <span class="layui-form">
+                <input lay-filter="filter" type="checkbox" {if $options.txthide}checked{/if} lay-skin="switch">
+            </span>
+        </div>
+        <div class="item webkit-box">
+            <input type="hidden" name="index" value="0" />
+            <label class="gray">上传图标</label>
+            <p class="flex1 ml10">尺寸要求：60PX * 60PX</p>
+        </div>
+        <ul class="list">
+            <!-- {foreach from=$options.images item=item} -->
+            <li class="item padding10 webkit-box relative">
+                <div class="image center relative">
+                    <input onchange="fileRender(this)" class="file absolute pointer" type="file" name="file[]" />
+                    <!--{if {$item.url}}-->
+                    <img class="block" src="{$item.url|url_format}" />
+                    <!--{else}-->
+                    <i class="layui-icon layui-icon-addition fs18"></i>
+                    <!--{/if}-->
+                </div>
+                <div class="flex1">
+                    <div class="title ml10 gray webkit-box">
+                        <span class="pl10">标题</span>
+                        <input type="hidden" name="url[]" value="{$item.url}" />
+                        <input class="padding10 J_Holder" type="text" name="title[]" value="{$item.title}"/>
+                    </div>
+                    <div class="link ml10 gray webkit-box">
+                        <span class="pl10">链接地址</span>
+                        <input class="padding10 J_Link" type="text" name="link[]" value="{$item.link}"
+                            placeholder="index/index" />
+                    </div>
+                </div>
+                <i class="layui-icon layui-icon-close-fill absolute del pointer fs18 J_Del"></i>
+            </li>
+            <!-- {/foreach} -->
+            <li class="item btn">
+                <div class="relative">
+                    <p class="center"><i class="layui-icon layui-icon-addition layui-font-14"></i><span>添加一个图文导航</span></p>
+                    <input onchange="fileRender(this)" class="file absolute pointer" type="file" name="file[]" />
+                    <input type="hidden" name="link[]" value=""/>
+                </div>
+            </li>
+        </ul>
+        <h4 class="mt10 pb10 mt20 pt20">其他设置</h4>
+        <div class="item webkit-box">
+            <label class="gray">背景颜色</label>
+            <p class="flex1 ml10 color">{$options.bgcolor|default:'#ffffff'}</p>
+            <input type="hidden" name="bgcolor" value="{$options.bgcolor|default:'#ffffff'}" />
+            <span class="f60 pointer J_Reset" data-id="picker2" data-value="">重置</span>
+            <p class="picker2 ml10"></p>
+        </div>
+        <div class="item webkit-box">
+            <label class="gray">圆角展示</label>
+            <p class="flex1 ml10 value">{if $options.radius eq 'round'}圆角{else}直角{/if}</p>
+            <input type="hidden" name="radius" value="{$options.radius|default:'round'}" />
+            <span class="switch first {if $options.radius neq 'square'} selected {/if} J_Edge" title="圆角" data-value="round"><i
+                    class="iconfont icon-radius-upright"></i></span>
+            <span class="switch {if $options.radius eq 'square'} selected {/if} J_Edge" title="直角"
+                data-value="square"><i class="iconfont icon-fangkuang"></i></span>
+        </div>
+        <div class="item webkit-box">
+            <label class="gray">模块间距</label>
+            <input type="hidden" name="space" value="{$options.space|default:10}" />
+            <div class="flex1 ml20 slider" style="margin-top:15px"></div>
+        </div>
+    </div>
+</div>
+<style>
+    .widget-box .list .item {
+        border: 1px #ddd dashed;
+    }
+
+    .widget-box .list .item .image {
+        border: 1px #ddd solid;
+        width: 70px;
+        height: 70px;
+        line-height: 70px;
+    }
+
+    .widget-box .list .item .file,
+    .widget-box .list .item img {
+        width: 70px;
+        height: 70px;
+        top: 0;
+        left: 0;
+        overflow: hidden;
+    }
+
+    .widget-box .list .item .file {
+        opacity: 0;
+    }
+    .widget-box .list .item .del {
+        right: -10px;
+        top: -14px;
+    }
+
+    .widget-box .list .btn .file{
+        width: 100%;
+        height: 100%;
+    }
+    .widget-box .list .btn p{
+        color: #FF6A00;
+    }
+    .widget-box .item .title input,
+    .widget-box .item .title input:hover,
+    .widget-box .item .link input,
+    .widget-box .item .link input:hover {
+        border: 0;
+        border-bottom: 1px #ddd solid;
+        box-shadow: none;
+    }
+    .widget-box .item .title span,
+    .widget-box .item .link span{
+        line-height: 38px;
+        margin-right: 5px;
+        width: 60px;
+        text-align: right;
+    }
+    
+</style>
+<script>
+    $(function () {
+        $('.J_Edge').click(function () {
+            var value = $(this).attr('data-value');
+            $(this).parent('.item').find('input').val(value);
+
+            save_widget();
+        });
+
+        $('body').on('click', '.J_Del', function () {
+            $(this).parents('.item').remove();
+            save_widget(false);
+        });
+
+        $('.J_Reset').click(function () {
+            var value = $(this).attr('data-value');
+            $(this).parent('.item').find('input[type="hidden"]').val(value);
+            save_widget();
+        });
+
+        colorRender('.picker1', function(dom, value) {
+            save_widget();
+        });
+
+        colorRender('.picker2', function(dom, value) {
+            save_widget();
+        });
+
+        slideRender('.slider', function (dom, value) {
+            save_widget(false);
+        });
+
+        layui.use('dropdown', function () {
+            var dropdown = layui.dropdown
+            dropdown.render({
+                elem: '.dropdown',
+                data: [{
+                    title: '一行三个',
+                    id: '3'
+                }, {
+                    title: '一行四个',
+                    id: '4'
+                }, {
+                    title: '一行五个',
+                    id: '5'
+                }],
+                click: function (data, othis) {
+                    this.elem.parents('.item').find('input').val(data.id);
+                    this.elem.find('span').text(data.title);
+                    save_widget(false);
+                }
+            });
+        });
+
+        layui.use('form', function () {
+            var form = layui.form;
+            form.on('switch(filter)', function (data) {
+                $(this).parents('.item').find('input').val(data.elem.checked ? 1 : 0);
+                save_widget();
+            });
+
+            form.render();
+        });
+
+        $('.J_Holder').keyup(function () {
+           var index = $(this).parents('.item').index();
+           $('#'+$(this).parents('form').attr('widget_id')).find('li:eq('+index+') p').text($(this).val());
+        });
+        $('.J_Holder, .J_Link').change(function() {
+            save_widget(false);
+        });
+        
+    });
+    function fileRender(dom) {
+        var index = $(dom).parents('.item').index();
+        $(dom).parents('form').find('input[name="index"]').val(index);
+
+        save_widget();
+    }
+</script>

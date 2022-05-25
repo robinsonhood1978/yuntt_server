@@ -1,0 +1,102 @@
+{include file="header.html"}
+<div id="page-credit">
+  <div class="w-shop clearfix pt20">
+    <div class="col-sub"> {include file="left.html"} </div>
+    <div class="col-main float-right">
+      <div class="mb10 bgf">
+        <div class="title">
+          <h3> {$lang.praise_rate}{$lang.colon} <b style="{if $store.praise_rate le 50}color:#28B779;{else}color:#DA542E;{/if}"> {$store.praise_rate}% </b> </h3>
+        </div>
+        <div class="credit-recorder">
+          <table class="w-full">
+            <tr>
+              <th>周期/评分</th>
+              <th> {$lang.in_a_week} </th>
+              <th> {$lang.in_a_month} </th>
+              <th> {$lang.in_six_month} </th>
+              <th> {$lang.six_month_before} </th>
+              <th class="border-r-0"> {$lang.total} </th>
+            </tr>
+            <tr style="color:#DA542E;">
+              <th> <div> {$lang.good_eval} </div>
+              </th>
+              <td> {$credits.good.in_a_week} </td>
+              <td> {$credits.good.in_a_month} </td>
+              <td> {$credits.good.in_six_month} </td>
+              <td> {$credits.good.six_month_before} </td>
+              <td class="border-r-0"> {$credits.good.total} </td>
+            </tr>
+            <tr>
+              <th> <div> {$lang.normal_eval} </div>
+              </th>
+              <td> {$credits.middle.in_a_week} </td>
+              <td> {$credits.middle.in_a_month} </td>
+              <td> {$credits.middle.in_six_month} </td>
+              <td> {$credits.middle.six_month_before} </td>
+              <td class="border-r-0"> {$credits.middle.total} </td>
+            </tr>
+            <tr style="color: #28B779;">
+              <th> <div> {$lang.bad_eval} </div>
+              </th>
+              <td> {$credits.bad.in_a_week} </td>
+              <td> {$credits.bad.in_a_month} </td>
+              <td> {$credits.bad.in_six_month} </td>
+              <td> {$credits.bad.six_month_before} </td>
+              <td class="border-r-0"> {$credits.bad.total} </td>
+            </tr>
+            <tr style="color: #2953a6;" class="border-b-0">
+              <th> <div> {$lang.total} </div>
+              </th>
+              <td> {$credits.all.in_a_week} </td>
+              <td> {$credits.all.in_a_month} </td>
+              <td> {$credits.all.in_six_month} </td>
+              <td> {$credits.all.six_month_before} </td>
+              <td class="border-r-0"> {$credits.all.total} </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="credit-detail mb10 bgf">
+        <ul class="user-menu clearfix" style="border: 0;">
+          <li class="{if !$smarty.get.level}active{/if} ml10 mr10 float-left"> <a href="{url route='store/credit' id=$store.store_id}"> <span> {$lang.all_eval}({$credits.all.total|default:0}) </span> </a> </li>
+          <li class="{if $smarty.get.level eq 3}active{/if} ml10 mr10 float-left"> <a href="{url route='store/credit' id=$store.store_id level=3}"> <span> {$lang.good_eval}({$credits.good.total|default:0}) </span> </a> </li>
+          <li class="{if $smarty.get.level eq 2}active{/if} ml10 mr10 float-left"> <a href="{url route='store/credit' id=$store.store_id level=2}"> <span> {$lang.normal_eval}({$credits.middle.total|default:0}) </span> </a> </li>
+          <li class="{if $smarty.get.level eq 1}active{/if} ml10 mr10 float-left"> <a href="{url route='store/credit' id=$store.store_id level=1}"> <span> {$lang.bad_eval}({$credits.bad.total|default:0}) </span> </a> </li>
+        </ul>
+        <div class="detail">
+          <table>
+            <tr class="table-header">
+              <th width="10%"> {$lang.eval} </th>
+              <th width="25%" class="width2"> {$lang.content} </th>
+              <th width="25%" class="width3"> {$lang.goods} </th>
+              <th width="10%"> {$lang.amount} </th>
+              <th width="10%"> {$lang.buyer} </th>
+              <th width="20%"> {$lang.time} </th>
+            </tr>
+            <!--{foreach from=$goodslist item=goods}-->
+            <tr>
+              <th> <!--{if $goods.evaluation le 2}--> 
+                <span style="color: #28B779;"> {$lang.bad_eval} </span>
+                <!--{elseif $goods.evaluation eq 3}--> 
+                <span> {$lang.normal_eval} </span> 
+                <!--{else}--> 
+                <span style="color:#DA542E;"> {$lang.good_eval} </span> 
+                <!--{/if}--> </th>
+              <td><div> {$goods.comment|escape|nl2br} </div></td>
+              <td><a href="{url route='goods/index' id=$goods.goods_id}"> {$goods.goods_name|escape} </a></td>
+              <td class="price"> {$goods.price|price_format} </td>
+              <td> {$goods.buyer_name|escape} </td>
+              <td> {$goods.evaluation_time|date_format:"%Y.%m.%d %H:%M:%S"} </td>
+            </tr>
+            <!--{foreachelse}-->
+            <tr><td colspan="6">{$lang.no_records}</td></tr>
+            <!--{/foreach}-->
+          </table>
+        </div>
+        
+      </div>
+      <div class="clearfix mt20 center mb20">{include file="page.bottom.html"}</div>
+    </div>
+  </div>
+</div>
+{include file="footer.html"}

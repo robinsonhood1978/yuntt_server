@@ -1,0 +1,21 @@
+<div class="brand-channel mb20 clearfix">
+  <div class="brand-adv slide-lr-info"> 
+    <a href="{$widget_data.ad_link_url}" target="_blank">
+      <img class="slide-lr-img" src="{$widget_data.ad_image_url|url_format}" />
+    </a> 
+  </div>
+  <div class="brand-list">
+    <ul class="clearfix">
+      <!-- {foreach from=$widget_data.brandlist item=brand name=fe_brand} -->
+      <li {if $smarty.foreach.fe_brand.iteration gt 12} style="border-bottom:0" {/if}>
+        <div class="brand-img"{if $smarty.foreach.fe_brand.iteration % 6 eq 0} style="border-right:0"{/if}> 
+          <a href="{url route='brand/view' id=$brand.brand_id}">
+            <img src="{$brand.brand_logo|url_format}" />
+          </a> 
+        </div>
+        <div class="brand-mash"></div>
+      </li>
+      <!-- {/foreach} -->
+    </ul>
+  </div>
+</div>

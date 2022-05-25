@@ -1,0 +1,19 @@
+<script type="text/javascript">
+var _d = DialogManager.get('config_dialog');
+_d.setWidth(540);
+_d.setPosition('center');
+</script>
+<div class="field_item webkit-box">
+    <label>模块名称</label>
+    <p><input type="text" name="model_name" value="{$options.model_name}" /></p>
+</div>
+<div class="field_item webkit-box">
+    <label>显示数量</label>
+    <p><input type="text" name="num" value="{$options.num}" /></p>
+    <font class="ml10 fs12" color="gray">数量大于5，不足5个商品系统补足</font>
+</div>
+<div class="field_item webkit-box">
+    <label>限定商品</label>
+    <p><input type="text" name="goods_id" value="{$options.goods_id}" /></p>
+    <font class="ml10 fs12" color="gray">填写商品ID,多个用“|”隔开</font>
+</div>

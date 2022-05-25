@@ -1,0 +1,61 @@
+{include file="header.html"}
+<div id="main">
+  {include file="menus.html"}
+  <div id="rightCon" class="clearfix layui-body">
+    <div class="scroller">
+      <div class="flexigrid">
+        <form method="post">
+          <table class="infoTable layui-form">
+            <tr>
+              <th class="paddingT15" style="width: 30px;"></th>
+              <td class="paddingT15">
+                <h3 class="pb10 mt20 bold">{$lang.frontend_login}</h3>
+                <input type="radio" name="captcha_status[login]" value="1" title="{$lang.captcha_enabled}" {if
+                  $setting.captcha_status.login}checked{/if} />
+                <input type="radio" name="captcha_status[login]" value="0" title="{$lang.captcha_disabled}" {if
+                  !$setting.captcha_status.login}checked{/if} />
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15" style="width: 30px;"></th>
+              <td class="paddingT15">
+                <h3 class="pb10 mt20 bold">{$lang.frontend_register}</h3>
+                <input type="radio" name="captcha_status[register]" value="1" title="{$lang.captcha_enabled}" {if
+                  $setting.captcha_status.register}checked{/if} />
+                <input type="radio" name="captcha_status[register]" value="0" title="{$lang.captcha_disabled}" {if
+                  !$setting.captcha_status.register}checked{/if} />
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15" style="width: 30px;"></th>
+              <td class="paddingT15">
+                <h3 class="pb10 mt20 bold">{$lang.goods_qa}</h3>
+                <input type="radio" name="captcha_status[goodsqa]" value="1" title="{$lang.captcha_enabled}" {if
+                  $setting.captcha_status.goodsqa}checked{/if} />
+                <input type="radio" name="captcha_status[goodsqa]" value="0" title="{$lang.captcha_disabled}" {if
+                  !$setting.captcha_status.goodsqa}checked{/if} />
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15" style="width: 30px;"></th>
+              <td class="paddingT15">
+                <h3 class="pb10 mt20 bold">{$lang.backend_login}</h3>
+                <input type="radio" name="captcha_status[backend]" value="1" title="{$lang.captcha_enabled}" {if
+                  $setting.captcha_status.backend}checked{/if} />
+                <input type="radio" name="captcha_status[backend]" value="0" title="{$lang.captcha_disabled}" {if
+                  !$setting.captcha_status.backend}checked{/if} />
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15" style="width: 30px;"></th>
+              <td class="ptb20 mt20"><input class="layui-btn layui-bg-blue J_AjaxSubmit" type="submit"
+                  value="{$lang.submit}" /></td>
+            </tr>
+          </table>
+        </form>
+      </div>
+      {include file="version.html"}
+    </div>
+  </div>
+</div>
+{include file="footer.html"}

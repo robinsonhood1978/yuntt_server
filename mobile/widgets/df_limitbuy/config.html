@@ -1,0 +1,131 @@
+<div class="widget-box">
+    <h3 class="title mt20 mb20 pb20"><strong class="fs18">秒杀</strong></h3>
+    <div class="content">
+        <div class="item webkit-box">
+            <label class="gray">标题风格</label>
+            <p class="flex1"></p>
+            <input type="hidden" name="direction" value="{$options.direction|default:'vertical'}" />
+            <div class="pointer dropdown">
+                <span>{if $options.direction eq 'horizontal'}风格二{else}风格一{/if}</span>
+                <i class="layui-icon layui-icon-right layui-font-14"></i>
+            </div>
+        </div>
+        <div class="item webkit-box">
+            <label class="gray">数据来源</label>
+            <p class="flex1 ml10 value">{if $options.source eq 'choice'}手动选择{else}默认{/if}</p>
+            <input type="hidden" name="source" value="{$options.source|default:'default'}" />
+            <span class="switch first {if !in_array($options.source, ['choice'])} selected {/if} J_Switch"
+                title="默认" data-value="default"><i class="iconfont icon-cache"></i></span>
+            <span class="switch {if $options.source eq 'choice'} selected {/if} J_Switch" title="手动选择"
+                data-value="choice"><i class="iconfont icon-select"></i></span>
+        </div>
+        <div class="item webkit-box" {if $options.source neq 'choice' }style="display:none" {/if}>
+            <label class="gray">手动选择</label>
+            <p class="flex1"></p>
+            <input type="hidden" name="items" value="{$options.items|default:''}" />
+            <div class="pointer" ectype="dialog" dialog_id="goods" dialog_width="560" dialog_title="选择秒杀商品"
+                uri="{url route='gselector/limitbuy' callback='gscallback'}">
+                <!--{if $options.items}-->
+                <span>已选择({count(explode(',', $options.items))})</span>
+                <!--{else}-->
+                <span>请选择</span>
+                <!--{/if}-->
+                <i class="layui-icon layui-icon-right layui-font-14"></i>
+            </div>
+        </div>
+        <div class="item webkit-box" {if $options.source eq 'choice' }style="display:none" {/if}>
+            <label class="gray">商品数量</label>
+            <input type="hidden" name="quantity" value="{$options.quantity|default:0}" />
+            <div class="flex1 ml20 slider1" style="margin-top:15px"></div>
+        </div>
+        <div class="item webkit-box">
+            <label class="gray">标题颜色</label>
+            <p class="flex1 ml10 color">{$options.txtcolor|default:'#fc2b34'}</p>
+            <input type="hidden" name="txtcolor" value="{$options.txtcolor|default:'#fc2b34'}" />
+            <span class="f60 pointer J_Reset" data-id="picker1" data-value="#fc2b34">重置</span>
+            <p class="picker1 ml10"></p>
+        </div>
+        <h4 class="mt10 pb10 mt20 pt20">其他设置</h4>
+        <div class="item webkit-box">
+            <label class="gray">背景颜色</label>
+            <p class="flex1 ml10 color">{$options.bgcolor|default:''}</p>
+            <input type="hidden" name="bgcolor" value="{$options.bgcolor|default:''}" />
+            <span class="f60 pointer J_Reset" data-id="picker2" data-value="">重置</span>
+            <p class="picker2 ml10"></p>
+        </div>
+
+        <div class="item webkit-box">
+            <label class="gray">模块间距</label>
+            <input type="hidden" name="space" value="{$options.space|default:5}" />
+            <div class="flex1 ml20 slider2" style="margin-top:15px"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.J_Reset').click(function () {
+            var value = $(this).attr('data-value');
+            $(this).parent('.item').find('input[type="hidden"]').val(value);
+            save_widget();
+        });
+
+        layui.use('form', function () {
+            var form = layui.form;
+            form.on('switch(filter)', function (data) {
+                $(this).parents('.item').find('input').val(data.elem.checked ? 1 : 0);
+                save_widget();
+            });
+
+            form.render();
+        });
+
+        layui.use('dropdown', function () {
+            var dropdown = layui.dropdown
+            dropdown.render({
+                elem: '.dropdown',
+                data: [{
+                    title: '风格一',
+                    id: 'vertical'
+                }, {
+                    title: '风格二',
+                    id: 'horizontal'
+                }],
+                click: function (data, othis) {
+                    this.elem.parents('.item').find('input').val(data.id);
+                    this.elem.find('span').text(data.title);
+                    save_widget(false);
+                }
+            });
+        });
+
+        slideRender('.slider1', function (dom, value) {
+            save_widget(false);
+        });
+        slideRender('.slider2', function (dom, value) {
+            save_widget(false);
+        });
+        colorRender('.picker1', function (dom, value) {
+            save_widget();
+        });
+        colorRender('.picker2', function (dom, value) {
+            save_widget();
+        });
+
+        $('.J_Switch').click(function () {
+            var value = $(this).attr('data-value');
+            $(this).parent('.item').find('input').val(value);
+            save_widget();
+        });
+    });
+
+    function gscallback(dom, value) {
+        var dialog = $('*[dialog_id="' + dom + '"]');
+        var values = unique(value);
+
+        dialog.parent('.item').find('input[name="items"]').val(values.join(','));
+        dialog.find('span').text(value == '' ? '请选择' : '已选择(' + values.length + ')');
+        
+        save_widget(false);
+    }
+</script>

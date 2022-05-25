@@ -1,0 +1,62 @@
+{include file="header.html"}
+<div id="main">
+  {include file="menus.html"}
+  <div id="rightCon" class="clearfix layui-body">
+    <div class="scroller">
+      <div class="flexigrid">
+        <form method="post" enctype="multipart/form-data">
+          <table class="infoTable">
+            <tr>
+              <th class="paddingT15"><label>{$lang.cate_name}</label></th>
+              <td class="paddingT15 wordSpacing5"><input class="infoTableInput2" id="cate_name" type="text"
+                  name="cate_name" value="{$gcategory.cate_name|escape}" />
+                <label class="field_notice">{$lang.cate_name}</label>
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.parent_id}</label></th>
+              <td class="paddingT15 wordSpacing5"><select name="parent_id">
+                  <option value="0">{$lang.select_pls}</option>
+
+                  {html_options options=$parents selected=$gcategory.parent_id}
+
+                </select>
+                <label class="field_notice">{$lang.parent_id}</label>
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.sort_order}</label></th>
+              <td class="paddingT15 wordSpacing5"><input class="sort_order" id="sort_order" type="text"
+                  name="sort_order" value="{$gcategory.sort_order}" />
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.image}</label></th>
+              <td class="paddingT15 wordSpacing5">
+                <div class="input-file-show">
+                    <input class="type-file-file" onchange="getTempPathcallback(this)" name="image" type="file" size="30" hidefocus="true" >
+                    <input type="hidden" name="fileVal" value="image" />
+                    <div class="type-file-image">
+                      <!--{if $gcategory.image}-->
+                      <img class="block" src="{$gcategory.image|url_format}" width="100" height="100" />
+                      <span>修改图片</span>
+                      <!--{else}-->
+                      <i class="iconfont icon-icon_pic"></i>
+                      <!--{/if}-->
+                    </div>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th></th>
+              <td class="ptb20"><input class="layui-btn layui-bg-blue J_AjaxSubmit" type="submit"
+                  value="{$lang.submit}" /></td>
+            </tr>
+          </table>
+        </form>
+      </div>
+      {include file="version.html"}
+    </div>
+  </div>
+</div>
+{include file="footer.html"}

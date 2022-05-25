@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="{$app->language}">
+<head>
+<title>{$page.title}</title>
+<meta name="Keywords" content="{$page.keywords}" />
+<meta name="Description" content="{$page.description}" />
+</head>
+<body>
+<div id="echarts-{$echart.id}" style="width:{$echart.width}px; height:{$echart.height}px"></div>
+<script type="text/javascript" src="{lib file='echarts/echarts.min.js'}" charset="{$app->charset}"></script>
+<script type="text/javascript" src='{lib file="echarts/{$echart.theme|default:"macarons"}.js"}' charset="{$app->charset}"></script>
+<script type="text/javascript">
+	// 基于准备好的dom，初始化echarts实例
+	var myChart = echarts.init(document.getElementById('echarts-{$echart.id}'), '{$echart.theme|default:"macarons"}');
+
+	// 指定图表的配置项和数据
+	var option = {$echart.option};
+
+	// 使用刚指定的配置项和数据显示图表
+	myChart.setOption(option);
+</script>
+</body>
+</html>

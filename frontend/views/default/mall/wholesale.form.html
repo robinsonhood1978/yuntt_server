@@ -1,0 +1,164 @@
+{include file="user.header.html"}
+<style>
+.txt { margin-right:20px}
+.spec ul { width: 400px; overflow: hidden; }
+.spec .td { padding-bottom: 10px; }
+.spec li { float: left; margin-left: 6px; display: inline; }
+.spec li input { text-align: center; }
+.spec .th { padding: 3px 0; margin-bottom: 10px; background: #f8f8f8; }
+</style>
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful">{include file="user.submenu.html"}
+      <div id="wholesale_form" class="wrap">
+        <div class="public">
+          <div class="promotool">
+            <div class="bundle bundle-list"> 
+              <!--{if $tooldisabled}-->
+              <div class="notice-word">
+                <p>{$tooldisabled}</p>
+              </div>
+              <!--{else}-->
+              <div class="notice-word">
+                <p class="yellow-big">{$lang.note_for_create}</p>
+              </div>
+              <form method="post" id="pro_form" enctype="multipart/form-data">
+                <div class="information_index">
+                  <div class="add_wrap">
+                    <div class="assort">
+                      <p class="txt">{$lang.select_goods}:</p>
+                      <p class="lst-products" style="width:630px;"> <a href="javascript:;" gs_id="wholesale" gs_name="goods_name" gs_callback="gs_callback1" gs_title="{$lang.gselector}" gs_width="690" gs_type="goods" gs_store_id="{$visitor.store_id}" ectype="gselector" gs_uri="{url route='gselector/goods'}" class="btn-add-product">{$lang.gselector}</a> <span class="block mt10" id="goods_name"></span>
+                        <input type="hidden" id="wholesale" name="goods_id" value="{$smarty.get.goods_id}" />
+                      </p>
+                    </div>
+                    <div class="assort clearfix">
+                      <p class="txt float-left">{$lang.spec_price}: </p>
+                      <div ectype="spec_list" class="spec float-left" style="background-color: #f1f1f1;">
+                        <ul class="th">
+                          <li id="spec_name" class="distance2">{$lang.spec}</li>
+                          <li class="distance1">{$lang.stock}</li>
+                          <li class="distance1">{$lang.price}</li>
+                        </ul>
+                      </div>
+                      <div ectype="template" class="hidden">
+                        <ul ectype="spec_item" class="td">
+                          <li class="distance2">
+                            [1]</li>
+                          <li class="distance1">[2]</li>
+                          <li class="distance1">
+                            [3]</li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="assort clearfix">
+                      <p class="txt float-left">{$lang.pifa_price}: </p>
+                        <div id="price_intervals" class="subbox-body price_intervals">
+                            <div class="arrange">
+                                <div class="list">
+                                    <div class="each">{$lang.buy} <input name="quantity[]" type="text" class="text width_short" /> {$lang.upthen} <input type="text" class="text width_short" name="price[]" value="" /> {$lang.perprice}  <a href="javascript:;">{$lang.drop}</a></div>
+                                </div>
+                                <div class="add"><a href="javascript:;"> + {$lang.add}</a></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="assort issuance">
+                      <p class="txt"></p>
+                      <p>
+                        <input type="submit" class="J_AjaxSubmit btn-alipay" style="width:200px;" value="{$lang.submit}" />
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </form>
+              <!--{/if}--> 
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+var goods_id = {$smarty.get.goods_id|default:0};
+var list = {$list|default:'[]'};
+$(function(){
+	if(goods_id > 0){
+    gs_query_info1(goods_id);
+  }
+  
+  if(list.length > 0){
+    $("#price_intervals .list .each").remove();
+    $.each(list,function(index,vaule){
+      $("#price_intervals .list").append('<div class="each">{$lang.buy} <input name="quantity[]" type="text" class="text width_short" value="'+vaule.quantity+'" /> {$lang.upthen} <input type="text" class="text width_short" name="price[]" value="'+vaule.price+'" /> {$lang.perprice}  <a href="javascript:;">{$lang.drop}</a></div>');               
+    });
+  }
+
+	hide_drop_link();
+
+	$("#price_intervals .add a").click(function(){
+		var new_intervals = $('#price_intervals').find('.each:last').clone(true);
+		new_intervals.insertAfter($('#price_intervals').find('.each:last'));
+		hide_drop_link();
+	});
+
+	$("#price_intervals .each a").click(function(){
+		$('#price_intervals').find('.each').length > 1 && $(this).parent().remove();
+	});
+});
+
+function hide_drop_link() {
+	$('#price_intervals').find('a').show();
+  $('#price_intervals').find('a:first').hide();
+	$('#price_intervals .add').find('a').show();
+}
+
+function gs_submit_check(id,name,callback)
+{
+	if(DATA_LIST_TEMP.length != 1) {
+		msg(lang.records_error);
+	}
+	else {
+		gs_submit(id,name,callback);
+	}
+}
+function gs_callback1(id)
+{
+	var goods_id = '';
+	$.each(DATA_LIST_TEMP, function(i,item){
+		goods_id = item.goods_id;
+	});
+	if(goods_id.length == 0 || (goods_id == 0)){
+		//$('.J_ListAdded').hide();
+        msg(lang.add_records);
+	}
+	else {
+		$('#'+id).val($('#gs_goods_id').val());
+		gs_query_info1(goods_id);
+		DialogManager.close(id);
+	}
+}
+function gs_query_info1(goods_id)
+{
+	$.getJSON(url(['wholesale/query']),{ id:goods_id},function(data) {
+		if(data.done){
+			if(data.retval) {
+				var goods = data.retval;
+
+				$('#wholesale').val(goods_id);
+				$('#goods_name').html(goods.goods_name);
+				$('#spec_name').html(goods.spec_name);
+				$('*[ectype="spec_list"]').find('ul[ectype="spec_item"]').remove();
+				
+				var html = '';
+				var template = $('*[ectype="template"]').clone(true);
+				$.each(goods.goodsSpec, function(i,item) {
+					html += sprintf(replace_all(template.html(), 'ecname', 'name'), item.spec, item.stock, item.price);
+				});
+				html = replace_all(html, 'selected=""', '');
+				$('*[ectype="spec_list"]').append(html);
+			}	
+ 		}
+ 	});
+}
+</script> 
+{include file="user.footer.html"} 

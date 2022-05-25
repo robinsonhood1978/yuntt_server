@@ -1,0 +1,128 @@
+{include file="header.html"}
+<div id="main">
+	{include file="menus.html"}
+	<div id="rightCon" class="clearfix layui-body">
+		<div class="scroller">
+			<div class="search-form clearfix">
+				<form method="get" id="formSearch">
+					<div class="webkit-box box-align-center">
+						<input type="hidden" name="r" value="user/index" />
+						{$lang.username}
+						<input class="queryInput" type="text" name="username" value="{$smarty.get.username|escape}" />
+						{$lang.real_name}
+						<input class="queryInput" type="text" name="real_name" value="{$smarty.get.real_name|escape}" />
+						{$lang.email}
+						<input class="queryInput" type="text" name="email" value="{$smarty.get.email|escape}" />
+						{$lang.phone_mob}
+						<input class="queryInput" type="text" name="phone_mob" value="{$smarty.get.phone_mob|escape}" />
+						<input type="submit" class="layui-btn layui-bg-blue layui-btn-sm block width7"
+							value="{$lang.query}" />
+						<!--{if $filtered}-->
+						<a class="layui-btn layui-btn-primary layui-btn-sm box-align-center"
+							href="{url route='user/index'}">{$lang.cancel_query}</a>
+						<!--{/if}-->
+					</div>
+				</form>
+			</div>
+			<div class="tablegrid">
+				<table class="layui-hide" id="tablegrid" lay-filter="tablegrid"></table>
+			</div>
+			{include file="version.html"}
+		</div>
+	</div>
+</div>
+
+<script type="text/html" id="toolbar">
+  	<div class="layui-btn-container">
+    	<a class="layui-btn layui-bg-blue" href="{url route='user/add'}"><i class="layui-icon layui-icon-addition"></i>新增用户</a>
+		<button class="layui-btn layui-bg-orange" lay-event="admin"><i class="layui-icon layui-icon-addition"></i>设为管理员</button>
+    	<button class="layui-btn layui-btn-primary layui-border-blue" lay-event="batdel"><i class="layui-icon layui-icon-close"></i>批量删除</button>
+		<button class="layui-btn layui-btn-primary layui-border-black" lay-event="export"><i class="layui-icon layui-icon-export"></i>导出数据</button>
+  	</div>
+</script>
+
+<script type="text/html" id="colBar">
+  	<a class="ml5 mr5 blue pointer" lay-event="edit">编辑</a>
+	<a class="ml5 mr5 blue pointer" lay-event="del" confirm="删除后将不能恢复，确认删除该项吗？">删除</a>
+  	<a class="ml5 mr5 blue pointer" lay-event="enter">登录记录</a>
+</script>
+<script>
+	layui.use('table', function () {
+		var table = layui.table;
+
+		table.render({
+			elem: '#tablegrid'
+			//,skin: 'line'
+			, url: url(['user/index', $("#formSearch").serializeJson()])
+			, toolbar: '#toolbar'
+			, defaultToolbar: ['filter', /*'exports',*/ 'print']
+			, title: '用户列表'
+			//, size: 'lg'
+			, cols: [[
+				{ type: 'checkbox', fixed: 'left' }
+				, { field: 'userid', title: 'ID', width: 70, fixed: 'left', unresize: true, sort: true }
+				, { field: 'username', title: '用户名', width: 120 }
+				, { field: 'real_name', title: '真实姓名', width: 120 }
+				, { field: 'email', title: '邮箱', width: 150 }
+				, { field: 'phone_mob', title: '手机号码', width: 125, sort: true, align: 'center' }
+				, {
+					field: 'if_admin', title: '是否管理员', width: 130, align: 'center', sort: true, templet: function (res) {
+						return res.if_admin ? '<i class="layui-icon layui-icon-ok layui-font-red bold"></i>' : '否';
+					}
+				}
+				, { field: 'create_time', title: '注册时间', width: 120, sort: true, }
+				, { field: 'logins', title: '登录次数', width: 120, sort: true, align: 'center' }
+				, { field: 'last_login', title: '上次登录时间', width: 120, sort: true, align: 'center' }
+				, { field: 'last_ip', title: '上次登录IP', width: 120, align: 'center' }
+				, { fixed: 'right', title: '操作', toolbar: '#colBar', width: 180, align: 'center' }
+			]]
+			, page: {
+				theme: 'blue'
+			}
+		});
+
+		//监听头工具栏事件
+		table.on('toolbar(tablegrid)', function (obj) {
+			var checkStatus = table.checkStatus(obj.config.id);
+			if (checkStatus.data.length <= 0) {
+				return false;
+			}
+			var items = new Array();
+			$.each(checkStatus.data, function (i, item) {
+				items.push(item.userid);
+			});
+
+			if (obj.event === 'batdel') {
+				var btnObj = $('[lay-event="' + obj.event + '"]');
+				btnObj.attr('confirm', '删除后将不能恢复，确认删除这 ' + items.length + ' 项吗？');
+				ajaxRequest(btnObj, url(['user/delete', { id: items.join(',') }]), function () {
+					table.reload('tablegrid');
+				});
+			} else if (obj.event === 'admin') {
+				if (items.length > 1) {
+					layer.msg('最多选择一项');
+				} else {
+					window.location.href = url(['manager/add', { id: items[0] }]);
+				}
+			} else if (obj.event === 'export') {
+				window.location.href = url(['user/export', $.extend($("#formSearch").serializeJson(), { id: items.join(',') })]);
+			}
+		});
+
+		//监听行工具事件
+		table.on('tool(tablegrid)', function (obj) {
+			var data = obj.data;
+			if (obj.event === 'del') {
+				var btnObj = $(obj.tr).find('[lay-event="' + obj.event + '"]');
+				ajaxRequest(btnObj, url(['user/delete', { id: data.userid }]), function () {
+					obj.del();
+				});
+			} else if (obj.event === 'edit') {
+				window.location.href = url(['user/edit', { id: data.userid }]);
+			} else if (obj.event === 'enter') {
+				window.location.href = url(['user/enter', { id: data.userid }]);
+			}
+		});
+	});
+</script>
+{include file="footer.html"}

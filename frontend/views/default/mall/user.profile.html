@@ -1,0 +1,87 @@
+{use class="common\library\Def"}
+{include file="user.header.html"}
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful">{include file="user.submenu.html"}
+      <div class="wrap">
+        <div class="public">
+          <form method="post" enctype="multipart/form-data">
+            <div class="information">
+              <div class="photo relative1">
+                <p><img src="{$visitor.portrait|url_format}" width="120" height="120" /></p>
+                <div class="filePicker" style=" position:absolute; left:0; top:131px; height:30px; width:120px;"></div>
+                <input type="hidden" name="portrait" value="{$visitor.portrait}" />
+                <b>
+                <div class="txt" style="position:absolute;z-index:9;">{$lang.change_portrait}</div>
+                </b> </div>
+              <div class="info individual">
+                <table>
+                  <tr>
+                    <th class="width4">{$lang.username}: </th>
+                    <td>{$visitor.username|escape}</td>
+                  </tr>
+                  <tr>
+                    <th>{$lang.email}:</th>
+                    <td>{$visitor.email}</td>
+                  </tr>
+                  <tr>
+                    <th>{$lang.phone_mob}:</th>
+                    <td>{$visitor.phone_mob}</td>
+                  </tr>
+                  <tr>
+                    <th>{$lang.real_name}:</th>
+                    <td><input type="text" class="text width_normal" name="real_name" value="{$visitor.real_name|escape}" /></td>
+                  </tr>
+                  <tr>
+                    <th>{$lang.gender}: </th>
+                    <td class="label"><label>
+                        <input type="radio" name="gender" value="0" {if $visitor.gender eq 0}checked="checked"{/if} />
+                        {$lang.unknown} </label>
+                      <label>
+                        <input type="radio" name="gender" value="1" {if $visitor.gender eq 1}checked="checked"{/if} />
+                        {$lang.male} </label>
+                      <label>
+                        <input type="radio" name="gender" value="2" {if $visitor.gender eq 2}checked="checked"{/if} />
+                        {$lang.female} </label></td>
+                  </tr>
+                  <tr>
+                    <th>{$lang.birthday}: </th>
+                    <td><input type="text" class="text width_normal" name="birthday" id="birthday" value="{$visitor.birthday|escape}" /></td>
+                  </tr>
+                  <tr>
+                    <th>{$lang.im_qq}:</th>
+                    <td><input type="text" class="text width_normal" name="im_qq" value="{$visitor.im_qq|escape}" /></td>
+                  </tr>
+                  <tr>
+                    <th></th>
+                    <td><input type="submit" class="btn" value="{$lang.save_edit}" /></td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$('.filePicker').compressUpload({
+		server: "{url route='upload/index'}",
+		pick: '.filePicker',
+		fileVal: 'portrait',
+		formData: {
+			"{$app->request->csrfParam}": "{$app->request->csrfToken}",
+			belong: "{Def::BELONG_PORTRAIT}",
+			filename: "portrait"
+		},
+		crop: false,
+		callback: function(file, response, pick, target) {
+			$(pick).parent().find('img').attr( 'src', url_format(response.retval)+"?"+Math.random());
+			$('input[name="portrait"]').val(response.retval);
+		}
+	});
+});
+</script> 
+{include file="user.footer.html"} 

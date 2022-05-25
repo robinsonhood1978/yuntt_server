@@ -1,0 +1,121 @@
+{include file="header.html"}
+<div id="main">
+	{include file="menus.html"}
+	<div id="rightCon" class="clearfix layui-body">
+		<div class="scroller">
+			<div class="search-form clearfix">
+				<form method="get" id="formSearch">
+					<div class="webkit-box box-align-center">
+						<input type="hidden" name="r" value="navigation/index" />
+						{$lang.title}
+						<input class="queryInput" type="text" name="title" value="{$smarty.get.title|escape}" />
+						{$lang.type}
+						<select class="querySelect" name="type">
+							<option value="">{$lang.select_pls}</option>
+							{html_options options=$positions selected=$smarty.get.type}
+						</select>
+						<input type="submit" class="layui-btn layui-bg-blue layui-btn-sm block width7"
+							value="{$lang.query}" />
+						<!--{if $filtered}-->
+						<a class="layui-btn layui-btn-primary layui-btn-sm box-align-center"
+							href="{url route='navigation/index'}">{$lang.cancel_query}</a>
+						<!--{/if}-->
+					</div>
+				</form>
+			</div>
+			<div class="tablegrid">
+				<table class="layui-hide" id="tablegrid" lay-filter="tablegrid"></table>
+			</div>
+			{include file="version.html"}
+		</div>
+	</div>
+</div>
+<script type="text/html" id="toolbar">
+	<div class="layui-btn-container">
+	  <a class="layui-btn layui-bg-blue" href="{url route='navigation/add'}"><i class="layui-icon layui-icon-addition"></i>新增导航</a>
+	  <button class="layui-btn layui-btn-primary layui-border-blue" lay-event="batdel"><i class="layui-icon layui-icon-close"></i>批量删除</button>
+	</div>
+</script>
+
+<script type="text/html" id="colBar">
+	<a class="ml5 mr5 blue pointer" lay-event="edit">编辑</a>
+  <a class="ml5 mr5 blue pointer" lay-event="del" confirm="删除后将不能恢复，确认删除该项吗？">删除</a>
+</script>
+<script>
+	layui.use('table', function () {
+		var table = layui.table;
+
+		table.render({
+			elem: '#tablegrid'
+			//,skin: 'line'
+			, url: url(['navigation/index', $("#formSearch").serializeJson()])
+			, toolbar: '#toolbar'
+			, defaultToolbar: ['filter', /*'exports',*/ 'print']
+			, title: '页面导航列表'
+			//, size: 'lg'
+			, cols: [[
+				{ type: 'checkbox', fixed: 'left' }
+				, { field: 'nav_id', title: 'ID', width: 70, fixed: 'left', unresize: true, sort: true }
+				, { field: 'title', title: '标题', width: 140, edit: 'text' }
+				, { field: 'link', title: '链接', width: 400, edit: 'text' }
+				, { field: 'type', title: '所在位置', width: 150, sort: true, align: 'center' }
+				, { field: 'sort_order', title: '排序', width: 125, sort: true, align: 'center', edit: 'text' }
+				, {
+					field: 'if_show', title: '显示', width: 90, sort: true, align: 'center', templet: function (res) {
+						return res.if_show == 1 ? '<em class="yes" ectype="inline_edit" controller="navigation" fieldname="if_show" fieldid="' + res.nav_id + '" fieldvalue="1" title="' + lang.editable + '"><i class="fa fa-check-circle"></i>' + lang.yes + '</em>' : '<em class="no" ectype="inline_edit" controller="navigation" fieldname="if_show" fieldid="' + res.nav_id + '" fieldvalue="0" title="' + lang.editable + '"><i class="fa fa-ban"></i>' + lang.no + '</em>';
+					}
+				}
+				, {
+					field: 'open_new', title: '新窗口打开', width: 130, sort: true, align: 'center', templet: function (res) {
+						return res.open_new == 1 ? '<em class="yes" ectype="inline_edit" controller="navigation" fieldname="open_new" fieldid="' + res.nav_id + '" fieldvalue="1" title="' + lang.editable + '"><i class="fa fa-check-circle"></i>' + lang.yes + '</em>' : '<em class="no" ectype="inline_edit" controller="navigation" fieldname="open_new" fieldid="' + res.nav_id + '" fieldvalue="0" title="' + lang.editable + '"><i class="fa fa-ban"></i>' + lang.no + '</em>';
+					}
+				}
+				, { fixed: 'right', title: '操作', toolbar: '#colBar', width: 140, align: 'center' }
+			]]
+			, page: {
+				theme: 'blue'
+			}
+		});
+
+		//监听头工具栏事件
+		table.on('toolbar(tablegrid)', function (obj) {
+			var checkStatus = table.checkStatus(obj.config.id);
+			if (checkStatus.data.length <= 0) {
+				return false;
+			}
+			var items = new Array();
+			$.each(checkStatus.data, function (i, item) {
+				items.push(item.nav_id);
+			});
+
+			if (obj.event === 'batdel') {
+				var btnObj = $('[lay-event="' + obj.event + '"]');
+				btnObj.attr('confirm', '删除后将不能恢复，确认删除这 ' + items.length + ' 项吗？');
+				ajaxRequest(btnObj, url(['navigation/delete', { id: items.join(',') }]), function () {
+					table.reload('tablegrid');
+				});
+			}
+		});
+
+		//监听行工具事件
+		table.on('tool(tablegrid)', function (obj) {
+			var data = obj.data;
+			if (obj.event === 'del') {
+				var btnObj = $(obj.tr).find('[lay-event="' + obj.event + '"]');
+				ajaxRequest(btnObj, url(['navigation/delete', { id: data.nav_id }]), function () {
+					obj.del();
+				});
+			} else if (obj.event === 'edit') {
+				window.location.href = url(['navigation/edit', { id: data.nav_id }]);
+			}
+		});
+		//监听行单元格编辑事件
+		table.on('edit(tablegrid)', function (obj) {
+			var fieldObj = $(obj.tr).find('[data-field="' + obj.field + '"]');
+			ajaxRequest(fieldObj, url(['navigation/editcol', { id: obj.data.nav_id, column: obj.field, value: obj.value }]), function () {
+				obj.update();
+			});
+		});
+	});
+</script>
+{include file="footer.html"}

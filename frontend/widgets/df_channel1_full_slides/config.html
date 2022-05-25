@@ -1,0 +1,74 @@
+<script type="text/javascript">
+var _d = DialogManager.get('config_dialog');
+_d.setWidth(540);
+_d.setPosition('center');
+$('#_config_widget_form_').submit(function(){
+    stopScroll();
+});
+var uploadpng = '{res file="images/upload.png"}';
+$(function(){
+	$('#add_image').click(function(){
+		$(this).before('<div class="field_item"><div class="webkit-box file-box box-align-center">' +
+            '<label>上传图片</label>' +
+            '<p class="relative">' +
+                '<input class="file absolute pointer" type="file" name="ad_image_file[]" onchange="loadImage(this)" />' +
+                '<input type="hidden" name="ad_image_url[]" value="" />' +
+                '<img src="' + uploadpng + '"/>' +
+            '</p>' +
+            '<font class="ml10 fs12" color="gray">点击图片上传,图片大小：1920*410px</font></div>' +
+            '<div class="webkit-box mt10">' +
+                '<label>链接地址</label>' +
+                '<p><input type="text" name="ad_link_url[]" value="" /></p></div></div>');
+	});
+});
+function drop_image(btnObj){
+    $(btnObj).parents('.field_item').remove();
+}
+function loadImage(obj){
+    getTempPath(obj,function(res){
+        $(obj).parent().find('img').attr('src',res);
+    });
+}
+</script>
+
+<div class="field_item webkit-box">
+	<label>模块名称</label>
+	<p><input type="text" name="model_name" value="{$options.model_name}" /></p>
+</div>
+<!-- {if $options.ads} -->
+<!-- {foreach from=$options.ads item=image} -->
+<div class="field_item">
+    <div class="webkit-box file-box box-align-center">
+        <label>上传图片</label>
+        <p class="relative">
+            <input class="file absolute pointer" type="file" name="ad_image_file[]" onchange="loadImage(this)" />
+            <input type="hidden" name="ad_image_url[]" value="{$image.ad_image_url}" />
+            <img src="{$image.ad_image_url|url_format}"/>
+        </p>
+        <font class="ml10 fs12" color="gray">点击图片上传,图片大小：1920*410px</font>
+        <input class="ml20"  type="button" value="删除图片" onclick="drop_image(this)" />
+    </div>
+    <div class="webkit-box mt10">
+        <label>链接地址</label>
+        <p><input type="text" name="ad_link_url[]" value="{$image.ad_link_url}" /></p>
+    </div>
+</div>
+<!-- {/foreach} -->
+<!-- {else} -->
+<div class="field_item">
+    <div class="webkit-box file-box box-align-center">
+        <label>上传图片</label>
+        <p class="relative">
+            <input class="file absolute pointer" type="file" name="ad_image_file[]" onchange="loadImage(this)" />
+            <input type="hidden" name="ad_image_url[]" value="" />
+            <img src="{res file='images/upload.png'}"/>
+        </p>
+        <font class="ml10 fs12" color="gray">点击图片上传,图片大小：1920*410px</font>
+    </div>
+    <div class="webkit-box mt10">
+        <label>链接地址</label>
+        <p><input type="text" name="ad_link_url[]" value="" />
+    </div>
+</div>
+<!-- {/if} -->
+<input style="margin: 15px 0 10px; margin-left: 95px; height: 30px; line-height:19px; width: 100px;" id="add_image"  type="button" value="新增图片"/>

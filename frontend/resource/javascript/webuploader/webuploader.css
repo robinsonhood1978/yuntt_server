@@ -1,0 +1,87 @@
+.webuploader-container {
+	position: relative;
+}
+.webuploader-element-invisible {
+	position: absolute !important;
+	clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+    clip: rect(1px,1px,1px,1px);
+	opacity:0;
+}
+.webuploader-pick {
+	/*position: relative;*/
+	display: inline-block;
+	cursor: pointer;
+	/*background: #00b7ee;*/
+	padding: 0px 15px;
+	/*color: #fff;*/
+	text-align: center;
+	border-radius: 3px;
+	overflow: hidden;
+	z-index:99;
+
+}
+
+.webuploader-pick-disable {
+	/*opacity: 0.6;*/
+	pointer-events:none;
+}
+
+.webuploader-upload-item{ border:1px #CEE2F2 solid; background:#F0F5FF; margin-top:5px;}
+.webuploader-upload-item:after{ content:'\20'; display:block; height:0; overflow:hidden; clear:both;}
+.webuploader-upload-item .info, .webuploader-upload-item .state{float:left; padding:3px 5px; margin:0;}
+.webuploader-upload-item .progress-bar{ height:1px; clear:both; background:blue;}
+
+.webuploader-container{width: 86px;height: 28px; line-height:28px; text-align: center;/*background: url(images/btn.gif) no-repeat 0 -803px;*/overflow: hidden;}
+
+
+/* 以下是编辑器上传图片用到的样式控制 */
+.editor{width:767px;}
+.editor p {margin-top: 5px;}
+.editor .preview {margin-top: 20px;}
+.editor .preview li {width: 80px;height: 80px;float: left;position: relative;cursor: pointer;z-index: 999;margin-right:15px; margin-bottom:15px;}
+.edit_region{ border:1px #666 solid; background:none; padding:3px 10px; cursor:pointer}
+.editor .preview .pic{width:80px;height:80px; background:none}
+.editor .preview .pic img { display: block;}
+.editor .preview .bg{left:0px;bottom:0px; padding:0; text-align:center; background:none; border:0; top:auto; position:absolute; display:none;}
+.editor .preview .bg .operation{text-align:center; background:#000; opacity:0.5; height:19px; line-height: 19px; bottom:0; left:0; position:absolute;width:80px; z-index:999}
+.editor .preview .bg .operation:after{ content:'\20'; display:block; height:0; overflow:hidden; clear:both;}
+.editor .preview .bg .cut_in {float: left;margin-left: 10px;margin-top:3px; display: inline;width: 10px;height: 10px;background: url(images/ico.gif) 0 -1095px;}
+.editor .preview .bg .delete {float: right;margin-right: 10px;margin-top:3px; display: inline;width: 10px;height: 10px;background: url(images/ico.gif) 0 -634px;}
+
+.editor .preview .titles {width: 72px;height: 16px;line-height: 15px;text-align: center;color: #3d3f3e;background: #fdf04c;border: 1px solid #ffba2f;position: absolute;bottom: -15px;left: 10px;z-index: 3;}
+.editor .line {width: 74px;height: 2px;overflow: hidden;background: #d8deda;position: absolute;bottom: -3px;left: -1px;}
+.small_pic .pic {width: 55px;height: 55px;margin: 0 auto;position: absolute;}
+.small_pic .bg {width: 53px;height: 16px;position: absolute;bottom: 1px;left: 1px;display: none;}
+.small_pic .operation {width: 53px;height: 13px;padding-top: 3px;position: absolute;bottom: 0;left: 0;background: #000;-moz-opacity: 0.5;opacity: .5;filter: alpha(opacity=50);}
+.small_pic .cut_in {float: left;margin-left: 10px;display: inline;width: 10px;height: 10px;background: url(images/ico.gif) 0 -1095px;}
+.small_pic .delete {float: right;margin-right: 10px;display: inline;width: 10px;height: 10px;background: url(images/ico.gif) 0 -634px;}
+.small_pic .titles {width: 60px;height: 16px;line-height: 15px;text-align: center;color: #3d3f3e;background: #fdf04c;border: 1px solid #ffba2f;position: absolute;bottom: -19px;left: 10px;z-index: 3;}
+.small_pic .line {width: 62px;height: 2px;overflow: hidden;background: #d8deda;position: absolute;bottom: -3px;left: -1px;}
+
+.multimage-wrapper{border:1px #ECECEC solid}
+.multimage-wrapper .multimage-tabs{ background:#F8F8F8;padding:10px 20px 0}
+.multimage-wrapper .multimage-tabs li{ display:inline-block; background:#2FACFF; color:#fff; cursor:pointer; padding:0 20px 0 20px; height:30px; line-height:30px;border:1px #ECECEC solid; border-bottom:1px #F8F8F8 solid; text-align:center;margin-right:20px;margin-bottom:0;}
+.multimage-wrapper .multimage-tabs li.selected{ background:#fff; border-bottom-color:#fff;border-top:2px #999 solid;color:#404040;}
+
+.multimage-wrapper .multimage-panels{padding:30px; padding-top:20px; line-height:22px; background:#fff;}	
+.multimage-wrapper .multimage-panels .text{width:400px; color:#8D8D8D; margin:0 auto; margin-top:10px; text-align:center}	  
+.multimage-wrapper .multimage-piclist{/*margin:1px;*/ background:#F8F8F8;padding:14px;padding-right:0; padding-bottom:0;}
+.multimage-piclist li{border:1px #ddd solid; position:relative; width:80px; height:80px; float:left;margin-right:14px;margin-bottom:14px;} 
+
+.multimage-piclist .small_pic,.multimage-piclist .small_pic ul{width:700px;}
+.multimage-piclist .small_pic .pic{width:80px; height:80px;}
+.multimage-piclist .small_pic .bg, .multimage-piclist .small_pic .operation{width:80px;}
+
+.multimage-panels .upload_btn{ margin:0 auto; width:654px;}
+.multimage-panels .upload_con{left:120px; width:400px;}
+.multimage-panels .upload_con_top,.multimage-panels .upload_con_bottom{ display:none}
+.multimage-panels .upload_wrap{border:1px #F8BA01 solid; padding:30px; padding-top:20px; background:#F9F9F9; box-shadow: 8px 8px 8px #ddd;}
+.multimage-panels .upload_wrap ul{width:338px;}
+.multimage-panels .upload_wrap li{margin-right:25px;}
+
+.multimage-wrapper .btn-upload-image{width:192px; height:30px; margin:0 auto; cursor:pointer;  display:block; text-align:center;background:#FEC315;border:1px #F8BA01 solid;  border-radius: 4px;}
+.multimage-wrapper .btn-upload-image:hover{ text-decoration:none}
+.multimage-wrapper .btn-upload-image b{width:192px;color:#BD4A1D; height:30px; line-height:30px; display:block; background:url(images/upload-icon.png) 30px center no-repeat}
+.descimage-wrapper{border:1px #CCCCCC solid;border-top:0;}
+.descimage-wrapper .multimage-piclist{ background:#fff;}
+#desc_files dl:first-child{border-top:1px #ddd solid;padding-top:15px;}

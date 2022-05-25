@@ -1,0 +1,149 @@
+<div class="limitbuybox" id="limitbuybox-{$widget_data.uniqueid}">
+  <div class="content ml10 mr10 pl5 pr5 pt5 pb5 bgf list">
+    <div class="hd center padding10 clearfix mt5 mb5">
+      <!--{if $widget_data.direction eq 'horizontal'}-->
+      <img class="block center float-left" src="{res file='images/limitbuylabel.png' baseUrl=$widget_data.baseUrl}" height="18">
+      <!--{else}-->
+      <h3 class="fs16">—— <strong>秒杀专区</strong> ——</h3>
+      <!--{/if}-->
+      <p class="countdown fs12 center {if $widget_data.direction eq 'horizontal'}ml20 float-right{else}mt10 mb5{/if}">
+        <label>距离结束：</label>
+        <span>02</span> :
+        <span>00</span> :
+        <span>00</span>
+      </p>
+    </div>
+    <ul class="clearfix {if !$widget_data.list.0.goods_id}empty{/if}">
+      <!--{foreach from=$widget_data.list item=item}-->
+      <li class="item mt5 mb5 ml10 mr10 float-left clearfix">
+        <p class="image center">
+          <!--{if !$widget_data.list.0.goods_id}-->
+          <i class="iconfont icon-icon_pic"></i>
+          <!--{else}-->
+          <img src="{$item.default_image|url_format}">
+          <!--{/if}-->
+        </p>
+        <div class="extra pb10">
+          <p class="desc fs14 mb20">{$item.goods_name|default:'商品名称'}</p>
+          <p class="progress webkit-box mb20">
+            <span class="flex1 block"><i class="block"></i></span>
+            <label class="fs12 ml10 gray">已抢50%</label>
+          </p>
+          <p class="webkit-box">
+            <span class="price fs14 flex1 pt5 pb5">{$item.promotion.price|price_format} <del
+                class="gray ml5">{$item.price|price_format}</del></span>
+            <span class="gray fs12 buy pl10 pr10 pt5 pb5">立即抢购</span>
+          </p>
+        </div>
+      </li>
+      <!--{/foreach}-->
+    </ul>
+  </div>
+</div>
+
+<style>
+  .limitbuybox .content {
+    border-radius: 10px;
+  }
+
+  .limitbuybox .hd h3{
+    background-position: center center;
+    background-size: cover;
+  }
+  .limitbuybox .hd .countdown span {
+    background-color: #000;
+    color: #fff;
+    padding: 2px 5px;
+    border-radius: 3px;
+  }
+
+  .limitbuybox .item {
+    margin: 5px;
+    width: calc(50% - 10px);
+    float: left;
+    border-radius: 10px;
+    background-color: #fff;
+  }
+
+  .limitbuybox .item .progress span,
+  .limitbuybox .item .progress span i {
+    width: 100px;
+    height: 10px;
+    border-radius: 10px;
+    background-color: #FCECD7;
+  }
+
+  .limitbuybox .item .progress span i {
+    width: 60%;
+    background-color: #FDBE6C;
+  }
+  .limitbuybox .item .progress label {
+    line-height: 8px;
+  }
+
+  .limitbuybox .item img {
+    width: 100%;
+    height: 100%;
+    border-radius: 4px;
+  }
+
+  .limitbuybox .item .desc {
+    height: 36px;
+    line-height: 18px;
+    overflow: hidden;
+    word-break: break-all;
+  }
+  .limitbuybox .item .buy {
+    border-radius: 4px;
+    background-color: #E4393C;
+    color: #fff;
+    line-height: 19px;
+  }
+
+  .limitbuybox .empty .item .image {
+    padding: 25% 0;
+    background-color: rgb(238, 248, 248);
+    border-radius: 4px;
+  }
+
+  .limitbuybox .empty .iconfont {
+    color: rgb(156, 190, 190);
+    font-size: 80px;
+  }
+
+  .limitbuybox .list .item,
+  .limitbuybox .banner .item {
+    width: calc(100% - 10px);
+  }
+
+  .limitbuybox .list .item .image,
+  .limitbuybox .list .item .extra {
+    float: left;
+  }
+
+  .limitbuybox .list .item .image {
+    width: 35%;
+    height: 35%;
+  }
+
+  .limitbuybox .list .empty .item .image {
+    padding: 5% 0;
+    border-radius: 4px;
+  }
+
+  .limitbuybox .list .item .extra {
+    margin-left: 10px;
+    width: calc(65% - 10px);
+  }
+
+  .limitbuybox .list .item img {
+    border-radius: 4px;
+  }
+</style>
+<script>
+  $(function () {
+    $('#limitbuybox-{$widget_data.uniqueid} .hd').css('color', '{$widget_data.txtcolor|default:"#fc2b34"}')
+    $('#limitbuybox-{$widget_data.uniqueid}').css('background-color', '{$widget_data.bgcolor|default:""}');
+    $('#limitbuybox-{$widget_data.uniqueid}').css('padding', '{$widget_data.space|default:5}px 0');
+  });
+</script>

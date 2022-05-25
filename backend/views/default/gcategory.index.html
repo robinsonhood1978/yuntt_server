@@ -1,0 +1,84 @@
+{include file="header.html"}
+<div id="main">
+  {include file="menus.html"}
+  <div id="rightCon" class="clearfix layui-body">
+    <div class="scroller">
+      <div class="flexigrid">
+        <div class="layui-btn-container">
+          <a href="{url route='gcategory/add'}" class="layui-btn layui-bg-blue"><i
+              class="layui-icon layui-icon-addition"></i>新增分类</a>
+
+          <a class="layui-btn layui-btn-primary J_BatchDel" confirm="{$lang.drop_confirm}" uri="{url route='gcategory/delete'}" name="id"><i
+                class="fa fa-trash"></i>批量删除</a>
+        </div>
+
+        <table class="distinction">
+          <!--{if $gcategories}-->
+          <thead>
+            <tr class="tatr1">
+              <th class="w30"><input id="checkall" type="checkbox" class="checkall" /></th>
+              <th width="50%" align="left"><label for="checkall">{$lang.cate_name}</label></th>
+              <th>{$lang.group}</th>
+              <th>{$lang.sort_order}</th>
+              <th>{$lang.if_show}</th>
+              <th class="handler">{$lang.handler}</th>
+            </tr>
+          </thead>
+          <!--{/if}-->
+          <!-- {if $gcategories} -->
+          <tbody id="treet1">
+            <!-- {/if} -->
+            <!--{foreach from=$gcategories item=gcategory}-->
+            <tr>
+              <td class="align_center w30"><input type="checkbox" class="checkitem" value="{$gcategory.cate_id}" /></td>
+              <td class="node" width="50%">
+                <!--{if $gcategory.switchs}--><i class="layui-icon layui-icon-addition" ectype="flex" controller="gcategory"
+                  status="open" fieldid="{$gcategory.cate_id}"></i>
+                <!--{else}--><i class="tv-item"></i>
+                <!--{/if}--><span ectype="inline_edit" fieldname="cate_name"
+                  fieldid="{$gcategory.cate_id}" required="1" title="{$lang.editable}"
+                  controller="gcategory">{$gcategory.cate_name|escape}<i class="layui-icon layui-icon-edit layui-font-14 layui-font-blue"></i></span>
+              </td>
+              <td class="align_center"><span ectype="inline_edit" fieldname="groupid"
+                  fieldid="{$gcategory.cate_id}" datatype="number" title="{$lang.editable}"
+                  controller="gcategory">{$gcategory.groupid|default}</span></td>
+              <td class="align_center"><span ectype="inline_edit" fieldname="sort_order"
+                  fieldid="{$gcategory.cate_id}" datatype="number" title="{$lang.editable}"
+                  controller="gcategory">{$gcategory.sort_order}<i class="layui-icon layui-icon-edit layui-font-14 layui-font-blue"></i></span></td>
+              <td class="align_center">
+                <!--{if $gcategory.if_show}--><i class="layui-icon layui-icon-ok layui-font-blue" ectype="inline_edit" fieldname="if_show"
+                  fieldid="{$gcategory.cate_id}" fieldvalue="1" title="{$lang.editable}" controller="gcategory"></i>
+                <!--{else}--><i class="layui-icon layui-icon-ok layui-font-gray" ectype="inline_edit" fieldname="if_show"
+                  fieldid="{$gcategory.cate_id}" fieldvalue="0" title="{$lang.editable}" controller="gcategory"></i>
+                <!--{/if}-->
+              </td>
+              <td class="handler bDiv" style="background:none; width:364px; text-align:left;"><a
+                  href="{url route='gcategory/edit' id=$gcategory.cate_id}" class="btn blue"><i
+                    class="layui-icon layui-icon-edit layui-font-12"></i>{$lang.edit}</a> <a
+                  uri="{url route='gcategory/delete' id=$gcategory.cate_id}" confirm="{$lang.drop_confirm}"
+                  class="btn red J_AjaxRequest"><i class="layui-icon layui-icon-close layui-font-12"></i>{$lang.drop}</a> <a
+                  href="{url route='gcategory/add' pid=$gcategory.cate_id}" class="btn green"><i
+                    class="layui-icon layui-icon-add-1 layui-font-12"></i>{$lang.add_child}</a> <a
+                  href="{url route='goodsprop/distribute' cate_id=$gcategory.cate_id}" class="btn blue"><i
+                    class="fa fa-list-ul"></i>{$lang.distribution_prop}</a>
+                <!--{if $gcategory.parent_id eq 0}-->
+                <a href="{url route='gcategory/ad' id=$gcategory.cate_id}" class="btn green"><i
+                    class="fa fa-file-image-o"></i>{$lang.gcategory_ad}</a>
+                <!--{/if}-->
+              </td>
+            </tr>
+            <!--{foreachelse}-->
+            <tr class="no_data">
+              <td colspan="6">{$lang.no_data}</td>
+            </tr>
+            <!--{/foreach}-->
+            <!-- {if $gcategories} -->
+          </tbody>
+          <!-- {/if} -->
+        </table>
+      </div>
+      {include file="version.html"}
+    </div>
+  </div>
+</div>
+{include file="footer.html"}

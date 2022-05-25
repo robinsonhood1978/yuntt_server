@@ -1,0 +1,235 @@
+
+/************** global.css - No need to modify ***************************************************/
+html{font-size:100%;}
+body{margin:0;padding:0; font-family:Heiti, Heiti SC, DroidSans, DroidSansFallback, Arial, "Microsoft YaHei";background:#f7f8fa;font-size:12px; max-width:640px;  margin:0 auto}
+body *{-webkit-tap-highlight-color: rgba(0,0,0,0);}
+em,p,ul,dl,dt,dd,ins,h1,h2,h3,h4,form,ins,s{margin:0;padding:0; font-weight:normal !important;text-decoration: none}
+h1,h2,h3,h4,h5,h6{font-size:14px;}
+ins{text-decoration:none;}
+em,i{font-style:normal;}
+ul,ol{ list-style:none;}
+input, button, select, textarea{outline: none;filter: none !important;-webkit-appearance:none;}
+input:-webkit-autofill { -webkit-box-shadow: 0 0 0px 1000px white inset;box-shadow: 0 0 0px 100px white inset;}
+input,button,select,textarea{outline:none;}
+textarea{resize:none}
+img{border:0;}
+a{text-decoration:none;blr:expression(this.onFocus=this.blur());outline:none;outline: none;appearance:none;-webkit-tap-highlight-color: transparent;}
+
+.w-full{width:100%;}
+.wrap100{width:100%;}
+.w-mall,.w,.w-shop,.w-user{margin:0 auto;}
+.col-sub,.col-main{float:left;}
+.col-bottom{ clear:both}
+.clearfix:after{ content:'\20'; display:block; overflow:hidden; height:0; clear:both;}
+.clear,.clr{clear:both; overflow:hidden;width:0;margin:0;padding:0; height:0; line-height:0; font-size:0;}
+.clearboth{ clear:both;}
+.hidden{ display:none}
+.overflowHidden{ overflow:hidden;}
+.float-left{float:left;}
+.float-right{float:right;}
+.relative{position:relative;}
+.absolute{position:absolute;}
+.inline-block{ display:inline-block;}
+.block{ display:block}
+.pointer{ cursor:pointer}
+.yahei{font-family: 'microsoft yahei',Verdana,Arial,Helvetica,sans-serif;}
+.price{color:#E4393C; font-family: 'microsoft yahei',Verdana,Arial,Helvetica,sans-serif; font-weight:normal}
+.bgf{ background:#fff;}
+
+/* margin,padding */
+.margin5{margin:5px;}
+.margin10{margin:10px;}
+.mt5{margin-top:5px;}
+.mr5{margin-right:5px;}
+.mb5{margin-bottom:5px;}
+.ml5{margin-left:5px;}
+.mt10{margin-top:10px;}
+.mr10{margin-right:10px;}
+.mb10{margin-bottom:10px;}
+.ml10{margin-left:10px;}
+.mt20{margin-top:20px;}
+.mr20{margin-right:20px;}
+.mb20{margin-bottom:20px;}
+.ml20{margin-left:20px;}
+.pt5{padding-top:5px;}
+.pr5{padding-right:5px;}
+.pb5{padding-bottom:5px;}
+.pl5{padding-left:5px;}
+.pt10{padding-top:10px;}
+.pr10{padding-right:10px;}
+.pb10{padding-bottom:10px;}
+.pl10{padding-left:10px;}
+.pt20{padding-top:20px;}
+.pr20{padding-right:20px;}
+.pb20{padding-bottom:20px;}
+.pl20{padding-left:20px;}
+.padding5{padding:5px;}
+.padding10{padding:10px;}
+
+/* text,color */
+.fff{color:#fff;}
+.f60{color:#ff6600;}
+.f99{color:#999;}
+.ddd{color:#ddd;}
+.red{color:#E4393C;}
+.gray{color:#999;}
+.green{color:#1BB974;}
+.blue {color:#0d6fb8;}
+
+.fs18{font-size:18px}
+.fs16{font-size:16px}
+.fs14{font-size:14px}
+.fs13{font-size:13px;}
+.fs12{font-size:12px;}
+.fs11{font-size:11px;}
+.fs10{font-size:10px;}
+
+.strong{font-weight:bold;}
+.center{ text-align:center}
+
+/* border */
+.border{border:1px #f4f4f4 solid}
+.border-top{border-top:1px #f4f4f4 solid;}
+.border-bottom{border-bottom:1px #f4f4f4 solid;}
+.border-left{border-left:1px #f4f4f4 solid}
+.border-right{border-right:1px #f4f4f4 solid}
+.border-0{border:0;}
+.border-t-0{border-top:0;}
+.border-b-0{border-bottom:0;}
+
+/* flex */
+.webkit-box{display: box;display: -webkit-box;display: -moz-box;display: -ms-flexbox;display: -webkit-flex;display: flex;}
+.flex1{-webkit-box-flex: 1;-moz-box-flex: 1;-webkit-flex: 1;-ms-flex: 1;flex: 1;}
+.line-clamp-2{overflow : hidden;text-overflow: ellipsis;-webkit-line-clamp: 2;-moz-line-clamp: 2;-ms-line-clamp: 2;-o-line-clamp: 2;line-clamp: 2;-webkit-box-orient: vertical;-moz-box-orient: vertical;-ms-box-orient: vertical;-o-box-orient: vertical;box-orient: vertical;display: -webkit-box;display: -moz-box;display: -ms-box;display: -o-box;display: box;word-break: break-all;}
+.box-align-center{-webkit-box-align: center;-moz-box-align: center;-ms-box-align: center;-o-box-align: center;box-align: center;display: -webkit-box;display: -moz-box;display: -ms-box;display: -o-box;display: box;}/*垂直居中*/
+.overflow-ellipsis{text-overflow:ellipsis;white-space:nowrap;overflow:hidden;}/*文字溢出隐藏*/
+.flex-wrap{flex-wrap: wrap;}/*换行*/
+
+
+/************** common.css - Modified according to the situation ***************************************************/
+
+a{color:#222;}
+a:hover{/*color:#E4393C;*/ color: #222; text-decoration:none}
+
+.w-mall,.w{min-width:320px; max-width:640px;margin:0 auto;}
+img.lazyload{background:#fff url(../images/loading.gif) no-repeat center center;}
+
+/* 下拉刷新 */
+.infinite-template{display:none}
+.infinite-more, .infinite-loading, .infinite-bottom{ height:50px; line-height:50px; text-align:center;background:#f4f4f4}
+.infinite-loading{ color:#222;}
+.infinite-loading .loading{ display:inline-block;}
+.infinite-loading .loading i{background:url(../images/loading_max.gif) no-repeat center center; background-size:90% 90%; display:block; width:15px; margin-top:17.5px; margin-right:5px;}
+.infinite-loading .loading i,.infinite-loading .loading em{float:left; vertical-align:middle;height:15px; font-size:12px}
+.infinite-bottom{ color: #999;}
+.infinite-more .vline, .infinite-bottom .vline, .infinite-loading .vline{display: inline-block;border-bottom: 1px solid #e2e2e2;width: 34px;margin-bottom: 4px;}
+.infinite-more .vleft, .infinite-bottom .vleft, .infinite-loading .vleft{margin-right:6px;}
+.infinite-more .vright, .infinite-bottom .vright,.infinite-loading .vright{margin-left:6px;}
+
+
+/* webuploader compress css rewrite */
+.filePicker{width:100%; height:100%; background:none; position:absolute; left:0; top:0; font-size:0; z-index:100}
+.filePicker input[type="file"]{opacity: 0;}
+.filePicker .webuploader-pick{ display:block; padding:0; width:100%; height:100%; font-size:0;}
+
+
+/* pagination */
+.pagination {
+  display: inline-block;
+  padding-left: 0;
+  border-radius: 4px;
+  margin: 0 auto;
+}
+.pagination > li {
+  float: left;
+}
+.pagination > li > a,
+.pagination > li > span {
+  position: relative;
+  padding: 6px 12px;
+  margin-left: -1px;
+  line-height: 1.42857143;
+  color: #337ab7;
+  text-decoration: none;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  display: inline-block;
+}
+.pagination > li:first-child > a,
+.pagination > li:first-child > span {
+  margin-left: 0;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+.pagination > li:last-child > a,
+.pagination > li:last-child > span {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+.pagination > li > a:hover,
+.pagination > li > span:hover,
+.pagination > li > a:focus,
+.pagination > li > span:focus {
+  z-index: 2;
+  color: #23527c;
+  background-color: #eee;
+  border-color: #ddd;
+}
+.pagination > .active > a,
+.pagination > .active > span,
+.pagination > .active > a:hover,
+.pagination > .active > span:hover,
+.pagination > .active > a:focus,
+.pagination > .active > span:focus {
+  z-index: 3;
+  color: #fff;
+  cursor: default;
+  background-color: #337ab7;
+  border-color: #337ab7;
+}
+.pagination > .disabled > span,
+.pagination > .disabled > span:hover,
+.pagination > .disabled > span:focus,
+.pagination > .disabled > a,
+.pagination > .disabled > a:hover,
+.pagination > .disabled > a:focus {
+  color: #777;
+  cursor: not-allowed;
+  background-color: #fff;
+  border-color: #ddd;
+}
+.pagination-lg > li > a,
+.pagination-lg > li > span {
+  padding: 10px 16px;
+  font-size: 14px;
+  line-height: 1.3333333;
+}
+.pagination-lg > li:first-child > a,
+.pagination-lg > li:first-child > span {
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+}
+.pagination-lg > li:last-child > a,
+.pagination-lg > li:last-child > span {
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+.pagination-sm > li > a,
+.pagination-sm > li > span {
+  padding: 5px 10px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.pagination-sm > li:first-child > a,
+.pagination-sm > li:first-child > span {
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+.pagination-sm > li:last-child > a,
+.pagination-sm > li:last-child > span {
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+
+/************** common end ***************************************************/

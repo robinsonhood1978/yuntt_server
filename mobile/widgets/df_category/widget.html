@@ -1,0 +1,77 @@
+<div class="categorybox relative clearfix" id="categorybox-{$widget_data.uniqueid}">
+    <ul class="content">
+        <li class="item inline-block ml10 mr10 pt10 pb10 fs14 home"><span>首页</span></li>
+        <!--{foreach from=$widget_data.list item=item}-->
+        <li class="item inline-block ml10 mr10 pt10 pb10 fs14"><span>{$item.cate_name}</span></li>
+        <!--{foreachelse}-->
+        <li class="item inline-block ml10 mr10 pt10 pb10 fs14"><span>分类一</span></li>
+        <li class="item inline-block ml10 mr10 pt10 pb10 fs14"><span>分类二</span></li>
+        <li class="item inline-block ml10 mr10 pt10 pb10 fs14"><span>分类三</span></li>
+        <!--{/foreach}-->
+    </ul>
+    <div class="filter absolute mt10 mb10 mr10 pl10 fs14"><i class="iconfont icon-fenlei1"></i><span>分类</span></div>
+</div>
+
+<style>
+    .categorybox {
+        background-color: #fc2b34;
+        padding: 0 5px;
+    }
+
+    .categorybox .content {
+        width: 100%;
+        height: 41px;
+        overflow: hidden;
+    }
+
+    .categorybox .item {
+        border-bottom: 2px transparent solid;
+        color: #fff;
+    }
+
+    .categorybox .item.selected {
+        border-color: #fff;
+    }
+
+    .categorybox .filter {
+        background-color: #fc2b34;
+        color: #fff;
+        box-shadow: -6px 0 4px -4px rgba(0, 0, 0, .4);
+        top: 0;
+        right: 5px;
+    }
+</style>
+<script>
+    $(function () {
+
+        /* {if $widget_data.bgcolor} */
+        $("#categorybox-{$widget_data.uniqueid}").css('background-color', '{$widget_data.bgcolor}');
+        $("#categorybox-{$widget_data.uniqueid} .filter").css('background-color', '{$widget_data.bgcolor}');
+        /* {/if} */
+
+        /* {if $widget_data.txtcolor} */
+        $("#categorybox-{$widget_data.uniqueid} .item, #categorybox-{$widget_data.uniqueid} .filter").css('color', '{$widget_data.txtcolor}');
+        /* {/if} */
+
+        /* {if $widget_data.homehide} */
+        $("#categorybox-{$widget_data.uniqueid} .home").css('display', 'none');
+        /* {/if} */
+
+        /* {if $widget_data.morehide} */
+        $("#categorybox-{$widget_data.uniqueid} .filter").css('display', 'none');
+        /* {/if} */
+
+        $("#categorybox-{$widget_data.uniqueid}").find('li').removeClass('selected');
+        $("#categorybox-{$widget_data.uniqueid}").find('li:not(:hidden):first').addClass('selected');
+
+        /* {if $widget_data.txtbold} */
+        $("#categorybox-{$widget_data.uniqueid} .item.selected").css('font-weight', 'bold');
+        /* {/if} */
+
+        /* {if $widget_data.selColor} */
+        $("#categorybox-{$widget_data.uniqueid} .item.selected").css('color', '{$widget_data.selColor}').css('border-bottom-color', '{$widget_data.selColor}');
+        /* {/if} */
+
+        $("#categorybox-{$widget_data.uniqueid}").css('margin', '{$widget_data.space|default:0}px 0');
+    });
+</script>

@@ -1,0 +1,36 @@
+<div class="content1 pb10">
+  <div class="ml20 mr20 mb20 mt10" id="warning"></div>
+  <form method="post" action="{$smarty.server.REQUEST_URI}" target="iframe">
+    <table class="infoTable">
+      <tr>
+        <th class="paddingT15"><label>用户名</label></th>
+        <td class="paddingT15 wordSpacing5"> {$user.username|escape} </td>
+      </tr>
+      <tr>
+        <th class="paddingT15"><label>可用积分</label></th>
+        <td class="paddingT15 wordSpacing5"> {$user.amount|default:0} </td>
+      </tr>
+      <tr>
+        <th class="paddingT15"><label>操作类型</label></th>
+        <td class="paddingT15 wordSpacing5"><select name="flow">
+            <option value="add">充值</option>
+            <option value="minus">减扣</option>
+          </select></td>
+      </tr>
+      <tr>
+        <th class="paddingT15"><label>充值金额</label></th>
+        <td class="paddingT15 wordSpacing5"><input type="text" name="amount" /></td>
+      </tr>
+      <tr>
+        <th class="paddingT15"><label>操作备注</label></th>
+        <td class="paddingT15 wordSpacing5"><textarea name="flag"></textarea></td>
+      </tr>
+      <tr>
+        <th></th>
+        <td class="ptb20"><input class="layui-btn layui-bg-blue" type="submit" value="{$lang.submit}" />
+        </td>
+      </tr>
+    </table>
+  </form>
+</div>
+{include file="footer.html"}

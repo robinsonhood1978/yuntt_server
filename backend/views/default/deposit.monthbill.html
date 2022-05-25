@@ -1,0 +1,58 @@
+{include file="header.html"}
+<div id="main">
+  {include file="menus.html"}
+  <div id="rightCon" class="clearfix layui-body">
+    <div class="scroller">
+      <div class="tablegrid">
+        <table class="layui-hide" id="tablegrid" lay-filter="tablegrid"></table>
+      </div>
+      {include file="version.html"}
+    </div>
+  </div>
+</div>
+<script type="text/html" id="toolbar">
+	<div class="layui-btn-container">
+    <a class="layui-btn layui-bg-blue" href="{url route='deposit/index'}"><i class="layui-icon layui-icon-return"></i>返回资金账户</a>
+	</div>
+</script>
+
+<script type="text/html" id="colBar">
+	  <button class="ml5 mr5 blue pointer" lay-event="download">下载对账单</button>
+</script>
+
+<script>
+  layui.use('table', function () {
+    var table = layui.table;
+
+    table.render({
+      elem: '#tablegrid'
+      //,skin: 'line'
+      , url: url(['deposit/monthbill', { userid: "{$smarty.get.userid}" }])
+      , toolbar: '#toolbar'
+      , defaultToolbar: ['filter', /*'exports',*/ 'print']
+      , title: '用户对账单'
+      //, size: 'lg'
+      , cols: [[
+        { type: 'checkbox', fixed: 'left' }
+        , { field: 'month', title: '月份', width: 110 }
+        , { field: 'income_count', title: '收入笔数', width: 130, sort: true }
+        , { field: 'income_money', title: '收入金额（元）', width: 170, sort: true }
+        , { field: 'outlay_count', title: '支出笔数', width: 130, sort: true }
+        , { field: 'outlay_money', title: '支出金额（元）', width: 170, sort: true }
+        , { field: 'SERVICE_count', title: '服务费笔数', width: 130, sort: true }
+        , { field: 'SERVICE_money', title: '服务费金额（元）', width: 170, sort: true }
+        , { fixed: 'right', title: '操作', toolbar: '#colBar', width: 200, align: 'center' }
+      ]]
+      , page: false
+    });
+
+    //监听行工具事件
+    table.on('tool(tablegrid)', function (obj) {
+      var data = obj.data;
+      if (obj.event === 'download') {
+        window.location.href = url(['deposit/downloadbill', { userid: "{$smarty.get.userid}", month: data.month }]);
+      }
+    });
+  });
+</script>
+{include file="footer.html"}

@@ -1,0 +1,55 @@
+{include file="install.header.html"} 
+<div id="main" class="main w clearfix">
+  <div class="title">{$lang.start_setup_db}</div>
+  <div class="content">
+    <div class="agreement2 bgf">
+      <div class="text2" id="detail"> </div>
+      <div class="accede2 bgf" id="result"></div>
+    </div>
+    {if $messages}
+    <ul class="messages bgf">
+      {foreach from=$messages item=msg}
+      <li>{$msg}</li>
+      {/foreach}
+    </ul>
+    {/if}
+    <div class="btn-box" style="border: 0;">
+      <form action="{url route='install/create'}" method="POST" id="post_form" target="post_target" >
+        {foreach from=$hiddens item=hv key=hk}
+        <input type="hidden" name="{$hk}" value="{$hv}" />
+        {/foreach}
+        <input class="btn-normal" type="button" id="prev_button" value="{$lang.prev}" onclick="window.history.go(-1);" disabled="disabled" />
+        <input class="btn-normal ml10" type="submit" id="submit_button"  value="{$lang.next}" onclick="window.location.href='{url route='install/initdata'}';" id="initdata" disabled="disabled"  />
+      </form>
+    </div>
+  </div>
+  <div class="clear"></div>
+</div>
+<script type="text/javascript">
+$(function(){
+  layer.msg('正在创建表...', { icon: 1, time: 8000});
+  $('#post_form').attr('target', 'post_target');
+  $('#post_form').submit();
+});
+function show_process(html){
+  $('#detail').html($('#detail').html() + html);
+  var _t = $('#detail').get(0);
+  _t.scrollTop = _t.scrollHeight;
+}
+function install_successed(){
+   //show_message('{$lang.install_successed}');
+   $('.current').attr('class', 'succeed');
+   $('.last').attr('class', 'current');
+   $('#submit_button').prop('disabled', false);
+   $('#submit_button').show();
+}
+function show_message(text){
+   	$('#result').html('<div class="success">' + text + '</div>').show();
+}
+function show_warning(text){
+	$('#prev_button').prop('disabled', false);
+	$('#result').html('<div class="warning">' + text + '</div>').show();
+}
+</script>
+<iframe src="about:blank" style="width:500px; height:300px;display:none;" name="post_target"></iframe>
+{include file="install.footer.html"}

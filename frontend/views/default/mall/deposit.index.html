@@ -1,0 +1,108 @@
+{include file="user.header.html"}
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful">{include file="user.submenu.html"}
+      <div class="wrap">
+        <div class="public table deposit"> 
+          <!--{if $deposit_account}-->
+          <div class="deposit-account">
+            <div class="account-info">
+              <h1>预存款账户余额</h1>
+              <div class="explain">
+              	<span class="pr10">余额支付</span>[
+              	<!--{if $deposit_account.pay_status eq 'ON'}-->
+              	<a href="{url route='deposit/paystatus' status='off'}" onclick="return confirm('点击后关闭余额支付功能，要确定么？')">已开启</a> 
+                <!--{else}-->
+                <a href="{url route='deposit/paystatus' status='on'}" onclick="return confirm('点击后开启余额支付功能，要确定么？')">已关闭</a>
+                <!--{/if}-->]
+              </div>
+              <div class="action">
+                <h2>账户名：{$deposit_account.account}</h2>
+                <a href="{url route='deposit/recordlist'}">账户收支明细</a> </div>
+              <div class="balanceNum"> <em>{$deposit_account.money|default:0}</em>元可用{if $deposit_account.frozen gt 0}，<b><a href="{url route='deposit/frozenlist'}">{$deposit_account.frozen}</a></b> 元不可用{/if}
+                <div class="balanceBtn"> <a href="{url route='deposit/recharge'}" class="btn-alipay"><span>充值</span></a> <a href="{url route='deposit/withdraw'}" class="btn-alipay btn-alipay-white"><span>提现</span></a> <a href="{url route='deposit/transfer'}" class="btn-alipay btn-alipay-white"><span>转账</span></a> </div>
+              </div>
+            </div>
+            <div class="tradelist">
+              <div class="title clearfix">
+                <h1>最近交易记录</h1>
+              </div>
+              <div class="subtit">
+                <ul class="clearfix">
+                  <li class="time">创建日期</li>
+                  <li class="info">名称 | 备注</li>
+                  <li class="tradeNo">商户订单号 | 交易号</li>
+                  <li class="party">对方</li>
+                  <li class="amount">金额</li>
+                  <li class="status">状态</li>
+                  <li class="detail">操作</li>
+                </ul>
+              </div>
+              <div class="list clearfix"> 
+                <!--{if $recordlist}--> 
+                <!--{foreach from=$recordlist item=record}-->
+                <ul class="clearfix" style="{if $record.refund} border-bottom:1px #ddd dotted;{/if}{if in_array($record.refund.status, array('CLOSED'))}color:gray{/if}">
+                  <li class="time">{$record.add_time|date_format:"%Y.%m.%d %H:%M:%S"}</li>
+                  <li class="info break-word">{$record.title|truncate:36}</li>
+                  <li class="tradeNo break-word">{$record.bizOrderId} | {$record.tradeNo}</li>
+                  <li class="party">{$record.partyInfo.name}</li>
+                  <li class="amount"> {if $record.flow eq 'income'}<strong class="price green">+{$record.amount}</strong> {else} <strong class="price f60">-{$record.amount}</strong> {/if} </li>
+                  <li class="status"> <span class="{if in_array($record.status, array('CLOSED')) || in_array($record.refund.status, array('CLOSED'))}gray {elseif !in_array($record.status, array('SUCCESS'))}f60{/if}">{$record.status_label}</span> </li>
+                  <li class="detail"><a href="{url route='deposit/record' tradeNo=$record.tradeNo}">{$lang.detail}</a></li>
+                </ul>
+                <!--{if in_array($record.refund.status, array('SUCCESS'))}-->
+                <ul class="refund gray clearfix">
+                  <li class="time"></li>
+                  <li class="info"> 
+                    <!--{if $record.buyer_id eq $visitor.userid}--> 
+                    {$lang.refund} 
+                    <!--{else}--> 
+                    {$lang.refund_to_buyer} 
+                    <!--{/if}--> 
+                  </li>
+                  <li class="tradeNo break-word"></li>
+                  <li class="party"></li>
+                  <li class="amount"> <strong class="gray"> 
+                    <!--{if $record.buyer_id eq $visitor.userid}-->+<!--{else}-->-<!--{/if}-->{$record.refund.amount} </strong> </li>
+                </ul>
+                <!--{/if}--> 
+                <!--{/foreach}-->
+                <div class="list-more"><a href="{url route='deposit/tradelist'}">查看所有交易记录</a></div>
+                <!--{else}-->
+                <ul class="no-data clearfix">
+                  <li>{$lang.no_data}</li>
+                </ul>
+                <!--{/if}--> 
+              </div>
+            </div>
+            <div class="bank-info">
+              <h1>银行卡</h1>
+              <div class="explain">已绑定<span>{$myBank.count|default:0}</span>张</div>
+              <div class="action"> <a href="{url route='bank/add'}">+添加银行卡</a> </div>
+              <ul class="cards clearfix">
+                <!--{foreach from=$myBank.list item=bank name=fe_bank}-->
+                <li class="card">
+                  <h2>{$bank.bank_name}</h2>
+                  <div class="number">{$bank.num}</div>
+                  <div class="handle clearfix">
+                    <div class="card-type {$bank.type}"></div>
+                    <div class="card-handle"> <a href="{url route='bank/edit' bid=$bank.bid}">编辑</a> <a href="{url route='bank/delete' bid=$bank.bid}" onclick="return confirm('删除后不可恢复，您确认吗？')">删除</a> </div>
+                  </div>
+                </li>
+                <!--{/foreach}-->
+                <li class="card add-card"> <a href="{url route='bank/add' type=debit}" title="添加银行卡（储蓄卡）"></a> </li>
+                <li class="card add-card"> <a href="{url route='bank/add' type=credit}" title="添加银行卡（信用卡）"></a> </li>
+              </ul>
+            </div>
+          </div>
+          <!--{else}-->
+          <div class="notice-word">
+            <p>请先配置帐户，点击 <a href="{url route='deposit/config'}">立即配置</a></p>
+          </div>
+          <!--{/if}--> 
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{include file="user.footer.html"} 

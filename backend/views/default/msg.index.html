@@ -1,0 +1,115 @@
+{include file="header.html"}
+<div id="main">
+	{include file="menus.html"}
+	<div id="rightCon" class="clearfix layui-body">
+		<div class="scroller">
+			<div class="layui-tab">
+				<ul class="layui-tab-title">
+					<li class="layui-this">{$lang.sendlog}</li>
+					<li><a href="{url route='msg/recharge'}">{$lang.msgrecharge}</a></li>
+					<li><a href="{url route='msg/user'}">{$lang.msguser}</a></li>
+					<li><a href="{url route='msg/add'}">{$lang.msgadd}</a></li>
+					<li><a href="{url route='msg/template'}">{$lang.msgtemplate}</a></li>
+					<li><a href="{url route='msg/send'}">{$lang.sendtest}</a></li>
+				</ul>
+			</div>
+
+			<div class="search-form clearfix">
+				<form method="get" id="formSearch">
+                <div class="webkit-box box-align-center">
+					<input type="hidden" name="r" value="msg/index" />
+					{$lang.msguser}
+					<input class="queryInput" type="text" name="username" value="{$smarty.get.username|escape}" />
+					{$lang.receiver}
+					<input class="queryInput" type="text" name="receiver" value="{$smarty.get.receiver|escape}" />
+					{$lang.smsplat}
+					<select class="querySelect" name="code">
+						<option value="">{$lang.select_pls}</option>
+						{html_options options=$smslist selected=$smarty.get.code}
+					</select>
+					{$lang.status}
+					<select class="querySelect" name="status">
+						<option value="">{$lang.select_pls}</option>
+						{html_options options=$status_list selected=$smarty.get.status}
+					</select>
+					<input type="submit" class="layui-btn layui-bg-blue layui-btn-sm block width7" value="{$lang.query}" />
+					<!--{if $filtered}-->
+					<a class="layui-btn layui-btn-primary layui-btn-sm box-align-center" href="{url route='msg/index'}">{$lang.cancel_query}</a>
+					<!--{/if}-->
+                    </div>
+				</form>
+			</div>
+			<div class="tablegrid">
+				<table class="layui-hide" id="tablegrid" lay-filter="tablegrid"></table>
+			</div>
+			{include file="version.html"}
+		</div>
+	</div>
+</div>
+<script type="text/html" id="toolbar">
+	<div class="layui-btn-container">
+		<button class="layui-btn layui-bg-blue" lay-event="batdel"><i class="layui-icon layui-icon-close"></i>批量删除</button>
+    	<button class="layui-btn layui-btn-primary layui-border-black" lay-event="export"><i class="layui-icon layui-icon-export"></i>导出数据</button>
+	</div>
+</script>
+
+<script>
+	layui.use('table', function () {
+		var table = layui.table;
+
+		table.render({
+			elem: '#tablegrid'
+			//,skin: 'line'
+			, url: url(['msg/index', $("#formSearch").serializeJson()])
+			, toolbar: '#toolbar'
+			, defaultToolbar: ['filter', /*'exports',*/ 'print']
+			, title: '短信发送记录'
+			//, size: 'lg'
+			, cols: [[
+				{ type: 'checkbox', fixed: 'left' }
+				, { field: 'id', title: 'ID', width: 70, fixed: 'left', unresize: true, sort: true }
+				, {
+					field: 'username', title: '短信用户', width: 120, sort: true, templet: function (res) {
+						return (res.userid && res.username) ? res.username : lang.system;
+					}
+				}
+				, { field: 'receiver', title: '接收者手机号', width: 150, sort: true }
+				, { field: 'code', title: '短信平台', width: 110, sort: true }
+				, { field: 'content', title: '短信内容', width: 370 }
+				, { field: 'quantity', title: '短信条数', width: 100 }
+				, { field: 'add_time', title: '发送时间', width: 180, sort: true }
+				, { field: 'message', title: '说明', width: 200 }
+				, {
+					fixed: 'right', field: 'status', title: '状态', width: 110, sort: true, templet: function (res) {
+						return res.status == 1 ? '<em class="green">' + lang.send_success + '</em>' : '<em>' + lang.send_fail + '</em>';
+					}
+				}
+			]]
+			, page: {
+				theme: 'blue'
+			}
+		});
+
+		//监听头工具栏事件
+		table.on('toolbar(tablegrid)', function (obj) {
+			var checkStatus = table.checkStatus(obj.config.id);
+			if (checkStatus.data.length <= 0) {
+				return false;
+			}
+			var items = new Array();
+			$.each(checkStatus.data, function (i, item) {
+				items.push(item.id);
+			});
+			if (obj.event === 'batdel') {
+				var btnObj = $('[lay-event="' + obj.event + '"]');
+				btnObj.attr('confirm', '删除后将不能恢复，确认删除这 ' + items.length + ' 项吗？');
+				ajaxRequest(btnObj, url(['msg/delete', { id: items.join(',') }]), function () {
+					table.reload('tablegrid');
+				});
+			} else if (obj.event === 'export') {
+				window.location.href = url(['msg/export', $.extend($("#formSearch").serializeJson(), { id: items.join(',') })]);
+			}
+		});
+	});
+</script>
+{include file="footer.html"}

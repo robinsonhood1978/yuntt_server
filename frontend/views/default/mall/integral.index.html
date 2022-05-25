@@ -1,0 +1,43 @@
+{include file="header.html"}
+<link href="{res file='css/integral.css'}" rel="stylesheet" type="text/css" />
+<div id="page-integral" class="integral-w">
+	<div class="page-main">
+    	<div class="col-1 clearfix integral-w">
+        	<div class="col-sub" area="col1-left" widget_type="area">
+            {widgets page='integral' area='col1-left'}
+            </div>
+            <div class="col-main" area="col1-right" widget_type="area">
+            {widgets page='integral' area='col1-right'}
+            </div>
+        </div>
+        <div class="co-2 integral-w" area="col-2" widget_type="area">
+            {widgets page='integral' area='col-2'}
+        </div>
+        <div class="col-3 clearfix integral-w">
+        	<div class="col-sub" area="col3-left" widget_type="area">
+            {widgets page='integral' area='col3-left'}
+            </div>
+            <div class="integral-list col-main mb10 clearfix">
+				<!--{if $goodslist}-->
+          		<ul class="list clearfix">
+                 	<!--{foreach from=$goodslist item=goods name=fe_goods}-->
+                 	<li class="item mb10" {if $smarty.foreach.fe_goods.iteration % 4 eq 1} style="margin-left:0"{/if}>
+                 	  <div class="pic"><a target="_blank" href="{url route='goods/index' id=$goods.goods_id}"><img src="{$goods.default_image|url_format}" alt="{$goods.goods_name|escape}" /></a></div>
+					  <span class="price">{$goods.exchange_price|price_format} <em>+ {$goods.exchange_integral} 个积分</em></span>
+					  <div class="pro-info">
+                      	<span><i>可抵扣{$goods.exchange_money|price_format}元</i></span>
+                      </div>
+                      <div class="desc"><a target="_blank" href="{url route='goods/index' id=$goods.goods_id}">{$goods.goods_name|escape|truncate:60}</a></div>
+                 	</li>
+					<!--{/foreach}-->
+              	</ul>
+				
+                <!--{else}-->
+                <div class="notice-word"><p class="yellow-big">{$lang.no_integral_goods}</p></div>
+				<!--{/if}-->
+       		</div>
+            <div class="clearfix mb20 center">{include file="page.bottom.html"}</div>
+        </div>
+	</div>
+</div>
+{include file="footer.html"}

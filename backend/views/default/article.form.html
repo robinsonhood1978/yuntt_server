@@ -1,0 +1,167 @@
+{include file="header.html"}
+{$build_upload}
+{$build_editor}
+<div id="main">
+    {include file="menus.html"}
+    <div id="rightCon" class="clearfix layui-body">
+        <div class="scroller">
+            <div class="flexigrid">
+                <form method="post" enctype="multipart/form-data">
+                    <table class="infoTable">
+                        <tr>
+                            <th class="paddingT15"><label>{$lang.title}</label></th>
+                            <td class="paddingT15 wordSpacing5"><input class="infoTableInput" id="title" type="text"
+                                    name="title" value="{$article.title|escape}" /></td>
+                        </tr>
+                        <tr>
+                            <th class="paddingT15"><label>{$lang.category}</label></th>
+                            <td class="paddingT15 wordSpacing5"><select id="cate_id" name="cate_id">
+                                    <option value="">{$lang.select_pls}</option>
+                                    {html_options options=$parents selected=$article.cate_id}
+                                </select></td>
+                        </tr>
+                        <tr>
+                            <th class="paddingT15"><label>{$lang.link}</label></th>
+                            <td class="paddingT15 wordSpacing5"><input class="infoTableInput" id="link" type="text"
+                                    name="link" value="{$article.link|escape}" /></td>
+                        </tr>
+                        <tr>
+                            <th class="paddingT15"><label>{$lang.if_show}</label></th>
+                            <td class="paddingT15 layui-form">
+                                <input type="radio" name="if_show" value="1" title="{$lang.yes}" {if
+                                    $article.if_show}checked{/if} />
+                                <input type="radio" name="if_show" value="0" title="{$lang.no}" {if
+                                    !$article.if_show}checked{/if} />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="paddingT15"><label>{$lang.sort_order}</label></th>
+                            <td class="paddingT15 wordSpacing5"><input class="sort_order" id="sort_order" type="text"
+                                    name="sort_order" value="{$article.sort_order}" /></td>
+                        </tr>
+                        <tr>
+                            <th class="paddingT15"><label>{$lang.description}</label></th>
+                            <td class="paddingT15 wordSpacing5">
+                                <div class="editor clearfix">
+                                    <div>
+                                        <textarea name="description" id="description"
+                                            style="width:765px; height:400px;">{$article.description|escape}</textarea>
+                                    </div>
+                                    <div class="multimage-wrapper descimage-wrapper">
+                                        <ul class="multimage-tabs clearfix">
+                                            <li class="selected">插入描述附件</li>
+                                        </ul>
+                                        <div class="multimage-panels clearfix">
+                                            <div class="upload_btn">
+                                                <div class="btn-upload-image"><b
+                                                        class="hide EDITOR_SWFU_filePicker"></b></div>
+                                            </div>
+                                            <div class="text layui-font-12">{$lang.note_for_upload}</div>
+                                        </div>
+                                        <div class="multimage-piclist clearfix J_descriptioneditor">
+                                            <ul id="desc_images" class="preview">
+                                                <!--{foreach from=$article.desc_images item=image}-->
+                                                <li ectype="handle_pic" file_type="{$image.file_type}"
+                                                    file_name="{$image.file_name|escape}"
+                                                    file_path="{$image.file_path|url_format}"
+                                                    file_id="{$image.file_id}">
+                                                    <input type="hidden" name="desc_file_id[]" value="{$image.file_id}">
+                                                    <div class="pic"> <img src="{$image.file_path|url_format}"
+                                                            width="80" height="80" alt="{$image.file_name|escape}"
+                                                            title="{$image.file_name|escape}" /> </div>
+                                                    <div ectype="handler" class="bg">
+                                                        <p class="operation">
+                                                            <a class="cut_in" ectype="insert_editor"
+                                                                href="javascript:void(0);"
+                                                                ecm_title="{$lang.insert_editor}"></a> <span
+                                                                class="delete" ectype="drop_image"
+                                                                ecm_title="{$lang.drop}"></span>
+                                                        </p>
+                                                    </div>
+                                                </li>
+                                                <!--{/foreach}-->
+                                            </ul>
+
+                                            <div id="desc_files" class="clear pt10 pb10" style="width: 738px;">
+                                                <!--{foreach from=$article.desc_files item=file}-->
+                                                <dl ectype="handle_pic" class="clearfix padding5"
+                                                    file_type="{$file.file_type}" file_name="{$file.file_name|escape}"
+                                                    file_path="{$file.file_path|url_format}" file_id="{$file.file_id}">
+                                                    <dt class="float-left"><input type="hidden" name="desc_file_id[]"
+                                                            value="{$file.file_id}"><a
+                                                            href="{$file.file_path|url_format}"
+                                                            title="{$file.file_name}">{$file.file_name}</a></dt>
+                                                    <dd class="float-right"><a ectype="insert_editor"
+                                                            href="javascript:;">{$lang.insert_editor}</a> / <a
+                                                            href="javascript:drop_image({$file.file_id});">{$lang.drop}</a>
+                                                    </dd>
+                                                </dl>
+                                                <!--{/foreach}-->
+                                            </div>
+
+                                        </div>
+
+                                        <div class="notice-word ml10 mb20">
+                                            <p class="yellow layui-font-12">插入方法：将鼠标移至需要插入的图片上面，然后点击插入按钮，即可将图片插入到编辑器中。</p>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th></th>
+                            <td class="ptb20"><input class="layui-btn layui-bg-blue J_AjaxSubmit" type="submit"
+                                    value="{$lang.submit}" />
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+            {include file="version.html"}
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function add_uploadedfile(file_data) {
+        // 如果是图片
+        if ($.inArray(file_data.file_type, {$imageJsonArray}) > -1) {
+            $('#desc_images').append('<li style="z-index:4" file_type="' + file_data.file_type + '" file_name="' + file_data.file_name + '" file_path="' + url_format(file_data.file_path) + '" ectype="handle_pic" file_id="' + file_data.file_id + '"><input type="hidden" name="desc_file_id[]" value="' + file_data.file_id + '"><div class="pic" style="z-index: 2;"><img src="' + url_format(file_data.file_path) + '" width="80" height="80" alt="' + file_data.file_name + '" /></div><div ectype="handler" class="bg" style="z-index: 3;display:none"><p class="operation"><a href="javascript:void(0);" class="cut_in" ectype="insert_editor" ecm_title="{$lang.insert_editor}"></a><span class="delete" ectype="drop_image" ecm_title="{$lang.drop}"></span></p></div></li>');
+        }
+        // 如果是附件（如doc/pdf)
+        else {
+            $('#desc_files').prepend('<dl ectype="handle_pic" class="clearfix padding5" file_type="' + file_data.file_type + '" file_name="' + file_data.file_name + '" file_path="' + url_format(file_data.file_path) + '" file_id="' + file_data.file_id + '"><dt class="float-left"><input type="hidden" name="desc_file_id[]" value="' + file_data.file_id + '"><a  href="' + url_format(file_data.file_path) + '" title="' + file_data.file_name + '">' + file_data.file_name + '</a></dt><dd class="float-right"><a ectype="insert_editor" href="javascript:;">{$lang.insert_editor}</a> / <a href="javascript:drop_image(' + file_data.file_id + ');">{$lang.drop}</a></dd></dl>');
+        }
+
+        trigger_uploader();
+        if (EDITOR_SWFU.getStats().progressNum == 0) {
+            window.setTimeout(function () {
+                $('*[ectype="handle_pic"]').css('z-index', 999);
+            }, 5000);
+        }
+    }
+
+    // 删除图片或文件（jpg|png|doc|pdf...）
+    function drop_image(file_id) {
+        layer.open({
+            content: lang.uploadedfile_drop_confirm,
+            btn: [lang.confirm, lang.cancel],
+            yes: function (index) {
+                $.getJSON("{url route='article/deleteimage'}", {
+                    id: file_id
+                }, function (data) {
+                    if (data.done) {
+                        $('*[file_id="' + file_id + '"]').remove();
+                    } else {
+                        layer.msg(data.msg);
+                    }
+                    layer.close(index);
+                });
+            },
+            no: function (index) {
+                layer.close(index);
+            }
+        });
+    }
+</script>
+{include file="footer.html"}

@@ -1,0 +1,102 @@
+<style>
+    .colslist .wraper {
+        margin: 30px 20px 0;
+    }
+
+    .colslist .column .desc {
+        line-height: 17px;
+    }
+
+    .colslist .column .people span {
+        border-radius: 3px;
+        background-color: #FDBE6C;
+        color: #fff;
+        padding: 2px 5px;
+    }
+
+    .colslist .layui-btn {
+        width: 100px;
+    }
+
+    .colslist .submit {
+        padding: 25px 0 25px 0 !important;
+        border-top: 1px #ddd solid;
+    }
+</style>
+
+<div class="colslist">
+    <div class="wraper clearfix">
+        <ul class="column J_List layui-form"></ul>
+        <ul class="template hidden">
+            <li class="webkit-box mb20">
+                <p class="checked pt20"><input lay-skin="primary" lay-filter="filter" type="checkbox" value="[1]"></p>
+                <p class="image"><img width="60" height="60" srctemp="[2]"></p>
+                <div class="extra flex1 ml20">
+                    <p class="desc fs13 mb5">[3]</p>
+                    <p class="people fs12"><span>[4]人团</span></p>
+                    <p class="mt10"><span class="price">[5]</span> <del class="gray ml5">[6]</del></p>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="mt20 clearfix center mb20 J_Page">{$pagination}</div>
+    <div class="submit">
+        <input type="button" id="cancel_button" class="layui-btn layui-btn-primary layui-border-blue" value="关闭" />
+        <input type="submit" id="gs_submit" class="layui-btn layui-btn-normal" value="{$lang.confirm}" />
+    </div>
+</div>
+<script>
+    // 定义全局变量，以确保翻页后能保留选中状态
+    // 不兼容关闭弹窗后，重新打开弹窗依然成选中状态
+    var TEMP = [];
+    $(function () {
+        $('#gs_submit').click(function () {
+            var callback = "{$smarty.get.callback}";
+            if (callback.length > 0) {
+                eval(callback + '("goods", ' + JSON.stringify(TEMP) + ')');
+            }
+            DialogManager.close('goods');
+        });
+
+        $('#cancel_button').click(function () {
+            DialogManager.close('goods');
+        });
+
+        showPage(1);
+    });
+
+    function showPage(page) {
+        $.post(url(['gselector/teambuy', null, BACK_URL]), { page: page }, function (data) {
+            if (data.done) {
+                var html = '';
+                $.each(data.retval.list, function (i, item) {
+                    html += sprintf($('.template').html().replace('srctemp', 'src'), item.goods_id, url_format(item.default_image), item.goods_name, item.people, price_format(item.teamPrice), price_format(item.price));
+                });
+                if (html) {
+                    $('.J_List').html(html);
+                    $.each(TEMP, function (i, item) {
+                        $('.J_List').find('input[value="' + item + '"]').prop('checked', true);
+                    });
+
+                    layui.use('form', function () {
+                        var form = layui.form;
+                        form.on('checkbox(filter)', function (data) {
+                            if (data.elem.checked) {
+                                TEMP.push(data.value);
+                            } else {
+                                var index = $.inArray(data.value, TEMP);
+                                TEMP.splice(index, 1);
+                            }
+                        });
+
+                        form.render();
+                    });
+                }
+                $('.J_Page').html(data.retval.pagination);
+
+                // 重新调整位置
+                DialogManager.get('goods').setPosition('center');
+            }
+        });
+    }
+</script>

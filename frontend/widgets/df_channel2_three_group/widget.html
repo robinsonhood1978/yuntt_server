@@ -1,0 +1,42 @@
+<div class="channel2-switch J_S{$widget_data.model_id} clearfix">
+  <div class="title clearfix">
+    <h2>{$widget_data.model_name}</h2>
+    <div class="switch-nav"> <em class="arrow"><b></b></em>
+      <ul class="J_Sub clearfix">
+        <!-- {foreach from=$widget_data.tabList item=tab name=fe_tab} -->
+        <li {if $smarty.foreach.fe_tab.first} class="current first"{/if}>{$tab.cate_name|escape}</li>
+        <!--{/foreach}-->
+      </ul>
+    </div>
+  </div>
+  <div class="content"> 
+    <!-- {foreach from=$widget_data.tabList item=tab name=fe_tab} -->
+    <div class="list clearfix" {if $smarty.foreach.fe_tab.first} style="display:block;"{/if}>
+      <ul class="clearfix">
+        <!--{foreach from=$tab.images item=image name=fe_image}-->
+        <li class="list-pic{$smarty.foreach.fe_image.iteration} switch-banner"><a href="{$image.link}" target="_blank" ><img src="{$image.url|url_format}"></a></li>
+        <!--{/foreach}-->
+      </ul>
+    </div>
+    <!--{/foreach}--> 
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$('.J_S{$widget_data.model_id} .J_Sub li').hover(function(){
+		$(this).parent('.J_Sub').find('li') .removeClass('current');
+		$(this).addClass('current');
+		$('.J_S{$widget_data.model_id} .list').hide();
+		$('.J_S{$widget_data.model_id} .list:eq('+$(this).index()+')').show();
+	});
+		
+	$('.J_S{$widget_data.model_id} .J_Sub li').mouseover(function(){
+		var liIndex = $('.J_S{$widget_data.model_id} .J_Sub li').index(this);
+		var liWidth = $('.J_S{$widget_data.model_id} .J_Sub li').width();
+		var leftp = liIndex * liWidth;
+		$(this).addClass('current').siblings().removeClass('current');
+		$(this).parents('.J_S{$widget_data.model_id}').find('.list').eq(liIndex).show().siblings().hide();
+		$(this).parents('.J_S{$widget_data.model_id}').find('.arrow').stop(false,true).animate({ left:leftp + 'px'}, 1000);
+	});
+});
+</script> 

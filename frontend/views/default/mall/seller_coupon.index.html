@@ -1,0 +1,60 @@
+{include file="user.header.html"}
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful">{include file="user.submenu.html"}
+      <div class="wrap">
+        <div class="public table">
+          <table>
+            <div class="eject_btn_two eject_pos1" style="width:120px;left:115px;" title="{$lang.coupon_add}"><b class="ico3" ectype="dialog" dialog_title="{$lang.coupon_add}" dialog_id="seller_coupon_add" dialog_width="480" uri="{url route='seller_coupon/add'}">{$lang.coupon_add}</b></div>
+            <!-- {if $coupons} -->
+            <tr class="gray">
+              <th><input id="all" type="checkbox" class="checkall" /></th>
+              <th>{$lang.coupon_name}</th>
+              <th>{$lang.coupon_value}</th>
+              <th>{$lang.use_times}</th>
+              <th>{$lang.time_limit}</th>
+              <th>{$lang.min_amount}</th>
+              <th class="align1">{$lang.handle}</th>
+            </tr>
+            <!-- {/if} --> 
+            <!-- {if $coupons} -->
+            <tbody>
+              <!-- {/if} --> 
+              <!-- {foreach from=$coupons item=coupon name=v} -->
+              <tr class="line{if $smarty.foreach.v.last} last_line{/if}">
+                <td class="align2"><input type="checkbox" class="checkitem" value="{$coupon.coupon_id}" /></td>
+                <td class="align2">{$coupon.coupon_name}</td>
+                <td class="align2"><!--{if $coupon.coupon_value}-->{$coupon.coupon_value}<!--{else}-->{$lang.no_limit}<!--{/if}--></td>
+                <td class="align2"><!--{if $coupon.use_times}-->{$coupon.use_times}<!--{else}-->{$lang.no_limit}<!--{/if}--></td>
+                <td class="align2">{$coupon.start_time|date_format:"%Y-%m-%d"} {$lang.to} <!--{if $coupon.end_time}-->{$coupon.end_time|date_format:"%Y-%m-%d"}<!--{else}-->{$lang.no_limit}<!--{/if}--></td>
+                <td class="align2"><!--{if $coupon.min_amount}-->{sprintf($lang.limit_desc, $coupon.min_amount)}<!--{else}-->{$lang.no_limit}<!--{/if}--></td>
+                <td class="align1"><!--{if $coupon.end_time gt $now}--> <a href="javascript:void(0);" class="extend" uri="{url route='seller_coupon/extend' id=$coupon.coupon_id}" dialog_id="seller_coupon_extend" dialog_title="{$lang.extend}" dialog_width="320" ectype="dialog">{$lang.extend}</a><!--{elseif $coupon.end_time lte $now}--><a class="delete" href="javascript:drop_confirm('{$lang.drop_confirm}', '{url route='seller_coupon/delete' id=$coupon.coupon_id}');">{$lang.drop}</a><!--{else}--> <a href="javascript:void(0);" class="edit1" uri="{url route='seller_coupon/edit' id=$coupon.coupon_id}" dialog_id="seller_coupon_edit" dialog_title="{$lang.edit}" dialog_width="460" ectype="dialog">{$lang.edit}</a> <a class="delete" href="javascript:drop_confirm('{$lang.drop_confirm}', '{url route='seller_coupon/delete' id=$coupon.coupon_id}');">{$lang.drop}</a><!--{/if}--></td>
+              </tr>
+              <!-- {foreachelse} -->
+              <tr>
+                <td colspan="8" class="padding6"><div class="notice-word">
+                    <p>{$lang.no_records}</p>
+                  </div></td>
+              </tr>
+              <!--{/foreach}--> 
+              <!-- {if $coupons} -->
+            </tbody>
+            <!-- {/if} --> 
+            <!-- {if $coupons} -->
+            <tr class="btion">
+              <th><input id="all2" type="checkbox" class="checkall" /></th>
+              <th colspan="7"><p class="position1">
+                  <label for="all2"><span class="all">{$lang.checkall}</span></label>
+                  <a href="javascript:void(0);" ectype="batchbutton" class="delete" uri="{url route='seller_coupon/delete'}" name="id" presubmit="confirm('{$lang.drop_confirm}')">{$lang.drop}</a></p>
+                <div class="position2 clearfix center">{include file="page.bottom.html"}</div>
+              </th>
+            </tr>
+            <!-- {/if} -->
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<iframe id="iframe" name="iframe" src="about:blank" frameborder="0" width="0" height="0" style="display:none"></iframe>
+{include file="user.footer.html"}

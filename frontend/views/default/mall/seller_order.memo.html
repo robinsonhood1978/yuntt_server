@@ -1,0 +1,39 @@
+<div class="content1">
+  <div id="warning"></div>
+  <form method="post" action="{url route='seller_order/memo' order_id=$order.order_id}" target="iframe">
+    <dl>
+      <dt>{$lang.flag}{$lang.colon}</dt>
+      <dd>
+        <input type="radio" name="flag" value="0" id="flag0" {if $order.flag eq 0} checked="checked" {/if} />
+        <label class="mr10" for="flag0"><img src="{res file='images/member/op_memo_0.png'}" align="absMiddle" /></label>
+        <input type="radio" name="flag" value="1" id="flag1" {if $order.flag eq 1} checked="checked" {/if}/>
+        <label class="mr10" for="flag1"><img src="{res file='images/member/op_memo_1.png'}" align="absMiddle" /></label>
+        <input type="radio" name="flag" value="2" id="flag2" {if $order.flag eq 2} checked="checked" {/if}/>
+        <label class="mr10" for="flag2"><img src="{res file='images/member/op_memo_2.png'}" align="absMiddle" /></label>
+        <input type="radio" name="flag" value="3" id="flag3" {if $order.flag eq 3} checked="checked" {/if}/>
+        <label class="mr10" for="flag3"><img src="{res file='images/member/op_memo_3.png'}" align="absMiddle" /></label>
+        <input type="radio" name="flag" value="4" id="flag4" {if $order.flag eq 4} checked="checked" {/if}/>
+        <label class="mr10" for="flag4"><img src="{res file='images/member/op_memo_4.png'}" align="absMiddle" /></label>
+        <input type="radio" name="flag" value="5" id="flag5" {if $order.flag eq 5} checked="checked" {/if}/>
+        <label class="mr10" for="flag5"><img src="{res file='images/member/op_memo_5.png'}" align="absMiddle" /></label>
+      </dd>
+    </dl>
+    <dl>
+      <dt>{$lang.memo_info}{$lang.colon}</dt>
+      <dd>
+        <textarea name="memo" rows="5" cols="32">{$order.memo}</textarea>
+      </dd>
+    </dl>
+    <div class="btn">
+      	<input type="button" id="cancel_button" class="btn2" value="{$lang.cancel}" />
+		<input type="submit" id="confirm_button" class="btn1" value="{$lang.confirm}" />
+    </div>
+  </form>
+</div>
+<script type="text/javascript">
+$(function(){
+	$('#cancel_button').click(function(){
+		DialogManager.close('seller_order_memo');
+	});
+});
+</script>

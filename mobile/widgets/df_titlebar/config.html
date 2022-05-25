@@ -1,0 +1,195 @@
+<div class="widget-box">
+    <h3 class="title mt20 mb20 pb20"><strong class="fs18">标题栏</strong></h3>
+    <div class="content">
+        <div class="item webkit-box">
+            <label class="gray">标题名称</label>
+            <input value="{$options.label}" name="label" placeholder="标题" type="text"
+                class="flex1 input ml10 J_Holder" />
+        </div>
+        <div class="item webkit-box">
+            <label class="gray">标题颜色</label>
+            <p class="flex1 ml10 color">{$options.txtcolor|default:'#FF8000'}</p>
+            <input type="hidden" name="txtcolor" value="{$options.txtcolor|default:'#FF8000'}" />
+            <span class="f60 pointer J_Reset" data-id="picker1" data-value="#FF8000">重置</span>
+            <p class="picker1 ml10"></p>
+        </div>
+        <div class="item webkit-box">
+            <label class="gray">文字加粗</label>
+            <p class="flex1"></p>
+            <input type="hidden" name="txtbold" value="{$options.txtbold|default:0}" />
+            <span class="layui-form">
+                <input lay-filter="filter" type="checkbox" {if $options.txtbold}checked{/if} lay-skin="switch">
+            </span>
+        </div>
+        <div class="item webkit-box">
+            <label class="gray">字号大小</label>
+            <p class="flex1 ml10 value">{if $options.fontsize eq 18}18px{else if $options.fontsize eq
+                16}16px{else}14px{/if}</p>
+            <input type="hidden" name="fontsize" value="{$options.fontsize|default:14}" />
+            <span class="switch first {if !in_array($options.fontsize, [16, 18])} selected {/if} J_Mode" title="14px"
+                data-value="14"><i class="iconfont icon-A fs14"></i></span>
+            <span class="switch  {if $options.fontsize eq 16}selected {/if} J_Mode" title="16px"
+                data-value="16"><i class="iconfont icon-A fs16"></i></span>
+            <span class="switch {if $options.fontsize eq 18} selected {/if} J_Mode" title="18px" data-value="18"><i
+                    class="iconfont icon-A fs18"></i></span>
+        </div>
+        <div class="item webkit-box">
+            <label class="gray">线条颜色</label>
+            <p class="flex1 ml10 color">{$options.linecolor|default:'#cccccc'}</p>
+            <input type="hidden" name="linecolor" value="{$options.linecolor|default:'#cccccc'}" />
+            <span class="f60 pointer J_Reset" data-id="picker3" data-value="#cccccc">重置</span>
+            <p class="picker3 ml10"></p>
+        </div>
+        <div class="item webkit-box">
+            <label class="gray">显示风格</label>
+            <p class="flex1"></p>
+            <input type="hidden" name="theme" value="{$options.theme|default:''}" />
+            <div class="pointer dropdown">
+                <span>{if $options.theme eq 'square'}风格二{else if $options.theme eq 'leftline'}风格三{else}默认{/if}</span>
+                <i class="layui-icon layui-icon-right layui-font-14"></i>
+            </div>
+        </div>
+        <div class="item webkit-box">
+            <label class="gray">背景图片</label>
+            <p class="flex1"></p>
+            <input type="hidden" name="image" value="{$options.image|default:''}" />
+            <div class="relative pointer {if $options.image}hasimg{/if}">
+                <input onchange="fileRender(this)" class="file absolute pointer" type="file" name="file" />
+                <!--{if $options.image}-->
+                <img class="image" src="{$options.image|url_format}" />
+                <i class="layui-icon layui-icon-close-fill absolute del pointer J_Del" style="font-size: 20px;"></i>
+                <!--{else}-->
+                <span>上传</span>
+                <i class="layui-icon layui-icon-right layui-font-14"></i>
+                <!--{/if}-->
+            </div>
+        </div>
+        <div class="item webkit-box">
+            <label class="gray">隐藏文字</label>
+            <p class="flex1"></p>
+            <input type="hidden" name="txthide" value="{$options.txthide|default:0}" />
+            <span class="layui-form">
+                <input lay-filter="filter" type="checkbox" {if $options.txthide}checked{/if} lay-skin="switch">
+            </span>
+        </div>
+
+        <h4 class="mt10 pb10 mt20 pt20">其他设置</h4>
+        <div class="item webkit-box">
+            <label class="gray">背景颜色</label>
+            <p class="flex1 ml10 color">{$options.bgcolor|default:''}</p>
+            <input type="hidden" name="bgcolor" value="{$options.bgcolor|default:''}" />
+            <span class="f60 pointer J_Reset" data-id="picker2" data-value="">重置</span>
+            <p class="picker2 ml10"></p>
+        </div>
+
+        <div class="item webkit-box">
+            <label class="gray">模块间距</label>
+            <input type="hidden" name="space" value="{$options.space|default:0}" />
+            <div class="flex1 ml20 slider" style="margin-top:15px"></div>
+        </div>
+    </div>
+</div>
+<style>
+    .widget-box .hasimg {
+        width: 128px;
+        max-height: 64px;
+        border: 1px #ddd dashed;
+        padding: 5px;
+    }
+
+    .widget-box .hasimg img {
+        max-width: 100%;
+        max-height: 100%;
+        display: block;
+    }
+
+    .widget-box .file {
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0px;
+        opacity: 0;
+    }
+
+    .widget-box .del {
+        right: -5px;
+        top: -15px;
+    }
+</style>
+<script>
+    $(function () {
+        $('.J_Holder').keyup(function () {
+            var text = $(this).val() == '' ? $(this).attr('placeholder') : $(this).val();
+            $('#' + $(this).parents('form').attr('widget_id')).find('.titlebar .text').text(text);
+        });
+        $('.J_Holder').change(function () {
+            save_widget(false);
+        });
+
+        $('.J_Del').click(function () {
+            $(this).parents('.item').find('input[type="hidden"]').val('');
+            save_widget();
+        });
+
+        layui.use('form', function () {
+            var form = layui.form;
+            form.on('switch(filter)', function (data) {
+                $(this).parents('.item').find('input').val(data.elem.checked ? 1 : 0);
+                save_widget();
+            });
+
+            form.render();
+        });
+
+        slideRender('.slider', function (dom, value) {
+            save_widget(false);
+        });
+
+        layui.use('dropdown', function () {
+            var dropdown = layui.dropdown
+            dropdown.render({
+                elem: '.dropdown',
+                data: [{
+                    title: '默认',
+                    id: 'default'
+                }, {
+                    title: '风格二',
+                    id: 'square'
+                }, {
+                    title: '风格三',
+                    id: 'leftline'
+                }],
+                click: function (data, othis) {
+                    this.elem.parents('.item').find('input').val(data.id);
+                    this.elem.find('span').text(data.title);
+                    save_widget(false);
+                }
+            });
+        });
+
+        $('.J_Reset').click(function () {
+            var value = $(this).attr('data-value');
+            $(this).parent('.item').find('input[type="hidden"]').val(value);
+            save_widget();
+        });
+        $('.J_Mode').click(function () {
+            var value = $(this).attr('data-value');
+            $(this).parent('.item').find('input').val(value);
+
+            save_widget();
+        });
+
+        colorRender('.picker1', function (dom, value) {
+            save_widget();
+        });
+        colorRender('.picker2', function (dom, value) {
+            save_widget();
+        });
+        colorRender('.picker3', function (dom, value) {
+            save_widget();
+        });
+    });
+    function fileRender(obj) {
+        save_widget();
+    }
+</script>

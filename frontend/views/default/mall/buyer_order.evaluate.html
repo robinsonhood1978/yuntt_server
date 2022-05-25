@@ -1,0 +1,83 @@
+{include file="user.header.html"}
+<div id="main" class="w-full">
+  <div id="page-buyer-order" class="w auto clearfix">
+    <div class="particular mt10 clearfix">
+      <div class="particular_wrap">
+        <form method="POST">
+          <h2>{$lang.order_evaluate}</h2>
+          <!--{foreach from=$goods_list item=goods name=fe_goods}-->
+          <div class="evaluate_obj">
+            <div class="ware">
+              <div class="ware_list">
+                <div class="ware_pic"><img src="{$goods.goods_image|url_format}" width="50" height="50" /></div>
+                <div class="ware_text">
+                  <div class="ware_text4"> <a
+                      href="{url route='goods/index' id=$goods.goods_id}">{$goods.goods_name|escape}</a><br />
+                    <span>{$goods.specification|escape}</span> </div>
+                  <div class="ware_text3"> <span>{$lang.quantity}&nbsp;:&nbsp;<strong>{$goods.quantity}</strong></span>
+                    <span>{$lang.price}&nbsp;:&nbsp;<strong>{$goods.price|price_format}</strong></span> </div>
+                </div>
+              </div>
+            </div>
+            <div class="evaluate_wrap">
+              <div class="my_evaluate">
+                <div class="w-full clearfix">
+                  <div class="fill_in">
+                    <div class="mb10 w-full clearfix ratyItem" scoreName="evaluations[goods][{$goods.spec_id}][value]">
+                      <span class="float-left mr10 t">{$lang.goods_evaluation}：</span> <span
+                        id="gIcon{$smarty.foreach.fe_goods.iteration}" class="float-left mr10 ratyIcon"></span> <span
+                        id="gTarget{$smarty.foreach.fe_goods.iteration}" class="float-left ratyTarget hint"></span>
+                    </div>
+                    <div class="textarea">
+                      <textarea placeholder="填写您对宝贝的印象" name="evaluations[goods][{$goods.spec_id}][comment]"></textarea>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--{/foreach}-->
+          <div class="fill_in" style="padding: 10px 40px;">
+            <h4 style="margin-bottom: 20px;">{$lang.store_evaluation}：<a href="{url route='store/index' id=$order.seller_id}">{$order.seller_name|escape}</a></h4>
+            <ul class="raty pb10">
+              <li class="mb10 w-full clearfix ratyItem" scoreName="evaluations[store][service]"> <span
+                  class="float-left mr10 t">{$lang.service_evaluation}：</span> <span
+                  id="svIcon-service_evaluation" class="float-left mr10 ratyIcon"></span> <span
+                  id="svTarget-service_evaluation" class="float-left ratyTarget  hint"></span> </li>
+              <li class="mb10 w-full clearfix ratyItem" scoreName="evaluations[store][shipped]"> <span
+                  class="float-left mr10 t">{$lang.shipped_evaluation}：</span> <span
+                  id="shIcon-shipped_evaluation" class="float-left mr10 ratyIcon"></span> <span
+                  id="shTarget-shipped_evaluation" class="float-left ratyTarget  hint"></span> </li>
+            </ul>
+          </div>
+          <div class="evaluate_footer mt10">
+            <input type="button" onclick="window.close();" value="{$lang.evaluate_later}" class="btn2" />
+            <input type="submit" value="{$lang.submit}" class="btn1" />
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+  $(function () {
+    $('.ratyItem').each(function () {
+
+      var iconId = $(this).find('.ratyIcon').attr('id');
+      var targetId = $(this).find('.ratyTarget').attr('id');
+      var scoreName = $(this).attr('scoreName');
+
+      $('#' + iconId).raty({
+        score: 5,
+        target: '#' + targetId,
+        cancel: false,
+        targetType: 'hint',
+        targetKeep: true,
+        scoreName: scoreName,
+        path: "{$siteUrl}/static/images" // for PC
+      });
+
+    });
+  });
+</script>
+{include file="user.footer.html"}

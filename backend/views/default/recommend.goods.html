@@ -1,0 +1,84 @@
+{include file="header.html"}
+<div id="main">
+	{include file="menus.html"}
+	<div id="rightCon" class="clearfix layui-body">
+		<div class="scroller">
+			<div class="tablegrid">
+				<table class="layui-hide" id="tablegrid" lay-filter="tablegrid"></table>
+			</div>
+			{include file="version.html"}
+		</div>
+	</div>
+</div>
+<script type="text/html" id="toolbar">
+	<div class="layui-btn-container">
+		<button class="layui-btn layui-bg-blue" lay-event="batcancel"><i class="fa fa-ban"></i>批量取消</button>
+	</div>
+</script>
+
+<script type="text/html" id="colBar">
+	<a class="ml5 mr5 blue pointer" lay-event="cancel">取消推荐</a>
+	<a class="ml5 mr5 blue pointer" lay-event="view">查看商品</a>
+</script>
+<script>
+	layui.use('table', function () {
+		var table = layui.table;
+
+		table.render({
+			elem: '#tablegrid'
+			//,skin: 'line'
+			, url: url(['recommend/goods', { id: "{$smarty.get.id}" }])
+			, toolbar: '#toolbar'
+			, defaultToolbar: ['filter', /*'exports',*/ 'print']
+			, title: '推荐类型'
+			//, size: 'lg'
+			, cols: [[
+				{ type: 'checkbox', fixed: 'left' }
+				, { field: 'goods_id', title: 'ID', width: 70, fixed: 'left', unresize: true, sort: true }
+				, { field: 'goods_name', title: '商品名称', width: 422, sort: true }
+				, { field: 'price', title: '价格', width: 130, sort: true }
+				, { field: 'store_name', title: '店铺名称', width: 200, sort: true }
+				, { field: 'recom_name', title: '推荐类型', width: 200 }
+				, { fixed: 'right', title: '操作', toolbar: '#colBar', width: 190, align: 'center' }
+			]]
+			, page: {
+				theme: 'blue'
+			}
+		});
+
+		//监听头工具栏事件
+		table.on('toolbar(tablegrid)', function (obj) {
+			var checkStatus = table.checkStatus(obj.config.id);
+			if (checkStatus.data.length <= 0) {
+				return false;
+			}
+			var items = new Array();
+			$.each(checkStatus.data, function (i, item) {
+				items.push(item.goods_id);
+			});
+
+			if (obj.event === 'batcancel') {
+				var btnObj = $('[lay-event="' + obj.event + '"]');
+				ajaxRequest(btnObj, url(['recommend/cancel', { id: items.join(',') }]), function () {
+					table.reload('tablegrid');
+				});
+			}
+		});
+
+		//监听行工具事件
+		table.on('tool(tablegrid)', function (obj) {
+			var data = obj.data;
+
+			if (obj.event === 'cancel') {
+				var btnObj = $(obj.tr).find('[lay-event="' + obj.event + '"]');
+				ajaxRequest(btnObj, url(['recommend/cancel', { id: data.goods_id }]), function () {
+					obj.del();
+				});
+			}
+			else if (obj.event === 'view') {
+				window.open(url(['goods/index', { id: data.goods_id }, HOME_URL]));
+			}
+		});
+	});
+</script>
+{include file="footer.html"}

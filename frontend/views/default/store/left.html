@@ -1,0 +1,121 @@
+<!--{if $app->controller->id eq 'store' && in_array($app->controller->action->id, array('index', 'credit'))}-->
+<div class="store-info bgf mb20 pl10 pr10">
+    <div class="title center logo pt20">
+        <img class="block" width="100" height="100" src="{$store.store_logo|url_format}" >
+        <h3 class="center mt10">
+            <i class="inline-block">{if $store.joinway eq 0}自营{else if $store.stype eq 'personal'}个人{else}企业{/if}</i>
+            <span>{$store.store_name|escape}</span></h3>
+    </div>
+    
+    <div class="content mt10 pt5" >
+        <div class="rate-info pt10 pb10" style="border-top: 1px #eee solid; border-bottom: 1px #eee solid;">
+            <ul>
+                <li>
+                    {$lang.goods_evaluation}{$lang.colon}
+                    <span class="credit">{$store.dynamicEvaluation.goods.value}</span>
+                    
+                </li>
+                <li>
+                    {$lang.service_evaluation}{$lang.colon}
+                    <span class="credit">{$store.dynamicEvaluation.service.value}</span>
+                    
+                <li>
+                    {$lang.shipped_evaluation}{$lang.colon}
+                    <span class="credit">{$store.dynamicEvaluation.shipped.value}</span>
+                    
+                </li>
+            </ul>
+        </div>
+        <div class="go2store">
+            <a href="javascript:collect_store({$store.store_id})">收藏店铺</a>
+        </div>
+    </div>
+</div>
+<!--{/if}-->
+
+<!--{if $app->controller->id eq 'store' && in_array($app->controller->action->id, array('index'))}-->
+<!--{if $store.gcategories}-->
+<div class="gcategroy mb20 pl10 pr10 pt10 bgf">
+    <h3 class="title strong">{$lang.gcategory}</h3>
+    <div class="content">
+        <div class="sort-by">
+            <p><a class="icon" href="{url route='store/search' id=$store.store_id}">全部商品</a></p>
+        </div>
+        <ul class="list">
+            <!--{foreach from=$store.gcategories item=item}-->
+            <li class="each">
+                <h3><a href="{url route='store/search' id=$store.store_id cate_id=$item.id}">{$item.value|escape}</a><i
+                        class="close"></i></h3>
+                <ul class="sub_gcate">
+                    <!--{foreach from=$item.children item=child}-->
+                    <li><a
+                            href="{url route='store/search' id=$store.store_id cate_id=$child.id}">{$child.value|escape}</a>
+                    </li>
+                    <!--{/foreach}-->
+                </ul>
+            </li>
+            <!--{/foreach}-->
+        </ul>
+    </div>
+</div>
+<!--{/if}-->
+
+<!--{if $store.saleGoods}-->
+<div class="hotsale mb20 pl10 pr10 pt10 bgf">
+    <h3 class="strong">销售排行榜</h3>
+    <div class="content">
+        <ul class="rank-c clearfix">
+            <!--{foreach from=$store.saleGoods item=item name=fe_item}-->
+            <li {if $smarty.foreach.fe_item.last}style="border:0;" {/if} class="clearfix">
+                <div class="pic"><a target="_blank" href="{url route='goods/index' id=$item.goods_id}">
+                        <img width="40" height="40" class="lazyload"
+                            initial-url="{$item.default_image|default:$app->params['default_goods_image']|url_format}"
+                            title="{$item.goods_name|escape}" /></a>
+                </div>
+                <div class="desc">
+                    <a target="_blank" href="{url route='goods/index' id=$item.goods_id}">{$item.goods_name|escape}</a>
+                </div>
+                <div class="price red mt5 mb5">{$item.price|price_format}元</div>
+                <div class="gray">已售出{$item.sales|default:0}件</div>
+            </li>
+            <!--{/foreach}-->
+        </ul>
+    </div>
+</div>
+<!--{/if}-->
+<!--{/if}-->
+
+<!-- {if $goods.historys && $app->controller->id eq 'goods'} -->
+<div class="goods-history mb20  bgf">
+    <h3 class="gray">—— <span class="f66">看了又看</span> ——</h3>
+    <div class="content">
+        <ul class="clearfix">
+            <!--{foreach from=$goods.historys item=item}-->
+            <li>
+                <a href="{url route='goods/index' id=$item.goods_id}"><img src="{$item.default_image|url_format}"
+                        alt="{$item.goods_name|truncate:20|escape}" title="{$item.goods_name|escape}" /></a>
+                <p class="desc mt10"><a href="{url route='goods/index' id=$item.goods_id}" target="_blank">{$item.goods_name}</a></p>
+                <p class="price fs14 red mt5 mb10">{$item.price|price_format}</p>
+            </li>
+            <!--{/foreach}-->
+        </ul>
+    </div>
+</div>
+<!-- {/if} -->
+
+<!--{if $store.gcategories}-->
+<script type="text/javascript">
+    $(function () {
+        $('.gcategroy .content .list li h3 i').click(function () {
+            var c = $(this).attr('class');
+            if (c == 'expand') {
+                $(this).attr('class', 'close');
+            } else {
+                $(this).attr('class', 'expand');
+            }
+            $(this).parent('h3').parent('li').children('.sub_gcate').toggle();
+        })
+        $('.current').parent('.sub_gcate').show();
+    });
+</script>
+<!--{/if}-->

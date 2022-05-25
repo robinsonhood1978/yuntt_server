@@ -1,0 +1,57 @@
+{include file="user.header.html"}
+<div id="main" class="clearfix"> {include file="user.menu.html"}
+  <div id="right"> {include file="user.curlocal.html"}
+    <div class="wrapful">{include file="user.submenu.html"}
+      <div id="page-promotool" class="wrap page-promotool clearfix">
+        <div class="public_select">
+          <div class="promotool">
+            <div class="bundle bundle-list"> 
+              <!--{if $tooldisabled}-->
+              <div class="notice-word">
+                <p>{$tooldisabled}</p>
+              </div>
+              <!--{else}-->
+              <div class="notice-word">
+                <p class="yellow-big">{$lang.note_for_create}</p>
+              </div>
+              <div class="create-tips"> <span class="ui-btn-graygrade"><a href="{url route='seller_meal/add'}">{$lang.create_meal}</a></span> </div>
+              <div class="lst-meal">
+                <div class="data-list-item">
+                  <div class="hd traderates-index-col">
+                    <ul class="clearfix">
+                      <li class="col-1"><span class="pl5">{$lang.name}</span></li>
+                      <li class="col-2 center">{$lang.yikoujia}</li>
+                      <li class="col-3 center">{$lang.current_price}</li>
+                      <li class="col-4 center">{$lang.handle}</li>
+                    </ul>
+                  </div>
+                  <div class="bd traderates-index-content">
+                    <div class="item-list traderates-index-col"> 
+                      <!--{foreach from=$meals item=meal}-->
+                      <ul class="clearfix">
+                        <li class="col-1"><span class="pl5">{$meal.title}</span></li>
+                        <li class="col-2 center">{$meal.price}</li>
+                        <li class="col-3 center">{if $meal.status eq 1}{$lang.available}{else}<span class="f60">{$lang.unavailable}</span>{/if}</li>
+                        <li class="col-4 center"> <a href="{url route='meal/index' id=$meal.meal_id}" target="_blank">{$lang.view}</a> <a href="{url route='seller_meal/edit' id=$meal.meal_id ret_page=$page_info.curr_page}">{$lang.edit}</a> <a href="javascript:;" confirm="{$lang.drop_confirm}" class="J_AjaxRequest" uri="{url route='seller_meal/delete' id=$meal.meal_id}">{$lang.drop}</a> </li>
+                      </ul>
+                      <!--{foreachelse}-->
+                      <div class="notice-word mt10">
+                        <p>{$lang.no_records}</p>
+                      </div>
+                      <!--{/foreach}--> 
+                    </div>
+                  </div>
+                </div>
+                <!--{if $meals}-->
+                <div class="mt20 clearfix center">{include file="page.bottom.html"}</div>
+                <!--{/if}--> 
+              </div>
+              <!--{/if}--> 
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{include file="user.footer.html"}

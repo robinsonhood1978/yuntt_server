@@ -1,0 +1,63 @@
+{include file="header.html"}
+<div id="main">
+  {include file="menus.html"}
+  <div id="rightCon" class="clearfix layui-body">
+    <div class="scroller">
+      <div class="flexigrid">
+        <form method="post">
+          <table class="infoTable">
+            <tr>
+              <th class="paddingT15"><label>{$lang.prop_name}</label></th>
+              <td class="paddingT15 wordSpacing5"><input name="name" value="{$prop.name}" type="text" /></td>
+            </tr>
+            <!--{if $app->controller->action->id eq 'add'}-->
+            <tr>
+              <th class="paddingT15"><label>{$lang.pvalue}</label></th>
+              <td class="paddingT15 wordSpacing5"><input style="width:300px;" type="text" name="pvalue"
+                  value="{$prop.pvalue|escape}" />
+                <span class="field_notice">{$lang.pvalue_note}</span>
+              </td>
+            </tr>
+            <!--{/if}-->
+            <tr>
+              <th class="paddingT15"><label>{$lang.ptype}</label></th>
+              <td class="paddingT15 layui-form">
+                <input type="radio" name="ptype" value="select" title="{$lang.selectbox}" {if $prop.ptype eq 'select' }checked{/if} />
+                <input type="radio" name="ptype" value="checkbox" title="{$lang.checkbox}" {if $prop.ptype eq 'checkbox' }checked{/if} />
+                <input type="radio" name="ptype" value="radio" title="{$lang.radiobox}" {if $prop.ptype eq 'radio' }checked{/if} />
+                <div class="notice-word"><p class="mt5 layui-font-12">{$lang.ptype_note}</p></div>
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.is_color}</label></th>
+              <td class="paddingT15 layui-form">
+                <input type="radio" name="is_color" value="1" title="{$lang.yes}" {if $prop.is_color}checked{/if} />
+                <input type="radio" name="is_color" value="0" title="{$lang.no}" {if !$prop.is_color}checked{/if} />
+                <div class="notice-word"><p class="mt5 layui-font-12 yellow">{$lang.is_color_note}</p></div>
+              </td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.sort_order}</label></th>
+              <td class="paddingT15 wordSpacing5"><input class="sort_order" type="text" name="sort_order"
+                  value="{$prop.sort_order}" /></td>
+            </tr>
+            <tr>
+              <th class="paddingT15"><label>{$lang.status}</label></th>
+              <td class="paddingT15 layui-form">
+                <input type="radio" name="status" value="1" title="{$lang.yes}" {if $prop.status}checked{/if} />
+                <input type="radio" name="status" value="0" title="{$lang.no}" {if !$prop.status}checked{/if} />
+              </td>
+            </tr>
+            <tr>
+              <th></th>
+              <td class="ptb20"><input class="layui-btn layui-bg-blue J_AjaxSubmit" type="submit"
+                  value="{$lang.submit}" /></td>
+            </tr>
+          </table>
+        </form>
+      </div>
+      {include file="version.html"}
+    </div>
+  </div>
+</div>
+{include file="footer.html"}

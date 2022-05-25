@@ -1,0 +1,38 @@
+{include file="install.header.html"}
+<div id="main" class="w">
+  <div class="initdata">
+    <div class="title">安装基础数据</div>
+    <div class="content bgf">
+      <p class="note"><strong style="color:#FF0000; margin-right: 5px;">提示 : </strong>如果您需要体验系统的各方面功能及效果，建议您安装演示数据， 安装后该数据也可以通过后台一键清除。如果您不希望安装任何测试数据，则可以跳过此步！</p>
+      <p class="mt20">此操作会新增两个用户，默认为 seller 和 buyer ，如果您的用户系统中已有重名用户，请更换用户名。</p>
+      <p>
+      <form method="post">
+        <p class="mt10">
+          <label for="seller">卖家用户名 ： </label>
+          <input type="text" id="seller" name="seller" value="seller" class="input" />
+          密码 ： 123456</p>
+        <p class="mt10">
+          <label for="buyer">买家用户名 ： </label>
+          <input type="text" id="buyer" name="buyer" value="buyer" class="input" />
+          密码 ： 123456</p>
+        <p class="mt20 submit">
+          <input class="btn-normal J_Submit" type="button" value="{$lang.next}" />
+        </p>
+      </form>
+      </p>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+$(function(){
+	$(this).attr('disabled', false);
+	$('.J_Submit').click(function(){
+		//if(confirm(lang.initdata_confirm)) {
+			$(this).attr('disabled', true);
+			$(this).parents('form').submit();
+		//}
+		//return false;
+	});
+});
+</script>
+{include file="install.footer.html"} 

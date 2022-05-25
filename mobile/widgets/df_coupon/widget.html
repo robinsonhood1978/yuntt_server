@@ -1,0 +1,42 @@
+<div class="couponbox" id="couponbox-{$widget_data.uniqueid}">
+  <div class="content pl10 pr10">
+    <ul class="clearfix">
+      <!--{foreach from=$widget_data.list item=item name=fe_item}-->
+      <li class="padding10 clearfix {if !$smarty.foreach.fe_item.first}mt5{/if}">
+        <div class="lp pt5 pl10 float-left">
+          <p class="fs18">{$item.coupon_value|price_format}</p>
+          <p class="fs12 mt5">满{$item.min_amount|price_format}元可用</p>
+        </div>
+        <div class="rp float-right">
+          <span class="inline-block ml20 mr10 fs13">立即领取</span>
+        </div>
+      </li>
+      <!--{/foreach}-->
+    </ul>
+  </div>
+</div>
+
+<style>
+  .couponbox .content {
+    min-height: 30px;
+  }
+
+  .couponbox .content li {
+    border-radius: 8px;
+  }
+
+  .couponbox .content li .rp {
+    border-left: 1px #fc2b34 dashed;
+    height: 50px;
+    line-height: 50px;
+  }
+</style>
+<script>
+  $(function () {
+    $('#couponbox-{$widget_data.uniqueid} .content li').css('background-color', '{$widget_data.bgcolor|default:"#ffefe9"}');
+    $('#couponbox-{$widget_data.uniqueid} .content li').css('color', '{$widget_data.txtcolor|default:"#fc2b34"}');
+    $('#couponbox-{$widget_data.uniqueid} .content li .rp').css('border-left-color', '{$widget_data.txtcolor|default:"#fc2b34"}');
+    $('#couponbox-{$widget_data.uniqueid}').css('padding', '{$widget_data.space|default:10}px 0px');
+    $('#couponbox-{$widget_data.uniqueid}').css('background', '{$widget_data.background|default:""}');
+  });
+</script>
